@@ -1,0 +1,65 @@
+﻿@* Detecta el controller actual para marcar la pestaña activa *@
+@{
+    var ctrl = (ViewContext.RouteData.Values["controller"]?.ToString() ?? "").ToLowerInvariant();
+    string Active(string name) => ctrl == name.ToLowerInvariant() ? "active" : "";
+}
+
+<div class="container mt-3 sr-topnav">
+    <div class="d-flex align-items-center gap-3 flex-wrap">
+        <!-- Volver al menú -->
+        <a href="@Url.Action("Index", "Home")" class="sr-backlink text-decoration-none">
+            <span class="me-1">←</span> Volver al menú
+        </a>
+
+        <!-- Pestañas del módulo -->
+        <ul class="nav nav-pills gap-2 flex-wrap mb-0">
+            <li class="nav-item"><a href="@Url.Action("Index","Animal")" class="nav-link @Active("Animal")">Animales</a></li>
+            <li class="nav-item"><a href="@Url.Action("Index","Especie")" class="nav-link @Active("Especie")">Especies</a></li>
+            <li class="nav-item"><a href="@Url.Action("Index","Raza")" class="nav-link @Active("Raza")">Razas</a></li>
+            <li class="nav-item"><a href="@Url.Action("Index","Tamano")" class="nav-link @Active("Tamano")">Tamaños</a></li>
+            <li class="nav-item"><a href="@Url.Action("Index","Estado")" class="nav-link @Active("Estado")">Estados</a></li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    /* Botón "Volver al menú" con estilo turquesa */
+    .sr-topnav .sr-backlink {
+        background: #fff;
+        color: #2FA8A2;
+        border: 1px solid #2FA8A2;
+        border-radius: 12px;
+        padding: .45rem 1rem;
+        display: inline-flex;
+        align-items: center;
+    }
+
+        .sr-topnav .sr-backlink:hover {
+            background: #E6F6F5;
+            color: #155e59;
+        }
+
+    /* Pestañas */
+    .sr-topnav .nav-link {
+        background: #fff;
+        color: #2FA8A2;
+        border: 1px solid #2FA8A2;
+        border-radius: 12px;
+        padding: .45rem 1rem;
+    }
+
+        .sr-topnav .nav-link:hover {
+            background: #E6F6F5;
+            color: #155e59;
+        }
+
+        .sr-topnav .nav-link.active {
+            background: #2FA8A2 !important;
+            color: #fff !important;
+            border-color: #2FA8A2 !important;
+        }
+
+        .sr-topnav .nav-link:focus {
+            box-shadow: 0 0 0 .15rem rgba(47,168,162,.25);
+        }
+</style>
