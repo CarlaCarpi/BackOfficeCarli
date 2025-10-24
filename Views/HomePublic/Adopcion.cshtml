@@ -146,7 +146,7 @@
 
         pagePets.forEach(pet => {
             const card = document.createElement('a');
-            card.href = `@Url.Action("InfoAdopcion", "Home")/${pet.Id}?page=${currentPage}`;
+            card.href = `@Url.Action("InfoAdopcion", "HomePublic")/${pet.Id}?page=${currentPage}`;
             card.className = 'pet-card';
             card.innerHTML = `
                 <img src="${pet.Img}" alt="${pet.Nombre}">

@@ -34,9 +34,15 @@ body {
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
     line-height: 1.55;
     /* AGREGUE */
-    display: flex;              /* Convertimos el body en un contenedor flex */
-    flex-direction: column;     /* Organizamos los hijos (header, main, footer) en columna */
-  /* Esto permite que el footer se "empuje" hacia abajo usando flex:1 en el main */
+    display: flex; /* Convertimos el body en un contenedor flex */
+    flex-direction: column; /* Organizamos los hijos (header, main, footer) en columna */
+    /* Esto permite que el footer se "empuje" hacia abajo usando flex:1 en el main */
+   
+
+
+    overflow-x: hidden;
+
+
 }
 
 
@@ -173,7 +179,14 @@ nav {
     overflow: hidden;
     isolation: isolate;
     min-height: 40vh; /* asegura que .hero tenga altura */
+    /* Forzar que el hero ocupe todo el ancho del viewport */
+
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
 }
+
+
 
     .hero .media {
         position: absolute;

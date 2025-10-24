@@ -27,7 +27,7 @@
             <nav aria-label="Principal">
                 <ul class="nav">
                     <li><a asp-controller="HomePublic" asp-action="IndexPublic">Inicio</a></li>
-                    <li><a asp-controller="HomePublic" asp-action="IndexPublic">Nosotros</a></li>
+                    <li><a href='@($"{Url.Action("IndexPublic","HomePublic")}?scroll=#nosotros")' class="scroll-nosotros">Nosotros</a></li>
                     <li><a asp-controller="HomePublic" asp-action="Adopcion">Adoptar</a></li>
                     <li><a asp-controller="HomePublic" asp-action="Voluntariado">Voluntariado</a></li>
                 </ul>
@@ -62,5 +62,9 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    
+   
+ 
+
 </body>
 </html>

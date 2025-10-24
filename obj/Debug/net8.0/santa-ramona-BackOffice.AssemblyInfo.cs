@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("santa-ramona-BackOffice")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc2cc420db2e753f35f3d1a3bf10044037c741e2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+733ff3b21373bf67297be0d4e63c71f9458adab6")]
 [assembly: System.Reflection.AssemblyProductAttribute("santa-ramona-BackOffice")]
 [assembly: System.Reflection.AssemblyTitleAttribute("santa-ramona-BackOffice")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
