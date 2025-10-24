@@ -1,0 +1,18 @@
+# Visual Studio / .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+*.v2
+*.vsidx
+
+# Publicaciones/artefactos
+*.dll
+*.exe
+*.pdb
+
+# Config locales (opcional)
+appsettings.Development.json
