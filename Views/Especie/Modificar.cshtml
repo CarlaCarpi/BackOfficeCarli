@@ -1,0 +1,232 @@
+﻿@model SantaRamona.Backoffice.Models.Especie
+
+@{
+    ViewData["Title"] = "Modificar Especie";
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #40ADB0;
+        font-size: 2.2rem;
+        margin-bottom: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    .card {
+        background: #fff;
+        border: 2px solid #40ADB0;
+        border-radius: 0.6rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #40ADB0;
+        color: #fff;
+        padding: 1rem 1.2rem;
+        font-weight: 700;
+        border-bottom: 1px solid rgba(0,0,0,.05);
+    }
+
+    .card-body {
+        padding: 1.2rem;
+    }
+
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        padding: 0.55rem 1.0rem;
+        font-size: 1rem;
+        border-radius: 0.6rem;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+    }
+
+    .btn-outline {
+        background: #fff;
+        color: #40ADB0;
+        border: 2px solid #40ADB0;
+    }
+
+        .btn-outline:hover {
+            background: #EAF6F6;
+        }
+
+    .btn-primary {
+        background: #40ADB0;
+        color: #fff;
+        border: 2px solid #40ADB0;
+    }
+
+        .btn-primary:hover {
+            background: #2e888b;
+            border-color: #2e888b;
+        }
+
+    /* Inputs */
+    label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+        color: #333;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 0.6rem .8rem;
+        border: 1px solid #ddd;
+        border-radius: 0.4rem;
+        font-size: 1rem;
+        outline: none;
+    }
+
+        input[type="text"]:focus {
+            border-color: #40ADB0;
+            box-shadow: 0 0 0 4px rgba(64,173,176,0.15);
+        }
+
+    .form-actions {
+        display: flex;
+        gap: .6rem;
+    }
+
+    .alert-ok {
+        margin: .8rem 0;
+        padding: .7rem 1rem;
+        border: 2px solid #40ADB0;
+        background: #EAF6F6;
+        border-radius: .6rem;
+        color: #155e63;
+        font-weight: 600;
+    }
+
+    .alert-error {
+        margin: .8rem 0;
+        padding: .7rem 1rem;
+        border: 2px solid #ff6b6b;
+        background: #ffecec;
+        border-radius: .6rem;
+        color: #a33;
+        font-weight: 600;
+        white-space: pre-wrap;
+    }
+
+    .field-error {
+        color: #d9534f;
+        font-weight: 600;
+        margin-top: .25rem;
+        display: block;
+    }
+</style>
+
+<div class="main-container">
+    <h2 class="form-title">Modificar Especie</h2>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert-ok">@ViewBag.Ok</div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert-error">@ViewBag.ApiError</div>
+    }
+
+    <div class="card">
+        <div class="card-header">Datos de la Especie</div>
+        <div class="card-body">
+            <div class="toolbar">
+                <a asp-action="Index" class="btn btn-outline">← Volver al listado</a>
+
+                <div class="form-actions">
+                    <button type="submit" form="frm-modificar" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="mostrarModalCancelar()">Cancelar</button>
+                </div>
+            </div>
+
+            <form id="frm-modificar" asp-action="Modificar" method="post">
+                <input type="hidden" asp-for="id_especie" />
+                <div style="margin-bottom:1rem;">
+                    <label asp-for="especie">Descripción</label>
+                    <input asp-for="especie" type="text" />
+                    <span asp-validation-for="especie" class="field-error"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div id="modal-cancelar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:9999;">
+    <div style="
+        background:#fff;
+        width:380px;
+        max-width:90%;
+        margin:10% auto;
+        padding:2rem 2rem 1.5rem;
+        border-radius:1rem;
+        box-shadow:0 6px 12px rgba(0,0,0,0.25);
+        text-align:center;
+        font-family:'Segoe UI', sans-serif;
+    ">
+        <p style="font-size:1.2rem; color:#333; font-weight:600; margin-bottom:2rem;">
+            ¿Realmente desea cancelar?
+        </p>
+        <div style="display:flex; justify-content:center; gap:1rem;">
+            <a asp-action="Index" class="btn-modal">Sí</a>
+            <button type="button" class="btn-modal" onclick="cerrarModalCancelar()">No</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-modal {
+        background-color: #40ADB0;
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        border-radius: 0.6rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .btn-modal:hover {
+            background-color: #2e888b;
+        }
+</style>
+
+<script>
+    function mostrarModalCancelar() {
+        document.getElementById("modal-cancelar").style.display = "block";
+    }
+    function cerrarModalCancelar() {
+        document.getElementById("modal-cancelar").style.display = "none";
+    }
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

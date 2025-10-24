@@ -1,0 +1,29 @@
+﻿@model SantaRamona.Backoffice.Models.Usuario
+
+@{
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+    string EstadoTxt(int id) => estados.TryGetValue(id, out var v) ? v : $"#{id}";
+}
+
+<div class="container-fluid">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="p-3 border rounded-3">
+                <h6 class="mb-2 text-muted">Identificación</h6>
+                <p class="mb-1"><strong>Código:</strong> @Model.id_usuario</p>
+                <p class="mb-1"><strong>Nombre:</strong> @Model.apellido, @Model.nombre</p>
+                <p class="mb-1"><strong>Email:</strong> @Model.email</p>
+                <p class="mb-1"><strong>Estado:</strong> @EstadoTxt(Model.id_estadoUsuario)</p>
+                <p class="mb-0"><strong>Fecha Alta:</strong> @(Model.fechaAlta == default ? "-" : Model.fechaAlta.ToString("dd/MM/yyyy HH:mm"))</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 border rounded-3">
+                <h6 class="mb-2 text-muted">Contacto</h6>
+                <p class="mb-1"><strong>Dirección:</strong> @Model.direccion @(" " + Model.altura) @(!string.IsNullOrWhiteSpace(Model.departamento) ? $" - {Model.departamento}" : "")</p>
+                <p class="mb-1"><strong>Teléfono 1:</strong> @Model.telefono1</p>
+                <p class="mb-0"><strong>Teléfono 2:</strong> @(Model.telefono2 == 0 ? "-" : Model.telefono2)</p>
+            </div>
+        </div>
+    </div>
+</div>

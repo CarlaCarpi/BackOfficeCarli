@@ -9,53 +9,189 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = santa_ramona_BackOffice
 build_property.RootNamespace = santa_ramona_BackOffice
-build_property.ProjectDir = C:\Mis Proyectos\santa-ramona-BackOffice\
+build_property.ProjectDir = C:\Users\magal\source\repos\SantaRamona\BackOfficeCarly\BackOfficeCarli\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Mis Proyectos\santa-ramona-BackOffice
+build_property.MSBuildProjectDirectory = C:\Users\magal\source\repos\SantaRamona\BackOfficeCarly\BackOfficeCarli
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Animal/Index.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Animal/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5pbWFsXENyZWFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Animal/DetalleAnimal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5pbWFsXERldGFsbGVBbmltYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Animal/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5pbWFsXEVsaW1pbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Animal/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5pbWFsXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Home/Index.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Animal/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5pbWFsXE1vZGlmaWNhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Especie/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXNwZWNpZVxDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Especie/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXNwZWNpZVxFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Especie/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXNwZWNpZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Especie/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXNwZWNpZVxNb2RpZmljYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/EstadoUsuario/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvVXN1YXJpb1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/EstadoUsuario/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvVXN1YXJpb1xFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/EstadoUsuario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvVXN1YXJpb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/EstadoUsuario/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvVXN1YXJpb1xNb2RpZmljYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Estado/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvXENyZWFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Estado/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvXEVsaW1pbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Estado/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Estado/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvXE1vZGlmaWNhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Home/Privacy.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Shared/Error.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Raza/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmF6YVxDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Raza/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmF6YVxFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Raza/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmF6YVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Raza/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmF6YVxNb2RpZmljYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Rol/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sXENyZWFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Rol/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sXEVsaW1pbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Rol/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Rol/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sXE1vZGlmaWNhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Shared/_AnimalTopNav.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Shared/_AnimalTopNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BbmltYWxUb3BOYXYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Shared/_UsuarioTopNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Vc3VhcmlvVG9wTmF2LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/_Layout.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Tamano/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFtYW5vXENyZWFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Tamano/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFtYW5vXEVsaW1pbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Tamano/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFtYW5vXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Tamano/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFtYW5vXE1vZGlmaWNhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Usuario/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Usuario/DetalleUsuario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xEZXRhbGxlVXN1YXJpby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Usuario/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Usuario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Usuario/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xNb2RpZmljYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/_ViewImports.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/_ViewStart.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Shared/_Layout.cshtml]
+[C:/Users/magal/source/repos/SantaRamona/BackOfficeCarly/BackOfficeCarli/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-1gbc541wl7

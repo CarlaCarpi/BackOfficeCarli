@@ -1,0 +1,67 @@
+﻿@model SantaRamona.Backoffice.Models.Animal
+@{
+    // Diccionarios para mostrar descripciones en vez de IDs (los carga el controller)
+    var especies = ViewBag.Especies as Dictionary<int, string> ?? new();
+    var razas = ViewBag.Razas as Dictionary<int, string> ?? new();
+    var tamanos = ViewBag.Tamanos as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
+}
+
+<div class="container-fluid">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Código</label>
+            <div class="form-control" readonly>@Model.id_animal</div>
+        </div>
+        <div class="col-md-8">
+            <label class="form-label fw-semibold">Nombre</label>
+            <div class="form-control" readonly>@Model.nombre</div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Edad</label>
+            <div class="form-control" readonly>
+                @Model.edad @((Model.edad == 1) ? "año" : "años")
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Estado</label>
+            <div class="form-control" readonly>@Txt(estados, Model.id_estadoAnimal)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Tamaño</label>
+            <div class="form-control" readonly>@Txt(tamanos, Model.id_tamano)</div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-semibold">Especie</label>
+            <div class="form-control" readonly>@Txt(especies, Model.id_especie)</div>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label fw-semibold">Raza</label>
+            <div class="form-control" readonly>@Txt(razas, Model.id_raza)</div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label fw-semibold">Historia</label>
+            <div class="form-control" style="min-height:90px;" readonly>
+                @(!string.IsNullOrWhiteSpace(Model.historia) ? Model.historia : "—")
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-semibold">Persona</label>
+            <div class="form-control" readonly>
+                @(Model.id_persona.HasValue ? $"#{Model.id_persona}" : "—")
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label fw-semibold">Pensión</label>
+            <div class="form-control" readonly>
+                @(Model.id_pension.HasValue ? $"#{Model.id_pension}" : "—")
+            </div>
+        </div>
+    </div>
+</div>

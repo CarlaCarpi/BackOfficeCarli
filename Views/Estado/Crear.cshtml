@@ -1,0 +1,54 @@
+﻿@model SantaRamona.Backoffice.Models.Estado_Animal
+@{
+    ViewData["Title"] = "Agregar nuevo estado";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        AGREGAR NUEVO ESTADO
+    </h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <strong>Datos del Estado</strong>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="Index" class="btn" style="border:1px solid #2FA8A2; color:#2FA8A2; border-radius:10px;">← Volver al listado</a>
+                <div class="d-flex gap-2">
+                    <!-- Botón superior que envía el form de crear -->
+                    <button type="submit" form="form-crear" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">Guardar</button>
+                    <a asp-action="Index" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">Cancelar</a>
+                </div>
+            </div>
+
+            <form id="form-crear" asp-action="Crear" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="estado" class="form-label"></label>
+                    <input asp-for="estado" class="form-control" />
+                    <span asp-validation-for="estado" class="text-danger"></span>
+                </div>
+
+                @* Sin botones internos para evitar duplicados *@
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            </form>
+        </div>
+    </div>
+</div>

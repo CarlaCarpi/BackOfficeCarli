@@ -1,9 +1,6 @@
 ﻿@model IEnumerable<SantaRamona.Backoffice.Models.Animal>
 @{
     await Html.RenderPartialAsync("_AnimalTopNav");
-}
-
-@{
     ViewData["Title"] = "Lista de Animales";
 
     var especies = ViewBag.Especies as Dictionary<int, string> ?? new();
@@ -35,7 +32,6 @@
         </div>
     }
 
-    <!-- Botón afuera del card, alineado a la derecha -->
     <div class="d-flex justify-content-end mt-3">
         <a asp-action="Crear" class="btn"
            style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
@@ -47,7 +43,6 @@
         <div class="card-body p-0">
             <table class="table mb-0">
                 <thead>
-                    <!-- Encabezado turquesa con letras blancas -->
                     <tr style="background:#2FA8A2; color:#fff;">
                         <th style="border-top-left-radius:10px;">Código</th>
                         <th>Nombre</th>
@@ -104,6 +99,7 @@
             </table>
         </div>
     </div>
+
     <!-- Modal Detalle -->
     <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -113,7 +109,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body" id="modalDetalleBody">
-                    <!-- El partial _DetalleAnimal se carga acá -->
+                    <!-- La vista parcial DetalleAnimal.cshtml se carga acá -->
                 </div>
             </div>
         </div>
@@ -122,7 +118,6 @@
     @section Scripts {
         <script>
             (() => {
-              // Url base generada por MVC (ej: /Animal/Detalle)
               const baseUrl = '@Url.Action("Detalle", "Animal")';
 
               document.addEventListener('click', async (ev) => {
@@ -141,7 +136,6 @@
 
                   document.getElementById('modalDetalleBody').innerHTML = html;
 
-                  // Abrir modal (Bootstrap 5)
                   const modal = new bootstrap.Modal(document.getElementById('modalDetalle'));
                   modal.show();
                 } catch (err) {

@@ -1,0 +1,105 @@
+﻿@model SantaRamona.Backoffice.Models.Tamano
+@{
+    ViewData["Title"] = "Eliminar tamaño";
+    bool enUso = ViewBag.EnUso is bool b && b;
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        ELIMINAR TAMAÑO
+    </h1>
+
+    @if (TempData["Error"] is string err)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @err
+        </div>
+    }
+    @if (TempData["Ok"] is string ok)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ok
+        </div>
+    }
+
+    @if (enUso)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff8e6; border:1px solid #f0ad4e; color:#8a6d3b; border-radius:10px;">
+            No se puede eliminar el tamaño porque está en uso por uno o más animales.
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <strong>Datos del Tamaño</strong>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="Index" class="btn" style="border:1px solid #2FA8A2; color:#2FA8A2; border-radius:10px;">← Volver al listado</a>
+
+                <div class="d-flex gap-2">
+                    @* Eliminar solo si NO está en uso *@
+                    @if (!enUso)
+                    {
+                        <button type="button" class="btn"
+                                data-bs-toggle="modal" data-bs-target="#confirmarEliminar"
+                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+                            Eliminar
+                        </button>
+                    }
+                    @* Cancelar SIEMPRE visible *@
+                    <a asp-action="Index" class="btn"
+                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Identificación</label>
+                <input class="form-control" value="@Model.id_tamano" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <input class="form-control" value="@Model.tamano" disabled />
+            </div>
+        </div>
+    </div>
+
+    @* Modal solo si NO está en uso *@
+    @if (!enUso)
+    {
+        <div class="modal fade" id="confirmarEliminar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border-radius:14px;">
+                    <div class="modal-header"
+                         style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body" style="color:#000;">
+                        ¿Realmente desea eliminar este tamaño?
+                    </div>
+                    <div class="modal-footer" style="border-top:none;">
+                        <form asp-action="Eliminar" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.id_tamano" />
+                            <button type="submit" class="btn"
+                                    style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                                Sí, eliminar
+                            </button>
+                        </form>
+
+                        <button type="button" class="btn" data-bs-dismiss="modal"
+                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
