@@ -1,42 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Santa Ramona · Refugio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!--Google Fonts-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Gluten:slnt,wght@1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-   
-    <!--css externo-->
-    <link href="~/css/StyleSheet.css" rel="stylesheet" />
-</head>
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/Layout1.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/StyleSheet.css" asp-append-version="true" />
+}
 <body id="top">
-    <!-- Header -->
-    <header class="site-header">
-        <div class="inner">
-            <div class="brand" aria-label="Santa Ramona">
-                <img src="images/santaramona.png" alt="Logo Santa Ramona">
-                <span>Santa Ramona</span>
-            </div>
-            <nav aria-label="Principal">
-                <ul class="nav">
-                    <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#nosotros">Nosotros</a></li>
-                    <li><a href="/Home/Adopcion">Adoptar</a></li>
-                    <li><a href="/Home/Voluntariado">Voluntariado</a></li>
-                   @*  <li><a href="#como-ayudar">Cómo ayudar</a></li>
-                    <li><a href="#faqs">FAQs</a></li> *@
-                </ul>
-            </nav>
-            @* <a class="btn magenta" href="/Home/Donar">DONAR</a> *@
-            <a class="btn magenta" asp-controller="Home" asp-action="Donar">DONAR</a>
-        </div>
-    </header>
      
         <!-- Hero -->
     <section class="hero" id="inicio" role="banner" aria-label="Campaña de tránsitos">
@@ -46,7 +17,7 @@
         <div class="content">
             <h1 class="kicker">Campaña de adopciones</h1>
             <p class="sub">Brindale vida y esperanza a un animal postulándote para tránsito.</p>
-            <a class="btn ghost" asp-controller="Home" asp-action="Adopcion">IR A ADOPCIONES</a>
+            <a class="btn ghost" asp-controller="HomePublic" asp-action="Adopcion">IR A ADOPCIONES</a>
         </div>
     </section>
 
@@ -186,36 +157,25 @@
     
 
     <!-- CTA Final -->
-    <section class="cta" aria-labelledby="cta-title">
+  @*   <section class="cta" aria-labelledby="cta-title">
         <div class="section-inner" style="text-align:center">
             <h2 id="cta-title">¿Querés ser parte de Santa Ramona?</h2>
             <p>Sumate como voluntario/a, casa de tránsito o colaborá con insumos.</p>
             <a class="btn primary" href="#">¡Sumate!</a>
         </div>
-    </section>
+    </section> *@
+
+    @section ExtraContent {
+        <!-- CTA Final -->
+        <section class="cta" aria-labelledby="cta-title">
+            <div class="section-inner" style="text-align:center">
+                <h2 id="cta-title">¿Querés ser parte de Santa Ramona?</h2>
+                <p>Sumate como voluntario/a, casa de tránsito o colaborá con insumos.</p>
+                <a class="btn primary" asp-controller="Home" asp-action="FormPersona">¡Sumate!</a>
+            </div>
+        </section>
+    }
    
-   
-
-    <!--Footer -->
-    <footer>
-        <small>© <span id="year"></span> Santa Ramona · Protectora de Animales</small>
-    </footer>
-
-    <script>
-        // Año dinámico
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Controles de scroll para los carouseles
-        const byName = name => document.querySelector(`#scroller-${name}`);
-        const scrollByAmount = (el, dir) => el && el.scrollBy({left: (dir === 'left' ? -1 : 1) * (el.clientWidth * .85), behavior:'smooth'});
-
-        document.querySelectorAll('[data-arrow]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const target = btn.getAttribute('data-target');
-            const dir = btn.getAttribute('data-arrow');
-            scrollByAmount(byName(target), dir);
-          });
-        });
-    </script>
+  
 </body>
 </html>

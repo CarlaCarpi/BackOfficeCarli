@@ -31,7 +31,8 @@ app.UseAuthorization();
 // que abra Home/Index por defecto
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=HomePublic}/{action=IndexPublic}/{id?}");
+
 
 app.Run();
 

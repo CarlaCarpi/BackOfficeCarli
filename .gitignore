@@ -1,0 +1,23 @@
+# Archivos de Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Carpetas de compilación
+bin/
+obj/
+Debug/
+Release/
+
+# Archivos temporales
+*.log
+*.tmp
+
+# Cache de Python o Node (si aplica)
+__pycache__/
+node_modules/
+
+# Otros
+.env

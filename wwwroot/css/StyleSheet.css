@@ -101,9 +101,9 @@ a {
 }
 
     .brand img {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
+        width: 95px;
+        height: 100px;
+        border-radius: 2%;
         object-fit: cover
     }
 

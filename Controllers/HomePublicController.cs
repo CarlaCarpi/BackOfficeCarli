@@ -18,7 +18,7 @@ namespace SantaRamona.BackOffice.Controllers
         }
 
         // Página principal (inicio público)
-        public IActionResult Index()
+        public IActionResult IndexPublic()
         {
             return View();
         }
