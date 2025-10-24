@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 # Ignorar cache de VS y builds
 .vs/
 bin/
 obj/
-=======
+
 # Visual Studio / .NET
-bin/
-obj/
-.vs/
 *.user
 *.suo
 *.cache
@@ -22,4 +18,3 @@ obj/
 
 # Config locales (opcional)
 appsettings.Development.json
->>>>>>> 4f9c25093bdd49a0316a06ff6937864b67dd3224

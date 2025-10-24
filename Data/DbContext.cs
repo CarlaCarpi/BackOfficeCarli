@@ -32,5 +32,6 @@ namespace SantaRamona.Data
         //public DbSet<Formulario> Formulario { get; set; }
         //public DbSet<Pregunta> Pregunta { get; set; }
         //public DbSet<Respuesta> Respuesta { get; set; }
+        public DbSet<Donacion> Donacion { get; set; }
     }
 }

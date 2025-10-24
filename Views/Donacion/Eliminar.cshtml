@@ -1,0 +1,239 @@
+﻿@model SantaRamona.Backoffice.Models.Donacion
+@{
+    ViewData["Title"] = "Eliminar Donación";
+
+    string TipoTxt(string t) => t == "M" ? "Medicamentos" : t == "I" ? "Insumos" : t;
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Segoe UI',sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #40ADB0;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary, .btn-danger, .btn-cancel, .btn-back {
+        background: #40ADB0;
+        color: #fff;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color .3s;
+        display: inline-block;
+    }
+
+    .btn-danger {
+        background: #A71A6C;
+    }
+
+        .btn-primary:hover, .btn-danger:hover, .btn-cancel:hover, .btn-back:hover {
+            opacity: .95;
+        }
+
+    .summary-errors {
+        color: #40ADB0;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .cardx {
+        background: #fff;
+        border: 2px solid #40ADB0;
+        border-radius: .5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        overflow: hidden;
+    }
+
+    .cardx-header {
+        background: #40ADB0;
+        color: #fff;
+        padding: 1rem;
+        font-weight: 700;
+        letter-spacing: .5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .cardx-body {
+        padding: 1rem;
+    }
+
+    .rowx {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1rem;
+    }
+
+    .col-4 {
+        grid-column: span 4;
+    }
+
+    .col-8 {
+        grid-column: span 8;
+    }
+
+    .col-12 {
+        grid-column: span 12;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: .35rem;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .form-control, .form-readonly {
+        width: 100%;
+        padding: .6rem .75rem;
+        font-size: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: .5rem;
+        outline: none;
+        background: #f8f9fa;
+        color: #333;
+    }
+
+    .link-back {
+        background: #fff;
+        border: 1px solid #c5a9cb;
+        color: #c5a9cb;
+        padding: .5rem .85rem;
+        border-radius: .5rem;
+        text-decoration: none;
+        display: inline-flex;
+        gap: .5rem;
+        align-items: center;
+        transition: background-color .2s,color .2s;
+    }
+
+        .link-back:hover {
+            background: #F4ECFF;
+            color: #40ADB0;
+        }
+
+    .alert-ok {
+        background: #E6D9F8;
+        color: #40ADB0;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #c5a9cb;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .alert-error {
+        background: #fff3f3;
+        color: #a94442;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #d9534f;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+</style>
+
+<div class="main-container">
+    <h2 class="form-title">Eliminar Donación</h2>
+
+    @* Carteles *@
+    @if (ViewBag.MensajeExito != null)
+    {
+        <div id="ok-banner" class="alert-ok">@ViewBag.MensajeExito</div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert-error">@ViewBag.ApiError</div>
+    }
+    @if (TempData["Ok"] != null)
+    {
+        <div id="ok-banner" class="alert-ok">@TempData["Ok"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert-error">@TempData["Error"]</div>
+    }
+
+    <div class="cardx">
+        <div class="cardx-header">
+            <a asp-controller="Donacion" asp-action="Index" class="link-back">
+                <span aria-hidden="true">←</span><span>Volver al listado</span>
+            </a>
+
+            <div style="display:flex; gap:.5rem;">
+                <button type="button" class="btn-danger" data-bs-toggle="modal" data-bs-target="#confirmEliminar">Eliminar</button>
+                <a asp-controller="Donacion" asp-action="Index" class="btn-primary">Cancelar</a>
+            </div>
+        </div>
+
+        <div class="cardx-body">
+            <div class="summary-errors" asp-validation-summary="ModelOnly"></div>
+
+            <div class="rowx">
+                <div class="col-4">
+                    <label class="form-label">Código</label>
+                    <input class="form-readonly" value="@Model.id_donacion" readonly />
+                </div>
+
+                <div class="col-4">
+                    <label class="form-label">Tipo</label>
+                    <input class="form-readonly" value="@TipoTxt(Model.tipo)" readonly />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Descripción</label>
+                    <input class="form-readonly" value="@Model.descripcion" readonly />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal de confirmación *@
+<div class="modal fade" id="confirmEliminar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:1rem;">
+            <div class="modal-header" style="background:#40ADB0; color:#fff; border-top-left-radius:1rem; border-top-right-radius:1rem;">
+                <h5 class="modal-title">Confirmar eliminación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¿Seguro que desea eliminar esta donación?
+            </div>
+            <div class="modal-footer" style="border-top:none;">
+                <form asp-action="Eliminar" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.id_donacion" />
+                    <button type="submit" class="btn-danger">Sí, eliminar</button>
+                </form>
+
+                <button type="button" class="btn-primary" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        setTimeout(() => {
+            const b = document.getElementById('ok-banner');
+            if (b) b.style.display = 'none';
+        }, 3500);
+    </script>
+}
+

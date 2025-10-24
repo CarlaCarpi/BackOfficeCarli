@@ -11,6 +11,8 @@
 
     bool bloqueado = (ViewBag.Bloqueado as bool?) ?? false;
     string motivo = ViewBag.Motivo as string ?? string.Empty;
+
+    string UnidadEdad(string unidad) => unidad == "M" ? "mes(es)" : "año(s)";
 }
 
 <div class="container mt-4">
@@ -68,49 +70,100 @@
             }
 
             <div class="row g-3">
+                <!-- ID -->
                 <div class="col-md-4">
                     <label class="form-label">Identificación</label>
                     <input class="form-control" value="@Model.id_animal" readonly />
                 </div>
+
+                <!-- Nombre -->
                 <div class="col-md-8">
                     <label class="form-label">Nombre</label>
                     <input class="form-control" value="@Model.nombre" readonly />
                 </div>
 
+                <!-- Sexo -->
+                <div class="col-md-4">
+                    <label class="form-label">Sexo</label>
+                    <input class="form-control" value="@(Model.sexo == "M" ? "Macho" : "Hembra")" readonly />
+                </div>
+
+                <!-- Edad -->
                 <div class="col-md-4">
                     <label class="form-label">Edad</label>
-                    <input class="form-control" value="@($"{Model.edad} {(Model.edad == 1 ? "año" : "años")}")" readonly />
+                    <input class="form-control"
+                           value="@($"{Model.edadValor} {UnidadEdad(Model.edadUnidad)}")" readonly />
                 </div>
+
+                <!-- Estado -->
                 <div class="col-md-4">
                     <label class="form-label">Estado</label>
                     <input class="form-control" value="@Txt(estados, Model.id_estadoAnimal)" readonly />
                 </div>
+
+                <!-- Tamaño -->
                 <div class="col-md-4">
                     <label class="form-label">Tamaño</label>
                     <input class="form-control" value="@Txt(tamanos, Model.id_tamano)" readonly />
                 </div>
 
-                <div class="col-md-6">
+                <!-- Especie -->
+                <div class="col-md-4">
                     <label class="form-label">Especie</label>
                     <input class="form-control" value="@Txt(especies, Model.id_especie)" readonly />
                 </div>
-                <div class="col-md-6">
+
+                <!-- Raza -->
+                <div class="col-md-4">
                     <label class="form-label">Raza</label>
                     <input class="form-control" value="@Txt(razas, Model.id_raza)" readonly />
                 </div>
 
+                <!-- Imagen -->
+                <div class="col-12">
+                    <label class="form-label">Imagen</label><br />
+                    @if (Model.imagen != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.imagen);
+                        var imgSrc = $"data:image/png;base64,{base64}";
+                        <img src="@imgSrc" class="img-thumbnail" style="max-width: 200px; border:1px solid #ccc;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">No hay imagen cargada</span>
+                    }
+                </div>
+
+                <!-- Historia -->
                 <div class="col-12">
                     <label class="form-label">Historia</label>
                     <textarea class="form-control" rows="3" readonly>@Model.historia</textarea>
                 </div>
 
+                <!-- Seguimiento -->
+                <div class="col-12">
+                    <label class="form-label">Seguimiento</label>
+                    <textarea class="form-control" rows="3" readonly>@Model.seguimiento</textarea>
+                </div>
+
+                <!-- Persona -->
                 <div class="col-md-6">
                     <label class="form-label">Persona</label>
                     <input class="form-control" value="@(Model.id_persona.HasValue ? $"#{Model.id_persona}" : "")" readonly />
                 </div>
+
+                <!-- Pensión -->
                 <div class="col-md-6">
                     <label class="form-label">Pensión</label>
                     <input class="form-control" value="@(Model.id_pension.HasValue ? $"#{Model.id_pension}" : "")" readonly />
+                </div>
+
+                <!-- Fecha adopción -->
+                <div class="col-md-6">
+                    <label class="form-label">Fecha de Adopción</label>
+                    <input class="form-control"
+                           value="@(Model.fechaAdopcion.HasValue ? Model.fechaAdopcion.Value.ToString("dd/MM/yyyy") : "")"
+                           readonly />
                 </div>
             </div>
         </div>

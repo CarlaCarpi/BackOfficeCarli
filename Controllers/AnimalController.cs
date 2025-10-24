@@ -1,5 +1,4 @@
-﻿using System.Runtime.ConstrainedExecution;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,7 +17,6 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
-            // 1) Animales
             var respAnimals = await client.GetAsync("/api/Animal");
             if (!respAnimals.IsSuccessStatusCode)
             {
@@ -31,7 +29,6 @@ namespace SantaRamona.Backoffice.Controllers
             var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(animalsJson,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
 
-            // 2) Catálogos
             var tEsp = client.GetAsync("/api/Especie");
             var tRaza = client.GetAsync("/api/Raza");
             var tTam = client.GetAsync("/api/Tamano");
@@ -49,7 +46,7 @@ namespace SantaRamona.Backoffice.Controllers
             return View(animals);
         }
 
-        /// ===================== CREAR =====================
+        // ===================== CREAR =====================
         [HttpGet]
         public async Task<IActionResult> Crear()
         {
@@ -58,14 +55,12 @@ namespace SantaRamona.Backoffice.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear([FromForm] Animal model)
+        public async Task<IActionResult> Crear([FromForm] Animal model, IFormFile? imagenFile)
         {
-            // 🔒 Evito que ModelState me “pise” el hidden si hubo un post previo
             ModelState.Remove(nameof(Animal.id_usuario));
             if (model.id_usuario <= 0)
-                model.id_usuario = 1; // por ahora fijo
+                model.id_usuario = 1;
 
-            // ✅ Validaciones mínimas (dejamos las tuyas)
             if (string.IsNullOrWhiteSpace(model.nombre))
                 ModelState.AddModelError(nameof(Animal.nombre), "El nombre es obligatorio.");
             if (model.id_especie <= 0) ModelState.AddModelError(nameof(Animal.id_especie), "Seleccione una especie válida.");
@@ -82,35 +77,47 @@ namespace SantaRamona.Backoffice.Controllers
                 return View(model);
             }
 
+            // la línea para setear la fecha si no viene
+            if (!model.fechaIngreso.HasValue)
+                model.fechaIngreso = DateTime.Now;
+
+            // Imagen opcional
+            byte[]? imageBytes = null;
+            if (imagenFile != null && imagenFile.Length > 0)
+            {
+                using var ms = new MemoryStream();
+                await imagenFile.CopyToAsync(ms);
+                imageBytes = ms.ToArray();
+            }
+
             var client = _http.CreateClient("Api");
 
-            // 👇 Enviamos las CLAVES que la API valida (id_estado, no id_estadoAnimal)
             var payload = new
             {
                 id_animal = model.id_animal,
                 nombre = model.nombre,
-                edad = model.edad,
+                sexo = model.sexo,
+                edadValor = model.edadValor,
+                edadUnidad = model.edadUnidad,
+                imagen = imageBytes,
                 id_especie = model.id_especie,
-                id_raza = model.id_raza,
                 id_tamano = model.id_tamano,
-                id_estadoAnimal = model.id_estadoAnimal, // 🔑 clave que espera la API
-                historia = model.historia,
-                id_usuario = model.id_usuario,
+                id_raza = model.id_raza,
+                id_estadoAnimal = model.id_estadoAnimal,
                 id_persona = model.id_persona,
-                id_pension = model.id_pension
+                id_pension = model.id_pension,
+                id_usuario = model.id_usuario,
+                fechaIngreso = model.fechaIngreso,
+                fechaAdopcion = model.fechaAdopcion,
+                historia = model.historia,
+                seguimiento = model.seguimiento
             };
 
             var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            // (Opcional pero útil) Log para ver exactamente qué mandamos
-            Console.WriteLine("JSON hacia API /api/Animal -> " + json);
-
             var resp = await client.PostAsync("/api/Animal", content);
-
-            // (Opcional) Log de respuesta de la API
             var body = await resp.Content.ReadAsStringAsync();
-            Console.WriteLine($"API /api/Animal -> {(int)resp.StatusCode} {resp.ReasonPhrase} | BODY: {body}");
 
             if (!resp.IsSuccessStatusCode)
             {
@@ -155,7 +162,7 @@ namespace SantaRamona.Backoffice.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Modificar([FromForm] Animal model)
+        public async Task<IActionResult> Modificar([FromForm] Animal model, IFormFile? imagenFile)
         {
             if (model.id_usuario <= 0)
                 model.id_usuario = 1;
@@ -173,22 +180,35 @@ namespace SantaRamona.Backoffice.Controllers
                 return View(model);
             }
 
+            byte[]? imageBytes = null;
+            if (imagenFile != null && imagenFile.Length > 0)
+            {
+                using var ms = new MemoryStream();
+                await imagenFile.CopyToAsync(ms);
+                imageBytes = ms.ToArray();
+            }
+
             var client = _http.CreateClient("Api");
 
-            // ✅ Payload explícito también en PUT
             var payload = new
             {
                 id_animal = model.id_animal,
                 nombre = model.nombre,
-                edad = model.edad,
+                sexo = model.sexo,
+                edadValor = model.edadValor,
+                edadUnidad = model.edadUnidad,
+                imagen = imageBytes ?? model.imagen,
                 id_especie = model.id_especie,
-                id_raza = model.id_raza,
                 id_tamano = model.id_tamano,
+                id_raza = model.id_raza,
                 id_estadoAnimal = model.id_estadoAnimal,
-                historia = model.historia,
-                id_usuario = model.id_usuario,
                 id_persona = model.id_persona,
-                id_pension = model.id_pension
+                id_pension = model.id_pension,
+                id_usuario = model.id_usuario,
+                fechaIngreso = model.fechaIngreso,
+                fechaAdopcion = model.fechaAdopcion,
+                historia = model.historia,
+                seguimiento = model.seguimiento
             };
 
             var json = JsonSerializer.Serialize(payload);
@@ -222,7 +242,7 @@ namespace SantaRamona.Backoffice.Controllers
             if (model is null) return NotFound();
 
             await CargarDiccionariosBasicos();
-            return PartialView("DetalleAnimal", model); // nombre del archivo parcial
+            return PartialView("DetalleAnimal", model);
         }
 
         // ===================== HELPERS =====================
@@ -274,7 +294,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             items.AddRange(list.Select(x => new SelectListItem
             {
-                Value = keySel(x).ToString(), // 👈 asegura que el VALUE sea numérico
+                Value = keySel(x).ToString(),
                 Text = textSel(x),
                 Selected = selected.HasValue && keySel(x) == selected.Value
             }));

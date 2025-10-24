@@ -9,7 +9,10 @@
     var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
 
     string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
-    string EdadTxt(int m) => m < 12 ? $"{m} {(m == 1 ? "mes" : "meses")}" : $"{m / 12} {((m / 12) == 1 ? "año" : "años")}";
+    string EdadTxt(int valor, string unidad) =>
+        unidad == "M"
+            ? $"{valor} {(valor == 1 ? "mes" : "meses")}"
+            : $"{valor} {(valor == 1 ? "año" : "años")}";
 }
 
 <div class="container mt-4">
@@ -62,7 +65,7 @@
                             <tr>
                                 <td>@item.id_animal</td>
                                 <td>@item.nombre</td>
-                                <td>@item.edad @((item.edad == 1) ? "año" : "años")</td>
+                                <td>@EdadTxt(item.edadValor, item.edadUnidad)</td>
                                 <td>@Txt(especies, item.id_especie)</td>
                                 <td>@Txt(razas, item.id_raza)</td>
                                 <td>@Txt(tamanos, item.id_tamano)</td>
