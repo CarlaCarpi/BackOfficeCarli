@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\santa-ramona-BackOffice.props" />
-</Project>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.ConstrainedExecution;
+using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -48,7 +49,7 @@ namespace SantaRamona.Backoffice.Controllers
             return View(animals);
         }
 
-        // ===================== CREAR =====================
+        /// ===================== CREAR =====================
         [HttpGet]
         public async Task<IActionResult> Crear()
         {
@@ -59,10 +60,12 @@ namespace SantaRamona.Backoffice.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear([FromForm] Animal model)
         {
+            // 🔒 Evito que ModelState me “pise” el hidden si hubo un post previo
+            ModelState.Remove(nameof(Animal.id_usuario));
             if (model.id_usuario <= 0)
                 model.id_usuario = 1; // por ahora fijo
 
-            // Validaciones mínimas
+            // ✅ Validaciones mínimas (dejamos las tuyas)
             if (string.IsNullOrWhiteSpace(model.nombre))
                 ModelState.AddModelError(nameof(Animal.nombre), "El nombre es obligatorio.");
             if (model.id_especie <= 0) ModelState.AddModelError(nameof(Animal.id_especie), "Seleccione una especie válida.");
@@ -81,7 +84,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             var client = _http.CreateClient("Api");
 
-            // ✅ Payload explícito para asegurar que se mande id_estado
+            // 👇 Enviamos las CLAVES que la API valida (id_estado, no id_estadoAnimal)
             var payload = new
             {
                 id_animal = model.id_animal,
@@ -90,7 +93,7 @@ namespace SantaRamona.Backoffice.Controllers
                 id_especie = model.id_especie,
                 id_raza = model.id_raza,
                 id_tamano = model.id_tamano,
-                id_estado = model.id_estadoAnimal, // 👈 la clave que espera la API
+                id_estadoAnimal = model.id_estadoAnimal, // 🔑 clave que espera la API
                 historia = model.historia,
                 id_usuario = model.id_usuario,
                 id_persona = model.id_persona,
@@ -100,10 +103,17 @@ namespace SantaRamona.Backoffice.Controllers
             var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+            // (Opcional pero útil) Log para ver exactamente qué mandamos
+            Console.WriteLine("JSON hacia API /api/Animal -> " + json);
+
             var resp = await client.PostAsync("/api/Animal", content);
+
+            // (Opcional) Log de respuesta de la API
+            var body = await resp.Content.ReadAsStringAsync();
+            Console.WriteLine($"API /api/Animal -> {(int)resp.StatusCode} {resp.ReasonPhrase} | BODY: {body}");
+
             if (!resp.IsSuccessStatusCode)
             {
-                var body = await resp.Content.ReadAsStringAsync();
                 ViewBag.ApiError = $"POST /api/Animal -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
                 await CargarSelects(model.id_especie, model.id_raza, model.id_tamano, model.id_estadoAnimal);
                 return View(model);
@@ -174,7 +184,7 @@ namespace SantaRamona.Backoffice.Controllers
                 id_especie = model.id_especie,
                 id_raza = model.id_raza,
                 id_tamano = model.id_tamano,
-                id_estado = model.id_estadoAnimal,
+                id_estadoAnimal = model.id_estadoAnimal,
                 historia = model.historia,
                 id_usuario = model.id_usuario,
                 id_persona = model.id_persona,
@@ -212,7 +222,7 @@ namespace SantaRamona.Backoffice.Controllers
             if (model is null) return NotFound();
 
             await CargarDiccionariosBasicos();
-            return PartialView("_DetalleAnimal", model); // nombre del archivo parcial
+            return PartialView("DetalleAnimal", model); // nombre del archivo parcial
         }
 
         // ===================== HELPERS =====================

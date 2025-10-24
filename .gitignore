@@ -1,0 +1,4 @@
+# Ignorar cache de VS y builds
+.vs/
+bin/
+obj/

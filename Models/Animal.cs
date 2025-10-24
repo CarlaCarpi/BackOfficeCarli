@@ -24,7 +24,7 @@ namespace SantaRamona.Backoffice.Models
         public int id_raza { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione un estado válido.")]
-        [JsonPropertyName("id_estado")]
+        
         public int id_estadoAnimal { get; set; }
 
         public int? id_persona { get; set; }    // opcional
