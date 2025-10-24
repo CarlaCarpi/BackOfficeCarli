@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Santa Ramona · Refugio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Gluten:slnt,wght@1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+   
+    <!--css externo-->
+    <link href="~/css/StyleSheet.css" rel="stylesheet" />
+</head>
+<body id="top">
+    <!-- Header -->
+    <header class="site-header">
+        <div class="inner">
+            <div class="brand" aria-label="Santa Ramona">
+                <img src="images/santaramona.png" alt="Logo Santa Ramona">
+                <span>Santa Ramona</span>
+            </div>
+            <nav aria-label="Principal">
+                <ul class="nav">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="/Home/Adopcion">Adoptar</a></li>
+                    <li><a href="/Home/Voluntariado">Voluntariado</a></li>
+                   @*  <li><a href="#como-ayudar">Cómo ayudar</a></li>
+                    <li><a href="#faqs">FAQs</a></li> *@
+                </ul>
+            </nav>
+            @* <a class="btn magenta" href="/Home/Donar">DONAR</a> *@
+            <a class="btn magenta" asp-controller="Home" asp-action="Donar">DONAR</a>
+        </div>
+    </header>
+     
+        <!-- Hero -->
+    <section class="hero" id="inicio" role="banner" aria-label="Campaña de tránsitos">
+        <div class="media" aria-hidden="true">
+            <img src="images/gatoperro.jpg" alt="Perro de fondo" />
+        </div>
+        <div class="content">
+            <h1 class="kicker">Campaña de adopciones</h1>
+            <p class="sub">Brindale vida y esperanza a un animal postulándote para tránsito.</p>
+            <a class="btn ghost" asp-controller="Home" asp-action="Adopcion">IR A ADOPCIONES</a>
+        </div>
+    </section>
+
+    <section id="adoptar" class="adopcion">
+        <div class="section-inner">
+            <div class="section-title">
+                <h2>Patitas en adopción</h2>
+                <span aria-hidden="true">🐾</span>
+            </div>
+
+            <div class="scroller-wrap">
+                <!-- Botón IZQUIERDA -->
+                <button class="arrow left" aria-label="Desplazar a la izquierda" data-arrow="left" data-target="adopcion">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                </button>
+
+                <!-- Contenedor de tarjetas (solo tarjetas dentro) -->
+                <div class="scroller" id="scroller-adopcion" role="list">
+                    <!-- 🐶 Luna -->
+                    <a asp-controller="Adopcion" asp-action="InfoAdopcion" asp-route-id="1" class="card pet-card" role="listitem">
+                        <img src="/images/adoptados/Labrador.luna.jpg" alt="Luna, perra labrador" loading="lazy">
+                        <div class="pet-body">
+                            <div class="pet-name">Luna</div>
+                            <div class="pet-meta"> </div>
+                        </div>
+                    </a>
+
+                    <!-- Repite las demás tarjetas (Max, Onix, Toby, etc.) -->
+                    <a asp-controller="Adopcion" asp-action="InfoAdopcion" asp-route-id="2" class="card pet-card" role="listitem">
+                        <img src="/images/adoptados/Beagle.max.jpg" alt="Max, perro beagle" loading="lazy">
+                        <div class="pet-body"><div class="pet-name">Max</div><div class="pet-meta"></div></div>
+                    </a>
+
+                    <!-- ... tarjetas 3 a 10 ... -->
+                    <a asp-controller="Adopcion" asp-action="InfoAdopcion" asp-route-id="3" class="card pet-card" role="listitem">
+                        <img src="/images/adoptados/Caniche.onix.jpg" alt="Onix" loading="lazy">
+                        <div class="pet-body"><div class="pet-name">Onix</div><div class="pet-meta"></div></div>
+                    </a>
+
+                    <!-- Agrega aquí las tarjetas 4..10 tal como tenías -->
+                    <!-- ... -->
+
+                </div>
+
+                <!-- Botón DERECHA -->
+                <button class="arrow right" aria-label="Desplazar a la derecha" data-arrow="right" data-target="adopcion">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Patitas en tránsito -->
+    <section id="transitos" class="transito">
+        <div class="section-inner">
+            <div class="section-title">
+                <!--<h2>Patitas en tránsito</h2>-->
+                <span aria-hidden="true">🐾</span>
+            </div>
+            <div class="scroller-wrap">
+                <button class="arrow left" aria-label="Desplazar a la izquierda" data-arrow="left" data-target="transito">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+                </button>
+                <div class="scroller" id="scroller-transito" data-name="transito">
+                    <!-- Card 1 -->
+                    <article class="card pet-card" aria-label="Rufina en tránsito">
+                        <img src="~/images/nina.jpg" alt="Rufina, perra canela" loading="lazy">
+                        <div class="pet-body">
+                            <div class="pet-name">Nina</div>
+                            <div class="pet-meta">Aproximadamente 4 meses, tamaño mediano</div>
+                        </div>                        
+                    </article>
+                    <!-- Card 2 -->
+                    <article class="card pet-card" aria-label="Juanito para adopción">
+                        <img src="images/sasha.jpg" alt="Juanito, cachorro salchicha" loading="lazy">
+                        <div class="pet-body">
+                            <div class="pet-name">Sasha</div>
+                            <div class="pet-meta">Aproximadamente 4 meses, tamaño chico</div>
+                        </div>                       
+                    </article>
+                    <!-- Card 3 -->
+                    <article class="card pet-card" aria-label="Mafalda en tránsito">
+                        <img src="~/images/savannah.jpg" alt="Mafalda, perra blanca y negra" loading="lazy">
+                        <div class="pet-body">
+                            <div class="pet-name">Savannah</div>
+                            <div class="pet-meta">Aproximadamente 2 años, tamaño mediano</div>
+                        </div>                        
+                    </article>
+                </div>
+                <button class="arrow right" aria-label="Desplazar a la derecha" data-arrow="right" data-target="transito">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Novedades -->
+    <section aria-labelledby="news-title">
+        <div class="section-inner">
+            <div class="news">
+                <div class="news-grid">
+                    <div>
+                        <h2 id="news-title">Novedades</h2>
+                        <h3>Nueva campaña de castración</h3>
+                        <p>La castración es un acto de amor y responsabilidad que ayuda a mejorar la calidad de vida de nuestros animales y a reducir la sobrepoblación. A través de esta campaña buscamos concientizar y brindar la posibilidad de acceder a turnos accesibles para que más perros y gatos puedan ser esterilizados. Castrar previene enfermedades, evita camadas no deseadas y contribuye a una comunidad más sana y solidaria con los animales.</p>
+                        <a class="btn primary" href="#">LEER ARTÍCULO COMPLETO</a>
+                    </div>
+                    <div>
+                        <img src="images/ramonareal.jpg" alt="Perro sonriente" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiénes somos -->
+    <section id="nosotros" aria-labelledby="about-title">
+        <div class="section-inner about">
+            <div>
+                <h2 id="about-title">¿Quiénes somos?</h2>
+                <p>Somos Santa Ramona, una protectora sin refugio físico. Trabajamos con hogares de tránsito y una red de voluntariado para rescatar, recuperar y reubicar animales. Transparencia, castración y educación son nuestras bases.</p>
+                <p>Si querés sumarte como voluntario/a, ofrecer tránsito o hacer una donación, ¡te necesitamos! Cada pequeño aporte suma para cambiar una vida.</p>
+            </div>
+            <div class="logo-badge" aria-hidden="true">
+                <img src="images/santaramona.png" alt="" />
+            </div>
+        </div>
+    </section>
+
+    <!--botón para subir-->
+    <a class="btn top" href="#top">↑</a>
+    
+
+    <!-- CTA Final -->
+    <section class="cta" aria-labelledby="cta-title">
+        <div class="section-inner" style="text-align:center">
+            <h2 id="cta-title">¿Querés ser parte de Santa Ramona?</h2>
+            <p>Sumate como voluntario/a, casa de tránsito o colaborá con insumos.</p>
+            <a class="btn primary" href="#">¡Sumate!</a>
+        </div>
+    </section>
+   
+   
+
+    <!--Footer -->
+    <footer>
+        <small>© <span id="year"></span> Santa Ramona · Protectora de Animales</small>
+    </footer>
+
+    <script>
+        // Año dinámico
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Controles de scroll para los carouseles
+        const byName = name => document.querySelector(`#scroller-${name}`);
+        const scrollByAmount = (el, dir) => el && el.scrollBy({left: (dir === 'left' ? -1 : 1) * (el.clientWidth * .85), behavior:'smooth'});
+
+        document.querySelectorAll('[data-arrow]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-target');
+            const dir = btn.getAttribute('data-arrow');
+            scrollByAmount(byName(target), dir);
+          });
+        });
+    </script>
+</body>
+</html>

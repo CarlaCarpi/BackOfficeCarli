@@ -1,0 +1,524 @@
+﻿
+:root {
+    --bg: #F6FBFA;
+    --text: #1D2B2A;
+    --muted: #5c6b6a;
+    --teal-900: #0C6A73; /* hero overlay */
+    --teal-700: #178C94;
+    --teal: #2DB8B5; /* botones y acentos */
+    --aqua: #6DD6D1; /* tarjetas adopción */
+    --petal: #FFE6EF; /* panel novedades */
+    --magenta: #C23A79; /* acento primario / DONAR */
+    --magenta-700: #A22B63; /* tránsito */
+    --shadow: 0 10px 30px rgba(0,0,0,.12);
+    --radius: 22px;
+    --radius-lg: 28px;
+    --container: 1060px;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html, body {
+    height: 100%;
+
+    /* AGREGUE */
+    margin: 0; /* Quitamos márgenes por defecto del body */
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+    line-height: 1.55;
+    /* AGREGUE */
+    display: flex;              /* Convertimos el body en un contenedor flex */
+    flex-direction: column;     /* Organizamos los hijos (header, main, footer) en columna */
+  /* Esto permite que el footer se "empuje" hacia abajo usando flex:1 en el main */
+}
+
+
+main{
+    flex: 1;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    font-family: Nunito, Inter, system-ui;
+    line-height: 1.2;
+    margin: 0 0 .4em
+}
+
+h1 {
+    font-weight: 800
+}
+
+h2 {
+    font-weight: 800;
+    color: #A71A6C  
+}
+
+h3 {
+    font-weight: 700
+}
+
+p {
+    margin: .25rem 0 .75rem
+}
+
+a {
+    color: inherit
+}
+
+/* Header */
+.site-header {
+    /*position: sticky;*/
+    top: 0;
+    z-index: 50;
+    /*backdrop-filter: saturate(1.2) blur(6px)*/
+    background-color: white; 
+}
+
+    .site-header .inner {
+        max-width: var(--container);
+        margin: auto;
+        display: flex;
+        justify-content:space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 14px 20px;
+    }
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-family: Nunito;
+    letter-spacing: .3px
+}
+
+    .brand img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover
+    }
+
+nav {
+    margin-left: auto
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 0
+}
+
+    .nav a {
+        display: inline-block;
+        padding: 8px 10px;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight: 600;
+        color: #0b3840
+    }
+
+.btn {
+    display: inline-grid;
+    place-items: center;
+    padding: 12px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: .4px
+}
+
+    .btn.primary {
+        background: var(--teal);
+        color: white;
+        box-shadow: var(--shadow)
+    }
+
+    .btn.ghost {
+        border: 2px solid rgba(255,255,255,.9);
+        color: white
+    }
+
+    .btn.magenta {
+        background: var(--magenta);
+        color: white
+    }
+    .btn.top {
+        background: var(--magenta);
+        color: white;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,.2);
+    }
+ html {
+     scroll-behavior: smooth; /* scroll suave al hacer clic */
+ }
+
+/* Hero */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    min-height: 40vh; /* asegura que .hero tenga altura */
+}
+
+    .hero .media {
+        position: absolute;
+        inset: 0;
+        z-index: -2
+    }
+
+    .hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(.1)
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(12,106,115,.88) 0%, rgba(12,106,115,.82) 50%, rgba(12,106,115,.88) 100%);
+        z-index: -1
+    }
+
+    .hero .content {
+        max-width: var(--container);
+        margin: auto;
+        padding: 64px 20px 84px;
+        color: white
+    }
+
+.kicker {
+    font-weight: 800;
+    font-size: clamp(28px, 3vw + 10px, 44px);
+    font-family: Nunito
+}
+
+.sub {
+    opacity: .95;
+    max-width: 520px
+}
+
+/* Carousel sections */
+section {
+    padding: 34px 20px
+}
+
+.section-inner {
+    max-width: var(--container);
+    margin: auto
+}
+
+.section-title {
+    font-size: 32px;
+    font-family: Nunito;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px
+}
+
+.scroller-wrap {
+    position: relative
+}
+
+.scroller {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(250px, 1fr);
+    gap: 22px;
+    overflow: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 12px 4px 4px;
+    scroll-padding-left: 4px
+}
+
+.card {
+    scroll-snap-align: start;
+    border-radius: var(--radius-lg);
+    background: white;
+    box-shadow: var(--shadow);
+    overflow: hidden
+}
+/* Tarjeta */
+
+/* Pet cards: igual para adopción y tránsito */
+.pet-card {
+    display: grid;
+    grid-template-rows: 360px auto auto;
+    min-height: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 18px rgba(0,0,0,.1);
+    background: #fff;
+}
+
+    .pet-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* recorta la imagen para que quede pareja */
+        display: block;
+    }
+
+.pet-image {
+    flex: 1; /* ocupa el espacio disponible */
+    overflow: hidden;
+}
+
+.pet-body {
+    padding: 14px 16px 18px;
+    text-align: center;
+}
+
+.pet-name {
+    font-family: Nunito, sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.pet-meta {
+    font-size: .82rem;
+    color: #3b4a49;
+    opacity: .9;
+}
+/* Pet cards 
+        .pet-card {
+            display: grid;
+            grid-template-rows: 200px auto auto;
+            min-height: 340px
+        }
+
+            .pet-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover
+            }
+
+        .pet-body {
+            padding: 12px 16px
+        }
+
+        .pet-name {
+            font-family: Nunito;
+            font-weight: 800;
+            font-size: 20px
+        }
+
+        .pet-meta {
+            font-size: .82rem;
+            color: #3b4a49;
+            opacity: .9
+        }
+
+        .pet-cta {
+            padding: 12px 16px 18px
+                }*/
+
+/* Adoption colorway */
+.adopcion .card {
+    background: linear-gradient(180deg, var(--aqua) 0%, #BFEDEB 100%)
+}
+
+.adopcion .pet-body, .adopcion .pet-cta {
+    background: transparent
+}
+
+/* Transit colorway */
+.transito .card {
+    background: linear-gradient(180deg, #F7D0E4 0%, #FFD8EA 100%)
+}
+
+/* Scroller arrows */
+.arrow {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: white;
+    box-shadow: var(--shadow);
+    cursor: pointer
+}
+
+    .arrow svg {
+        width: 24px;
+        height: 24px
+    }
+
+    .arrow.left {
+        left: -10px
+    }
+
+    .arrow.right {
+        right: -10px
+    }
+
+/* Novedades */
+.news {
+    background: var(--petal);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 24px
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: 1.4fr .9fr;
+    gap: 20px;
+    align-items: center
+}
+
+.news h3 {
+    color: var(--teal-900)
+}
+
+.news img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 16px
+}
+
+/* Quiénes somos */
+.about {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 18px;
+    align-items: center
+}
+
+.logo-badge {
+    width: 180px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow);
+    justify-self: end
+}
+
+    .logo-badge img {
+        width: 70%;
+        height: 70%;
+        object-fit: contain
+    }
+
+/* CTA final */
+.cta {
+    background: linear-gradient(180deg, #FFF6C9 0%, #FFEAA1 100%);
+    text-align: center;
+    padding: 44px 20px;
+    margin:0;
+}
+
+
+/* Footer */
+footer {
+    color: #fff;
+    background: var(--magenta-700);
+    text-align: center;
+    padding: 24px;
+    margin-top:0;
+}
+
+    /* Responsive */
+    media (max-width: 960px) {
+    .news-grid
+
+{
+    grid-template-columns: 1fr
+}
+
+.about {
+    grid-template-columns: 1fr
+}
+
+.logo-badge {
+    justify-self: start
+}
+
+.hero .content {
+    padding: 46px 16px 70px
+}
+
+.arrow {
+    display: none
+}
+
+/*Prueba Voluntariado*/
+.voluntariados-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* separación entre bloques */
+    max-width: 1000px;
+    margin: 0 auto; /*centrar en la página */
+    padding: 20px;
+    background-color: var(--bg);
+}
+
+.voluntariado-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-color: #C23A79;
+    border-radius: 12px;
+    width: 800px;
+}
+
+    /* cuando la clase es "left": imagen izquierda */
+    .voluntariado-item.left {
+        flex-direction: row;
+        margin-left: 10px;
+        margin-right: auto;
+    }
+
+    /* cuando la clase es "right": imagen derecha */
+    .voluntariado-item.right {
+        flex-direction: row-reverse;
+        margin-left: auto;
+        margin-right: 0px;
+    }
+
+.img-voluntariado {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.texto-voluntariado {
+    flex: 1;
+    font-size: larger;
+    line-height: 1.6;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+
+
+

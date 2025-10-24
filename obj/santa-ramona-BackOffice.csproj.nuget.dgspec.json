@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Mis Proyectos\\santa-ramona-BackOffice\\santa-ramona-BackOffice.csproj": {}
+    "C:\\Users\\Atila\\Documents\\pri facu\\3º año - 2º cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\santa-ramona-BackOffice.csproj": {}
   },
   "projects": {
-    "C:\\Mis Proyectos\\santa-ramona-BackOffice\\santa-ramona-BackOffice.csproj": {
+    "C:\\Users\\Atila\\Documents\\pri facu\\3º año - 2º cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\santa-ramona-BackOffice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\santa-ramona-BackOffice.csproj",
+        "projectUniqueName": "C:\\Users\\Atila\\Documents\\pri facu\\3º año - 2º cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\santa-ramona-BackOffice.csproj",
         "projectName": "santa-ramona-BackOffice",
-        "projectPath": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\santa-ramona-BackOffice.csproj",
-        "packagesPath": "C:\\Users\\carla\\.nuget\\packages\\",
-        "outputPath": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\obj\\",
+        "projectPath": "C:\\Users\\Atila\\Documents\\pri facu\\3º año - 2º cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\santa-ramona-BackOffice.csproj",
+        "packagesPath": "C:\\Users\\Atila\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Atila\\Documents\\pri facu\\3º año - 2º cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\carla\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Atila\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -74,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

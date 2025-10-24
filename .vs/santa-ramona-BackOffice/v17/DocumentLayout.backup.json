@@ -1,81 +1,69 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\",
+  "WorkspaceRootPath": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\controllers\\animalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\animalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\controllers\\homepubliccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\homepubliccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\views\\homepublic\\infoadopcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\homepublic\\infoadopcion.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\controllers\\tamanocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\tamanocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\controllers\\razacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\razacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\controllers\\estadoanimalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\estadoanimalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\controllers\\especiecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\especiecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\models\\tamano.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\tamano.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\views\\animal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\animal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\views\\shared\\_animaltopnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\shared\\_animaltopnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\models\\animal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\models\\animal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\animal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\wwwroot\\css\\infoadopcion.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:wwwroot\\css\\infoadopcion.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\controllers\\estadoanimalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\estadoanimalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\controllers\\tamanocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\tamanocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\controllers\\razacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\razacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\views\\shared\\_animaltopnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\shared\\_animaltopnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\models\\estado_animal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\models\\estado_animal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\estado_animal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\views\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\views\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\models\\raza.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\models\\raza.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\raza.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\santa-ramona-backoffice\\models\\especie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\atila\\documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\santa ramona- union\\backofficecarli\\models\\especie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\especie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -86,149 +74,135 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "InfoAdopcion.cshtml",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Views\\HomePublic\\InfoAdopcion.cshtml",
+              "RelativeDocumentMoniker": "Views\\HomePublic\\InfoAdopcion.cshtml",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Views\\HomePublic\\InfoAdopcion.cshtml",
+              "RelativeToolTip": "Views\\HomePublic\\InfoAdopcion.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-24T18:25:29.969Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "infoAdopcion.css",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\wwwroot\\css\\infoAdopcion.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\infoAdopcion.css",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\wwwroot\\css\\infoAdopcion.css",
+              "RelativeToolTip": "wwwroot\\css\\infoAdopcion.css",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-10-24T18:24:38.337Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "RazaController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\RazaController.cs",
-              "RelativeDocumentMoniker": "Controllers\\RazaController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\RazaController.cs",
-              "RelativeToolTip": "Controllers\\RazaController.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAAAPEAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T22:30:41.766Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-20T23:26:14.886Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "appsettings.Development.json",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\appsettings.Development.json",
-              "RelativeToolTip": "appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-22T22:12:58.165Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "EspecieController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\EspecieController.cs",
-              "RelativeDocumentMoniker": "Controllers\\EspecieController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\EspecieController.cs",
-              "RelativeToolTip": "Controllers\\EspecieController.cs",
-              "ViewState": "AgIAAN8AAAAAAAAAAAAcwNUAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T22:29:58.726Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AnimalController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\AnimalController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AnimalController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\AnimalController.cs*",
-              "RelativeToolTip": "Controllers\\AnimalController.cs*",
-              "ViewState": "AgIAAGEBAAAAAAAAAAAmwEkBAAAwAAAAAAAAAA==",
+              "Title": "HomePublicController.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\HomePublicController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomePublicController.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\HomePublicController.cs*",
+              "RelativeToolTip": "Controllers\\HomePublicController.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T22:09:04.168Z",
+              "WhenOpened": "2025-10-24T17:57:29.116Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Tamano.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Tamano.cs",
-              "RelativeDocumentMoniker": "Models\\Tamano.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Tamano.cs",
-              "RelativeToolTip": "Models\\Tamano.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T22:32:50.204Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T23:03:02.105Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\HomeController.cs",
               "RelativeToolTip": "Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-20T22:34:35.807Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 5,
               "Title": "EstadoAnimalController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\EstadoAnimalController.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\EstadoAnimalController.cs",
               "RelativeDocumentMoniker": "Controllers\\EstadoAnimalController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\EstadoAnimalController.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\EstadoAnimalController.cs",
               "RelativeToolTip": "Controllers\\EstadoAnimalController.cs",
-              "ViewState": "AgIAANMAAAAAAAAAAAAowMoAAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMoAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T22:30:19.73Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-20T22:30:19.73Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "TamanoController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\TamanoController.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\TamanoController.cs",
               "RelativeDocumentMoniker": "Controllers\\TamanoController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Controllers\\TamanoController.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\TamanoController.cs",
               "RelativeToolTip": "Controllers\\TamanoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAO4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T22:30:56.072Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-20T22:30:56.072Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 7,
+              "Title": "RazaController.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\RazaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RazaController.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Controllers\\RazaController.cs",
+              "RelativeToolTip": "Controllers\\RazaController.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAAAPEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-20T22:30:41.766Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\css\\site.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-10-23T18:24:06.921Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Views\\Home\\Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "Views\\Home\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
@@ -236,23 +210,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Views\\Animal\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Animal\\Index.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Views\\Animal\\Index.cshtml",
-              "RelativeToolTip": "Views\\Animal\\Index.cshtml",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAAJoAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-22T22:27:36.41Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 12,
               "Title": "Estado_Animal.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Estado_Animal.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Models\\Estado_Animal.cs",
               "RelativeDocumentMoniker": "Models\\Estado_Animal.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Estado_Animal.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Models\\Estado_Animal.cs",
               "RelativeToolTip": "Models\\Estado_Animal.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -260,23 +222,24 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 2,
               "Title": "Animal.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Animal.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Models\\Animal.cs",
               "RelativeDocumentMoniker": "Models\\Animal.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Animal.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Models\\Animal.cs",
               "RelativeToolTip": "Models\\Animal.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAgwAMAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T22:10:06.783Z"
+              "WhenOpened": "2025-10-20T22:10:06.783Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 10,
               "Title": "_AnimalTopNav.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Views\\Shared\\_AnimalTopNav.cshtml",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Views\\Shared\\_AnimalTopNav.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_AnimalTopNav.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Views\\Shared\\_AnimalTopNav.cshtml",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Views\\Shared\\_AnimalTopNav.cshtml",
               "RelativeToolTip": "Views\\Shared\\_AnimalTopNav.cshtml",
               "ViewState": "AgIAACIAAAAAAAAAAAAwwEEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
@@ -284,11 +247,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 11,
               "Title": "DbContext.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Data\\DbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Data\\DbContext.cs",
               "RelativeDocumentMoniker": "Data\\DbContext.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Data\\DbContext.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Data\\DbContext.cs",
               "RelativeToolTip": "Data\\DbContext.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAAAQwA0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -296,11 +259,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 13,
               "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Views\\_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Views\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\_Layout.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Views\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Views\\_Layout.cshtml",
               "RelativeToolTip": "Views\\_Layout.cshtml",
               "ViewState": "AgIAABIAAAAAAAAAAAAwwDEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
@@ -308,11 +271,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 14,
               "Title": "Raza.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Raza.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Models\\Raza.cs",
               "RelativeDocumentMoniker": "Models\\Raza.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Raza.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Models\\Raza.cs",
               "RelativeToolTip": "Models\\Raza.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -320,11 +283,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 15,
               "Title": "Especie.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Especie.cs",
+              "DocumentMoniker": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Models\\Especie.cs",
               "RelativeDocumentMoniker": "Models\\Especie.cs",
-              "ToolTip": "C:\\Mis Proyectos\\santa-ramona-BackOffice\\Models\\Especie.cs",
+              "ToolTip": "C:\\Users\\Atila\\Documents\\pri facu\\3\u00BA a\u00F1o - 2\u00BA cuatri\\programacion 6\\Santa Ramona- Union\\BackOfficeCarli\\Models\\Especie.cs",
               "RelativeToolTip": "Models\\Especie.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

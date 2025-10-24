@@ -1,0 +1,168 @@
+﻿/* === CONTENEDOR DE TARJETAS === */
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    justify-items: center;
+    align-items: stretch;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* === TARJETAS DE MASCOTAS === */
+.pet-card {
+    aspect-ratio: 1 / 1.2;
+    width: 100%;
+    max-width: 320px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+    .pet-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* === IMÁGENES === */
+    .pet-card img {
+        width: 100%;
+        height: 75%;
+        object-fit: cover;
+        border-bottom: 3px solid #f3f3f3;
+    }
+
+/* === INFORMACIÓN === */
+.pet-info {
+    padding: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: #333;
+    background-color: #fff;
+}
+
+/* === TÍTULO Y PÁRRAFO === */
+h1 {
+    text-align: center;
+    color: #C23A79;
+    font-size: 2rem;
+    margin-top: 10px;
+    font-weight: 800;
+}
+
+p {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* === PAGINACIÓN === */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 30px 0 50px;
+    flex-wrap: nowrap;
+    text-align: center;
+}
+
+    .pagination button {
+        background-color: #2DB8B5;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        white-space: nowrap;
+    }
+
+        .pagination button:hover {
+            background-color: #249d9a;
+            transform: translateY(-2px);
+        }
+
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+/* === RESPONSIVE === */
+
+/* 📱 Celulares medianos (≤665px): 2 columnas */
+@media (max-width: 665px) {
+    .pets-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .pet-card {
+        max-width: 100%;
+        aspect-ratio: 1 / 1.25;
+    }
+
+    .pet-info {
+        font-size: 18px;
+        padding: 8px;
+    }
+
+    .pagination button {
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+}
+
+/* 📱 Pantallas chicas (≤480px) */
+@media (max-width: 480px) {
+    .pagination {
+        gap: 8px;
+        transform: scale(0.92);
+    }
+
+        .pagination button {
+            padding: 7px 14px;
+            font-size: 13px;
+        }
+}
+
+/* 📱 Muy chicas (≤400px) */
+@media (max-width: 400px) {
+    .pagination {
+        gap: 6px;
+        transform: scale(0.85);
+    }
+
+        .pagination button {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+}
+
+/* 📱 Mínimo absoluto (≤340px) → sigue en una línea */
+@media (max-width: 340px) {
+    .pagination {
+        gap: 4px;
+        transform: scale(0.75);
+    }
+
+        .pagination button {
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+}

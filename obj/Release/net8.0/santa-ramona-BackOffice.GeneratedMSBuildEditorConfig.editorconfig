@@ -9,53 +9,53 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = santa_ramona_BackOffice
 build_property.RootNamespace = santa_ramona_BackOffice
-build_property.ProjectDir = C:\Mis Proyectos\santa-ramona-BackOffice\
+build_property.ProjectDir = C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Mis Proyectos\santa-ramona-BackOffice
+build_property.MSBuildProjectDirectory = C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Animal/Index.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/Animal/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5pbWFsXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Home/Index.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Home/Privacy.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Shared/Error.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Shared/_AnimalTopNav.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/Shared/_AnimalTopNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BbmltYWxUb3BOYXYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/_Layout.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/_ViewImports.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/_ViewStart.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Mis Proyectos/santa-ramona-BackOffice/Views/Shared/_Layout.cshtml]
+[C:/Users/Atila/Documents/pri facu/3º año - 2º cuatri/programacion 6/Santa Ramona- Union/BackOfficeCarli/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-1gbc541wl7

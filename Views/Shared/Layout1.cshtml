@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Santa Ramona · Refugio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS propio -->
+    <link href="~/css/StyleSheet.css" rel="stylesheet" asp-append-version="true" />
+
+    <!-- Aquí: permite que las vistas inserten su CSS -->
+    @RenderSection("Styles", required: false)
+</head>
+<body id="top ">
+    <!-- Header -->
+    <header class="site-header">
+        <div class="inner">
+            <div class="brand" aria-label="Santa Ramona">
+                <img src="~/images/santaramona.png" alt="Logo Santa Ramona">
+                <span>Santa Ramona</span>
+            </div>
+            <nav aria-label="Principal">
+                <ul class="nav">
+                    <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+                    <li><a asp-controller="Home" asp-action="Index">Nosotros</a></li>
+                    <li><a asp-controller="Home" asp-action="Adopcion">Adoptar</a></li>
+                    <li><a asp-controller="Home" asp-action="Voluntariado">Voluntariado</a></li>
+                </ul>
+            </nav>
+            <a class="btn magenta" asp-controller="Home" asp-action="Donar">DONAR</a>
+        </div>
+    </header>
+
+
+   
+
+    <!-- Contenido dinámico -->
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    @* contenido extra fuera del RenderBody *@
+    @RenderSection("ExtraContent", required: false) 
+
+    <!-- Footer -->
+    <footer >
+        <small>© <span id="year"></span> Santa Ramona · Protectora de Animales</small>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Año dinámico
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

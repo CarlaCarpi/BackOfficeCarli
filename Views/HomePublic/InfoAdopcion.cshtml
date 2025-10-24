@@ -1,0 +1,173 @@
+﻿@model FrontSantaRamona.AdopcionModels.Adopcion
+
+@{
+    ViewData["Title"] = "Detalle de Mascota";
+    Layout = "~/Views/Shared/Layout1.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/infoAdopcion.css" asp-append-version="true" />
+    }
+
+@if (Model != null)
+{
+    <h1 style="text-align:center; margin-top:30px;">Detalle de @Model.Nombre</h1>
+
+   
+
+
+    <div class="pet-detail-container">
+        <!-- Foto a la izquierda -->
+        <div class="pet-detail-image">
+            <img src="@Model.Imagen" alt="@Model.Nombre" />
+        </div>
+
+        <!-- Info a la derecha -->
+        <div class="pet-detail-info">
+            <p><strong>Nombre:</strong> @Model.Nombre</p>
+            <p><strong>Edad:</strong> @Model.Edad años</p>
+
+            <p>
+                <strong>Raza:</strong>
+                @(ViewBag.Razas != null && ((Dictionary<int, string>)ViewBag.Razas).ContainsKey(Model.Id_Raza)
+                    ? ((Dictionary<int, string>)ViewBag.Razas)[Model.Id_Raza]
+                    : "Desconocida")
+            </p>
+
+            <p>
+                <strong>Tamaño:</strong>
+                @(ViewBag.Tamanos != null && ((Dictionary<int, string>)ViewBag.Tamanos).ContainsKey(Model.Id_Tamano)
+                    ? ((Dictionary<int, string>)ViewBag.Tamanos)[Model.Id_Tamano]
+                    : "Desconocido")
+            </p>
+
+            <p><strong>Historia:</strong> @Model.Historia</p>
+
+            <div class="buttons">
+                <a href="/FormularioAdopcion/@Model.Id_Animal" class="btn primary">Adoptar</a>
+            </div>
+        </div>
+    </div>
+    <!-- Botón Volver debajo de la tarjeta -->
+    <div class="back-button-container">
+        <button type="button" class="btn primary" onclick="history.back()">Volver</button>
+    </div>
+}
+
+else
+{
+    <p>Mascota no encontrada.</p>
+}
+
+
+@* 
+
+<style>
+
+    h1 {
+        text-align: center;
+        color: #C23A79;
+        font-size: 2rem;
+        margin-bottom: 20px;
+        font-weight: 800;
+    }
+    /* 🔹 Contenedor principal ocupa casi toda la pantalla */
+    .pet-detail-container {
+        display: flex;
+        max-width: 1400px;
+        height: 80vh; /* ocupa el 80% de la altura de la ventana */
+        margin: 40px auto;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        align-items: stretch;
+    }
+
+    /* 🔹 Imagen ocupa la mitad izquierda y se adapta al alto */
+    .pet-detail-image {
+        flex: 1;
+        overflow: hidden;
+    }
+
+        .pet-detail-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+    /* 🔹 Info a la derecha con tipografía más grande */
+    .pet-detail-info {
+        flex: 1;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #f8fafc;
+    }
+
+        .pet-detail-info p {
+            font-size: 20px;
+            line-height: 1.6;
+            font-family: 'Nunito', sans-serif;
+            color: #222;
+            margin-bottom: 15px;
+        }
+
+        .pet-detail-info strong {
+            color: #2DB8B5;
+        }
+
+    /* 🔹 Botones */
+    .buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .btn.primary {
+        background: #2DB8B5;
+        color: white;
+        font-weight: 700;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 999px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.25s ease, transform 0.2s ease;
+    }
+
+
+
+    /* 🔹 Responsivo */
+    @@media (max-width: 900px) {
+        .pet-detail-container
+
+    {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .pet-detail-image {
+        height: 350px;
+    }
+
+    .pet-detail-info {
+        padding: 25px;
+    }
+
+        .pet-detail-info p {
+            font-size: 18px;
+        }
+
+    .buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    }
+</style>
+
+/* ... Fin info adopcion ... */
+*@ 

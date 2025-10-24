@@ -1,0 +1,525 @@
+﻿@{
+	ViewData["Title"] = "Donaciones";
+    Layout = "~/Views/Shared/Layout1.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/donar.css" asp-append-version="true" />
+}
+<body>
+
+    <h1>Donaciones</h1>
+
+    <div class="donar-row">
+
+        <div class="box-donar" aria-labelledby="dinero-title">
+            <h2 id="dinero-title">Donar Dinero</h2>
+            <!--
+            <details>
+                <summary>Mercado Pago</summary>
+                <ul>
+                    <li><a href="https://linktr.ee/SantaRamona" target="_blank" rel="noopener" class="link">Link Mercado Pago</a></li>
+                    <li>Email: <a href="mailto:santaramonaprotectora@gmail.com" class="link">santaramonaprotectora@gmail.com</a></li>
+                </ul>
+            </details>
+
+            <details>
+                <summary>Banco</summary>
+                <ul>
+                    <li>Cuenta: 000001110201685844</li>
+                    <li>Titular: Sierra María José</li>
+                    <li>CBU: 0290000110000016858443</li>
+                    <li>CUIT/CUIL: 20-28496562-1</li>
+                    <li>Alias: <strong>SANTA.RAMONA</strong></li>
+                </ul>
+            </details>
+
+            -->
+
+            <!--  Datos del Back -->
+            <details>
+                <summary>Mercado Pago</summary>
+                <ul id="mercadoPagoList">
+                    <!-- Se llena desde el "backend simulado" -->
+                </ul>
+            </details>
+
+            <details>
+                <summary>Banco Ciudad</summary>
+                <ul id="bancoList">
+                    <!-- Se llena desde el "backend simulado" -->
+                </ul>
+            </details>
+            <!--  /Datos del Back -->
+
+        </div>
+
+        <div class="box-donar" aria-labelledby="insumos-title">
+            <h2 id="insumos-title">Donar Insumos</h2>
+
+            <details>
+                <summary>¿Qué insumos donar?</summary>
+                <ul>
+                    <li>Camitas</li>
+                    <li>Alimento</li>
+                </ul>
+            </details>
+
+            <details>
+                <summary>Medicación</summary>
+                <ul>
+                    <li>Antiparasitarios</li>
+                    <li>Antiinflamatorios</li>
+                </ul>
+            </details>
+            <!--
+            <details>
+                            <summary>¿Donde?</summary>
+                            <ul>
+                                <li>Flores</li>
+                                <li>Caballito</li>
+                                <a href="https://www.instagram.com/santaramonaprotectora?igsh=MTVrbWN1Z2Z0OWp5ag==" target="_blank" rel="noopener" class="link">
+                                    Para más información contactanos vía Instagram
+                                </a>
+
+                            </ul>
+                        </details>
+            -->
+
+
+            <!-- MAPA -->
+            <details>
+                <summary>¿Donde?</summary>
+                <ul>
+                    <!-- contenedor del mapa -->
+                    <li id="map-donaciones" style="height:320px;border-radius:8px;margin:10px 0;"></li>
+
+                    <!-- nota / contacto alternativo -->
+                    <li style="margin-top:8px;">
+                        <a href="https://www.instagram.com/santaramonaprotectora?igsh=MTVrbWN1Z2Z0OWp5ag==" target="_blank" rel="noopener" class="link">
+                            Para más información contactanos vía Instagram
+                        </a>
+                    </li>
+                </ul>
+
+            </details>
+            <!-- fin MAPA -->
+        </div>
+
+   </div>
+    <!-- MAPA -->
+    <!-- --- script/styles necesarios --- -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <!-- fin MAPA -->
+</body>
+
+
+
+<!--
+
+
+    <style>
+        :root {
+            --accent: #C23A79;
+            --teal: #178C94;
+            --bg: #f3f8f7;
+            --card: #ffffff;
+        }
+
+        /* Reset simple */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(180deg, #fbfefc 0%, var(--bg) 100%); /*DEGRADE DE FONDO*/
+            color: #1f2933;
+        
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+
+
+        /* Layout principal */
+        .donar-row {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+            margin-top: 40px;
+            align-items: flex-start;
+        
+        }
+
+        /* TARJETA */
+        .box-donar {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+            max-width: 520px;
+            background: var(--card);
+            border-radius: 14px;
+            padding: 20px 10px;
+            box-shadow: 0 0 40px 0 rgba(0,0,0,.2);
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: transform .18s ease, box-shadow .18s ease;
+            margin:10px;
+        
+        }
+
+            .box-donar:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 22px 40px rgba(16,24,32,0.12);
+            }
+
+            .box-donar h2 {
+                color: var(--accent);
+                text-align: center;
+                font-size: 1.2rem;
+                margin-top: 4px;
+            }
+
+        /* DETAILS estilizado: aspecto claramente visible */
+        details {
+            background: linear-gradient(90deg, rgba(23,140,148,0.12), rgba(194,58,121,0.08));
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        summary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px 14px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #043c3d;
+        }
+
+            summary::before {
+                content: "+";
+                display: inline-block;
+                min-width: 20px;
+                text-align: center;
+                color: var(--teal);
+                font-size: 1rem;
+                transition: transform .15s ease;
+            }
+
+        details[open] summary::before {
+            content: "-";
+        }
+
+        /* contenido dentro de details */
+        details > ul {
+            padding: 10px 18px 14px 22px;
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.03);
+        }
+
+        details li {
+            list-style: none;
+            position: relative;
+            padding-left: 18px;
+            margin: 8px 0;
+            color: #385055;
+        }
+
+            details li::before {
+                content: "•";
+                position: absolute;
+                left: 0;
+                top: 0;
+                color: var(--teal);
+                font-weight: 700;
+            }
+
+        /* Enlaces  */
+        .link {
+            color: var(--teal);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+            .link:hover {
+                text-decoration: underline;
+            }
+ 
+        .donar-row {
+            gap: 12px;
+        }
+
+        .box-donar {
+            padding: 14px;
+        }
+
+       
+
+
+    </style>
+    -->
+
+<!-- fin donar -->
+
+
+<!-- MAPA 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const mapDiv = document.getElementById('map-donaciones');
+      if (!mapDiv) return; // si no existe, no hacemos nada
+
+      const details = mapDiv.closest('details'); // el <details> que contiene el mapa
+      let mapInitialized = false;
+      let map = null;
+      let markersCluster = null;
+
+      // Datos de prueba (mock) — CORREGIDOS (sin errores de sintaxis)
+      const puntos = [
+        {
+          id: 1,
+          name: "Pto. Acopio - Centro",
+          lat: -34.603722,
+          lng: -58.381592,
+          address: "Calle Falsa 123",
+          
+        },
+        {
+          id: 2,
+          name: "Pto. Acopio - Norte",
+          lat: -34.609722,
+          lng: -58.385000,
+          address: "Av. Siempre Viva 742",
+          
+        },
+        {
+          id: 3,
+          name: "Pto. Acopio - Flores",
+          lat: -34.607000,
+          lng: -58.431000,
+          address: "Av. Ejemplo 500",
+         
+        }
+      ];
+
+      function escapeHtml(s='') {
+        return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      }
+
+      function initMap() {
+        if (mapInitialized) return;
+        // asegurarnos que Leaflet esté cargado
+        if (typeof L === 'undefined') {
+          console.error('Leaflet no está cargado. Verificá que <script src="...leaflet.js"> esté incluido.');
+          return;
+        }
+
+        mapInitialized = true;
+
+        const centro = puntos.length ? [puntos[0].lat, puntos[0].lng] : [-34.603722, -58.381592];
+        map = L.map('map-donaciones').setView(centro, 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        markersCluster = L.markerClusterGroup();
+
+        puntos.forEach(p => {
+          const marker = L.marker([p.lat, p.lng]);
+          const content = `
+            <div style="min-width:200px">
+              <div style="font-weight:700">${escapeHtml(p.name)}</div>
+              <div style="font-size:0.95rem;color:#333">${escapeHtml(p.address || '')}</div>
+              <div style="margin-top:6px">
+                <a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(p.lat + ',' + p.lng)}" class="link">Cómo llegar</a>
+              </div>
+            </div>`;
+          marker.bindPopup(content, { maxWidth: 300 });
+          markersCluster.addLayer(marker);
+        });
+
+        map.addLayer(markersCluster);
+
+        // ajustar vista para mostrar todos los marcadores
+        const group = new L.featureGroup(markersCluster.getLayers());
+        if (group.getLayers().length) {
+          map.fitBounds(group.getBounds().pad(0.15));
+        }
+      }
+
+      // si encontramos el details que contiene el mapa, inicializamos cuando se abra
+      if (details) {
+        details.addEventListener('toggle', function () {
+          if (details.open) {
+            initMap();
+            // forzamos recálculo de tamaño de Leaflet después de un pequeño delay
+            setTimeout(() => {
+              if (map) map.invalidateSize();
+            }, 200);
+          }
+        });
+
+        // si al cargar ya está abierto, inicializamos de una
+        if (details.open) {
+          initMap();
+          setTimeout(() => { if (map) map.invalidateSize(); }, 200);
+        }
+      } else {
+        // si no hay <details> padre (caso raro), inicializamos directamente
+        initMap();
+        setTimeout(() => { if (map) map.invalidateSize(); }, 200);
+      }
+
+      // útil para debug: si no ves el mapa, abrí consola (F12) y fijate si hay errores
+
+
+       /*  Datos del Back */
+
+
+        // "Datos que vendrían del backend"
+       const backendData = {
+           mercadoPago: [
+               { text: "Link Mercado Pago", url: "https://linktr.ee/SantaRamona" },
+               { text: "Email: santaramonaprotectora@gmail.com", url: "mailto:santaramonaprotectora@gmail.com" }
+           ],
+           banco: [
+               { text: "Cuenta: 000001110201685844" },
+               { text: "Titular: Sierra María José" },
+               { text: "CBU: 0290000110000016858443" },
+               { text: "CUIT/CUIL: 20-28496562-1" },
+               { text: "Alias: SANTA.RAMONA" }
+           ]
+       };
+
+       // Insertar en Mercado Pago
+       const mpList = document.getElementById("mercadoPagoList");
+       backendData.mercadoPago.forEach(item => {
+           const li = document.createElement("li");
+           if (item.url) {
+               li.innerHTML = `<a href="${item.url}" target="_blank" class="link">${item.text}</a>`;
+           } else {
+               li.textContent = item.text;
+           }
+           mpList.appendChild(li);
+       });
+
+       // Insertar en Banco
+       const bancoList = document.getElementById("bancoList");
+       backendData.banco.forEach(item => {
+           const li = document.createElement("li");
+           li.textContent = item.text;
+           bancoList.appendChild(li);
+
+
+       /*  Datos del Back */
+    });
+</script>
+<!-- fin MAPA -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // --- MAPA ---
+        const mapDiv = document.getElementById('map-donaciones');
+        let map = null;
+        let markersCluster = null;
+
+        const puntos = [
+            { id: 1, name: "Pto. Acopio - Centro", lat: -34.603722, lng: -58.381592, address: "Calle Falsa 123" },
+            { id: 2, name: "Pto. Acopio - Norte", lat: -34.609722, lng: -58.385000, address: "Av. Siempre Viva 742" },
+            { id: 3, name: "Pto. Acopio - Flores", lat: -34.607000, lng: -58.431000, address: "Av. Ejemplo 500" }
+        ];
+
+        function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        function initMap() {
+            if (map) return;
+            map = L.map('map-donaciones').setView([puntos[0].lat, puntos[0].lng], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+            markersCluster = L.markerClusterGroup();
+
+            puntos.forEach(p => {
+                const marker = L.marker([p.lat, p.lng]);
+                const content = `
+                    <div style="min-width:200px">
+                        <div style="font-weight:700">${escapeHtml(p.name)}</div>
+                        <div style="font-size:0.95rem;color:#333">${escapeHtml(p.address || '')}</div>
+                        <div style="margin-top:6px">
+                            <a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(p.lat + ',' + p.lng)}" class="link">Cómo llegar</a>
+                        </div>
+                    </div>`;
+                marker.bindPopup(content, { maxWidth: 300 });
+                markersCluster.addLayer(marker);
+            });
+
+            map.addLayer(markersCluster);
+            const group = new L.featureGroup(markersCluster.getLayers());
+            if (group.getLayers().length) map.fitBounds(group.getBounds().pad(0.15));
+        }
+
+        if (mapDiv) {
+            const details = mapDiv.closest('details');
+            if (details) {
+                details.addEventListener('toggle', function(){
+                    if(details.open){
+                        initMap();
+                        setTimeout(()=>{ map.invalidateSize(); },200);
+                    }
+                });
+            }
+        }
+
+        // --- DATOS DEL BACKEND SIMULADO ---
+        const backendData = {
+            mercadoPago: [
+                { text: "Link Mercado Pago", url: "https://linktr.ee/SantaRamona" },
+                { text: "Email: santaramonaprotectora@gmail.com", url: "mailto:santaramonaprotectora@gmail.com" }
+            ],
+            banco: [
+                { text: "Cuenta: 000001110201685844" },
+                { text: "Titular: Sierra María José" },
+                { text: "CBU: 0290000110000016858443" },
+                { text: "CUIT/CUIL: 20-28496562-1" },
+                { text: "Alias: SANTA.RAMONA" }
+            ]
+        };
+
+        // Insertar en Mercado Pago
+        const mpList = document.getElementById("mercadoPagoList");
+        backendData.mercadoPago.forEach(item=>{
+            const li = document.createElement("li");
+            if(item.url) li.innerHTML = `<a href="${item.url}" target="_blank" class="link">${item.text}</a>`;
+            else li.textContent = item.text;
+            mpList.appendChild(li);
+        });
+
+        // Insertar en Banco
+        const bancoList = document.getElementById("bancoList");
+        backendData.banco.forEach(item=>{
+            const li = document.createElement("li");
+            li.textContent = item.text;
+            bancoList.appendChild(li);
+        });
+
+    });
+</script>
