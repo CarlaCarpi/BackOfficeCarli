@@ -3,14 +3,14 @@
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAcAs/qMfEvkOzcnME+V48CgAAAAACAAAAAAAQZgAAAAEAACAAAABT2M2PxT4HuZ+AuOwA4Dzbt8LE0ro6dcdSB0fZmgcbXwAAAAAOgAAAAAIAACAAAAAM0LlEWWcwO2rERXCW8+Gwh1JJyCMSKdcBz9eczJCDniAAAABWNV5+Lcv8VubtX8gBrPUNFK5LlccgWl2lbPPd/2OnCUAAAAAMd0ZwKlToZQB8Vs5l85dQgIbyxkA/TvZ8iiHO8EiMixv8lobUvMXZP6/sBJ0heyJ0smIKYprTiUQJJuWipD2C</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAcAs/qMfEvkOzcnME+V48CgAAAAACAAAAAAAQZgAAAAEAACAAAAATXMsimhgT5rTwgBm1gSFuEqPEcxUyd0pKJT6ot+HDegAAAAAOgAAAAAIAACAAAACf39X8yNglDJJd6mAtBKs21uMEvQMcaIQ3FDcJQUVYsSAAAABh7L/8PIzV5gFhsWS3mBk3cIcWF6Pmk0nD0JzajdtaN0AAAAAHy7cQiByLtSgPbqIwQ5u8rQPg7VNqcIwxCxKnTdlHtVnfhDK4Uu/Yv/SlKmTg44D+uZR/3gG4YpxZ5H23r3Fe</EncryptedPassword>
     <_PublishTargetUrl>ftp://pruebasubidabackoffice.somee.com/www.pruebasubidabackoffice.somee.com</_PublishTargetUrl>
-    <History>True|2025-10-22T23:31:49.1195399Z||;</History>
+    <History>True|2025-10-23T00:27:09.5759570Z||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
-      <publishTime>10/22/2025 19:17:25</publishTime>
+      <publishTime>10/22/2025 20:55:59</publishTime>
     </File>
     <File Include="appsettings.json">
       <publishTime>10/20/2025 20:26:39</publishTime>
@@ -46,16 +46,16 @@
       <publishTime>09/25/2025 16:28:28</publishTime>
     </File>
     <File Include="santa-ramona-BackOffice.deps.json">
-      <publishTime>10/22/2025 20:26:26</publishTime>
+      <publishTime>10/22/2025 21:21:43</publishTime>
     </File>
     <File Include="santa-ramona-BackOffice.dll">
-      <publishTime>10/22/2025 20:26:25</publishTime>
+      <publishTime>10/22/2025 21:21:42</publishTime>
     </File>
     <File Include="santa-ramona-BackOffice.exe">
-      <publishTime>10/22/2025 20:26:26</publishTime>
+      <publishTime>10/22/2025 21:21:42</publishTime>
     </File>
     <File Include="santa-ramona-BackOffice.pdb">
-      <publishTime>10/22/2025 20:26:25</publishTime>
+      <publishTime>10/22/2025 21:21:42</publishTime>
     </File>
     <File Include="santa-ramona-BackOffice.runtimeconfig.json">
       <publishTime>10/22/2025 20:17:08</publishTime>
@@ -67,7 +67,7 @@
       <publishTime>09/25/2025 16:28:34</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>10/22/2025 20:26:34</publishTime>
+      <publishTime>10/22/2025 21:21:52</publishTime>
     </File>
     <File Include="wwwroot/css/site.css">
       <publishTime>10/20/2025 19:07:16</publishTime>

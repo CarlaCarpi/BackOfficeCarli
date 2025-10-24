@@ -45,3 +45,4 @@ C:\Mis Proyectos\santa-ramona-BackOffice\obj\Release\net8.0\refint\santa-ramona-
 C:\Mis Proyectos\santa-ramona-BackOffice\obj\Release\net8.0\santa-ramona-BackOffice.pdb
 C:\Mis Proyectos\santa-ramona-BackOffice\obj\Release\net8.0\santa-ramona-BackOffice.genruntimeconfig.cache
 C:\Mis Proyectos\santa-ramona-BackOffice\obj\Release\net8.0\ref\santa-ramona-BackOffice.dll
+C:\Mis Proyectos\santa-ramona-BackOffice\obj\Release\net8.0\santa-ramona-BackOffice.sourcelink.json
