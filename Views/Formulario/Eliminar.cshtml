@@ -1,0 +1,228 @@
+﻿@model SantaRamona.Backoffice.Models.Formulario
+@{
+    ViewData["Title"] = "Eliminar Formulario";
+
+    // Si el controller provee diccionarios (opcional), mostramos textos en vez de IDs
+    var personas = ViewBag.PersonasDict as Dictionary<int, string> ?? new();
+    var tipos = ViewBag.TiposDict as Dictionary<int, string> ?? new();
+    string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Segoe UI',sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #40ADB0;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary, .btn-cancel, .btn-danger {
+        background: #40ADB0;
+        color: #fff;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color .3s;
+        display: inline-block;
+    }
+
+        .btn-primary:hover, .btn-cancel:hover {
+            background: #40ADB0;
+        }
+
+    .btn-danger {
+        background: #A71A6C;
+    }
+
+        .btn-danger:hover {
+            background: #A71A6C;
+        }
+
+    .summary-errors {
+        color: #40ADB0;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .card {
+        background: #fff;
+        border: 2px solid #40ADB0;
+        border-radius: .5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #40ADB0;
+        color: #fff;
+        padding: 1rem;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .actions-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        gap: .5rem;
+        flex-wrap: wrap;
+    }
+
+    .link-back {
+        background: #fff;
+        border: 1px solid #c5a9cb;
+        color: #c5a9cb;
+        padding: .5rem .85rem;
+        border-radius: .5rem;
+        text-decoration: none;
+        display: inline-flex;
+        gap: .5rem;
+        align-items: center;
+        transition: background-color .2s,color .2s;
+    }
+
+        .link-back:hover {
+            background: #F4ECFF;
+            color: #40ADB0;
+        }
+
+    .alert-warn {
+        background: #fff3f3;
+        color: #a94442;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #d9534f;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .alert-ok {
+        background: #E6D9F8;
+        color: #40ADB0;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #c5a9cb;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .alert-error {
+        background: #fff3f3;
+        color: #a94442;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #d9534f;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .row-view {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: .5rem 1rem;
+        margin-bottom: .75rem;
+    }
+
+    .label {
+        font-weight: 700;
+        color: #333;
+    }
+
+    .value {
+        color: #333;
+    }
+</style>
+
+<div class="main-container">
+    <h2 class="form-title">Eliminar Formulario</h2>
+
+    @* Carteles (mismo patrón) *@
+    @if (ViewBag.Ok != null)
+    {
+        <div id="ok-banner" class="alert-ok">@ViewBag.Ok</div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert-error">@ViewBag.ApiError</div>
+    }
+
+    <div class="card">
+        <div class="card-header">Confirmación</div>
+        <div class="card-body">
+            <form asp-action="Eliminar" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="id_formulario" />
+
+                <div class="actions-bar">
+                    <a asp-controller="Formulario" asp-action="Index" class="link-back">
+                        ← Volver al listado
+                    </a>
+
+                    <div style="display:flex; gap:.5rem;">
+                        <button type="button" class="btn-cancel" onclick="showCancelModal()">Cancelar</button>
+                        <button type="submit" class="btn-danger">Eliminar</button>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="summary-errors"></div>
+
+                <div class="alert-warn">
+                    ¿Está seguro/a que desea eliminar este formulario? Esta acción no se puede deshacer.
+                </div>
+
+                <div class="row-view">
+                    <div class="label">Código</div>
+                    <div class="value">@Model.id_formulario</div>
+
+                    <div class="label">Persona</div>
+                    <div class="value">@Txt(personas, Model.id_persona)</div>
+
+                    <div class="label">Tipo</div>
+                    <div class="value">@Txt(tipos, Model.id_tipoFormulario)</div>
+
+                    <div class="label">Estado</div>
+                    <div class="value">@Model.estado</div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de cancelación -->
+    <div id="cancel-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+        background-color: rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:#fff; padding:2rem; border-radius:1rem; max-width:400px; text-align:center; box-shadow:0 0 10px rgba(0,0,0,0.3); margin:auto;">
+            <p style="font-size:1.2rem; margin-bottom:1.5rem; color:#40ADB0;">¿Realmente desea cancelar?</p>
+            <div style="display:flex; justify-content:center; gap:1rem;">
+                <button onclick="confirmCancelYes()" class="btn-primary">Sí</button>
+                <button onclick="closeCancelModal()" class="btn-primary" style="background-color:#aaa;">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function showCancelModal() { document.getElementById('cancel-modal').style.display = 'flex'; }
+        function closeCancelModal() { document.getElementById('cancel-modal').style.display = 'none'; }
+        function confirmCancelYes() { window.location.href = "@Url.Action("Index", "Formulario")"; }
+        setTimeout(() => { const b = document.getElementById('ok-banner'); if (b) b.style.display = 'none'; }, 3500);
+    </script>
+}

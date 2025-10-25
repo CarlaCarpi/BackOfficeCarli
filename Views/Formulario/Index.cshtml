@@ -1,0 +1,248 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Formulario>
+@{
+    ViewData["Title"] = "Formularios";
+
+    // Diccionarios que te arma el controller
+    var personas = ViewBag.PersonasDict as Dictionary<int, string> ?? new();
+    var tipos = ViewBag.TiposDict as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .header-formulario {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.2rem;
+    }
+
+    .titulo-formulario {
+        text-align: center;
+        color: #40ADB0;
+        font-weight: bold;
+        letter-spacing: .5px;
+        margin: 0;
+        font-size: 2rem;
+        flex: 1;
+    }
+
+    .styled-table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+        border: 2px solid #40ADB0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+        .styled-table th {
+            background-color: #40ADB0;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .styled-table td {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+    .btn-primary {
+        background-color: #40ADB0;
+        color: white;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: filter 0.2s;
+        display: inline-block;
+    }
+
+        .btn-primary:hover {
+            filter: brightness(0.92);
+        }
+
+    .link-back {
+        background: #fff;
+        border: 1px solid #40ADB0;
+        color: #40ADB0;
+        padding: .5rem 1rem;
+        border-radius: .5rem;
+        text-decoration: none;
+        transition: background-color .2s, color .2s;
+    }
+
+        .link-back:hover {
+            background: #EAF6F6;
+        }
+
+    .actions-cell {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .actions {
+        display: inline-flex;
+        gap: 0.5rem;
+    }
+
+    .summary-errors {
+        color: #d9534f;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    @@media (max-width: 560px) {
+        .header-formulario {
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .actions {
+            flex-direction: column;
+        }
+
+        .titulo-formulario {
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="container mt-4 main-container">
+    <div class="header-formulario">
+        <a asp-controller="Home" asp-action="Index" class="link-back">← Volver al menú</a>
+        <h1 class="titulo-formulario">LISTA DE FORMULARIOS</h1>
+        <a asp-controller="Formulario" asp-action="Crear" class="btn-primary">Agregar Nuevo Formulario</a>
+    </div>
+
+    @* Carteles, mismo patrón que Donaciones *@
+    @if (TempData["Ok"] != null)
+    {
+        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #40ADB0; background:#EAF6F6; border-radius:.5rem;">
+            @TempData["Ok"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #ff6b6b; background:#ffecec; border-radius:.5rem;">
+            <strong>@TempData["Error"]</strong>
+            @if (TempData["ApiDetail"] != null)
+            {
+                <div style="margin-top:.4rem; color:#555; white-space:pre-wrap;">@TempData["ApiDetail"]</div>
+            }
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="summary-errors">@ViewBag.ApiError</div>
+    }
+
+    @if (Model?.Any() == true)
+    {
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th style="width:120px;">Código</th>
+                    <th>Persona</th>
+                    <th>Tipo</th>
+                    <th style="width:160px;">Estado</th>
+                    <th style="text-align:center; width: 260px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in Model)
+                {
+                    <tr>
+                        <td>@f.id_formulario</td>
+                        <td>@Txt(personas, f.id_persona)</td>
+                        <td>@Txt(tipos, f.id_tipoFormulario)</td>
+                        <td>@f.estado</td>
+                        <td class="actions-cell">
+                            <div class="actions">
+                                <a href="javascript:void(0)"
+                                   data-ver-formulario="@f.id_formulario"
+                                   class="btn-primary">
+                                    Ver
+                                </a>
+
+                                <a asp-controller="Formulario"
+                                   asp-action="Modificar"
+                                   asp-route-id="@f.id_formulario"
+                                   class="btn-primary">
+                                    Modificar
+                                </a>
+                                @* No agrego Eliminar porque tu controller de Formulario no la expone *@
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="color: #666;">No hay formularios cargados.</p>
+    }
+</div>
+
+@* Modal para Ver (usa la acción parcial Detalle del controller) *@
+<div class="modal fade" id="modalDetalleFormulario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="border-radius:14px;">
+            <div class="modal-header" style="background:#40ADB0; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                <h5 class="modal-title">Detalle del formulario</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" id="modalDetalleFormularioBody">
+                <!-- Se carga la vista parcial DetalleFormulario.cshtml -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (() => {
+            const baseUrl = '@Url.Action("Detalle", "Formulario")';
+
+            document.addEventListener('click', async (ev) => {
+                const btn = ev.target.closest('[data-ver-formulario]');
+                if (!btn) return;
+
+                const id = btn.getAttribute('data-ver-formulario');
+
+                try {
+                    const resp = await fetch(`${baseUrl}/${id}`, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+
+                    const html = await resp.text();
+                    if (!resp.ok) throw new Error(html || `HTTP ${resp.status}`);
+
+                    document.getElementById('modalDetalleFormularioBody').innerHTML = html;
+
+                    const modal = new bootstrap.Modal(document.getElementById('modalDetalleFormulario'));
+                    modal.show();
+                } catch (err) {
+                    console.error(err);
+                    alert('No se pudo cargar el detalle del formulario.');
+                }
+            });
+        })();
+    </script>
+}

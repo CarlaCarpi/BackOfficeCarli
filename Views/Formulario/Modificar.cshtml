@@ -1,0 +1,242 @@
+﻿@model SantaRamona.Backoffice.Models.Formulario
+@{
+    ViewData["Title"] = "Modificar Formulario";
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Segoe UI',sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #40ADB0;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-submit, .btn-cancel {
+        background: #40ADB0;
+        color: #fff;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color .3s;
+        display: inline-block;
+    }
+
+        .btn-submit:hover, .btn-cancel:hover {
+            background: #40ADB0;
+        }
+
+    .btn-outline {
+        background: #fff;
+        border: 1px solid #40ADB0;
+        color: #40ADB0;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border-radius: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color .2s, color .2s;
+        display: inline-block;
+    }
+
+        .btn-outline:hover {
+            background: #EAF6F6;
+            color: #40ADB0;
+        }
+
+    .summary-errors {
+        color: #40ADB0;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .card {
+        background: #fff;
+        border: 2px solid #40ADB0;
+        border-radius: .5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #40ADB0;
+        color: #fff;
+        padding: 1rem;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: .35rem;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: .6rem .75rem;
+        font-size: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: .5rem;
+        outline: none;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #c5a9cb;
+            box-shadow: 0 0 0 3px rgba(124,78,187,.15);
+        }
+
+    .actions-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        gap: .5rem;
+        flex-wrap: wrap;
+    }
+
+    .actions-right {
+        display: inline-flex;
+        gap: .5rem;
+        flex-wrap: wrap;
+    }
+
+    .alert-ok {
+        background: #E6D9F8;
+        color: #40ADB0;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #c5a9cb;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .alert-error {
+        background: #fff3f3;
+        color: #a94442;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #d9534f;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+</style>
+
+<div class="main-container">
+    <h2 class="form-title">Modificar Formulario</h2>
+
+    @* Carteles (mismo patrón que venimos usando) *@
+    @if (ViewBag.Ok != null)
+    {
+        <div id="ok-banner" class="alert-ok">@ViewBag.Ok</div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert-error">@ViewBag.ApiError</div>
+    }
+
+    <div class="card">
+        <div class="card-header">Datos del Formulario</div>
+        <div class="card-body">
+            <form asp-action="Modificar" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="id_formulario" />
+
+                <div class="actions-bar">
+                    <a asp-controller="Formulario" asp-action="Index" class="btn-outline">
+                        ← Volver al listado
+                    </a>
+
+                    <div class="actions-right">
+                        @* Botones de estado (el controller toma name="estado") *@
+                        <button type="submit" name="estado" value="Revision" class="btn-outline">Marcar como revisado</button>
+                        <button type="submit" name="estado" value="Aprobado" class="btn-outline">Aprobado</button>
+                        <button type="submit" name="estado" value="Denegado" class="btn-outline">Denegado</button>
+
+                        <button type="submit" class="btn-submit">Guardar</button>
+                        <button type="button" class="btn-cancel" onclick="showCancelModal()">Cancelar</button>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="summary-errors"></div>
+
+                <div class="form-group">
+                    <label class="form-label" for="id_persona">Persona</label>
+                    <select asp-for="id_persona"
+                            class="form-select"
+                            asp-items="@(new SelectList((IEnumerable<SelectListItem>)ViewBag.Personas, "Value","Text"))">
+                    </select>
+                    <span asp-validation-for="id_persona" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="id_tipoFormulario">Tipo de formulario</label>
+                    <select asp-for="id_tipoFormulario"
+                            class="form-select"
+                            asp-items="@(new SelectList((IEnumerable<SelectListItem>)ViewBag.Tipos, "Value","Text"))">
+                    </select>
+                    <span asp-validation-for="id_tipoFormulario" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="estado" class="form-label">Estado actual</label>
+                    <input asp-for="estado" class="form-control" readonly />
+                    <span asp-validation-for="estado" class="text-danger"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación (Cancelar) -->
+    <div id="cancel-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+        background-color: rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:#fff; padding:2rem; border-radius:1rem; max-width:400px; text-align:center; box-shadow:0 0 10px rgba(0,0,0,0.3); margin:auto;">
+            <p style="font-size:1.2rem; margin-bottom:1.5rem; color:#40ADB0;">
+                ¿Realmente desea cancelar?
+            </p>
+            <div style="display:flex; justify-content:center; gap:1rem;">
+                <button onclick="confirmCancelYes()" class="btn-submit">Sí</button>
+                <button onclick="closeCancelModal()" class="btn-submit" style="background-color:#aaa;">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function showCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'flex';
+        }
+        function closeCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'none';
+        }
+        function confirmCancelYes() {
+            window.location.href = "@Url.Action("Index", "Formulario")";
+        }
+        setTimeout(() => {
+            const b = document.getElementById('ok-banner');
+            if (b) b.style.display = 'none';
+        }, 3500);
+    </script>
+}

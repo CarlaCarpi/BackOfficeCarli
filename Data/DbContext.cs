@@ -19,7 +19,7 @@ namespace SantaRamona.Data
         //public DbSet<Estado_Formulario> Estado_Formulario { get; set; }
         //public DbSet<Estado_Pension> Estado_Pension { get; set; }
         //public DbSet<Tipo_Telefono> Tipo_Telefono { get; set; }
-        //public DbSet<Tipo_Formulario> Tipo_Formulario { get; set; }
+        public DbSet<Tipo_Formulario> Tipo_Formulario { get; set; }
         //public DbSet<Permiso> Permiso { get; set; }
         //public DbSet<Rol> Rol { get; set; }
         public DbSet<Tamano> Tamano { get; set; }
@@ -29,9 +29,9 @@ namespace SantaRamona.Data
         //public DbSet<Usuario> Usuario { get; set; }
         //public DbSet<Pension> Pension { get; set; }
         //public DbSet<Seguimiento> Seguimiento { get; set; }
-        //public DbSet<Formulario> Formulario { get; set; }
-        //public DbSet<Pregunta> Pregunta { get; set; }
-        //public DbSet<Respuesta> Respuesta { get; set; }
+        public DbSet<Formulario> Formulario { get; set; }
+        public DbSet<Pregunta> Pregunta { get; set; }
+        public DbSet<Respuesta> Respuesta { get; set; }
         public DbSet<Donacion> Donacion { get; set; }
     }
 }
