@@ -41,71 +41,83 @@
 
             <form id="form-crear" asp-action="Crear" method="post">
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <!-- una sola row para todo el formulario -->
+                    <!-- Fila 1 -->
+                    <div class="col-12 col-md-6">
                         <label asp-for="nombre" class="form-label">Nombre</label>
                         <input asp-for="nombre" class="form-control" />
                         <span asp-validation-for="nombre" class="text-danger"></span>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <label asp-for="apellido" class="form-label">Apellido</label>
                         <input asp-for="apellido" class="form-control" />
                         <span asp-validation-for="apellido" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    <!-- Fila 2 -->
+                    <div class="col-12 col-md-6">
                         <label asp-for="email" class="form-label">Email</label>
                         <input asp-for="email" class="form-control" />
                         <span asp-validation-for="email" class="text-danger"></span>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <label asp-for="clave" class="form-label">Clave</label>
-                        <input asp-for="clave" class="form-control" type="text" autocomplete="off" />
+                        <input asp-for="clave" class="form-control" />
                         <span asp-validation-for="clave" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-8">
+                    <!-- Fila 3 (Dirección a lo ancho, si la querés en 2 columnas cambiá a col-md-6 / col-md-6) -->
+                    <div class="col-12">
                         <label asp-for="direccion" class="form-label">Dirección</label>
                         <input asp-for="direccion" class="form-control" />
                         <span asp-validation-for="direccion" class="text-danger"></span>
                     </div>
-                    <div class="col-md-2">
+
+                    <!-- Fila 4 -->
+                    <div class="col-12 col-md-6">
                         <label asp-for="altura" class="form-label">Altura</label>
                         <input asp-for="altura" class="form-control" />
                         <span asp-validation-for="altura" class="text-danger"></span>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-12 col-md-6">
                         <label asp-for="departamento" class="form-label">Depto</label>
                         <input asp-for="departamento" class="form-control" />
+                        <span asp-validation-for="departamento" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="telefono1" class="form-label">Teléfono 1</label>
-                        <input asp-for="telefono1" class="form-control" />
-                        <span asp-validation-for="telefono1" class="text-danger"></span>
+                    <!-- Fila 5 -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="telefono" class="form-label">Teléfono</label>
+                        <input asp-for="telefono" class="form-control" />
+                        <span asp-validation-for="telefono" class="text-danger"></span>
                     </div>
-                    <div class="col-md-6">
-                        <label asp-for="telefono2" class="form-label">Teléfono 2</label>
-                        <input asp-for="telefono2" class="form-control" />
-                        <span asp-validation-for="telefono2" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-6">
                         <label asp-for="fechaAlta" class="form-label">Fecha Alta</label>
-                        <input asp-for="fechaAlta" class="form-control" type="datetime-local" value="@fechaDefault" />
+                        <input asp-for="fechaAlta" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="fechaAlta" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label">Estado</label>
-                        <select asp-for="id_estadoUsuario" class="form-select" asp-items="estados"></select>
+
+                    <!-- Fila 6 -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="id_estadoUsuario" class="form-label">Estado</label>
+                        <select asp-for="id_estadoUsuario" class="form-select" asp-items="estados">
+                            <option value="">Seleccione...</option>
+                        </select>
                         <span asp-validation-for="id_estadoUsuario" class="text-danger"></span>
+                        <small class="text-muted">Seleccioná el estado del usuario.</small>
                     </div>
-
-                    <div class="col-md-4">
+                    <div class="mb-3">
                         <label class="form-label">Rol</label>
-                        <select asp-for="id_rol" class="form-select" asp-items="roles"></select>
-                        <span class="text-muted small">Seleccioná el rol principal del usuario.</span>
+                        <select asp-for="id_rol"
+                                class="form-select"
+                                asp-items="@(ViewBag.Roles as IEnumerable<SelectListItem>)">
+                            <option value="">— Seleccioná un rol —</option>
+                        </select>
+                        <span asp-validation-for="id_rol" class="text-danger"></span>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>

@@ -58,7 +58,7 @@
                                 <td>@u.id_usuario</td>
                                 <td>@u.apellido, @u.nombre</td>
                                 <td>@u.email</td>
-                                <td>@(u.telefono1 == 0 ? "-" : u.telefono1.ToString()) / @(u.telefono2 == 0 ? "-" : u.telefono2.ToString())</td>
+                                <td>@(u.telefono == 0 ? "-" : u.telefono.ToString()) </td>
                                 <td>@(u.fechaAlta == default ? "-" : u.fechaAlta.ToString("dd/MM/yyyy"))</td>
                                 <td>@EstadoTxt(u.id_estadoUsuario)</td>
                                 <td class="text-end" style="white-space:nowrap;">

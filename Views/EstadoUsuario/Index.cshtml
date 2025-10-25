@@ -9,6 +9,21 @@
         ESTADOS DE USUARIO
     </h1>
 
+    @if (TempData["Ok"] != null)
+    {
+        <div class="alert mt-3" style="background:#E6F6F5;border:1px solid #2FA8A2;color:#155e59;border-radius:10px;">
+            @TempData["Ok"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert mt-3" style="background:#fff3f3;border:1px solid #A71A6C;color:#A71A6C;border-radius:10px;">
+            @TempData["Error"]
+        </div>
+    }
+
+
+
     @if (ViewBag.Ok != null)
     {
         <div class="alert mt-3" role="alert"
