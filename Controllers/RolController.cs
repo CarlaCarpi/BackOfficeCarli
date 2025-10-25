@@ -1,59 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SantaRamona.Backoffice.Models;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace SantaRamona.Backoffice.Controllers
 {
     public class RolController : Controller
     {
-        private const string ADMIN_ROLE_NAME = "administrador"; // usar lower + OrdIgnoreCase
         private readonly IHttpClientFactory _http;
         public RolController(IHttpClientFactory http) => _http = http;
 
-        // ---------------- HELPERS ----------------
-        private static bool EsAdmin(string? descripcion)
-            => string.Equals((descripcion ?? string.Empty).Trim(), ADMIN_ROLE_NAME, StringComparison.OrdinalIgnoreCase);
 
+
+        private const string ADMIN_NAME = "administrador";
+
+        private static bool EsAdminDesc(string? d)
+            => (d ?? "").Trim().ToLower() == ADMIN_NAME;
+
+        // ¿Hay usuarios usando este rol?
         private async Task<bool> RolEnUsoAsync(int idRol)
         {
             var client = _http.CreateClient("Api");
+            // 1) intento simple: si tu API de usuarios trae id_rol directo
+            var resp = await client.GetAsync("/api/usuario");
+            if (!resp.IsSuccessStatusCode) return false;
 
-            // 1) intento directo: /api/Usuario_Rol?rol=ID  (si existe)
-            var respTry = await client.GetAsync($"/api/Usuario_Rol?rol={idRol}");
-            if (respTry.IsSuccessStatusCode)
-            {
-                var body = await respTry.Content.ReadAsStringAsync();
-                // asumo que devuelve una lista de vínculos usuario-rol
-                var userRoles = JsonSerializer.Deserialize<IEnumerable<Usuario_Rol>>(body,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Usuario_Rol>();
-                return userRoles.Any();
-            }
+            var json = await resp.Content.ReadAsStringAsync();
+            var usuarios = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<SantaRamona.Backoffice.Models.Usuario>>(
+                json, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            ) ?? Enumerable.Empty<SantaRamona.Backoffice.Models.Usuario>();
 
-            // 2) fallback genérico: traigo usuarios y consulto roles por usuario
-            var respUsers = await client.GetAsync("/api/usuario");
-            if (!respUsers.IsSuccessStatusCode) return false;
+            // a) si tu API completa id_rol
+            if (usuarios.Any(u => u.id_rol == idRol)) return true;
 
-            var jsonUsers = await respUsers.Content.ReadAsStringAsync();
-            var usuarios = JsonSerializer.Deserialize<IEnumerable<Usuario>>(jsonUsers,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Usuario>();
-
-            foreach (var u in usuarios)
-            {
-                var respRoles = await client.GetAsync($"/api/Usuario/{u.id_usuario}/roles");
-                if (!respRoles.IsSuccessStatusCode) continue;
-
-                var jsonRoles = await respRoles.Content.ReadAsStringAsync();
-                var roles = JsonSerializer.Deserialize<IEnumerable<Rol>>(jsonRoles,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Rol>();
-
-                if (roles.Any(r => r.id_rol == idRol)) return true;
-            }
+            // b) fallback: si trae UsuarioRoles
+            if (usuarios.Any(u => (u.UsuarioRoles ?? Array.Empty<Usuario_Rol>()).Any(ur => ur.id_rol == idRol))) return true;
 
             return false;
         }
 
-        // ---------------- INDEX ----------------
+
+        // ✅ INDEX
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -63,47 +50,43 @@ namespace SantaRamona.Backoffice.Controllers
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
-                ViewBag.ApiError = $"GET /api/Rol -> {(int)resp.StatusCode} {resp.ReasonPhrase}. {body}";
+                ViewBag.ApiError = $"GET /api/Rol -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
                 return View(Enumerable.Empty<Rol>());
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var lista = JsonSerializer.Deserialize<IEnumerable<Rol>>(json,
+            var data = JsonSerializer.Deserialize<IEnumerable<Rol>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Rol>();
 
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
             if (TempData["Error"] is string err) ViewBag.Error = err;
 
-            return View(lista);
+            return View(data);
         }
 
-        // ---------------- CREAR ----------------
+        // ✅ CREAR
         [HttpGet]
         public IActionResult Crear() => View(new Rol());
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear([FromForm] Rol model)
+        public async Task<IActionResult> Crear([FromForm] string descripcion)
         {
-            if (string.IsNullOrWhiteSpace(model.descripcion))
+            if (string.IsNullOrWhiteSpace(descripcion))
             {
                 ModelState.AddModelError(nameof(Rol.descripcion), "La descripción es obligatoria.");
-                return View(model);
+                return View(new Rol { descripcion = descripcion ?? string.Empty });
             }
 
-            // Evitar duplicar Administrador
-            if (EsAdmin(model.descripcion))
-            {
-                // si ya existe Admin, la API debería rechazar; por las dudas prevenimos acá
-            }
-
+            var model = new Rol { descripcion = descripcion.Trim() };
             var client = _http.CreateClient("Api");
             var content = new StringContent(JsonSerializer.Serialize(model), Encoding.UTF8, "application/json");
+
             var resp = await client.PostAsync("/api/Rol", content);
 
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
-                ViewBag.ApiError = $"POST /api/Rol -> {(int)resp.StatusCode} {resp.ReasonPhrase}. {body}";
+                ViewBag.ApiError = $"POST /api/Rol -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
                 return View(model);
             }
 
@@ -111,7 +94,7 @@ namespace SantaRamona.Backoffice.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ---------------- MODIFICAR ----------------
+        // ✅ MODIFICAR
         [HttpGet]
         public async Task<IActionResult> Modificar(int id)
         {
@@ -124,12 +107,32 @@ namespace SantaRamona.Backoffice.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            if (!resp.IsSuccessStatusCode)
+            {
+                var body = await resp.Content.ReadAsStringAsync();
+                TempData["Error"] = $"GET /api/Rol/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
+                return RedirectToAction(nameof(Index));
+            }
+
             var json = await resp.Content.ReadAsStringAsync();
             var model = JsonSerializer.Deserialize<Rol>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            ViewBag.EsAdmin = EsAdmin(model?.descripcion);
-            ViewBag.EnUso = await RolEnUsoAsync(id);
+            if (model == null)
+            {
+                TempData["Error"] = "No se pudo obtener el rol.";
+                return RedirectToAction(nameof(Index));
+            }
+            // después de deserializar 'model'
+            if (model == null) { TempData["Error"] = "No se pudo obtener el rol."; return RedirectToAction(nameof(Index)); }
+
+            if (EsAdminDesc(model.descripcion))
+            {
+                TempData["Error"] = "El administrador no puede ser eliminado ni modificado.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
 
             return View(model);
         }
@@ -137,16 +140,10 @@ namespace SantaRamona.Backoffice.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Modificar([FromForm] Rol model)
         {
-            if (EsAdmin(model.descripcion))
+            if (model == null || model.id_rol <= 0)
             {
-                TempData["Error"] = "El rol Administrador no puede ser modificado.";
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (await RolEnUsoAsync(model.id_rol))
-            {
-                TempData["Error"] = "No se puede modificar este rol porque está en uso.";
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", "Identificador inválido.");
+                return View(model ?? new Rol());
             }
 
             if (string.IsNullOrWhiteSpace(model.descripcion))
@@ -157,90 +154,128 @@ namespace SantaRamona.Backoffice.Controllers
 
             var client = _http.CreateClient("Api");
             var content = new StringContent(JsonSerializer.Serialize(model), Encoding.UTF8, "application/json");
-            var resp = await client.PutAsync($"/api/Rol/{model.id_rol}", content);
 
+            var resp = await client.PutAsync($"/api/Rol/{model.id_rol}", content);
             if (!resp.IsSuccessStatusCode)
             {
-                TempData["Error"] = "No se pudo actualizar el rol.";
-                return RedirectToAction(nameof(Index));
+                var body = await resp.Content.ReadAsStringAsync();
+                ViewBag.ApiError = $"PUT /api/Rol/{model.id_rol} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
+                return View(model);
+            }
+            if (model == null || model.id_rol <= 0)
+            {
+                ModelState.AddModelError("", "Identificador inválido.");
+                return View(model ?? new Rol());
+            }
+            if (string.IsNullOrWhiteSpace(model.descripcion))
+            {
+                ModelState.AddModelError(nameof(Rol.descripcion), "La descripción es obligatoria.");
+                return View(model);
             }
 
+            // bloqueos solicitados
+            if (EsAdminDesc(model.descripcion))
+            {
+                TempData["Error"] = "El administrador no puede ser eliminado ni modificado.";
+                return RedirectToAction(nameof(Index));
+            }
+            if (await RolEnUsoAsync(model.id_rol))
+            {
+                TempData["Error"] = "El rol no puede ser modificado ni eliminado porque está en uso.";
+                return RedirectToAction(nameof(Index));
+            }
             TempData["Ok"] = "Rol actualizado correctamente.";
             return RedirectToAction(nameof(Index));
         }
 
-        // ---------------- ELIMINAR ----------------
+        // ✅ ELIMINAR
+        [HttpGet]
         [HttpGet]
         public async Task<IActionResult> Eliminar(int id)
         {
             var client = _http.CreateClient("Api");
             var resp = await client.GetAsync($"/api/Rol/{id}");
-
-            if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (!resp.IsSuccessStatusCode)
             {
-                TempData["Error"] = "El rol no existe o ya fue eliminado.";
+                TempData["Error"] = "No se pudo obtener el rol.";
                 return RedirectToAction(nameof(Index));
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<Rol>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var model = System.Text.Json.JsonSerializer.Deserialize<Rol>(
+                json, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (EsAdmin(model?.descripcion))
+            if (model == null)
             {
-                ViewBag.Bloqueado = true;
-                ViewBag.Motivo = "es el rol Administrador";
+                TempData["Error"] = "Rol inexistente.";
+                return RedirectToAction(nameof(Index));
             }
-            else if (await RolEnUsoAsync(id))
+
+            // 🔒 Bloqueos antes de mostrar la vista
+            if (EsAdminDesc(model.descripcion))
             {
-                ViewBag.Bloqueado = true;
-                ViewBag.Motivo = "está asignado a uno o más usuarios";
+                TempData["Error"] = "El administrador no puede ser eliminado ni modificado.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (await RolEnUsoAsync(model.id_rol))
+            {
+                TempData["Error"] = "El estado/ rol no puede ser modificado ni eliminado porque está en uso.";
+                return RedirectToAction(nameof(Index));
             }
 
             return View(model);
         }
 
+
         [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
+
         public async Task<IActionResult> EliminarConfirmado(int id)
         {
-            // Revalidar bloqueos
             var client = _http.CreateClient("Api");
-            var respGet = await client.GetAsync($"/api/Rol/{id}");
-            var json = await respGet.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<Rol>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (EsAdmin(model?.descripcion))
+            // Revalidar por si llamaron directo al POST
+            var get = await client.GetAsync($"/api/Rol/{id}");
+            if (!get.IsSuccessStatusCode)
             {
-                TempData["Error"] = "El rol Administrador no puede ser eliminado.";
-                return RedirectToAction(nameof(Eliminar), new { id });
+                TempData["Error"] = "No se pudo obtener el rol.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var jsonGet = await get.Content.ReadAsStringAsync();
+            var rol = System.Text.Json.JsonSerializer.Deserialize<Rol>(
+                jsonGet, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (rol == null)
+            {
+                TempData["Error"] = "Rol inexistente.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (EsAdminDesc(rol.descripcion))
+            {
+                TempData["Error"] = "El administrador no puede ser eliminado ni modificado.";
+                return RedirectToAction(nameof(Index));
             }
 
             if (await RolEnUsoAsync(id))
             {
-                TempData["Error"] = "No se puede eliminar este rol porque está en uso.";
-                return RedirectToAction(nameof(Eliminar), new { id });
+                TempData["Error"] = "El estado/ rol no puede ser modificado ni eliminado porque está en uso.";
+                return RedirectToAction(nameof(Index));
             }
 
-            var respDel = await client.DeleteAsync($"/api/Rol/{id}");
-            if (!respDel.IsSuccessStatusCode)
+            // Delete real
+            var resp = await client.DeleteAsync($"/api/Rol/{id}");
+            if (!resp.IsSuccessStatusCode)
             {
-                var body = await respDel.Content.ReadAsStringAsync();
-                if (respDel.StatusCode == System.Net.HttpStatusCode.Conflict ||
-                    respDel.StatusCode == System.Net.HttpStatusCode.BadRequest ||
-                    (int)respDel.StatusCode == 422)
-                {
-                    TempData["Error"] = "No se puede eliminar este rol porque está en uso.";
-                    if (!string.IsNullOrWhiteSpace(body)) TempData["ApiDetail"] = body;
-                    return RedirectToAction(nameof(Eliminar), new { id });
-                }
-
-                TempData["Error"] = $"DELETE /api/Rol/{id} -> {(int)respDel.StatusCode} {respDel.ReasonPhrase}. {body}";
-                return RedirectToAction(nameof(Eliminar), new { id });
+                var body = await resp.Content.ReadAsStringAsync();
+                TempData["Error"] = $"DELETE /api/Rol/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
+                return RedirectToAction(nameof(Index));
             }
 
             TempData["Ok"] = "Rol eliminado correctamente.";
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

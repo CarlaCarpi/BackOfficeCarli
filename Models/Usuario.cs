@@ -34,10 +34,8 @@ namespace SantaRamona.Backoffice.Models
 
         public string? departamento { get; set; }
 
-        [Required(ErrorMessage = "El teléfono 1 es obligatorio.")]
-        public int telefono1 { get; set; }
-        public int telefono2 { get; set; }
-
+        [Required(ErrorMessage = "El teléfono es obligatorio.")]
+        public int telefono { get; set; }
         public DateTime fechaAlta { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione un estado válido.")]

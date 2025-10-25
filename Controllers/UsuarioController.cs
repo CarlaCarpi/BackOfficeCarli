@@ -14,6 +14,21 @@ namespace SantaRamona.Backoffice.Controllers
         private const string ADMIN_ROLE_NAME = "administrador"; // comparar en lower
 
         public UsuarioController(IHttpClientFactory http) => _http = http;
+        private async Task<bool> AsignarRolAsync(HttpClient client, int idUsuario, int idRol)
+        {
+            // 1) Intento endpoint REST común
+            var put = await client.PutAsync($"/api/Usuario/{idUsuario}/rol/{idRol}", null);
+            if (put.IsSuccessStatusCode) return true;
+
+            // 2) Fallback: POST a tabla puente
+            var payload = new { id_usuario = idUsuario, id_rol = idRol };
+            var json = System.Text.Json.JsonSerializer.Serialize(payload, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = null });
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            var post = await client.PostAsync("/api/Usuario_Rol", content);
+            return post.IsSuccessStatusCode;
+        }
+
+
 
         // ===================== INDEX =====================
         [HttpGet]
@@ -50,57 +65,32 @@ namespace SantaRamona.Backoffice.Controllers
         {
             await CargarSelects();
             return View(new Usuario());
+
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear([FromForm] Usuario model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Crear(Usuario model)
         {
-            if (string.IsNullOrWhiteSpace(model.nombre))
-                ModelState.AddModelError(nameof(Usuario.nombre), "El nombre es obligatorio.");
-            if (string.IsNullOrWhiteSpace(model.apellido))
-                ModelState.AddModelError(nameof(Usuario.apellido), "El apellido es obligatorio.");
-            if (string.IsNullOrWhiteSpace(model.email))
-                ModelState.AddModelError(nameof(Usuario.email), "El email es obligatorio.");
-            if (model.id_estadoUsuario <= 0)
-                ModelState.AddModelError(nameof(Usuario.id_estadoUsuario), "Seleccione un estado válido.");
-
             if (model.fechaAlta == default) model.fechaAlta = DateTime.Now;
-
-            if (!ModelState.IsValid)
-            {
-                await CargarSelects(model.id_estadoUsuario, model.id_rol);
-                return View(model);
-            }
-
             var client = _http.CreateClient("Api");
-            var json = JsonSerializer.Serialize(model);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var resp = await client.PostAsync("/api/usuario", content);
-            if (!resp.IsSuccessStatusCode)
+            var json = System.Text.Json.JsonSerializer.Serialize(model, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = null });
+            var resp = await client.PostAsync("/api/Usuario", new StringContent(json, Encoding.UTF8, "application/json"));
+            if (!resp.IsSuccessStatusCode) { TempData["Error"] = "Error al crear usuario."; return View(model); }
+
+            var body = await resp.Content.ReadAsStringAsync();
+            var creado = System.Text.Json.JsonSerializer.Deserialize<Usuario>(body, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (model.id_rol.HasValue && model.id_rol.Value > 0 && creado?.id_usuario > 0)
             {
-                var body = await resp.Content.ReadAsStringAsync();
-                ViewBag.ApiError = $"POST /api/usuario -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
-                await CargarSelects(model.id_estadoUsuario, model.id_rol);
-                return View(model);
+                var ok = await AsignarRolAsync(client, creado.id_usuario, model.id_rol.Value);
+                if (!ok) TempData["Error"] = "Usuario creado, pero no se pudo asignar el rol.";
             }
-
-            // asignar rol si se envió y existe endpoint
-            try
-            {
-                var body = await resp.Content.ReadAsStringAsync();
-                var creado = JsonSerializer.Deserialize<Usuario>(body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                if (model.id_rol.HasValue && creado != null)
-                {
-                    var setContent = new StringContent(JsonSerializer.Serialize(new { id_usuario = creado.id_usuario, id_rol = model.id_rol.Value }), Encoding.UTF8, "application/json");
-                    await client.PostAsync("/api/Usuario_Rol", setContent); // ajustá si tu API difiere
-                }
-            }
-            catch { /* evitar romper el flujo si falla el set de rol */ }
-
-            TempData["Ok"] = "Usuario creado correctamente.";
+            if (TempData["Error"] == null) TempData["Ok"] = "Usuario creado correctamente.";
             return RedirectToAction(nameof(Index));
         }
+
+
 
         // ===================== DETALLE (MODAL) =====================
         [HttpGet]
@@ -109,6 +99,8 @@ namespace SantaRamona.Backoffice.Controllers
             var client = _http.CreateClient("Api");
             var resp = await client.GetAsync($"/api/usuario/{id}");
             if (!resp.IsSuccessStatusCode) return NotFound();
+
+
 
             var json = await resp.Content.ReadAsStringAsync();
             var model = JsonSerializer.Deserialize<Usuario>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -159,60 +151,27 @@ namespace SantaRamona.Backoffice.Controllers
             return View(model);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Modificar([FromForm] Usuario model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Modificar(Usuario model)
         {
-            if (model.id_usuario <= 0)
-                ModelState.AddModelError("", "Identificador inválido.");
-
-            // 🔒 bloquea admin
-            if (await EsAdministradorAsync(model.id_usuario))
-            {
-                TempData["Error"] = "El usuario Administrador no puede ser modificado.";
-                return RedirectToAction(nameof(Index)); // <- volvemos al Index con mensaje
-            }
-
-            if (model.id_estadoUsuario <= 0)
-                ModelState.AddModelError(nameof(Usuario.id_estadoUsuario), "Seleccione un estado válido.");
-
-            if (!ModelState.IsValid)
-            {
-                await CargarSelects(model.id_estadoUsuario, model.id_rol);
-                return View(model);
-            }
-
+            if (model.fechaAlta == default) model.fechaAlta = DateTime.Now;
             var client = _http.CreateClient("Api");
-            var json = JsonSerializer.Serialize(model);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var resp = await client.PutAsync($"/api/usuario/{model.id_usuario}", content);
-            if (!resp.IsSuccessStatusCode)
+            var json = System.Text.Json.JsonSerializer.Serialize(model, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = null });
+            var resp = await client.PutAsync($"/api/Usuario/{model.id_usuario}", new StringContent(json, Encoding.UTF8, "application/json"));
+            if (!resp.IsSuccessStatusCode) { TempData["Error"] = "Error al modificar usuario."; return View(model); }
+
+            if (model.id_rol.HasValue && model.id_rol.Value > 0)
             {
-                // podés elegir:  (a) quedarse en la vista con detalle del error  ó  (b) volver a Index con banner
-                // Opción (b) — lo que pediste: banner en Index
-                var body = await resp.Content.ReadAsStringAsync();
-                TempData["Error"] = $"No se pudo actualizar el usuario (HTTP {(int)resp.StatusCode}).";
-                // si querés sumar el detalle, descomenta:
-                // TempData["ApiDetail"] = body;
-                return RedirectToAction(nameof(Index));
+                var ok = await AsignarRolAsync(client, model.id_usuario, model.id_rol.Value);
+                if (!ok) TempData["Error"] = "Usuario modificado, pero no se pudo actualizar el rol.";
             }
-
-            // guardar rol si vino
-            try
-            {
-                if (model.id_rol.HasValue)
-                {
-                    var setContent = new StringContent(
-                        JsonSerializer.Serialize(new { id_usuario = model.id_usuario, id_rol = model.id_rol.Value }),
-                        Encoding.UTF8, "application/json");
-                    await client.PostAsync("/api/Usuario_Rol", setContent);
-                }
-            }
-            catch { /* no romper */ }
-
-            TempData["Ok"] = "Usuario modificado correctamente.";
-            return RedirectToAction(nameof(Index)); // <- éxito al Index
+            if (TempData["Error"] == null) TempData["Ok"] = "Usuario modificado correctamente.";
+            return RedirectToAction(nameof(Index));
         }
+
+
 
         // ===================== ELIMINAR =====================
         [HttpGet]

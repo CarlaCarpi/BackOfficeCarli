@@ -1,16 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SantaRamona.Backoffice.Models;
 using System.Text.Json;
-using System.Text;
 
 namespace SantaRamona.Backoffice.Controllers
 {
     public class EstadoUsuarioController : Controller
     {
         private readonly IHttpClientFactory _http;
-        public EstadoUsuarioController(IHttpClientFactory http) => _http = http;
+        private readonly ILogger<EstadoUsuarioController> _logger;
 
-        // ---------------- HELPERS ----------------
+        public EstadoUsuarioController(IHttpClientFactory http, ILogger<EstadoUsuarioController> logger)
+        {
+            _http = http;
+            _logger = logger;
+        }
+
+        // ===== Helpers (mismo patrón que Rol) =====
+        private const string ESTADO_API = "/api/Estado_Usuario";
+
         private async Task<bool> EstadoEnUsoAsync(int idEstado)
         {
             var client = _http.CreateClient("Api");
@@ -18,173 +25,165 @@ namespace SantaRamona.Backoffice.Controllers
             if (!resp.IsSuccessStatusCode) return false;
 
             var json = await resp.Content.ReadAsStringAsync();
-            var usuarios = JsonSerializer.Deserialize<IEnumerable<Usuario>>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Usuario>();
+            var usuarios = JsonSerializer.Deserialize<IEnumerable<Usuario>>(
+                json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            ) ?? Enumerable.Empty<Usuario>();
 
             return usuarios.Any(u => u.id_estadoUsuario == idEstado);
         }
 
-        // ---------------- INDEX ----------------
-        [HttpGet]
+        // ===== INDEX =====
         public async Task<IActionResult> Index()
         {
             var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync("/api/Estado_Usuario");
-
+            var resp = await client.GetAsync(ESTADO_API);
             if (!resp.IsSuccessStatusCode)
             {
-                ViewBag.ApiError = $"Error al obtener los estados ({(int)resp.StatusCode})";
+                TempData["Error"] = "No se pudieron obtener los estados.";
                 return View(Enumerable.Empty<Estado_Usuario>());
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var estados = JsonSerializer.Deserialize<IEnumerable<Estado_Usuario>>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Estado_Usuario>();
+            var lista = JsonSerializer.Deserialize<IEnumerable<Estado_Usuario>>(
+                json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            ) ?? Enumerable.Empty<Estado_Usuario>();
 
-            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
-            if (TempData["Error"] is string err) ViewBag.Error = err;
-
-            return View(estados);
+            return View(lista);
         }
 
-        // ---------------- CREAR ----------------
+        // ===== CREAR =====
         [HttpGet]
-        public IActionResult Crear() => View(new Estado_Usuario());
+        public IActionResult Crear() => View();
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(Estado_Usuario model)
         {
-            if (string.IsNullOrWhiteSpace(model.descripcion))
-            {
-                ModelState.AddModelError(nameof(Estado_Usuario.descripcion), "La descripción es obligatoria.");
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
             var client = _http.CreateClient("Api");
-            var json = JsonSerializer.Serialize(model);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonSerializer.Serialize(model), System.Text.Encoding.UTF8, "application/json");
+            var resp = await client.PostAsync(ESTADO_API, content);
 
-            var resp = await client.PostAsync("/api/Estado_Usuario", content);
-            if (!resp.IsSuccessStatusCode)
+            if (resp.IsSuccessStatusCode)
             {
-                var body = await resp.Content.ReadAsStringAsync();
-                ViewBag.ApiError = $"POST /api/Estado_Usuario -> {(int)resp.StatusCode} {resp.ReasonPhrase}. {body}";
-                return View(model);
+                TempData["Ok"] = "Estado creado correctamente.";
+                return RedirectToAction(nameof(Index));
             }
 
-            TempData["Ok"] = "Estado creado correctamente.";
-            return RedirectToAction(nameof(Index));
+            TempData["Error"] = $"Error al crear el estado: {resp.ReasonPhrase}";
+            return View(model);
         }
 
-        // ---------------- MODIFICAR ----------------
+        // ===== MODIFICAR =====
         [HttpGet]
         public async Task<IActionResult> Modificar(int id)
         {
             var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync($"/api/Estado_Usuario/{id}");
-
-            if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
+            var resp = await client.GetAsync($"{ESTADO_API}/{id}");
+            if (!resp.IsSuccessStatusCode)
             {
-                TempData["Error"] = "El estado no existe.";
+                TempData["Error"] = "No se pudo obtener el estado.";
                 return RedirectToAction(nameof(Index));
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<Estado_Usuario>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var model = JsonSerializer.Deserialize<Estado_Usuario>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            // ⚠️ si está en uso, mostramos alerta en la vista y/o bloqueamos en POST
-            ViewBag.EnUso = await EstadoEnUsoAsync(id);
+            if (model == null)
+            {
+                TempData["Error"] = "Estado inexistente.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // 🔒 igual que Rol: bloqueo antes de abrir vista
+            if (await EstadoEnUsoAsync(model.id_estadoUsuario))
+            {
+                TempData["Error"] = "El estado no puede ser modificado ni eliminado porque está en uso.";
+                return RedirectToAction(nameof(Index));
+            }
 
             return View(model);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Modificar(Estado_Usuario model)
         {
-            if (string.IsNullOrWhiteSpace(model.descripcion))
-            {
-                ModelState.AddModelError(nameof(Estado_Usuario.descripcion), "La descripción es obligatoria.");
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
-            // 🔒 Bloqueo duro si está en uso
+            var client = _http.CreateClient("Api");
+
+            // 🔒 revalidación
             if (await EstadoEnUsoAsync(model.id_estadoUsuario))
             {
-                TempData["Error"] = "No se puede modificar este estado porque está en uso.";
+                TempData["Error"] = "El estado no puede ser modificado ni eliminado porque está en uso.";
                 return RedirectToAction(nameof(Index));
             }
 
-            var client = _http.CreateClient("Api");
-            var json = JsonSerializer.Serialize(model);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var resp = await client.PutAsync($"/api/Estado_Usuario/{model.id_estadoUsuario}", content);
+            var content = new StringContent(JsonSerializer.Serialize(model), System.Text.Encoding.UTF8, "application/json");
+            var resp = await client.PutAsync($"{ESTADO_API}/{model.id_estadoUsuario}", content);
 
-            if (!resp.IsSuccessStatusCode)
+            if (resp.IsSuccessStatusCode)
             {
-                var body = await resp.Content.ReadAsStringAsync();
-                ViewBag.ApiError = $"PUT /api/Estado_Usuario/{model.id_estadoUsuario} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. {body}";
-                return View(model);
+                TempData["Ok"] = "Estado modificado correctamente.";
+                return RedirectToAction(nameof(Index));
             }
 
-            TempData["Ok"] = "Estado actualizado correctamente.";
+            TempData["Error"] = $"Error al modificar el estado: {resp.ReasonPhrase}";
             return RedirectToAction(nameof(Index));
         }
 
-        // ---------------- ELIMINAR ----------------
+        // ===== ELIMINAR =====
         [HttpGet]
         public async Task<IActionResult> Eliminar(int id)
         {
             var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync($"/api/Estado_Usuario/{id}");
-            if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
+            var resp = await client.GetAsync($"{ESTADO_API}/{id}");
+            if (!resp.IsSuccessStatusCode)
             {
-                TempData["Error"] = "El estado no existe o ya fue eliminado.";
+                TempData["Error"] = "No se pudo obtener el estado.";
                 return RedirectToAction(nameof(Index));
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<Estado_Usuario>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var model = JsonSerializer.Deserialize<Estado_Usuario>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            // ⚠️ Bloquear si está en uso (para ocultar botón Eliminar y mostrar aviso)
-            if (await EstadoEnUsoAsync(id))
+            if (model == null)
             {
-                ViewBag.Bloqueado = true;
-                ViewBag.Motivo = "está asignado a uno o más usuarios";
+                TempData["Error"] = "Estado inexistente.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // 🔒 igual que Rol
+            if (await EstadoEnUsoAsync(model.id_estadoUsuario))
+            {
+                TempData["Error"] = "El estado no puede ser modificado ni eliminado porque está en uso.";
+                return RedirectToAction(nameof(Index));
             }
 
             return View(model);
         }
 
-        [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
+        [HttpPost, ActionName("Eliminar")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EliminarConfirmado(int id)
         {
-            // 🔒 Revalidar por seguridad
+            var client = _http.CreateClient("Api");
+
+            // 🔒 revalidación
             if (await EstadoEnUsoAsync(id))
             {
-                TempData["Error"] = "No se puede eliminar este estado porque está en uso.";
-                return RedirectToAction(nameof(Eliminar), new { id });
+                TempData["Error"] = "El estado no puede ser modificado ni eliminado porque está en uso.";
+                return RedirectToAction(nameof(Index));
             }
 
-            var client = _http.CreateClient("Api");
-            var resp = await client.DeleteAsync($"/api/Estado_Usuario/{id}");
-
+            var resp = await client.DeleteAsync($"{ESTADO_API}/{id}");
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
-
-                if (resp.StatusCode == System.Net.HttpStatusCode.Conflict ||
-                    resp.StatusCode == System.Net.HttpStatusCode.BadRequest ||
-                    (int)resp.StatusCode == 422)
-                {
-                    TempData["Error"] = "No se puede eliminar este estado porque está en uso.";
-                    if (!string.IsNullOrWhiteSpace(body)) TempData["ApiDetail"] = body;
-                    return RedirectToAction(nameof(Eliminar), new { id });
-                }
-
-                TempData["Error"] = $"DELETE /api/Estado_Usuario/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}";
-                return RedirectToAction(nameof(Eliminar), new { id });
+                TempData["Error"] = $"DELETE {ESTADO_API}/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
+                return RedirectToAction(nameof(Index));
             }
 
             TempData["Ok"] = "Estado eliminado correctamente.";
