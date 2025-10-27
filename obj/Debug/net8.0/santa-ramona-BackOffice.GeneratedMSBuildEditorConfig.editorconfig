@@ -76,6 +76,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXNwZWNpZVxNb2RpZmljYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/EstadoPension/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvUGVuc2lvblxDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/EstadoPension/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvUGVuc2lvblxFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/EstadoPension/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvUGVuc2lvblxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/EstadoPension/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvUGVuc2lvblxNb2RpZmljYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/EstadoPersona/Crear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRvUGVyc29uYVxDcmVhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -146,6 +162,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Pension/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVuc2lvblxDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Pension/Detalle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVuc2lvblxEZXRhbGxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Pension/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVuc2lvblxFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Pension/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVuc2lvblxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Pension/Modificar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVuc2lvblxNb2RpZmljYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Persona/Crear.cshtml]
@@ -238,6 +274,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Shared/_AnimalTopNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BbmltYWxUb3BOYXYuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Shared/_PensionTopNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QZW5zaW9uVG9wTmF2LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Mis Proyectos/Final Back/BackOfficeCarli/Views/Shared/_PersonaTopNav.cshtml]
