@@ -1,0 +1,29 @@
+﻿@model SantaRamona.Backoffice.Models.Persona
+@{
+    ViewData["Title"] = "Eliminar persona";
+
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
+
+    string Txt(string? s) => string.IsNullOrWhiteSpace(s) ? "—" : s;
+    string Fecha(DateTime? f) => f.HasValue ? f.Value.ToString("yyyy-MM-dd") : "—";
+    string EstadoTxt(int? id) => (id.HasValue && estados.TryGetValue(id.Value, out var v)) ? v : "—";
+    string ProvTxt(int? id) => (id.HasValue && provincias.TryGetValue(id.Value, out var v)) ? v : "—";
+    string LocTxt(int? id) => (id.HasValue && localidades.TryGetValue(id.Value, out var v)) ? v : "—";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        ELIMINAR PERSONA
+    </h1>
+
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; borde

@@ -1,0 +1,109 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Persona>
+
+@{
+    ViewData["Title"] = "Listado de Personas";
+
+    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> dict, int? id)
+        => id.HasValue && dict.ContainsKey(id.Value) ? dict[id.Value] : "—";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        LISTADO DE PERSONAS
+    </h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.Error
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3cd; border:1px solid #ffeeba; color:#856404; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Crear" class="btn"
+           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            ➕ Agregar Persona
+        </a>
+    </div>
+
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-hover align-middle"
+               style="border-radius:12px; overflow:hidden;">
+            <thead style="background:#E6F6F5; color:#155e59;">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>DNI</th>
+                    <th>Provincia</th>
+                    <th>Localidad</th>
+                    <th>Estado</th>
+                    <th>Fecha Ingreso</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.id_persona</td>
+                            <td>@p.nombre</td>
+                            <td>@p.apellido</td>
+                            <td>@p.dni</td>
+                            <td>@Txt(provincias, p.id_provincia)</td>
+                            <td>@Txt(localidades, p.id_localidad)</td>
+                            <td>@Txt(estados, p.id_estadoPersona)</td>
+                            <td>@p.fechaIngreso.ToString("dd/MM/yyyy")</td>
+                            <td class="text-end">
+                                <a asp-action="Detalle" asp-route-id="@p.id_persona"
+                                   class="btn btn-sm"
+                                   style="background:#E6F6F5; color:#2FA8A2; border-radius:10px;">
+                                    👁 Ver
+                                </a>
+                                <a asp-action="Modificar" asp-route-id="@p.id_persona"
+                                   class="btn btn-sm"
+                                   style="background:#2FA8A2; color:#fff; border-radius:10px;">
+                                    ✏️ Editar
+                                </a>
+                                <a asp-action="Eliminar" asp-route-id="@p.id_persona"
+                                   class="btn btn-sm"
+                                   style="background:#d9534f; color:#fff; border-radius:10px;">
+                                    🗑 Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-3">
+                            No hay personas registradas.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

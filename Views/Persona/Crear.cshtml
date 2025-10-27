@@ -1,0 +1,248 @@
+﻿@model SantaRamona.Backoffice.Models.Persona
+@{
+    ViewData["Title"] = "Agregar nueva persona";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        AGREGAR NUEVA PERSONA
+    </h1>
+
+    @* Mensajes opcionales *@
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <a asp-action="Index" class="btn" style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver al listado</a>
+            <div class="d-flex gap-2">
+                <button type="submit" form="form-crear" class="btn"
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Guardar
+                </button>
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form id="form-crear" asp-action="Crear" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="row g-3">
+                    <!-- Identificación -->
+                    <div class="col-md-6">
+                        <label asp-for="nombre" class="form-label">Nombre</label>
+                        <input asp-for="nombre" class="form-control" />
+                        <span asp-validation-for="nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="apellido" class="form-label">Apellido</label>
+                        <input asp-for="apellido" class="form-control" />
+                        <span asp-validation-for="apellido" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="dni" class="form-label">DNI</label>
+                        <input asp-for="dni" class="form-control" type="text" inputmode="numeric"
+                               pattern="\d*" autocomplete="off" oninput="this.value=this.value.replace(/\D/g,'')" />
+                        <span asp-validation-for="dni" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                        <input asp-for="fechaNacimiento" class="form-control" type="date" />
+                        <span asp-validation-for="fechaNacimiento" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="email" class="form-label">Email</label>
+                        <input asp-for="email" class="form-control" placeholder="nombre@dominio.com" />
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Teléfonos -->
+                    <div class="col-md-4">
+                        <label asp-for="telefono1" class="form-label">Teléfono</label>
+                        <input asp-for="telefono1" class="form-control" />
+                        <span asp-validation-for="telefono1" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="telefono2" class="form-label">Teléfono</label>
+                        <input asp-for="telefono2" class="form-control" />
+                        <span asp-validation-for="telefono2" class="text-danger"></span>
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="col-md-4">
+                        <label asp-for="calle" class="form-label">Calle</label>
+                        <input asp-for="calle" class="form-control" />
+                        <span asp-validation-for="calle" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="altura" class="form-label">Altura</label>
+                        <input asp-for="altura" class="form-control" type="number" min="0" />
+                        <span asp-validation-for="altura" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="departamento" class="form-label">Departamento</label>
+                        <input asp-for="departamento" class="form-control" />
+                        <span asp-validation-for="departamento" class="text-danger"></span>
+                    </div>
+
+                    <!-- Provincia / Localidad -->
+                    <div class="col-md-6">
+                        <label class="form-label">Provincia</label>
+                        <select asp-for="id_provincia" asp-items="ViewBag.Provincia" class="form-select" id="id_provincia">
+                            <option value="">Seleccione provincia...</option>
+                        </select>
+                        <span asp-validation-for="id_provincia" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Localidad</label>
+                        <select asp-for="id_localidad" class="form-select" id="id_localidad">
+                            <option value="">Seleccione una provincia primero</option>
+                        </select>
+                        <span asp-validation-for="id_localidad" class="text-danger"></span>
+                    </div>
+
+                    <!-- Redes -->
+                    <div class="col-12">
+                        <label asp-for="redesSociales" class="form-label">Redes sociales</label>
+                        <input asp-for="redesSociales" class="form-control" placeholder="https://instagram.com/usuario (opcional)" />
+                        <span asp-validation-for="redesSociales" class="text-danger"></span>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="col-md-6">
+                        <label class="form-label">Estado</label>
+                        <select asp-for="id_estadoPersona" asp-items="ViewBag.Estados" class="form-select"></select>
+                        <span asp-validation-for="id_estadoPersona" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fechas -->
+                    <div class="col-md-3">
+                        <label asp-for="fechaIngreso" class="form-label">Fecha de ingreso</label>
+                        <input asp-for="fechaIngreso" class="form-control" type="date" />
+                        <span asp-validation-for="fechaIngreso" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="fechaEgreso" class="form-label">Fecha de egreso</label>
+                        <input asp-for="fechaEgreso" class="form-control" type="date" />
+                        <span asp-validation-for="fechaEgreso" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="motivoEgreso" class="form-label">Motivo de egreso</label>
+                        <textarea asp-for="motivoEgreso" rows="3" class="form-control" placeholder="(opcional)"></textarea>
+                        <span asp-validation-for="motivoEgreso" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-2"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        (function () {
+            var $prov = $("#id_provincia");
+            var $loc = $("#id_localidad");
+
+            function setLoading() {
+                $loc.empty().append(new Option("Cargando localidades...", ""));
+            }
+            function setEmpty() {
+                $loc.empty().append(new Option("Seleccione una provincia primero", ""));
+            }
+            function setNoData() {
+                $loc.empty().append(new Option("No hay localidades", ""));
+            }
+
+            function cargarLocalidades(idProvincia, selectedId) {
+                if (!idProvincia) { setEmpty(); return; }
+
+                setLoading();
+
+                // ✅ Usar el proxy MVC que filtra las localidades
+                var url = "@Url.Action("LocalidadesPorProvincia", "Persona")" + "?provinciaId=" + idProvincia;
+
+                $.getJSON(url)
+                    .done(function (data) {
+                        $loc.empty();
+                        if (!data || data.length === 0) {
+                            setNoData();
+                            return;
+                        }
+                        $loc.append(new Option("Seleccione localidad...", ""));
+                        data.forEach(function (l) {
+                            var opt = new Option(l.nombre, l.id_localidad);
+                            if (selectedId && Number(selectedId) === Number(l.id_localidad)) {
+                                opt.selected = true;
+                            }
+                            $loc.append(opt);
+                        });
+                    })
+                    .fail(function (xhr) {
+                        console.error("Error cargando localidades:", xhr);
+                        $loc.empty().append(new Option("Error al cargar localidades", ""));
+                    });
+            }
+
+            $prov.on("change", function () {
+                var provinciaId = $(this).val();
+                cargarLocalidades(provinciaId, null);
+            });
+
+            $(document).ready(function () {
+                var provinciaInicial = $prov.val();
+                var localidadInicial = $loc.val();
+                if (provinciaInicial) {
+                    cargarLocalidades(provinciaInicial, localidadInicial);
+                } else {
+                    setEmpty();
+                }
+            });
+        })();
+    </script>
+}
