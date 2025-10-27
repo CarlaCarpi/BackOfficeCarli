@@ -1,34 +1,103 @@
 ﻿using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SantaRamona.Backoffice.Models;
 
 namespace SantaRamona.Backoffice.Controllers
 {
-    //[Authorize(Roles = "Administrador")] // solo Admin accede a este módulo
+    // [Authorize(Roles = "Administrador")]
     public class UsuarioController : Controller
     {
         private readonly IHttpClientFactory _http;
         private const string ADMIN_ROLE_NAME = "administrador"; // comparar en lower
 
         public UsuarioController(IHttpClientFactory http) => _http = http;
+
+        // ===================== HELPERS (ROLES) =====================
+
         private async Task<bool> AsignarRolAsync(HttpClient client, int idUsuario, int idRol)
         {
-            // 1) Intento endpoint REST común
             var put = await client.PutAsync($"/api/Usuario/{idUsuario}/rol/{idRol}", null);
-            if (put.IsSuccessStatusCode) return true;
-
-            // 2) Fallback: POST a tabla puente
-            var payload = new { id_usuario = idUsuario, id_rol = idRol };
-            var json = System.Text.Json.JsonSerializer.Serialize(payload, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = null });
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            var post = await client.PostAsync("/api/Usuario_Rol", content);
-            return post.IsSuccessStatusCode;
+            return put.IsSuccessStatusCode;
         }
 
+        private async Task<int?> GetRolActualAsync(int idUsuario)
+        {
+            var client = _http.CreateClient("Api");
 
+            // a) /api/Usuario/{id}/roles (si existe)
+            var r1 = await client.GetAsync($"/api/Usuario/{idUsuario}/roles");
+            if (r1.IsSuccessStatusCode)
+            {
+                try
+                {
+                    var json1 = await r1.Content.ReadAsStringAsync();
+                    var roles1 = JsonSerializer.Deserialize<IEnumerable<Rol>>(json1,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Rol>();
+                    var rid1 = roles1.FirstOrDefault()?.id_rol;
+                    if (rid1.HasValue && rid1.Value > 0) return rid1.Value;
+                }
+                catch { /* seguimos probando */ }
+            }
+
+            // b) /api/Usuario_Rol?usuarioId={id} (si existe)
+            var r2 = await client.GetAsync($"/api/Usuario_Rol?usuarioId={idUsuario}");
+            if (r2.IsSuccessStatusCode)
+            {
+                try
+                {
+                    var json2 = await r2.Content.ReadAsStringAsync();
+                    var uroles = JsonSerializer.Deserialize<IEnumerable<Usuario_Rol>>(json2,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Usuario_Rol>();
+                    var rid2 = uroles.FirstOrDefault()?.id_rol;
+                    if (rid2 > 0) return rid2;
+                }
+                catch { }
+            }
+
+            // c) /api/Usuario_Rol/{id} (si existe)
+            var r3 = await client.GetAsync($"/api/Usuario_Rol/{idUsuario}");
+            if (r3.IsSuccessStatusCode)
+            {
+                try
+                {
+                    var json3 = await r3.Content.ReadAsStringAsync();
+
+                    // puede venir un objeto o una lista
+                    var uno = JsonSerializer.Deserialize<Usuario_Rol>(json3,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    if (uno != null && uno.id_rol > 0) return uno.id_rol;
+
+                    var lista = JsonSerializer.Deserialize<IEnumerable<Usuario_Rol>>(json3,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Usuario_Rol>();
+                    var rid3 = lista.FirstOrDefault()?.id_rol;
+                    if (rid3 > 0) return rid3;
+                }
+                catch { }
+            }
+
+            return null;
+        }
+
+        private async Task<bool> EsAdministradorAsync(int idUsuario)
+        {
+            var rid = await GetRolActualAsync(idUsuario);
+            if (rid is null || rid <= 0) return false;
+
+            var client = _http.CreateClient("Api");
+            var resp = await client.GetAsync("/api/Rol");
+            if (!resp.IsSuccessStatusCode) return false;
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var roles = JsonSerializer.Deserialize<IEnumerable<Rol>>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Rol>();
+
+            var desc = roles.FirstOrDefault(r => r.id_rol == rid)?.descripcion ?? string.Empty;
+            return desc.Trim().ToLower() == ADMIN_ROLE_NAME;
+        }
 
         // ===================== INDEX =====================
         [HttpGet]
@@ -56,6 +125,36 @@ namespace SantaRamona.Backoffice.Controllers
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
             if (TempData["Error"] is string err) ViewBag.Error = err;
 
+            // --- Mapeo usuario -> nombre de rol para la grilla ---
+            try
+            {
+                var client2 = _http.CreateClient("Api");
+
+                var respRoles = await client2.GetAsync("/api/Rol");
+                var dictRoles = new Dictionary<int, string>();
+                if (respRoles.IsSuccessStatusCode)
+                {
+                    var jr = await respRoles.Content.ReadAsStringAsync();
+                    var roles = JsonSerializer.Deserialize<IEnumerable<Rol>>(jr,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Rol>();
+                    dictRoles = roles.ToDictionary(r => r.id_rol, r => r.descripcion ?? $"#{r.id_rol}");
+                }
+
+                var rolPorUsuario = new Dictionary<int, string>();
+                foreach (var u in usuarios)
+                {
+                    var rid = await GetRolActualAsync(u.id_usuario);
+                    rolPorUsuario[u.id_usuario] = (rid.HasValue && rid.Value > 0 && dictRoles.ContainsKey(rid.Value))
+                        ? dictRoles[rid.Value]
+                        : "-";
+                }
+                ViewBag.RolPorUsuario = rolPorUsuario;
+            }
+            catch
+            {
+                ViewBag.RolPorUsuario = new Dictionary<int, string>();
+            }
+
             return View(usuarios);
         }
 
@@ -65,7 +164,6 @@ namespace SantaRamona.Backoffice.Controllers
         {
             await CargarSelects();
             return View(new Usuario());
-
         }
 
         [HttpPost]
@@ -73,24 +171,30 @@ namespace SantaRamona.Backoffice.Controllers
         public async Task<IActionResult> Crear(Usuario model)
         {
             if (model.fechaAlta == default) model.fechaAlta = DateTime.Now;
-            var client = _http.CreateClient("Api");
 
-            var json = System.Text.Json.JsonSerializer.Serialize(model, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = null });
+            var client = _http.CreateClient("Api");
+            var json = JsonSerializer.Serialize(model, new JsonSerializerOptions { PropertyNamingPolicy = null });
             var resp = await client.PostAsync("/api/Usuario", new StringContent(json, Encoding.UTF8, "application/json"));
-            if (!resp.IsSuccessStatusCode) { TempData["Error"] = "Error al crear usuario."; return View(model); }
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Error al crear usuario.";
+                await CargarSelects(model.id_estadoUsuario, model.id_rol);
+                return View(model);
+            }
 
             var body = await resp.Content.ReadAsStringAsync();
-            var creado = System.Text.Json.JsonSerializer.Deserialize<Usuario>(body, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            if (model.id_rol.HasValue && model.id_rol.Value > 0 && creado?.id_usuario > 0)
+            var creado = JsonSerializer.Deserialize<Usuario>(body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (model.id_rol.HasValue && model.id_rol.Value > 0 && (creado?.id_usuario ?? 0) > 0)
             {
-                var ok = await AsignarRolAsync(client, creado.id_usuario, model.id_rol.Value);
+                var ok = await AsignarRolAsync(client, creado!.id_usuario, model.id_rol.Value);
                 if (!ok) TempData["Error"] = "Usuario creado, pero no se pudo asignar el rol.";
             }
+
             if (TempData["Error"] == null) TempData["Ok"] = "Usuario creado correctamente.";
             return RedirectToAction(nameof(Index));
         }
-
-
 
         // ===================== DETALLE (MODAL) =====================
         [HttpGet]
@@ -99,8 +203,6 @@ namespace SantaRamona.Backoffice.Controllers
             var client = _http.CreateClient("Api");
             var resp = await client.GetAsync($"/api/usuario/{id}");
             if (!resp.IsSuccessStatusCode) return NotFound();
-
-
 
             var json = await resp.Content.ReadAsStringAsync();
             var model = JsonSerializer.Deserialize<Usuario>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -140,7 +242,7 @@ namespace SantaRamona.Backoffice.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // rol actual (si tu API devuelve varios, tomamos el primero)
+            // rol actual (si API devuelve varios, tomamos el primero)
             model.id_rol = await GetRolActualAsync(model.id_usuario);
 
             await CargarSelects(model.id_estadoUsuario, model.id_rol);
@@ -156,22 +258,27 @@ namespace SantaRamona.Backoffice.Controllers
         public async Task<IActionResult> Modificar(Usuario model)
         {
             if (model.fechaAlta == default) model.fechaAlta = DateTime.Now;
-            var client = _http.CreateClient("Api");
 
-            var json = System.Text.Json.JsonSerializer.Serialize(model, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = null });
+            var client = _http.CreateClient("Api");
+            var json = JsonSerializer.Serialize(model, new JsonSerializerOptions { PropertyNamingPolicy = null });
             var resp = await client.PutAsync($"/api/Usuario/{model.id_usuario}", new StringContent(json, Encoding.UTF8, "application/json"));
-            if (!resp.IsSuccessStatusCode) { TempData["Error"] = "Error al modificar usuario."; return View(model); }
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Error al modificar usuario.";
+                await CargarSelects(model.id_estadoUsuario, model.id_rol);
+                return View(model);
+            }
 
             if (model.id_rol.HasValue && model.id_rol.Value > 0)
             {
                 var ok = await AsignarRolAsync(client, model.id_usuario, model.id_rol.Value);
                 if (!ok) TempData["Error"] = "Usuario modificado, pero no se pudo actualizar el rol.";
             }
+
             if (TempData["Error"] == null) TempData["Ok"] = "Usuario modificado correctamente.";
             return RedirectToAction(nameof(Index));
         }
-
-
 
         // ===================== ELIMINAR =====================
         [HttpGet]
@@ -241,32 +348,7 @@ namespace SantaRamona.Backoffice.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ===================== HELPERS =====================
-        private async Task<bool> EsAdministradorAsync(int idUsuario)
-        {
-            var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync($"/api/Usuario/{idUsuario}/roles"); // ajustá si difiere
-            if (!resp.IsSuccessStatusCode) return false;
-
-            var json = await resp.Content.ReadAsStringAsync();
-            var roles = JsonSerializer.Deserialize<IEnumerable<Rol>>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Rol>();
-
-            return roles.Any(r => (r.descripcion ?? string.Empty).Trim().ToLower() == ADMIN_ROLE_NAME);
-        }
-
-        private async Task<int?> GetRolActualAsync(int idUsuario)
-        {
-            var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync($"/api/Usuario/{idUsuario}/roles"); // ajustá si difiere
-            if (!resp.IsSuccessStatusCode) return null;
-
-            var json = await resp.Content.ReadAsStringAsync();
-            var roles = JsonSerializer.Deserialize<IEnumerable<Rol>>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Rol>();
-
-            return roles.FirstOrDefault()?.id_rol;
-        }
+        // ===================== HELPERS (SELECTS / DICCIONARIOS) =====================
 
         private async Task CargarSelects(int? estadoSel = null, int? rolSel = null)
         {

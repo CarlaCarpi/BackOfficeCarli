@@ -1,98 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\",
+  "WorkspaceRootPath": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\estadopersona\\eliminar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\estadopersona\\eliminar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\magal\\source\\repos\\santaramona\\backofficecarly\\backofficecarli\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\persona\\eliminar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\persona\\eliminar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\estadopersona\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\estadopersona\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\estadopersona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\estadopersona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\estadopersona\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\estadopersona\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\persona\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\persona\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\persona\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\persona\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\models\\persona.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\persona.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\persona\\detalle.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\persona\\detalle.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\persona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\magal\\source\\repos\\santaramona\\backofficecarly\\backofficecarli\\views\\persona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\persona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\personacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\magal\\source\\repos\\santaramona\\backofficecarly\\backofficecarli\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\users\\magal\\source\\repos\\santaramona\\backofficecarly\\backofficecarli\\controllers\\personacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\personacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\formulariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\formulariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\models\\localidad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\localidad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\models\\estado_persona.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\estado_persona.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\provinciacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\provinciacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\localidadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\localidadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\models\\provincia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\provincia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\animalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\animalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\estadopersona.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\estadopersona.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\.gitignore.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:.gitignore.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\shared\\_personatopnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\shared\\_personatopnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -102,70 +26,44 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Crear.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPersona\\Crear.cshtml",
-              "RelativeDocumentMoniker": "Views\\EstadoPersona\\Crear.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPersona\\Crear.cshtml",
-              "RelativeToolTip": "Views\\EstadoPersona\\Crear.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T01:00:31.086Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Eliminar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPersona\\Eliminar.cshtml",
-              "RelativeDocumentMoniker": "Views\\EstadoPersona\\Eliminar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPersona\\Eliminar.cshtml",
-              "RelativeToolTip": "Views\\EstadoPersona\\Eliminar.cshtml",
-              "ViewState": "AgIAAE4AAAAAAAAAAAAAAFkAAABJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T01:00:55.161Z",
+              "Title": "UsuarioController.cs",
+              "DocumentMoniker": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\Controllers\\UsuarioController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsuarioController.cs",
+              "ToolTip": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\Controllers\\UsuarioController.cs",
+              "RelativeToolTip": "Controllers\\UsuarioController.cs",
+              "ViewState": "AgIAAHoBAAAAAAAAAAAmwJ0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T16:13:12.503Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Modificar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPersona\\Modificar.cshtml",
-              "RelativeDocumentMoniker": "Views\\EstadoPersona\\Modificar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPersona\\Modificar.cshtml",
-              "RelativeToolTip": "Views\\EstadoPersona\\Modificar.cshtml",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAMAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T01:00:42.915Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Estado_Persona.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Estado_Persona.cs",
-              "RelativeDocumentMoniker": "Models\\Estado_Persona.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Estado_Persona.cs",
-              "RelativeToolTip": "Models\\Estado_Persona.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T00:43:53.758Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
               "Title": "PersonaController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\PersonaController.cs",
+              "DocumentMoniker": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\Controllers\\PersonaController.cs",
               "RelativeDocumentMoniker": "Controllers\\PersonaController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\PersonaController.cs",
+              "ToolTip": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\Controllers\\PersonaController.cs",
               "RelativeToolTip": "Controllers\\PersonaController.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAAAAAIAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -173,223 +71,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Persona.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Persona.cs",
-              "RelativeDocumentMoniker": "Models\\Persona.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Persona.cs",
-              "RelativeToolTip": "Models\\Persona.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T00:24:45.085Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Eliminar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Eliminar.cshtml",
-              "RelativeDocumentMoniker": "Views\\Persona\\Eliminar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Eliminar.cshtml",
-              "RelativeToolTip": "Views\\Persona\\Eliminar.cshtml",
-              "ViewState": "AgIAAKQAAAAAAAAAAAAAALEAAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T00:59:27.814Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Persona\\Index.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Index.cshtml",
-              "RelativeToolTip": "Views\\Persona\\Index.cshtml",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAAAFQAAABYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T00:25:09.577Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "FormularioController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\FormularioController.cs",
-              "RelativeDocumentMoniker": "Controllers\\FormularioController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\FormularioController.cs",
-              "RelativeToolTip": "Controllers\\FormularioController.cs",
-              "ViewState": "AgIAAMoAAAAAAAAAAADwvyQAAAA7AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T01:49:51.707Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPersona\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\EstadoPersona\\Index.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPersona\\Index.cshtml",
-              "RelativeToolTip": "Views\\EstadoPersona\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAABeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T01:00:03.743Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Provincia.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Provincia.cs",
-              "RelativeDocumentMoniker": "Models\\Provincia.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Provincia.cs",
-              "RelativeToolTip": "Models\\Provincia.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T01:21:44.104Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
               "Title": "Modificar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Modificar.cshtml",
+              "DocumentMoniker": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\Views\\Persona\\Modificar.cshtml",
               "RelativeDocumentMoniker": "Views\\Persona\\Modificar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Modificar.cshtml",
+              "ToolTip": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\Views\\Persona\\Modificar.cshtml",
               "RelativeToolTip": "Views\\Persona\\Modificar.cshtml",
               "ViewState": "AgIAAL0AAAAAAAAAAAAwwOgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T00:59:14.324Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Crear.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Crear.cshtml",
-              "RelativeDocumentMoniker": "Views\\Persona\\Crear.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Crear.cshtml",
-              "RelativeToolTip": "Views\\Persona\\Crear.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T00:54:30.401Z",
+              "WhenOpened": "2025-10-27T00:59:14.324Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Detalle.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Detalle.cshtml",
-              "RelativeDocumentMoniker": "Views\\Persona\\Detalle.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Detalle.cshtml",
-              "RelativeToolTip": "Views\\Persona\\Detalle.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T00:59:39.422Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Localidad.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Localidad.cs",
-              "RelativeDocumentMoniker": "Models\\Localidad.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Localidad.cs",
-              "RelativeToolTip": "Models\\Localidad.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\Models\\Usuario.cs",
+              "RelativeDocumentMoniker": "Models\\Usuario.cs",
+              "ToolTip": "C:\\Users\\magal\\source\\repos\\SantaRamona\\BackOfficeCarly\\BackOfficeCarli\\Models\\Usuario.cs",
+              "RelativeToolTip": "Models\\Usuario.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAiwGMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T01:22:02.236Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "LocalidadController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\LocalidadController.cs",
-              "RelativeDocumentMoniker": "Controllers\\LocalidadController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\LocalidadController.cs",
-              "RelativeToolTip": "Controllers\\LocalidadController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAwwCoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T01:22:34.246Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "ProvinciaController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\ProvinciaController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ProvinciaController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\ProvinciaController.cs",
-              "RelativeToolTip": "Controllers\\ProvinciaController.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAwwCcAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T01:22:51.473Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "DbContext.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Data\\DbContext.cs",
-              "RelativeDocumentMoniker": "Data\\DbContext.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Data\\DbContext.cs",
-              "RelativeToolTip": "Data\\DbContext.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAQwBgAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T01:34:31.66Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "AnimalController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\AnimalController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AnimalController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\AnimalController.cs",
-              "RelativeToolTip": "Controllers\\AnimalController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAA1wAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T00:47:13.835Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": ".gitignore.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\.gitignore.cshtml",
-              "RelativeDocumentMoniker": ".gitignore.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\.gitignore.cshtml",
-              "RelativeToolTip": ".gitignore.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T00:34:00.738Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "EstadoPersona.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\EstadoPersona.cs",
-              "RelativeDocumentMoniker": "Controllers\\EstadoPersona.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\EstadoPersona.cs",
-              "RelativeToolTip": "Controllers\\EstadoPersona.cs",
-              "ViewState": "AgIAALwAAAAAAAAAAAAswOYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T00:27:28.745Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "_PersonaTopNav.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Shared\\_PersonaTopNav.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_PersonaTopNav.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Shared\\_PersonaTopNav.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_PersonaTopNav.cshtml",
-              "ViewState": "AgIAADkAAAAAAAAAAAAAAD0AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T00:28:46.836Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACcAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T00:24:27.346Z"
+              "WhenOpened": "2025-10-27T16:11:39.365Z",
+              "EditorCaption": ""
             }
           ]
         }
