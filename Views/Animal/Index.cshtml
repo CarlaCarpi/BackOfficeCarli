@@ -1,9 +1,6 @@
 ﻿@model IEnumerable<SantaRamona.Backoffice.Models.Animal>
 @{
     await Html.RenderPartialAsync("_AnimalTopNav");
-}
-
-@{
     ViewData["Title"] = "Lista de Animales";
 
     var especies = ViewBag.Especies as Dictionary<int, string> ?? new();
@@ -12,7 +9,10 @@
     var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
 
     string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
-    string EdadTxt(int m) => m < 12 ? $"{m} {(m == 1 ? "mes" : "meses")}" : $"{m / 12} {((m / 12) == 1 ? "año" : "años")}";
+    string EdadTxt(int valor, string unidad) =>
+        unidad == "M"
+            ? $"{valor} {(valor == 1 ? "mes" : "meses")}"
+            : $"{valor} {(valor == 1 ? "año" : "años")}";
 }
 
 <div class="container mt-4">
@@ -35,7 +35,6 @@
         </div>
     }
 
-    <!-- Botón afuera del card, alineado a la derecha -->
     <div class="d-flex justify-content-end mt-3">
         <a asp-action="Crear" class="btn"
            style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
@@ -47,7 +46,6 @@
         <div class="card-body p-0">
             <table class="table mb-0">
                 <thead>
-                    <!-- Encabezado turquesa con letras blancas -->
                     <tr style="background:#2FA8A2; color:#fff;">
                         <th style="border-top-left-radius:10px;">Código</th>
                         <th>Nombre</th>
@@ -67,7 +65,7 @@
                             <tr>
                                 <td>@item.id_animal</td>
                                 <td>@item.nombre</td>
-                                <td>@item.edad @((item.edad == 1) ? "año" : "años")</td>
+                                <td>@EdadTxt(item.edadValor, item.edadUnidad)</td>
                                 <td>@Txt(especies, item.id_especie)</td>
                                 <td>@Txt(razas, item.id_raza)</td>
                                 <td>@Txt(tamanos, item.id_tamano)</td>
@@ -105,6 +103,7 @@
             </table>
         </div>
     </div>
+
     <!-- Modal Detalle -->
     <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -114,7 +113,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body" id="modalDetalleBody">
-                    <!-- El partial _DetalleAnimal se carga acá -->
+                    <!-- La vista parcial DetalleAnimal.cshtml se carga acá -->
                 </div>
             </div>
         </div>
@@ -123,7 +122,6 @@
     @section Scripts {
         <script>
             (() => {
-              // Url base generada por MVC (ej: /Animal/Detalle)
               const baseUrl = '@Url.Action("Detalle", "Animal")';
 
               document.addEventListener('click', async (ev) => {
@@ -142,7 +140,6 @@
 
                   document.getElementById('modalDetalleBody').innerHTML = html;
 
-                  // Abrir modal (Bootstrap 5)
                   const modal = new bootstrap.Modal(document.getElementById('modalDetalle'));
                   modal.show();
                 } catch (err) {

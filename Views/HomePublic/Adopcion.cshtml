@@ -1,181 +1,86 @@
-﻿@using System.Text.Json
+﻿
+@section Styles {
+    <link rel="stylesheet" href="~/css/adopcion.css" asp-append-version="true" />
+    }
+
+@model IEnumerable<SantaRamona.Backoffice.Models.Animal>
+
+
 @{
     ViewData["Title"] = "Adopcion";
     Layout = "~/Views/Shared/Layout1.cshtml";
 
-    var perros = new[]
-    {
-        new { Id = 1, Nombre="Luna", Raza="Labrador", Img="/images/adoptados/Labrador.luna.jpg" },
-        new { Id = 2, Nombre="Max", Raza="Beagle", Img="/images/adoptados/Beagle.max.jpg" },
-        new { Id = 3, Nombre="Onix", Raza="Caniche", Img="/images/adoptados/Caniche.onix.jpg" },
-        new { Id = 4, Nombre="Toby", Raza="Caniche", Img="/images/adoptados/Caniche.toby.jpg" },
-        new { Id = 5, Nombre="Coco", Raza="Caniche", Img="/images/adoptados/Caniche.coco.jpeg" },
-        new { Id = 6, Nombre="Rocco", Raza="Mestizo", Img="/images/adoptados/Mestizo.rocco.jpeg" },
-        new { Id = 7, Nombre="Maya", Raza="Mestizo", Img="/images/adoptados/Mestizo.maya.jpeg" },
-        new { Id = 8, Nombre="Simba", Raza="Mestizo", Img="/images/adoptados/Mestizo.simba.jpeg" },
-        new { Id = 9, Nombre="Iris", Raza="Mestizo", Img="/images/adoptados/Mestizo.iris.jpeg" },
-        new { Id = 10, Nombre="Odin", Raza="Mestizo", Img="/images/adoptados/Mestizo.odin.jpeg" }
-    };
+
+
+
+    var especies = ViewBag.Especies as Dictionary<int, string> ?? new();
+    var razas = ViewBag.Razas as Dictionary<int, string> ?? new();
+    var tamanos = ViewBag.Tamanos as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
+    string EdadTxt(int m) => m < 12 ? $"{m} {(m == 1 ? "mes" : "meses")}" : $"{m / 12} {((m / 12) == 1 ? "año" : "años")}";
 }
-
-
-@section Styles {
-    <link rel="stylesheet" href="~/css/adopcion.css" asp-append-version="true" />
-    }
 
 <h1>Adoptar</h1>
 <p>Selecciona un perro para ver más información:</p>
 
 <div class="pets-grid" id="petsGrid"></div>
 
-<div class="pagination-container">
-    <div class="pagination" style="margin-top: 20px; text-align: center;">
-        <button id="prevPageBtn">◄ Página anterior</button>
-        <span id="pageInfo" style="margin: 0 10px;"></span>
-        <button id="nextPageBtn">Siguiente página ►</button>
+@{
+    // Filtramos solo los animales con estado = 2
+    var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 2).ToList();
+}
+
+@if (animalesEnAdopcion != null && animalesEnAdopcion.Any())
+{
+    <div class="pets-grid" id="petsGrid">
+        @foreach (var item in animalesEnAdopcion)
+        {
+            <div class="pet-card">
+
+                        
+                @if (item.imagen != null && item.imagen.Length > 0)
+                {
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.imagen)" alt="Imagen de @item.nombre"/>
+                }
+                else
+                {
+                    <span>Sin imagen</span>
+                }
+                     
+                
+
+                <h3>@item.nombre</h3>
+               <!--
+                                <p><strong>Especie:</strong> @Txt(especies, item.id_especie)</p>
+                 <p><strong>Raza:</strong> @Txt(razas, item.id_raza)</p>
+                 <p><strong>Tamaño:</strong> @Txt(tamanos, item.id_tamano)</p>
+                 <p><strong>Estado:</strong> @Txt(estados, item.id_estadoAnimal)</p>
+               --> 
+
+            </div>
+        }
     </div>
-</div>
-
-<!--
-<style>
-    .pets-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        justify-content: center; /* Centra las tarjetas horizontalmente */
-    }
-
-    .pet-card {
-        width: 400px;
-        height: 400px;
-        border-radius: 10px;
-        background-color: #ffffff;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        text-align: center;
-        padding: 5px;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        overflow: hidden;
-        text-decoration: none;
-        color: inherit;
-    }
-
-        .pet-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-        }
-
-        .pet-card img {
-            width: 70%;
-            height: 360px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-bottom: 5px;
-        }
-
-    .pet-info {
-        font-family: Nunito, sans-serif;
-        font-weight: 800;
-        font-size: 20px;
-        margin-bottom: 6px;
-    }
-
-    /*----------------*/
-
-    h1 {
-        text-align: center;
-        color: #C23A79;
-        font-size: 2rem;
-        margin-bottom: 20px;
-        font-weight: 800;
-    }
-
-    p {
-        text-align: center;
-    }
-
-    .pagination button {
-        background-color: #2DB8B5;
-        color: white;
-        border: none;
-        padding: 10px 18px;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-        .pagination button:hover {
-            background-color: #2DB8B5;
-            transform: translateY(-2px);
-        }
-
-        .pagination button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
+}
+else
+{
+    <div class="pet-no">
+        No hay animales en adopción.
+    </div>
+}
 
 
-</style>
-<!-- fin adopcion -->
 
-<script>
-    // Convertimos la lista C# a JS usando System.Text.Json
-    const pets = @Html.Raw(JsonSerializer.Serialize(perros));
-    const petsPerPage = 6; // 6 o 12 para que quede bien
-    let currentPage = 1;
-
-    const petsGrid = document.getElementById('petsGrid');
-    const pageInfo = document.getElementById('pageInfo');
-    const prevBtn = document.getElementById('prevPageBtn');
-    const nextBtn = document.getElementById('nextPageBtn');
-
-    function renderPets() {
-        petsGrid.innerHTML = '';
-
-        const start = (currentPage - 1) * petsPerPage;
-        const end = start + petsPerPage;
-        const pagePets = pets.slice(start, end);
-
-        pagePets.forEach(pet => {
-            const card = document.createElement('a');
-            card.href = `@Url.Action("InfoAdopcion", "HomePublic")/${pet.Id}?page=${currentPage}`;
-            card.className = 'pet-card';
-            card.innerHTML = `
-                <img src="${pet.Img}" alt="${pet.Nombre}">
-                <div class="pet-info">${pet.Nombre}</div>
-            `;
-            petsGrid.appendChild(card);
-        });
-
-        const totalPages = Math.ceil(pets.length / petsPerPage);
-        pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
-
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages;
-    }
-
-    prevBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            renderPets();
-        }
-    });
-
-    nextBtn.addEventListener('click', () => {
-        const totalPages = Math.ceil(pets.length / petsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderPets();
-        }
-    });
-
-    renderPets();
-</script>
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="pagination-container">
+        <div class="pagination" style="margin-top: 20px; text-align: center;">
+            <button id="prevPageBtn">◄ Página anterior</button>
+            <span id="pageInfo" style="margin: 0 10px;">
+                Página @ViewBag.CurrentPage de @ViewBag.TotalPages
+            </span>
+            <button id="nextPageBtn">Siguiente página ►</button>
+        </div>
+    </div>
+}

@@ -1,50 +1,12 @@
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\appsettings.Development.json
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\appsettings.json
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\santa-ramona-BackOffice.staticwebassets.runtime.json
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\santa-ramona-BackOffice.staticwebassets.endpoints.json
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\santa-ramona-BackOffice.exe
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\santa-ramona-BackOffice.deps.json
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\santa-ramona-BackOffice.runtimeconfig.json
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\santa-ramona-BackOffice.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\santa-ramona-BackOffice.pdb
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.csproj.AssemblyReference.cache
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.GeneratedMSBuildEditorConfig.editorconfig
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.AssemblyInfoInputs.cache
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.AssemblyInfo.cs
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.csproj.CoreCompileInputs.cache
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.MvcApplicationPartsAssemblyInfo.cache
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.RazorAssemblyInfo.cache
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.RazorAssemblyInfo.cs
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\scopedcss\bundle\santa-ramona-BackOffice.styles.css
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\scopedcss\projectbundle\santa-ramona-BackOffice.bundle.scp.css
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets.build.json
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets.development.json
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets\msbuild.santa-ramona-BackOffice.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets\msbuild.santa-ramona-BackOffice.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets\msbuild.build.santa-ramona-BackOffice.props
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.santa-ramona-BackOffice.props
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.santa-ramona-BackOffice.props
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ra.20A96BF5.Up2Date
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\refint\santa-ramona-BackOffice.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.pdb
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\santa-ramona-BackOffice.genruntimeconfig.cache
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\ref\santa-ramona-BackOffice.dll
-C:\Mis Proyectos\santa-ramona-BackOffice\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.csproj.AssemblyReference.cache
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.AssemblyInfoInputs.cache
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.AssemblyInfo.cs
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.csproj.CoreCompileInputs.cache
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.RazorAssemblyInfo.cache
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.RazorAssemblyInfo.cs
+C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.sourcelink.json
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\bin\Debug\net8.0\appsettings.json
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\bin\Debug\net8.0\santa-ramona-BackOffice.staticwebassets.runtime.json
@@ -65,15 +27,6 @@ C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ram
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.csproj.AssemblyReference.cache
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.AssemblyInfoInputs.cache
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.AssemblyInfo.cs
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.csproj.CoreCompileInputs.cache
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.RazorAssemblyInfo.cache
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.RazorAssemblyInfo.cs
-C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.sourcelink.json
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\scopedcss\bundle\santa-ramona-BackOffice.styles.css
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\scopedcss\projectbundle\santa-ramona-BackOffice.bundle.scp.css
@@ -93,51 +46,3 @@ C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ram
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.pdb
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.genruntimeconfig.cache
 C:\Users\Atila\Documents\pri facu\3º año - 2º cuatri\programacion 6\Santa Ramona- Union\BackOfficeCarli\obj\Debug\net8.0\ref\santa-ramona-BackOffice.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\appsettings.Development.json
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\appsettings.json
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\santa-ramona-BackOffice.staticwebassets.runtime.json
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\santa-ramona-BackOffice.staticwebassets.endpoints.json
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\santa-ramona-BackOffice.exe
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\santa-ramona-BackOffice.deps.json
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\santa-ramona-BackOffice.runtimeconfig.json
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\santa-ramona-BackOffice.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\santa-ramona-BackOffice.pdb
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
-C:\FrontyBackoffice\BackOfficeCarli\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.csproj.AssemblyReference.cache
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.GeneratedMSBuildEditorConfig.editorconfig
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.AssemblyInfoInputs.cache
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.AssemblyInfo.cs
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.csproj.CoreCompileInputs.cache
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.MvcApplicationPartsAssemblyInfo.cache
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.RazorAssemblyInfo.cache
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.RazorAssemblyInfo.cs
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.sourcelink.json
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\scopedcss\bundle\santa-ramona-BackOffice.styles.css
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\scopedcss\projectbundle\santa-ramona-BackOffice.bundle.scp.css
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets.build.json
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets.development.json
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets\msbuild.santa-ramona-BackOffice.Microsoft.AspNetCore.StaticWebAssets.props
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets\msbuild.santa-ramona-BackOffice.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets\msbuild.build.santa-ramona-BackOffice.props
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.santa-ramona-BackOffice.props
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.santa-ramona-BackOffice.props
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets.pack.json
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ra.20A96BF5.Up2Date
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.dll
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\refint\santa-ramona-BackOffice.dll
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.pdb
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\santa-ramona-BackOffice.genruntimeconfig.cache
-C:\FrontyBackoffice\BackOfficeCarli\obj\Debug\net8.0\ref\santa-ramona-BackOffice.dll

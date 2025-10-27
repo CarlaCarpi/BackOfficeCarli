@@ -1,0 +1,109 @@
+﻿@model SantaRamona.Backoffice.Models.Tamano
+@{
+    ViewData["Title"] = "Modificar tamaño";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        MODIFICAR TAMAÑO
+    </h1>
+
+    @* Avisos arriba, como en Especie *@
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3"
+             role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3"
+             role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <strong>Datos del Tamaño</strong>
+        </div>
+
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="Index" class="btn"
+                   style="border:1px solid #2FA8A2; color:#2FA8A2; border-radius:10px;">
+                    ← Volver al listado
+                </a>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" form="form-edit" class="btn"
+                            style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+                        Guardar
+                    </button>
+                    <button type="button" id="btn-cancelar" class="btn"
+                            style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <form id="form-edit" asp-action="Modificar" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                @* hidden para el id que espera el controller *@
+                <input type="hidden" asp-for="id_tamano" name="id_tamano" />
+
+                <div class="mb-3">
+                    <label asp-for="tamano" class="form-label fw-semibold">Descripción</label>
+                    <input asp-for="tamano" class="form-control"
+                           style="border:1px solid #2FA8A2; border-radius:10px; height:44px;" />
+                    <span asp-validation-for="tamano" class="text-danger"></span>
+                </div>
+            </form>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirmación Cancelar -->
+<div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:14px;">
+            <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                <h5 class="modal-title">Cancelar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" style="color:#000;">
+                ¿Realmente desea cancelar?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn"
+                        style="background:#2FA8A2; color:#fff; border-radius:10px;"
+                        data-bs-dismiss="modal">
+                    No
+                </button>
+                <a asp-action="Index" class="btn"
+                   style="background:#2FA8A2; color:#fff; border-radius:10px;">Sí</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const cancelBtn = document.getElementById('btn-cancelar');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function () {
+                    const modal = new bootstrap.Modal(document.getElementById('confirmCancelModal'));
+                    modal.show();
+                });
+            }
+        })();
+    </script>
+}

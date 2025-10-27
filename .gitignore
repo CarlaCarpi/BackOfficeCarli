@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Archivos de Visual Studio
 .vs/
 *.suo
@@ -21,3 +22,25 @@ node_modules/
 
 # Otros
 .env
+=======
+# Ignorar cache de VS y builds
+.vs/
+bin/
+obj/
+
+# Visual Studio / .NET
+*.user
+*.suo
+*.cache
+*.log
+*.v2
+*.vsidx
+
+# Publicaciones/artefactos
+*.dll
+*.exe
+*.pdb
+
+# Config locales (opcional)
+appsettings.Development.json
+>>>>>>> origin/main

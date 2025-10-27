@@ -1,0 +1,168 @@
+﻿@model SantaRamona.Backoffice.Models.Animal
+@{
+    ViewData["Title"] = "Agregar nuevo animal";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        AGREGAR NUEVO ANIMAL
+    </h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <a asp-action="Index" class="btn" style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver al listado</a>
+            <div class="d-flex gap-2">
+                <button type="submit" form="form-crear" class="btn"
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Guardar
+                </button>
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form id="form-crear" asp-action="Crear" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <div class="row g-3">
+
+                    <!-- Nombre -->
+                    <div class="col-md-6">
+                        <label asp-for="nombre" class="form-label">Nombre</label>
+                        <input asp-for="nombre" class="form-control" />
+                        <span asp-validation-for="nombre" class="text-danger"></span>
+                    </div>
+
+                    <!-- Sexo -->
+                    <div class="col-md-6">
+                        <label asp-for="sexo" class="form-label">Sexo</label>
+                        <select asp-for="sexo" class="form-select">
+                            <option value="">Seleccione...</option>
+                            <option value="M">Macho</option>
+                            <option value="H">Hembra</option>
+                        </select>
+                        <span asp-validation-for="sexo" class="text-danger"></span>
+                    </div>
+
+                    <!-- Edad Valor -->
+                    <div class="col-md-6">
+                        <label asp-for="edadValor" class="form-label">Edad</label>
+                        <input asp-for="edadValor" class="form-control" type="number" min="0" max="480" />
+                        <span asp-validation-for="edadValor" class="text-danger"></span>
+                    </div>
+
+                    <!-- Edad Unidad -->
+                    <div class="col-md-6">
+                        <label asp-for="edadUnidad" class="form-label">Unidad de Edad</label>
+                        <select asp-for="edadUnidad" class="form-select">
+                            <option value="A">Años</option>
+                            <option value="M">Meses</option>
+                        </select>
+                        <span asp-validation-for="edadUnidad" class="text-danger"></span>
+                    </div>
+
+                    <!-- Imagen -->
+                    <div class="col-md-6">
+                        <label class="form-label">Imagen</label>
+                        <input type="file" name="imagenFile" class="form-control" accept="image/*" />
+                        <small class="text-muted">Formato: JPG, PNG o similar</small>
+                    </div>
+
+                    <!-- Especie -->
+                    <div class="col-md-6">
+                        <label class="form-label">Especie</label>
+                        <select asp-for="id_especie" asp-items="ViewBag.Especies" class="form-select"></select>
+                        <span asp-validation-for="id_especie" class="text-danger"></span>
+                    </div>
+
+                    <!-- Raza -->
+                    <div class="col-md-6">
+                        <label class="form-label">Raza</label>
+                        <select asp-for="id_raza" asp-items="ViewBag.Razas" class="form-select"></select>
+                        <span asp-validation-for="id_raza" class="text-danger"></span>
+                    </div>
+
+                    <!-- Tamaño -->
+                    <div class="col-md-6">
+                        <label class="form-label">Tamaño</label>
+                        <select asp-for="id_tamano" asp-items="ViewBag.Tamanos" class="form-select"></select>
+                        <span asp-validation-for="id_tamano" class="text-danger"></span>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="col-md-6">
+                        <label class="form-label">Estado</label>
+                        <select asp-for="id_estadoAnimal" asp-items="ViewBag.Estados" class="form-select"></select>
+                        <span asp-validation-for="id_estadoAnimal" class="text-danger"></span>
+                    </div>
+
+                    <!-- Historia -->
+                    <div class="col-12">
+                        <label asp-for="historia" class="form-label">Historia</label>
+                        <textarea asp-for="historia" rows="4" class="form-control"></textarea>
+                        <span asp-validation-for="historia" class="text-danger"></span>
+                    </div>
+
+                    <!-- Seguimiento -->
+                    <div class="col-12">
+                        <label asp-for="seguimiento" class="form-label">Seguimiento (opcional)</label>
+                        <textarea asp-for="seguimiento" rows="3" class="form-control"></textarea>
+                        <span asp-validation-for="seguimiento" class="text-danger"></span>
+                    </div>
+
+                    <!-- Persona opcional -->
+                    <div class="col-md-6">
+                        <label asp-for="id_persona" class="form-label">Persona (opcional)</label>
+                        <input asp-for="id_persona" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="id_persona" class="text-danger"></span>
+                    </div>
+
+                    <!-- Pensión opcional -->
+                    <div class="col-md-6">
+                        <label asp-for="id_pension" class="form-label">Pensión (opcional)</label>
+                        <input asp-for="id_pension" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="id_pension" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fecha ingreso -->
+                    <div class="col-md-4">
+                        <label asp-for="fechaIngreso" class="form-label fw-semibold">Fecha de ingreso</label>
+                        <input asp-for="fechaIngreso" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="fechaIngreso" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fecha adopción -->
+                    <div class="col-md-6">
+                        <label asp-for="fechaAdopcion" class="form-label">Fecha de Adopción (opcional)</label>
+                        <input asp-for="fechaAdopcion" type="date" class="form-control" />
+                        <span asp-validation-for="fechaAdopcion" class="text-danger"></span>
+                    </div>
+
+                    <!-- Usuario fijo -->
+                    <input type="hidden" asp-for="id_usuario" value="1" />
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-2"></div>
+            </form>
+        </div>
+    </div>
+</div>

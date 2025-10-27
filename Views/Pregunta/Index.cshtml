@@ -1,0 +1,209 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Pregunta>
+@{
+    ViewData["Title"] = "Preguntas";
+
+    var tipos = ViewBag.TiposDict as Dictionary<int, string> ?? new();
+    string TipoTxt(int id) => tipos.TryGetValue(id, out var v) ? v : $"#{id}";
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .header-pregunta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.2rem;
+    }
+
+    .titulo-pregunta {
+        text-align: center;
+        color: #40ADB0;
+        font-weight: bold;
+        letter-spacing: .5px;
+        margin: 0;
+        font-size: 2rem;
+        flex: 1;
+    }
+
+    .styled-table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+        border: 2px solid #40ADB0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+        .styled-table th {
+            background-color: #40ADB0;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .styled-table td {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+    .btn-primary {
+        background-color: #40ADB0;
+        color: white;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: filter 0.2s;
+        display: inline-block;
+    }
+
+        .btn-primary:hover {
+            filter: brightness(0.92);
+        }
+
+    .btn-danger {
+        background: #A71A6C;
+        color: #fff;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .link-back {
+        background: #fff;
+        border: 1px solid #40ADB0;
+        color: #40ADB0;
+        padding: .5rem 1rem;
+        border-radius: .5rem;
+        text-decoration: none;
+        transition: background-color .2s, color .2s;
+    }
+
+        .link-back:hover {
+            background: #EAF6F6;
+        }
+
+    .actions-cell {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .actions {
+        display: inline-flex;
+        gap: 0.5rem;
+    }
+
+    .summary-errors {
+        color: #d9534f;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    @@media (max-width: 560px) {
+        .header-pregunta {
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .actions {
+            flex-direction: column;
+        }
+
+        .titulo-pregunta {
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="container mt-4 main-container">
+    <div class="header-pregunta">
+        <a asp-controller="Home" asp-action="Index" class="link-back">← Volver al menú</a>
+        <h1 class="titulo-pregunta">LISTA DE PREGUNTAS</h1>
+        <a asp-controller="Pregunta" asp-action="Crear" class="btn-primary">Agregar Nueva Pregunta</a>
+    </div>
+
+    @* Carteles (mismo patrón que Donación) *@
+    @if (TempData["Ok"] != null)
+    {
+        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #40ADB0; background:#EAF6F6; border-radius:.5rem;">
+            @TempData["Ok"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #ff6b6b; background:#ffecec; border-radius:.5rem;">
+            <strong>@TempData["Error"]</strong>
+            @if (TempData["ApiDetail"] != null)
+            {
+                <div style="margin-top:.4rem; color:#555; white-space:pre-wrap;">@TempData["ApiDetail"]</div>
+            }
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="summary-errors">@ViewBag.ApiError</div>
+    }
+
+    @if (Model?.Any() == true)
+    {
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th style="width:120px;">Código</th>
+                    <th>Pregunta</th>
+                    <th style="width:220px;">Tipo de Formulario</th>
+                    <th style="width:120px;">Orden</th>
+                    <th style="text-align:center; width: 260px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.id_pregunta</td>
+                        <td>@p.pregunta</td>
+                        <td>@TipoTxt(p.id_tipoFormulario)</td>
+                        <td>@(p.orden?.ToString() ?? "-")</td>
+                        <td class="actions-cell">
+                            <div class="actions">
+                                <a asp-controller="Pregunta"
+                                   asp-action="Modificar"
+                                   asp-route-id="@p.id_pregunta"
+                                   class="btn-primary">
+                                    Modificar
+                                </a>
+                                <a asp-controller="Pregunta"
+                                   asp-action="Eliminar"
+                                   asp-route-id="@p.id_pregunta"
+                                   class="btn-danger">
+                                    Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="color: #666;">No hay preguntas cargadas.</p>
+    }
+</div>

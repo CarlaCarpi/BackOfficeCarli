@@ -1,0 +1,125 @@
+﻿@model SantaRamona.Backoffice.Models.Animal
+@{
+    // Diccionarios para mostrar descripciones en vez de IDs (los carga el controller)
+    var especies = ViewBag.Especies as Dictionary<int, string> ?? new();
+    var razas = ViewBag.Razas as Dictionary<int, string> ?? new();
+    var tamanos = ViewBag.Tamanos as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
+    string UnidadEdad(string unidad) => unidad == "M" ? "mes(es)" : "año(s)";
+}
+
+<div class="container-fluid mt-2">
+    <div class="row g-3">
+
+        <!-- COLUMNA IZQUIERDA: Imagen -->
+        <div class="col-lg-4 col-md-5 col-sm-12 text-center">
+            <div class="card shadow-sm" style="border:1px solid #2FA8A2; border-radius:12px;">
+                <div class="card-body">
+                    @if (Model.imagen != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.imagen);
+                        var imgSrc = $"data:image/png;base64,{base64}";
+                        <img src="@imgSrc" class="img-fluid rounded" style="max-width:100%; max-height:300px; object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="text-muted fst-italic" style="min-height: 250px; display:flex; align-items:center; justify-content:center;">
+                            No hay imagen cargada
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: Datos principales -->
+        <div class="col-lg-8 col-md-7 col-sm-12">
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Código</label>
+                    <div class="form-control" readonly>@Model.id_animal</div>
+                </div>
+
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold">Nombre</label>
+                    <div class="form-control" readonly>@Model.nombre</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Sexo</label>
+                    <div class="form-control" readonly>
+                        @(Model.sexo == "M" ? "Macho" : "Hembra")
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Edad</label>
+                    <div class="form-control" readonly>
+                        @($"{Model.edadValor} {UnidadEdad(Model.edadUnidad)}")
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Estado</label>
+                    <div class="form-control" readonly>@Txt(estados, Model.id_estadoAnimal)</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Tamaño</label>
+                    <div class="form-control" readonly>@Txt(tamanos, Model.id_tamano)</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Especie</label>
+                    <div class="form-control" readonly>@Txt(especies, Model.id_especie)</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Raza</label>
+                    <div class="form-control" readonly>@Txt(razas, Model.id_raza)</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Persona</label>
+                    <div class="form-control" readonly>
+                        @(Model.id_persona.HasValue ? $"#{Model.id_persona}" : "—")
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Pensión</label>
+                    <div class="form-control" readonly>
+                        @(Model.id_pension.HasValue ? $"#{Model.id_pension}" : "—")
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Fecha de adopción</label>
+                    <div class="form-control" readonly>
+                        @(Model.fechaAdopcion.HasValue ? Model.fechaAdopcion.Value.ToString("dd/MM/yyyy") : "—")
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FILA INFERIOR: Historia y seguimiento -->
+    <div class="row g-3 mt-2">
+        <div class="col-12">
+            <label class="form-label fw-semibold">Historia</label>
+            <div class="form-control" style="min-height:90px;" readonly>
+                @(!string.IsNullOrWhiteSpace(Model.historia) ? Model.historia : "—")
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label fw-semibold">Seguimiento</label>
+            <div class="form-control" style="min-height:90px;" readonly>
+                @(!string.IsNullOrWhiteSpace(Model.seguimiento) ? Model.seguimiento : "—")
+            </div>
+        </div>
+    </div>
+</div>

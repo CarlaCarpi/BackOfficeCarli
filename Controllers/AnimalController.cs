@@ -17,7 +17,6 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
-            // 1) Animales
             var respAnimals = await client.GetAsync("/api/Animal");
             if (!respAnimals.IsSuccessStatusCode)
             {
@@ -30,7 +29,6 @@ namespace SantaRamona.Backoffice.Controllers
             var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(animalsJson,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
 
-            // 2) Catálogos (para mostrar descripciones en vez de IDs)
             var tEsp = client.GetAsync("/api/Especie");
             var tRaza = client.GetAsync("/api/Raza");
             var tTam = client.GetAsync("/api/Tamano");
@@ -45,7 +43,7 @@ namespace SantaRamona.Backoffice.Controllers
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
             if (TempData["Error"] is string err) ViewBag.Error = err;
 
-            return View(animals); // @model IEnumerable<Animal>
+            return View(animals);
         }
 
         // ===================== CREAR =====================
@@ -53,22 +51,23 @@ namespace SantaRamona.Backoffice.Controllers
         public async Task<IActionResult> Crear()
         {
             await CargarSelects();
-            return View(new Animal()); // @model Animal
+            return View(new Animal());
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Crear([FromForm] Animal model)
+        public async Task<IActionResult> Crear([FromForm] Animal model, IFormFile? imagenFile)
         {
-            // Validaciones mínimas
+            ModelState.Remove(nameof(Animal.id_usuario));
+            if (model.id_usuario <= 0)
+                model.id_usuario = 1;
+
             if (string.IsNullOrWhiteSpace(model.nombre))
                 ModelState.AddModelError(nameof(Animal.nombre), "El nombre es obligatorio.");
             if (model.id_especie <= 0) ModelState.AddModelError(nameof(Animal.id_especie), "Seleccione una especie válida.");
             if (model.id_raza <= 0) ModelState.AddModelError(nameof(Animal.id_raza), "Seleccione una raza válida.");
             if (model.id_tamano <= 0) ModelState.AddModelError(nameof(Animal.id_tamano), "Seleccione un tamaño válido.");
             if (model.id_estadoAnimal <= 0) ModelState.AddModelError(nameof(Animal.id_estadoAnimal), "Seleccione un estado válido.");
-            if (model.id_usuario <= 0) ModelState.AddModelError(nameof(Animal.id_usuario), "Seleccione un usuario válido.");
 
-            // Normalizar opcionales (0 -> null)
             if (model.id_persona.HasValue && model.id_persona <= 0) model.id_persona = null;
             if (model.id_pension.HasValue && model.id_pension <= 0) model.id_pension = null;
 
@@ -78,14 +77,50 @@ namespace SantaRamona.Backoffice.Controllers
                 return View(model);
             }
 
+            // la línea para setear la fecha si no viene
+            if (!model.fechaIngreso.HasValue)
+                model.fechaIngreso = DateTime.Now;
+
+            // Imagen opcional
+            byte[]? imageBytes = null;
+            if (imagenFile != null && imagenFile.Length > 0)
+            {
+                using var ms = new MemoryStream();
+                await imagenFile.CopyToAsync(ms);
+                imageBytes = ms.ToArray();
+            }
+
             var client = _http.CreateClient("Api");
-            var json = JsonSerializer.Serialize(model); // id_estadoAnimal mapeado por [JsonPropertyName("id_estado")]
+
+            var payload = new
+            {
+                id_animal = model.id_animal,
+                nombre = model.nombre,
+                sexo = model.sexo,
+                edadValor = model.edadValor,
+                edadUnidad = model.edadUnidad,
+                imagen = imageBytes,
+                id_especie = model.id_especie,
+                id_tamano = model.id_tamano,
+                id_raza = model.id_raza,
+                id_estadoAnimal = model.id_estadoAnimal,
+                id_persona = model.id_persona,
+                id_pension = model.id_pension,
+                id_usuario = model.id_usuario,
+                fechaIngreso = model.fechaIngreso,
+                fechaAdopcion = model.fechaAdopcion,
+                historia = model.historia,
+                seguimiento = model.seguimiento
+            };
+
+            var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var resp = await client.PostAsync("/api/Animal", content);
+            var body = await resp.Content.ReadAsStringAsync();
+
             if (!resp.IsSuccessStatusCode)
             {
-                var body = await resp.Content.ReadAsStringAsync();
                 ViewBag.ApiError = $"POST /api/Animal -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
                 await CargarSelects(model.id_especie, model.id_raza, model.id_tamano, model.id_estadoAnimal);
                 return View(model);
@@ -93,8 +128,8 @@ namespace SantaRamona.Backoffice.Controllers
 
             ViewBag.Ok = "Animal creado correctamente.";
             ModelState.Clear();
-            await CargarSelects();               // recargar combos
-            return View(new Animal());           // quedarse en pantalla para cargar más
+            await CargarSelects();
+            return View(new Animal());
         }
 
         // ===================== MODIFICAR =====================
@@ -104,15 +139,9 @@ namespace SantaRamona.Backoffice.Controllers
             var client = _http.CreateClient("Api");
             var resp = await client.GetAsync($"/api/Animal/{id}");
 
-            if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                TempData["Error"] = "El animal no existe.";
-                return RedirectToAction(nameof(Index));
-            }
             if (!resp.IsSuccessStatusCode)
             {
-                var body = await resp.Content.ReadAsStringAsync();
-                TempData["Error"] = $"GET /api/Animal/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
+                TempData["Error"] = $"No se pudo cargar el animal {id}.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -124,19 +153,19 @@ namespace SantaRamona.Backoffice.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (model.id_usuario <= 0) model.id_usuario = 1; // mientras no haya auth
+            if (model.id_usuario <= 0) model.id_usuario = 1;
 
             await CargarSelects(model.id_especie, model.id_raza, model.id_tamano, model.id_estadoAnimal);
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
 
-            return View(model); // @model Animal
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Modificar([FromForm] Animal model)
+        public async Task<IActionResult> Modificar([FromForm] Animal model, IFormFile? imagenFile)
         {
-            if (model.id_animal <= 0)
-                ModelState.AddModelError("", "Identificador inválido.");
+            if (model.id_usuario <= 0)
+                model.id_usuario = 1;
 
             if (string.IsNullOrWhiteSpace(model.nombre))
                 ModelState.AddModelError(nameof(Animal.nombre), "El nombre es obligatorio.");
@@ -144,11 +173,6 @@ namespace SantaRamona.Backoffice.Controllers
             if (model.id_raza <= 0) ModelState.AddModelError(nameof(Animal.id_raza), "Seleccione una raza válida.");
             if (model.id_tamano <= 0) ModelState.AddModelError(nameof(Animal.id_tamano), "Seleccione un tamaño válido.");
             if (model.id_estadoAnimal <= 0) ModelState.AddModelError(nameof(Animal.id_estadoAnimal), "Seleccione un estado válido.");
-            if (model.id_usuario <= 0) ModelState.AddModelError(nameof(Animal.id_usuario), "Seleccione un usuario válido.");
-
-            // Normalizar opcionales (0 -> null)
-            if (model.id_persona.HasValue && model.id_persona <= 0) model.id_persona = null;
-            if (model.id_pension.HasValue && model.id_pension <= 0) model.id_pension = null;
 
             if (!ModelState.IsValid)
             {
@@ -156,8 +180,38 @@ namespace SantaRamona.Backoffice.Controllers
                 return View(model);
             }
 
+            byte[]? imageBytes = null;
+            if (imagenFile != null && imagenFile.Length > 0)
+            {
+                using var ms = new MemoryStream();
+                await imagenFile.CopyToAsync(ms);
+                imageBytes = ms.ToArray();
+            }
+
             var client = _http.CreateClient("Api");
-            var json = JsonSerializer.Serialize(model); // [JsonPropertyName("id_estado")] ya mapea
+
+            var payload = new
+            {
+                id_animal = model.id_animal,
+                nombre = model.nombre,
+                sexo = model.sexo,
+                edadValor = model.edadValor,
+                edadUnidad = model.edadUnidad,
+                imagen = imageBytes ?? model.imagen,
+                id_especie = model.id_especie,
+                id_tamano = model.id_tamano,
+                id_raza = model.id_raza,
+                id_estadoAnimal = model.id_estadoAnimal,
+                id_persona = model.id_persona,
+                id_pension = model.id_pension,
+                id_usuario = model.id_usuario,
+                fechaIngreso = model.fechaIngreso,
+                fechaAdopcion = model.fechaAdopcion,
+                historia = model.historia,
+                seguimiento = model.seguimiento
+            };
+
+            var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var resp = await client.PutAsync($"/api/Animal/{model.id_animal}", content);
@@ -173,8 +227,7 @@ namespace SantaRamona.Backoffice.Controllers
             return RedirectToAction(nameof(Modificar), new { id = model.id_animal });
         }
 
-        // ===================== DETALLE (PARA MODAL EN INDEX) =====================
-        // GET: /Animal/Detalle/5  
+        // ===================== DETALLE =====================
         [HttpGet]
         public async Task<IActionResult> Detalle(int id)
         {
@@ -188,7 +241,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             if (model is null) return NotFound();
 
-            await CargarDiccionariosBasicos(); // para mostrar descripciones en la vista parcial
+            await CargarDiccionariosBasicos();
             return PartialView("DetalleAnimal", model);
         }
 
@@ -200,7 +253,7 @@ namespace SantaRamona.Backoffice.Controllers
             var tEsp = client.GetAsync("/api/Especie");
             var tRza = client.GetAsync("/api/Raza");
             var tTam = client.GetAsync("/api/Tamano");
-            var tEst = client.GetAsync("/api/Estado_Animal");
+            var tEst = client.GetAsync("/api/estadoAnimal");
             await Task.WhenAll(tEsp, tRza, tTam, tEst);
 
             ViewBag.Especies = await ToSelectList<Especie>(tEsp.Result, x => x.id_especie, x => x.especie, espSel);
@@ -209,7 +262,6 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Estados = await ToSelectList<Estado_Animal>(tEst.Result, x => x.id_estadoAnimal, x => x.estado, estSel);
         }
 
-        // NUEVO: solo diccionarios para la vista parcial de detalle
         private async Task CargarDiccionariosBasicos()
         {
             var client = _http.CreateClient("Api");
@@ -242,8 +294,8 @@ namespace SantaRamona.Backoffice.Controllers
 
             items.AddRange(list.Select(x => new SelectListItem
             {
-                Text = textSel(x),
                 Value = keySel(x).ToString(),
+                Text = textSel(x),
                 Selected = selected.HasValue && keySel(x) == selected.Value
             }));
 
@@ -264,114 +316,5 @@ namespace SantaRamona.Backoffice.Controllers
 
             return list.GroupBy(keySel).ToDictionary(g => g.Key, g => valSel(g.First()));
         }
-        // ===================== ELIMINAR =====================
-        [HttpGet]
-        public async Task<IActionResult> Eliminar(int id)
-        {
-            var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync($"/api/Animal/{id}");
-
-            if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                TempData["Error"] = "El animal no existe o ya fue eliminado.";
-                return RedirectToAction(nameof(Index));
-            }
-            if (!resp.IsSuccessStatusCode)
-            {
-                var body = await resp.Content.ReadAsStringAsync();
-                TempData["Error"] = $"GET /api/Animal/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
-                return RedirectToAction(nameof(Index));
-            }
-
-            var json = await resp.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<Animal>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            if (model is null)
-            {
-                TempData["Error"] = "No pudimos cargar los datos del animal.";
-                // Opcional: guardar detalle para depurar
-                TempData["ApiDetail"] = $"Respuesta recibida: {json}";
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Diccionarios para mostrar descripciones (no IDs)
-            await CargarDiccionariosBasicos();
-
-            // Regla: si tiene persona o pensión, bloquear eliminación
-            var motivos = new List<string>();
-            if (model.id_persona.HasValue) motivos.Add("tiene una persona asignada");
-            if (model.id_pension.HasValue) motivos.Add("tiene una pensión asignada");
-
-            ViewBag.Bloqueado = motivos.Any();
-            ViewBag.Motivo = string.Join(" y ", motivos);
-
-            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
-            if (TempData["Error"] is string err) ViewBag.Error = err;
-
-            return View(model);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
-        public async Task<IActionResult> EliminarConfirmado(int id)
-        {
-            var client = _http.CreateClient("Api");
-
-            // Vuelvo a leer por seguridad y revalido la regla
-            var respGet = await client.GetAsync($"/api/Animal/{id}");
-            if (respGet.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                TempData["Error"] = "El animal no existe o ya fue eliminado.";
-                return RedirectToAction(nameof(Index));
-            }
-            if (!respGet.IsSuccessStatusCode)
-            {
-                var body = await respGet.Content.ReadAsStringAsync();
-                TempData["Error"] = $"GET /api/Animal/{id} -> {(int)respGet.StatusCode} {respGet.ReasonPhrase}. Respuesta: {body}";
-                return RedirectToAction(nameof(Index));
-            }
-
-            var json = await respGet.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<Animal>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            if (model is null)
-            {
-                TempData["Error"] = "No pudimos cargar los datos del animal.";
-                // Opcional: guardar detalle para depurar
-                TempData["ApiDetail"] = $"Respuesta recibida: {json}";
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (model.id_persona.HasValue || model.id_pension.HasValue)
-            {
-                TempData["Error"] = "No se puede eliminar este animal porque tiene datos asociados (persona o pensión).";
-                return RedirectToAction(nameof(Eliminar), new { id });
-            }
-
-            // Intento borrar
-            var respDel = await client.DeleteAsync($"/api/Animal/{id}");
-            if (!respDel.IsSuccessStatusCode)
-            {
-                var body = await respDel.Content.ReadAsStringAsync();
-
-                // Mensaje si la API devuelve conflicto por FK
-                if (respDel.StatusCode == System.Net.HttpStatusCode.Conflict ||
-                    respDel.StatusCode == System.Net.HttpStatusCode.BadRequest ||
-                    (int)respDel.StatusCode == 422)
-                {
-                    TempData["Error"] = "No se puede eliminar el animal porque está en uso.";
-                    if (!string.IsNullOrWhiteSpace(body)) TempData["ApiDetail"] = body;
-                    return RedirectToAction(nameof(Eliminar), new { id });
-                }
-
-                TempData["Error"] = $"DELETE /api/Animal/{id} -> {(int)respDel.StatusCode} {respDel.ReasonPhrase}. Respuesta: {body}";
-                return RedirectToAction(nameof(Eliminar), new { id });
-            }
-
-            TempData["Ok"] = "Animal eliminado correctamente.";
-            return RedirectToAction(nameof(Index));
-        }
-
     }
 }

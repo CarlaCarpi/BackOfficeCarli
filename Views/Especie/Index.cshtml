@@ -1,0 +1,175 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Especie>
+@{
+    await Html.RenderPartialAsync("_AnimalTopNav");
+}
+
+@{
+    ViewData["Title"] = "Especies";
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #40ADB0;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+    }
+
+    .styled-table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+        border: 2px solid #40ADB0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+        .styled-table th {
+            background-color: #40ADB0;
+            color: white;
+            padding: 1rem;
+        }
+
+        .styled-table td {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+    /* Botones turquesa */
+    .btn-primary, .btn-danger {
+        background-color: #40ADB0;
+        color: white;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        display: inline-block;
+    }
+
+        .btn-primary:hover, .btn-danger:hover {
+            background-color: #2e888b;
+            color: white;
+        }
+
+    .actions-cell {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .actions {
+        display: inline-flex;
+        gap: 0.5rem;
+    }
+
+    .summary-errors {
+        color: #d9534f;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin: 1rem 0;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        LISTA DE ESPECIES
+    </h1>
+
+    @* Mensajes de resultado *@
+    @if (TempData["Ok"] != null)
+    {
+        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #40ADB0; background:#EAF6F6; border-radius:.5rem;">
+            @TempData["Ok"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #ff6b6b; background:#ffecec; border-radius:.5rem;">
+            <strong>@TempData["Error"]</strong>
+            @if (TempData["ApiDetail"] != null)
+            {
+                <div style="margin-top:.4rem; color:#555; white-space:pre-wrap;">@TempData["ApiDetail"]</div>
+            }
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="summary-errors">@ViewBag.ApiError</div>
+    }
+
+    <div class="toolbar">
+        <a asp-controller="Especie" asp-action="Crear" class="btn-primary">Agregar Nueva Especie</a>
+    </div>
+
+    @if (Model?.Any() == true)
+    {
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Código</th>
+                    <th style="text-align:left;">Descripción</th>
+                    <th style="text-align:center; width: 220px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.id_especie</td>
+                        <td>@item.especie</td>
+                        <td class="actions-cell">
+                            <div class="actions">
+                                <a asp-controller="Especie"
+                                   asp-action="Modificar"
+                                   asp-route-id="@item.id_especie"
+                                   class="btn-primary">
+                                    Modificar
+                                </a>
+
+                                @* Ir a la vista de confirmación GET /Especie/Eliminar/{id} *@
+                                <a asp-action="Eliminar" asp-route-id="@item.id_especie"
+                                   class="btn btn-sm"
+                                   style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                    Eliminar
+                                </a>
+
+                                @* SI quisieras eliminar directo desde el listado (sin vista intermedia), sustituí el <a> por este <form>:
+                                <form asp-controller="Especie" asp-action="Eliminar" asp-route-id="@item.id_especie"
+                                      method="post" style="display:inline;"
+                                      onsubmit="return confirm('¿Realmente desea eliminar esta especie?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-danger">Eliminar</button>
+                                </form>
+                                *@
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="color: #666;">No hay especies cargadas.</p>
+    }
+</div>

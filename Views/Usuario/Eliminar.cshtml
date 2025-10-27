@@ -1,0 +1,119 @@
+﻿@model SantaRamona.Backoffice.Models.Usuario
+@{
+    await Html.RenderPartialAsync("_UsuarioTopNav");
+    ViewData["Title"] = "Eliminar Usuario";
+    bool bloqueado = (ViewBag.Bloqueado as bool?) ?? false;
+    string motivo = ViewBag.Motivo as string ?? string.Empty;
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#A71A6C;">ELIMINAR USUARIO</h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert mt-3" style="background:#fff3f3; border:1px solid #A71A6C; color:#A71A6C; border-radius:10px;">
+            @ViewBag.Error
+        </div>
+    }
+
+    <div class="card mt-3" style="border:1px solid #2FA8A2; border-radius:14px; overflow:hidden;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#E6F6F5; border-bottom:1px solid #2FA8A2; border-radius:0;">
+            <a asp-action="Index" class="btn"
+               style="background:#2FA8A2; color:#fff; border-radius:10px;">← Volver</a>
+
+            <div class="d-flex gap-2">
+                @if (!bloqueado)
+                {
+                    <button type="button" class="btn"
+                            data-bs-toggle="modal" data-bs-target="#confirmEliminar"
+                            style="background:#A71A6C; color:#fff; border-radius:10px;">
+                        Eliminar
+                    </button>
+                }
+                <a asp-action="Index" class="btn"
+                   style="background:#2FA8A2; color:#fff; border-radius:10px;">Cancelar</a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @if (bloqueado)
+            {
+                <div class="alert mt-2"
+                     style="background:#fff3f3; border:1px solid #A71A6C; color:#A71A6C; border-radius:10px;">
+                    No se puede eliminar este usuario porque @motivo.
+                    Podés corregir los datos desde <strong>Modificar</strong>.
+                </div>
+            }
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-6">
+                    <label class="form-label">Código</label>
+                    <input class="form-control" value="@Model.id_usuario" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Nombre</label>
+                    <input class="form-control" value="@($"{Model.nombre} {Model.apellido}")" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input class="form-control" value="@Model.email" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Estado</label>
+                    @{
+                        string estadoTxt = estados.TryGetValue(Model.id_estadoUsuario, out var desc)
+                        ? desc : $"#{Model.id_estadoUsuario}";
+                    }
+                    <input class="form-control" value="@estadoTxt" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Teléfono 1</label>
+                    <input class="form-control" value="@Model.telefono" readonly />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    @if (!bloqueado)
+    {
+        <div class="modal fade" id="confirmEliminar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border-radius:14px;">
+                    <div class="modal-header" style="background:#A71A6C; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar este usuario?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn"
+                                data-bs-dismiss="modal"
+                                style="border:1px solid #A71A6C; color:#A71A6C; border-radius:10px;">
+                            No
+                        </button>
+
+                        <form asp-action="Eliminar" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.id_usuario" />
+                            <button type="submit" class="btn"
+                                    style="background:#A71A6C; color:#fff; border-radius:10px;">
+                                Sí, eliminar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

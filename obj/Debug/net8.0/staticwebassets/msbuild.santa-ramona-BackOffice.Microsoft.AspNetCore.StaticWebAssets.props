@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>dfb6rypaj3</Fingerprint>
-      <Integrity>WVIYhhnyEwVfKOOYql8DcvHMAk7P5KyQPquVtj85F7I=</Integrity>
+      <Fingerprint>mycjmws8xb</Fingerprint>
+      <Integrity>Xt5Kru6SFTg7GHYprH2NCgPzY/hq1Gr88KXSf4wd6s8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\adopcion.css'))</OriginalItemSpec>

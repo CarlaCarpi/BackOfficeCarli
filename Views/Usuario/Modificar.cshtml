@@ -1,0 +1,133 @@
+﻿@model SantaRamona.Backoffice.Models.Usuario
+@{
+    await Html.RenderPartialAsync("_UsuarioTopNav");
+    ViewData["Title"] = "Modificar Usuario";
+
+    var estados = ViewBag.Estados as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? new();
+    var roles = ViewBag.Roles as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? new();
+
+    bool esAdmin = (ViewBag.EsAdmin as bool?) ?? false;
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2;">MODIFICAR USUARIO</h1>
+
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <!-- FIX visual: bordes superiores sin 'bisel' blanco -->
+    <div class="card mt-3" style="border:1px solid #2FA8A2; border-radius:14px; overflow:hidden;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#E6F6F5; border-bottom:1px solid #2FA8A2; border-radius:0;">
+            <a asp-action="Index" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px;">← Volver</a>
+            <div class="d-flex gap-2">
+                @if (!esAdmin)
+                {
+                    <button type="submit" form="form-modificar" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px;">Guardar</button>
+                }
+                <a asp-action="Index" class="btn" style="background:#A71A6C; color:#fff; border-radius:10px;">Cancelar</a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <form id="form-modificar" asp-action="Modificar" method="post">
+                <input type="hidden" asp-for="id_usuario" />
+                <div class="row g-3">
+                    <!-- una sola row para todo el formulario -->
+                    <!-- Fila 1 -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="nombre" class="form-label">Nombre</label>
+                        <input asp-for="nombre" class="form-control" />
+                        <span asp-validation-for="nombre" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="apellido" class="form-label">Apellido</label>
+                        <input asp-for="apellido" class="form-control" />
+                        <span asp-validation-for="apellido" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fila 2 -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="email" class="form-label">Email</label>
+                        <input asp-for="email" class="form-control" />
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="clave" class="form-label">Clave</label>
+                        <input asp-for="clave" class="form-control" />
+                        <span asp-validation-for="clave" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fila 3 (Dirección a lo ancho, si la querés en 2 columnas cambiá a col-md-6 / col-md-6) -->
+                    <div class="col-12">
+                        <label asp-for="direccion" class="form-label">Dirección</label>
+                        <input asp-for="direccion" class="form-control" />
+                        <span asp-validation-for="direccion" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fila 4 -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="altura" class="form-label">Altura</label>
+                        <input asp-for="altura" class="form-control" />
+                        <span asp-validation-for="altura" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="departamento" class="form-label">Depto</label>
+                        <input asp-for="departamento" class="form-control" />
+                        <span asp-validation-for="departamento" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fila 5 -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="telefono" class="form-label">Teléfono</label>
+                        <input asp-for="telefono" class="form-control" />
+                        <span asp-validation-for="telefono" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="fechaAlta" class="form-label">Fecha Alta</label>
+                        <input asp-for="fechaAlta" class="form-control" type="datetime-local"
+                               value="@(Model?.fechaAlta == default ? DateTime.Now.ToString("yyyy-MM-ddTHH:mm") : Model.fechaAlta.ToString("yyyy-MM-ddTHH:mm"))" />
+                        <span asp-validation-for="fechaAlta" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fila 6 -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="id_estadoUsuario" class="form-label">Estado</label>
+                        <select asp-for="id_estadoUsuario" class="form-select" asp-items="estados">
+                            <option value="">Seleccione...</option>
+                        </select>
+                        <span asp-validation-for="id_estadoUsuario" class="text-danger"></span>
+                        <small class="text-muted">Seleccioná el estado del usuario.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rol</label>
+                        <select asp-for="id_rol"
+                                class="form-select"
+                                asp-items="@(ViewBag.Roles as IEnumerable<SelectListItem>)">
+                            <option value="">— Seleccioná un rol —</option>
+                        </select>
+                        <span asp-validation-for="id_rol" class="text-danger"></span>
+                    </div>
+                </div>
+            </form>
+
+            @if (esAdmin)
+            {
+                <div class="alert mt-3" style="background:#FFF9E6; border:1px solid #F0AD4E; color:#8A6D3B; border-radius:10px;">
+                    El usuario <strong>Administrador</strong> no puede ser modificado.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

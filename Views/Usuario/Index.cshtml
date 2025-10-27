@@ -1,0 +1,141 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Usuario>
+@{
+    await Html.RenderPartialAsync("_UsuarioTopNav"); // o _AnimalTopNav si preferís
+
+    ViewData["Title"] = "Lista de Usuarios";
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+    string EstadoTxt(int id) => estados.TryGetValue(id, out var v) ? v : $"#{id}";
+    string Tel(object t) => (t == null) ? "-" : t.ToString()!;
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        LISTA DE USUARIOS
+    </h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="d-flex justify-content-end mt-3">
+        <a asp-action="Crear" class="btn"
+           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            Agregar Nuevo Usuario
+        </a>
+    </div>
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead>
+                    <tr style="background:#2FA8A2; color:#fff;">
+                        <th style="border-top-left-radius:10px;">Código</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfonos</th>
+                        <th>Fecha Alta</th>
+                        <th>Estado</th>
+                        <th class="text-end" style="border-top-right-radius:10px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var u in Model)
+                        {
+                            <tr>
+                                <td>@u.id_usuario</td>
+                                <td>@u.apellido, @u.nombre</td>
+                                <td>@u.email</td>
+                                <td>@(u.telefono == 0 ? "-" : u.telefono.ToString()) </td>
+                                <td>@(u.fechaAlta == default ? "-" : u.fechaAlta.ToString("dd/MM/yyyy"))</td>
+                                <td>@EstadoTxt(u.id_estadoUsuario)</td>
+                                <td class="text-end" style="white-space:nowrap;">
+                                    <a href="javascript:void(0)" data-ver-usuario="@u.id_usuario"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Ver
+                                    </a>
+
+                                    <a asp-action="Modificar" asp-route-id="@u.id_usuario"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Modificar
+                                    </a>
+
+                                    <a asp-action="Eliminar" asp-route-id="@u.id_usuario"
+                                       class="btn btn-sm"
+                                       style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted p-4">No hay usuarios cargados.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Detalle -->
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border-radius:14px;">
+                <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                    <h5 class="modal-title">Detalle del usuario</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="modalDetalleBody"></div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            (() => {
+              const baseUrl = '@Url.Action("Detalle", "Usuario")';
+
+              document.addEventListener('click', async (ev) => {
+                const btn = ev.target.closest('[data-ver-usuario]');
+                if (!btn) return;
+
+                const id = btn.getAttribute('data-ver-usuario');
+
+                try {
+                  const resp = await fetch(`${baseUrl}/${id}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                  });
+
+                  const html = await resp.text();
+                  if (!resp.ok) throw new Error(html || `HTTP ${resp.status}`);
+
+                  document.getElementById('modalDetalleBody').innerHTML = html;
+
+                  const modal = new bootstrap.Modal(document.getElementById('modalDetalle'));
+                  modal.show();
+                } catch (err) {
+                  console.error(err);
+                  alert('No se pudo cargar el detalle del usuario.');
+                }
+              });
+            })();
+        </script>
+    }
+</div>

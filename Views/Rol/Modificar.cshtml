@@ -1,0 +1,50 @@
+﻿@model SantaRamona.Backoffice.Models.Rol
+@{
+    await Html.RenderPartialAsync("_UsuarioTopNav");
+    ViewData["Title"] = "Modificar Rol";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2;">MODIFICAR ROL</h1>
+
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="card mt-3" style="border:1px solid #2FA8A2; border-radius:14px; overflow:hidden;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#E6F6F5; border-bottom:1px solid #2FA8A2; border-radius:0;">
+            <a asp-action="Index" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px;">← Volver</a>
+            <div class="d-flex gap-2">
+                <button type="submit" form="form-modificar" class="btn"
+                        style="background:#2FA8A2; color:#fff; border-radius:10px;">
+                    Guardar
+                </button>
+                <a asp-action="Index" class="btn" style="background:#A71A6C; color:#fff; border-radius:10px;">Cancelar</a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <form id="form-modificar" asp-action="Modificar" method="post">
+                <input type="hidden" asp-for="id_rol" />
+                <div class="row g-3">
+                    <div class="col-md-8 col-lg-6">
+                        <label asp-for="descripcion" class="form-label">Descripción</label>
+                        <input asp-for="descripcion" class="form-control" />
+                        <span asp-validation-for="descripcion" class="text-danger"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
