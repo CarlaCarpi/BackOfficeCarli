@@ -1,7 +1,7 @@
-﻿@model IEnumerable<SantaRamona.Backoffice.Models.Estado_Usuario>
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Estado_Persona>
 @{
-    await Html.RenderPartialAsync("_UsuarioTopNav");
-    ViewData["Title"] = "Estados de Usuario";
+    await Html.RenderPartialAsync("_PersonaTopNav");
+    ViewData["Title"] = "Estados de Persona";
 }
 
 <div class="container mt-4">
@@ -47,15 +47,15 @@
                         foreach (var e in Model)
                         {
                             <tr>
-                                <td>@e.id_estadoUsuario</td>
+                                <td>@e.id_estadoPersona</td>
                                 <td>@e.descripcion</td>
                                 <td class="text-end" style="white-space:nowrap;">
-                                    <a asp-action="Modificar" asp-route-id="@e.id_estadoUsuario"
+                                    <a asp-action="Modificar" asp-route-id="@e.id_estadoPersona"
                                        class="btn btn-sm"
                                        style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
                                         Modificar
                                     </a>
-                                    <a asp-action="Eliminar" asp-route-id="@e.id_estadoUsuario"
+                                    <a asp-action="Eliminar" asp-route-id="@e.id_estadoPersona"
                                        class="btn btn-sm"
                                        style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
                                         Eliminar
