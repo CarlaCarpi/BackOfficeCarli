@@ -40,6 +40,7 @@ obj/
 *.dll
 *.exe
 *.pdb
+*.json
 
 # Config locales (opcional)
 appsettings.Development.json
