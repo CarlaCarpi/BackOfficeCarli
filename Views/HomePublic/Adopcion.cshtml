@@ -17,6 +17,7 @@
     var razas = ViewBag.Razas as Dictionary<int, string> ?? new();
     var tamanos = ViewBag.Tamanos as Dictionary<int, string> ?? new();
     var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+    var historia = ViewBag.historia as Dictionary<int, string> ?? new();
 
     string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
     string EdadTxt(int m) => m < 12 ? $"{m} {(m == 1 ? "mes" : "meses")}" : $"{m / 12} {((m / 12) == 1 ? "año" : "años")}";
@@ -33,34 +34,32 @@
 }
 
 @if (animalesEnAdopcion != null && animalesEnAdopcion.Any())
-{
+{ 
     <div class="pets-grid" id="petsGrid">
         @foreach (var item in animalesEnAdopcion)
         {
-            <div class="pet-card">
+            <a asp-action="InfoAdopcion" asp-route-id="@item.id_animal" class="pet-card" style="text-decoration:none; color:inherit;">
+           
+                <div class="pet-card">
 
-                        
-                @if (item.imagen != null && item.imagen.Length > 0)
-                {
-                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.imagen)" alt="Imagen de @item.nombre"/>
-                }
-                else
-                {
-                    <span>Sin imagen</span>
-                }
-                     
-                
 
-                <h3>@item.nombre</h3>
-               <!--
-                                <p><strong>Especie:</strong> @Txt(especies, item.id_especie)</p>
-                 <p><strong>Raza:</strong> @Txt(razas, item.id_raza)</p>
-                 <p><strong>Tamaño:</strong> @Txt(tamanos, item.id_tamano)</p>
-                 <p><strong>Estado:</strong> @Txt(estados, item.id_estadoAnimal)</p>
-               --> 
+                    @if (item.imagen != null && item.imagen.Length > 0)
+                    {
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.imagen)" alt="Imagen de @item.nombre" />
+                    }
+                    else
+                    {
+                        <span>Sin imagen</span>
+                    }
 
-            </div>
-        }
+                    <h3>@item.nombre</h3>
+                   
+
+                </div>
+           
+            </a>
+        } 
+
     </div>
 }
 else
@@ -74,13 +73,42 @@ else
 
 @if (ViewBag.TotalPages > 1)
 {
+//         <div class="pagination-container">
+//             <div class="pagination" style="margin-top: 20px; text-align: center;">
+//                 <button id="prevPageBtn">◄ Página anterior</button>
+//                 <span id="pageInfo" style="margin: 0 10px;">
+//                     Página @ViewBag.CurrentPage de @ViewBag.TotalPages
+//                 </span>
+//                 <button id="nextPageBtn">Siguiente página ►</button>
+//             </div>
+//         </div>
+// }
+
+
     <div class="pagination-container">
         <div class="pagination" style="margin-top: 20px; text-align: center;">
-            <button id="prevPageBtn">◄ Página anterior</button>
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <a href="@Url.Action("Adopcion", new { page = ViewBag.CurrentPage - 1 })" class="prevPageBtn">
+                   
+                    <button id="prevPageBtn">◄ Página anterior</button>
+
+                </a>
+            }
+
             <span id="pageInfo" style="margin: 0 10px;">
                 Página @ViewBag.CurrentPage de @ViewBag.TotalPages
             </span>
-            <button id="nextPageBtn">Siguiente página ►</button>
+
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
+                <a href="@Url.Action("Adopcion", new { page = ViewBag.CurrentPage + 1 })" class="nextPageBtn">
+
+                    <button id="nextPageBtn">Siguiente página ►</button>
+
+                </a>
+            }
         </div>
     </div>
 }
+

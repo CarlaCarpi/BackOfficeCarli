@@ -14,6 +14,8 @@ namespace SantaRamona.Data
         public DbSet<Raza> Raza { get; set; }
         public DbSet<Especie> Especie { get; set; }
         public DbSet<Estado_Animal> Estado_Animal { get; set; }
+        
+
         public DbSet<Estado_Usuario> Estado_Usuario { get; set; }
         //public DbSet<Estado_Persona> Estado_Persona { get; set; }
         //public DbSet<Estado_Formulario> Estado_Formulario { get; set; }
