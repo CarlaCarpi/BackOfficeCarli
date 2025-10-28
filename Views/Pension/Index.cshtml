@@ -1,0 +1,152 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Pension>
+@{
+    await Html.RenderPartialAsync("_PensionTopNav"); // opcional si tenés top nav
+    ViewData["Title"] = "Lista de Pensiones";
+
+    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int? id) =>
+        (id.HasValue && d.TryGetValue(id.Value, out var v)) ? v : "—";
+    string FechaCorta(DateTime? f) => f.HasValue ? f.Value.ToString("dd/MM/yyyy") : "—";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        LISTA DE PENSIONES
+    </h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="d-flex justify-content-end mt-3">
+        <a asp-action="Crear" class="btn"
+           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            Agregar Nueva Pension
+        </a>
+    </div>
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead>
+                    <tr style="background:#2FA8A2; color:#fff;">
+                        <th style="border-top-left-radius:10px;">ID</th>
+                        <th>Nombre</th>
+                        <th>Provincia</th>
+                        <th>Localidad</th>
+                        <th>Estado</th>
+                        <th>Ingreso</th>
+                        <th class="text-end" style="border-top-right-radius:10px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var p in Model)
+                        {
+                            <tr>
+                                <td>@p.id_pension</td>
+                                <td>@p.nombre</td>
+                                <td>@Txt(provincias, p.id_provincia)</td>
+                                <td>@Txt(localidades, p.id_localidad)</td>
+                                <td>@Txt(estados, p.id_estadoPension)</td>
+                                <td>@FechaCorta(p.fechaIngreso)</td>
+                                <td class="text-end">
+                                    <a href="javascript:void(0)" data-ver-persona="@p.id_pension"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Ver
+                                    </a>
+
+                                    <a asp-action="Modificar" asp-route-id="@p.id_pension"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Modificar
+                                    </a>
+
+                                    <a asp-action="Eliminar" asp-route-id="@p.id_pension"
+                                       class="btn btn-sm"
+                                       style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9" class="text-center text-muted p-4">No hay personas cargadas.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Detalle -->
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border-radius:14px;">
+                <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                    <h5 class="modal-title">Detalle de la persona</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="modalDetalleBody">
+                    <!-- La vista parcial DetallePension.cshtml se carga acá -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            (() => {
+              const baseUrl = '@Url.Action("Detalle", "Pension")';
+
+              document.addEventListener('click', async (ev) => {
+                const btn = ev.target.closest('[data-ver-persona]');
+                if (!btn) return;
+
+                const id = btn.getAttribute('data-ver-persona');
+
+                try {
+                  const resp = await fetch(`${baseUrl}/${id}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                  });
+
+                  const html = await resp.text();
+                  if (!resp.ok) throw new Error(html || `HTTP ${resp.status}`);
+
+                  document.getElementById('modalDetalleBody').innerHTML = html;
+
+                  const modal = new bootstrap.Modal(document.getElementById('modalDetalle'));
+                  modal.show();
+                } catch (err) {
+                  console.error(err);
+                  alert('No se pudo cargar el detalle de la persona.');
+                }
+              });
+            })();
+
+            function confirmarEliminar(nombreCompleto) {
+                return confirm(`¿Seguro que querés eliminar a: ${nombreCompleto}?`);
+            }
+        </script>
+    }
+</div>
+

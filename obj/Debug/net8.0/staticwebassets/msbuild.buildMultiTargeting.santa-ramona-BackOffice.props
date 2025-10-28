@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\santa-ramona-BackOffice.props" />
+</Project>

@@ -1,0 +1,98 @@
+﻿@model SantaRamona.Backoffice.Models.Persona
+@{
+    // Diccionarios que envía el controller
+    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+
+    string Str(string? s) => string.IsNullOrWhiteSpace(s) ? "—" : s;
+    string IntTxt(int? n) => n.HasValue ? n.Value.ToString() : "—";
+    string DateTxt(DateTime? d) => d.HasValue ? d.Value.ToString("dd/MM/yyyy") : "—";
+
+    string Txt(Dictionary<int, string> dict, int? id)
+        => id.HasValue && dict.TryGetValue(id.Value, out var v) ? v : (id.HasValue ? $"#{id}" : "—");
+}
+@{
+    Layout = null;
+}
+
+<div class="container-fluid">
+    <div class="row g-3">
+        <!-- Identificación -->
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Código</label>
+            <div class="form-control" readonly>@Model.id_persona</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Nombre</label>
+            <div class="form-control" readonly>@Str(Model.nombre)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Apellido</label>
+            <div class="form-control" readonly>@Str(Model.apellido)</div>
+        </div>
+
+        <!-- Documento / Nacimiento / Email -->
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">DNI</label>
+            <div class="form-control" readonly>@IntTxt(Model.dni)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Fecha de nacimiento</label>
+            <div class="form-control" readonly>@DateTxt(Model.fechaNacimiento)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Email</label>
+            <div class="form-control" readonly>@Str(Model.email)</div>
+        </div>
+
+        <!-- Dirección -->
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Calle</label>
+            <div class="form-control" readonly>@Str(Model.calle)</div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label fw-semibold">Altura</label>
+            <div class="form-control" readonly>@IntTxt(Model.altura)</div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label fw-semibold">Depto</label>
+            <div class="form-control" readonly>@Str(Model.departamento)</div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Provincia</label>
+            <div class="form-control" readonly>@Txt(provincias, Model.id_provincia)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Localidad</label>
+            <div class="form-control" readonly>@Txt(localidades, Model.id_localidad)</div>
+        </div>
+
+        <!-- Redes -->
+        <div class="col-12">
+            <label class="form-label fw-semibold">Redes sociales</label>
+            <div class="form-control" style="min-height:56px;" readonly>@Str(Model.redesSociales)</div>
+        </div>
+
+        <!-- Estado -->
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Estado</label>
+            <div class="form-control" readonly>@Txt(estados, Model.id_estadoPersona)</div>
+        </div>
+
+        <!-- Fechas / Motivo -->
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Fecha de ingreso</label>
+            <div class="form-control" readonly>@DateTxt(Model.fechaIngreso)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Fecha de egreso</label>
+            <div class="form-control" readonly>@DateTxt(Model.fechaEgreso)</div>
+        </div>
+        <div class="col-12">
+            <label class="form-label fw-semibold">Motivo de egreso</label>
+            <div class="form-control" style="min-height:70px;" readonly>@Str(Model.motivoEgreso)</div>
+        </div>
+    </div>
+</div>

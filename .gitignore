@@ -1,47 +1,31 @@
-<<<<<<< HEAD
-# Archivos de Visual Studio
+﻿# Archivos y carpetas de Visual Studio / .NET
 .vs/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+*.cache
+*.log
+*.tmp
+*.v2
+*.vsidx
 
-# Carpetas de compilaci�n
+# Carpetas de compilación
 bin/
 obj/
 Debug/
 Release/
 
-# Archivos temporales
-*.log
-*.tmp
-
-# Cache de Python o Node (si aplica)
-__pycache__/
-node_modules/
-
-# Otros
-.env
-=======
-# Ignorar cache de VS y builds
-.vs/
-bin/
-obj/
-
-# Visual Studio / .NET
-*.user
-*.suo
-*.cache
-*.log
-*.v2
-*.vsidx
-
-# Publicaciones/artefactos
+# Archivos temporales y de builds
 *.dll
 *.exe
 *.pdb
 *.json
 
-# Config locales (opcional)
+# Cache de Python o Node (si aplica)
+__pycache__/
+node_modules/
+
+# Archivos de configuración local (no subir a producción)
+.env
 appsettings.Development.json
->>>>>>> origin/main

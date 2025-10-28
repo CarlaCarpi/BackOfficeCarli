@@ -34,7 +34,7 @@ namespace SantaRamona.Backoffice.Controllers
             var tTip = client.GetAsync("/api/TipoFormulario");
             await Task.WhenAll(tPer, tTip);
 
-            ViewBag.PersonasDict = await ToDict<Persona>(tPer.Result, x => x.id_persona, x => x.nombreCompleto);
+            ViewBag.PersonasDict = await ToDict<PersonaForm>(tPer.Result, x => x.id_persona, x => x.nombreCompleto);
             ViewBag.TiposDict = await ToDict<TipoFormulario>(tTip.Result, x => x.id_tipoFormulario, x => x.descripcion);
 
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
@@ -210,7 +210,7 @@ namespace SantaRamona.Backoffice.Controllers
             var tTip = client.GetAsync("/api/TipoFormulario");
             await Task.WhenAll(tPer, tTip);
 
-            ViewBag.PersonasDict = await ToDict<Persona>(tPer.Result, x => x.id_persona, x => x.nombreCompleto);
+            ViewBag.PersonasDict = await ToDict<PersonaForm>(tPer.Result, x => x.id_persona, x => x.nombreCompleto);
             ViewBag.TiposDict = await ToDict<TipoFormulario>(tTip.Result, x => x.id_tipoFormulario, x => x.descripcion);
 
             return View(model);
@@ -249,7 +249,7 @@ namespace SantaRamona.Backoffice.Controllers
             var tTip = client.GetAsync("/api/TipoFormulario");
             await Task.WhenAll(tPer, tTip);
 
-            ViewBag.Personas = await ToSelectList<Persona>(tPer.Result, x => x.id_persona, x => x.nombreCompleto, personaSel);
+            ViewBag.Personas = await ToSelectList<PersonaForm>(tPer.Result, x => x.id_persona, x => x.nombreCompleto, personaSel);
             ViewBag.Tipos = await ToSelectList<TipoFormulario>(tTip.Result, x => x.id_tipoFormulario, x => x.descripcion, tipoSel);
         }
 
@@ -261,7 +261,7 @@ namespace SantaRamona.Backoffice.Controllers
             var tTip = client.GetAsync("/api/TipoFormulario");
             await Task.WhenAll(tPer, tTip);
 
-            ViewBag.Personas = await ToDict<Persona>(tPer.Result, x => x.id_persona, x => x.nombreCompleto);
+            ViewBag.Personas = await ToDict<PersonaForm>(tPer.Result, x => x.id_persona, x => x.nombreCompleto);
             ViewBag.Tipos = await ToDict<TipoFormulario>(tTip.Result, x => x.id_tipoFormulario, x => x.descripcion);
         }
 
@@ -306,7 +306,7 @@ namespace SantaRamona.Backoffice.Controllers
     }
 
     // ====== modelos simples para selects (ajustá nombres/props a tu API real) ======
-    public class Persona
+    public class PersonaForm
     {
         public int id_persona { get; set; }
         public string nombreCompleto { get; set; } = string.Empty;

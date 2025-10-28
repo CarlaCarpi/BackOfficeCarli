@@ -6,6 +6,8 @@
     var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
     string EstadoTxt(int id) => estados.TryGetValue(id, out var v) ? v : $"#{id}";
     string Tel(object t) => (t == null) ? "-" : t.ToString()!;
+    var rolesPorUsuario = ViewBag.RolPorUsuario as Dictionary<int, string> ?? new();
+    string RolDe(int id) => rolesPorUsuario.TryGetValue(id, out var v) ? v : "-";
 }
 
 <div class="container mt-4">
@@ -44,7 +46,7 @@
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Teléfonos</th>
-                        <th>Fecha Alta</th>
+                        <th>Rol</th>
                         <th>Estado</th>
                         <th class="text-end" style="border-top-right-radius:10px;">Acciones</th>
                     </tr>
@@ -59,7 +61,7 @@
                                 <td>@u.apellido, @u.nombre</td>
                                 <td>@u.email</td>
                                 <td>@(u.telefono == 0 ? "-" : u.telefono.ToString()) </td>
-                                <td>@(u.fechaAlta == default ? "-" : u.fechaAlta.ToString("dd/MM/yyyy"))</td>
+                                <td>@RolDe(u.id_usuario)</td>
                                 <td>@EstadoTxt(u.id_estadoUsuario)</td>
                                 <td class="text-end" style="white-space:nowrap;">
                                     <a href="javascript:void(0)" data-ver-usuario="@u.id_usuario"

@@ -3,6 +3,8 @@
 @{
     var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
     string EstadoTxt(int id) => estados.TryGetValue(id, out var v) ? v : $"#{id}";
+    var rolesDict = ViewBag.Roles as Dictionary<int, string> ?? new();
+    string RolTxt(int? id) => (id.HasValue && rolesDict.TryGetValue(id.Value, out var v)) ? v : "-";
 }
 
 <div class="container-fluid">
@@ -14,6 +16,7 @@
                 <p class="mb-1"><strong>Nombre:</strong> @Model.apellido, @Model.nombre</p>
                 <p class="mb-1"><strong>Email:</strong> @Model.email</p>
                 <p class="mb-1"><strong>Estado:</strong> @EstadoTxt(Model.id_estadoUsuario)</p>
+                <p class="mb-1"><strong>Rol:</strong> @RolTxt(Model.id_rol)</p>
                 <p class="mb-0"><strong>Fecha Alta:</strong> @(Model.fechaAlta == default ? "-" : Model.fechaAlta.ToString("dd/MM/yyyy HH:mm"))</p>
             </div>
         </div>
