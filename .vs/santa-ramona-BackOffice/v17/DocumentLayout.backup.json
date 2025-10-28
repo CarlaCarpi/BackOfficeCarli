@@ -1,82 +1,42 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\",
+  "WorkspaceRootPath": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\models\\pension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\pension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\wwwroot\\css\\stylesheet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:wwwroot\\css\\stylesheet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\pension\\eliminar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\pension\\eliminar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\views\\shared\\layout1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\shared\\layout1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\pension\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\pension\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\wwwroot\\css\\voluntariado.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:wwwroot\\css\\voluntariado.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\pension\\detalle.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\pension\\detalle.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\views\\homepublic\\voluntariado.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\homepublic\\voluntariado.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\pension\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\pension\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\pension\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\pension\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\estadopension\\eliminar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\estadopension\\eliminar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\estadopension\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\estadopension\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\estadopension\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\estadopension\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\estadopension\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\views\\estadopension\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\estadopension\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\pensioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\pensioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\models\\estado_pension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\estado_pension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\estadopensioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\estadopensioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\shared\\_pensiontopnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\shared\\_pensiontopnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:data\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\views\\persona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\persona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\mis proyectos\\final back\\backofficecarli\\controllers\\personacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:controllers\\personacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\views\\pension\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\pension\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|c:\\versi\u00F3n2front\\backofficecarli\\views\\persona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4C3AFB43-DE05-45DF-A73C-BE2A0212FF5C}|santa-ramona-BackOffice.csproj|solutionrelative:views\\persona\\modificar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -89,236 +49,122 @@
           "SelectedChildIndex": 7,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Modificar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPension\\Modificar.cshtml",
-              "RelativeDocumentMoniker": "Views\\EstadoPension\\Modificar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPension\\Modificar.cshtml*",
-              "RelativeToolTip": "Views\\EstadoPension\\Modificar.cshtml*",
-              "ViewState": "AgIAABIAAAAAAAAAAAAwwDEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:48:28.961Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Eliminar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPension\\Eliminar.cshtml",
-              "RelativeDocumentMoniker": "Views\\EstadoPension\\Eliminar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPension\\Eliminar.cshtml*",
-              "RelativeToolTip": "Views\\EstadoPension\\Eliminar.cshtml*",
-              "ViewState": "AgIAAFMAAAAAAAAAAAAwwG8AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Layout1.cshtml",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\Shared\\Layout1.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\Layout1.cshtml",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\Shared\\Layout1.cshtml",
+              "RelativeToolTip": "Views\\Shared\\Layout1.cshtml",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB4AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:48:40.405Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Pension\\Index.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Index.cshtml*",
-              "RelativeToolTip": "Views\\Pension\\Index.cshtml*",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAwwJcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:48:48.028Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Crear.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Crear.cshtml",
-              "RelativeDocumentMoniker": "Views\\Pension\\Crear.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Crear.cshtml*",
-              "RelativeToolTip": "Views\\Pension\\Crear.cshtml*",
-              "ViewState": "AgIAAMsAAAAAAAAAAAAwwOoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:48:59.229Z",
+              "WhenOpened": "2025-10-28T13:07:03.132Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Detalle.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Detalle.cshtml",
-              "RelativeDocumentMoniker": "Views\\Pension\\Detalle.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Detalle.cshtml*",
-              "RelativeToolTip": "Views\\Pension\\Detalle.cshtml*",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAwwGkAAAAAAAAAAAAAAA==",
+              "Title": "Voluntariado.cshtml",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\HomePublic\\Voluntariado.cshtml",
+              "RelativeDocumentMoniker": "Views\\HomePublic\\Voluntariado.cshtml",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\HomePublic\\Voluntariado.cshtml",
+              "RelativeToolTip": "Views\\HomePublic\\Voluntariado.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:49:11.663Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Modificar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Modificar.cshtml",
-              "RelativeDocumentMoniker": "Views\\Pension\\Modificar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Modificar.cshtml*",
-              "RelativeToolTip": "Views\\Pension\\Modificar.cshtml*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAN8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:49:24.773Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Eliminar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Eliminar.cshtml",
-              "RelativeDocumentMoniker": "Views\\Pension\\Eliminar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Pension\\Eliminar.cshtml*",
-              "RelativeToolTip": "Views\\Pension\\Eliminar.cshtml*",
-              "ViewState": "AgIAAKEAAAAAAAAAAAAAAL8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:49:38.578Z",
+              "WhenOpened": "2025-10-28T13:16:44.197Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Pension.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Pension.cs",
-              "RelativeDocumentMoniker": "Models\\Pension.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Pension.cs*",
-              "RelativeToolTip": "Models\\Pension.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T22:47:01.558Z",
+              "Title": "StyleSheet.css",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\wwwroot\\css\\StyleSheet.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\StyleSheet.css",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\wwwroot\\css\\StyleSheet.css",
+              "RelativeToolTip": "wwwroot\\css\\StyleSheet.css",
+              "ViewState": "AgIAAAQCAAAAAAAAAAAAABICAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-10-28T13:08:56.021Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Crear.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPension\\Crear.cshtml",
-              "RelativeDocumentMoniker": "Views\\EstadoPension\\Crear.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPension\\Crear.cshtml*",
-              "RelativeToolTip": "Views\\EstadoPension\\Crear.cshtml*",
-              "ViewState": "AgIAABIAAAAAAAAAAAAwwDEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:48:17.437Z",
+              "DocumentIndex": 2,
+              "Title": "Voluntariado.css",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\wwwroot\\css\\Voluntariado.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\Voluntariado.css",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\wwwroot\\css\\Voluntariado.css",
+              "RelativeToolTip": "wwwroot\\css\\Voluntariado.css",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAAIYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-10-28T13:02:30.993Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 6,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-10-28T12:38:19.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPension\\Index.cshtml",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\Pension\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Pension\\Index.cshtml",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\Pension\\Index.cshtml",
+              "RelativeToolTip": "Views\\Pension\\Index.cshtml",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAwwJcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-27T22:48:48.028Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\EstadoPension\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\EstadoPension\\Index.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\EstadoPension\\Index.cshtml*",
-              "RelativeToolTip": "Views\\EstadoPension\\Index.cshtml*",
-              "ViewState": "AgIAAC4AAAAAAAAAAAAwwE0AAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\EstadoPension\\Index.cshtml",
+              "RelativeToolTip": "Views\\EstadoPension\\Index.cshtml",
+              "ViewState": "AgIAAC4AAAAAAAAAAAAwwDQAAABgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-27T22:48:07.583Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "PensionController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\PensionController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PensionController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\PensionController.cs*",
-              "RelativeToolTip": "Controllers\\PensionController.cs*",
-              "ViewState": "AgIAACkAAAAAAAAAAAAAwHEBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T22:46:20.042Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Estado_Pension.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Estado_Pension.cs",
-              "RelativeDocumentMoniker": "Models\\Estado_Pension.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Estado_Pension.cs*",
-              "RelativeToolTip": "Models\\Estado_Pension.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T22:46:51.655Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "EstadoPensionController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\EstadoPensionController.cs",
-              "RelativeDocumentMoniker": "Controllers\\EstadoPensionController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\EstadoPensionController.cs*",
-              "RelativeToolTip": "Controllers\\EstadoPensionController.cs*",
-              "ViewState": "AgIAAMUAAAAAAAAAAAAAAOMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T22:46:05.443Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "_PensionTopNav.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Shared\\_PensionTopNav.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_PensionTopNav.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Shared\\_PensionTopNav.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_PensionTopNav.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T22:47:36.338Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "DbContext.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Data\\DbContext.cs",
-              "RelativeDocumentMoniker": "Data\\DbContext.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Data\\DbContext.cs*",
-              "RelativeToolTip": "Data\\DbContext.cs*",
-              "ViewState": "AgIAABAAAAAAAAAAAAAkwB8AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T22:46:23.752Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "UsuarioController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\UsuarioController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsuarioController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\UsuarioController.cs",
-              "RelativeToolTip": "Controllers\\UsuarioController.cs",
-              "ViewState": "AgIAAF4BAAAAAAAAAAAswHwBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T16:13:12.503Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "PersonaController.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\PersonaController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PersonaController.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Controllers\\PersonaController.cs",
-              "RelativeToolTip": "Controllers\\PersonaController.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAAAAIAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T00:24:14.759Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 8,
               "Title": "Modificar.cshtml",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Modificar.cshtml",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\Persona\\Modificar.cshtml",
               "RelativeDocumentMoniker": "Views\\Persona\\Modificar.cshtml",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Views\\Persona\\Modificar.cshtml",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Views\\Persona\\Modificar.cshtml",
               "RelativeToolTip": "Views\\Persona\\Modificar.cshtml",
               "ViewState": "AgIAAL0AAAAAAAAAAAAwwOgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
@@ -326,15 +172,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 5,
               "Title": "Usuario.cs",
-              "DocumentMoniker": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Usuario.cs",
+              "DocumentMoniker": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Models\\Usuario.cs",
               "RelativeDocumentMoniker": "Models\\Usuario.cs",
-              "ToolTip": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\Models\\Usuario.cs",
+              "ToolTip": "C:\\Versi\u00F3n2Front\\BackOfficeCarli\\Models\\Usuario.cs",
               "RelativeToolTip": "Models\\Usuario.cs",
               "ViewState": "AgIAAEgAAAAAAAAAAAAiwGMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T16:11:39.365Z"
+              "WhenOpened": "2025-10-27T16:11:39.365Z",
+              "EditorCaption": ""
             }
           ]
         }

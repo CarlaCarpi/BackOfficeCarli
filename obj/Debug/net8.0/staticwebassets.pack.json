@@ -1,247 +1,371 @@
 {
   "Files": [
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\santa-ramona-BackOffice.bundle.scp.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\santa-ramona-BackOffice.bundle.scp.css",
       "PackagePath": "staticwebassets\\santa-ramona-BackOffice.lvqg3lgiwf.bundle.scp.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\css\\site.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\css\\StyleSheet.css",
+      "PackagePath": "staticwebassets\\css\\StyleSheet.css"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\css\\Voluntariado.css",
+      "PackagePath": "staticwebassets\\css\\Voluntariado.css"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\css\\adopcion.css",
+      "PackagePath": "staticwebassets\\css\\adopcion.css"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\css\\donar.css",
+      "PackagePath": "staticwebassets\\css\\donar.css"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\css\\infoAdopcion.css",
+      "PackagePath": "staticwebassets\\css\\infoAdopcion.css"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\favicon.ico",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\js\\site.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Beagle.max.jpg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Beagle.max.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Caniche.coco.jpeg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Caniche.coco.jpeg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Caniche.onix.jpg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Caniche.onix.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Caniche.toby.jpg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Caniche.toby.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Labrador.luna.jpg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Labrador.luna.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Mestizo.iris.jpeg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Mestizo.iris.jpeg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Mestizo.maya.jpeg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Mestizo.maya.jpeg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Mestizo.odin.jpeg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Mestizo.odin.jpeg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Mestizo.rocco.jpeg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Mestizo.rocco.jpeg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Adoptados\\Mestizo.simba.jpeg",
+      "PackagePath": "staticwebassets\\images\\Adoptados\\Mestizo.simba.jpeg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Bolt.jpg",
+      "PackagePath": "staticwebassets\\images\\Bolt.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\Simona.jpg",
+      "PackagePath": "staticwebassets\\images\\Simona.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\feria.png",
+      "PackagePath": "staticwebassets\\images\\feria.png"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\gatoperro.jpg",
+      "PackagePath": "staticwebassets\\images\\gatoperro.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\juancito.jpg",
+      "PackagePath": "staticwebassets\\images\\juancito.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logo.png"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\miguel.jpg",
+      "PackagePath": "staticwebassets\\images\\miguel.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\nina.jpg",
+      "PackagePath": "staticwebassets\\images\\nina.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\perdido.png",
+      "PackagePath": "staticwebassets\\images\\perdido.png"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\perrogato.png",
+      "PackagePath": "staticwebassets\\images\\perrogato.png"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\ramona.jpg",
+      "PackagePath": "staticwebassets\\images\\ramona.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\ramona.png",
+      "PackagePath": "staticwebassets\\images\\ramona.png"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\ramonareal.jpg",
+      "PackagePath": "staticwebassets\\images\\ramonareal.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\santaramona.png",
+      "PackagePath": "staticwebassets\\images\\santaramona.png"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\sasha.jpg",
+      "PackagePath": "staticwebassets\\images\\sasha.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\images\\savannah.jpg",
+      "PackagePath": "staticwebassets\\images\\savannah.jpg"
+    },
+    {
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Id": "C:\\Mis Proyectos\\Final Back\\BackOfficeCarli\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Id": "C:\\Versión2Front\\BackOfficeCarli\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {

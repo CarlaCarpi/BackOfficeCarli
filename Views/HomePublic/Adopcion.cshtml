@@ -30,7 +30,9 @@
 
 @{
     // Filtramos solo los animales con estado = 2
-    var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 2).ToList();
+    //var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 2).ToList();
+    var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
+
 }
 
 @if (animalesEnAdopcion != null && animalesEnAdopcion.Any())

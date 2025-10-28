@@ -172,6 +172,10 @@ nav {
      scroll-behavior: smooth; /* scroll suave al hacer clic */
  }
 
+.menu-toggle{
+    display:none;
+}
+
 /* Hero */
 
 .hero {
@@ -312,38 +316,6 @@ section {
     color: #3b4a49;
     opacity: .9;
 }
-/* Pet cards 
-        .pet-card {
-            display: grid;
-            grid-template-rows: 200px auto auto;
-            min-height: 340px
-        }
-
-            .pet-card img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover
-            }
-
-        .pet-body {
-            padding: 12px 16px
-        }
-
-        .pet-name {
-            font-family: Nunito;
-            font-weight: 800;
-            font-size: 20px
-        }
-
-        .pet-meta {
-            font-size: .82rem;
-            color: #3b4a49;
-            opacity: .9
-        }
-
-        .pet-cta {
-            padding: 12px 16px 18px
-                }*/
 
 /* Adoption colorway */
 .adopcion .card {
@@ -531,7 +503,78 @@ footer {
     font-family: 'Times New Roman', Times, serif;
 }
 
+/* HEADER RESPONSIVE */
+@media screen and (max-width: 600px) {
+
+    .site-header .inner {
+        flex-direction: row;
+        justify-content: space-between; /* Logo a la izquierda, botón a la derecha */
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .site-header .btn.magenta {
+        display: none !important; 
+    }
+
+    
+
+    /* Ocultar nav por defecto en móviles */
+    nav {
+        display: none !important;
+        width: 100%;
+        position: absolute; /* Para que salga del flujo del header */
+        top: 100%; /* Se posiciona justo debajo del header */
+        left: 0;
+        z-index: 40; /* Asegura que esté sobre el contenido */
+    }
+
+    /* Mostrar el botón hamburguesa en línea */
+    .menu-toggle {
+        display: inline-block;
+        font-size: 1.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #0b3840;
+    }
+
+        /* Mostrar nav cuando esté activo */
+        nav.active {
+            display: block;
+        }
+
+    .nav-donate-mobile {
+        display: block;
+        margin-top: 10px; /* Separación de los otros links */
+    }
+
+    .nav {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        background: white;
+        border: 1px solid #C23A79;
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+        .nav a {
+            padding: 6px 8px;
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: left;
+        }
 
 
+    .cta .btn {
+        width: 100%;
+        max-width: 300px;
+        font-size: 1rem;
+        margin: 10px auto;
+        display: block;
+    }
+}
 
 

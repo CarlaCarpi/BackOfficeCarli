@@ -10,12 +10,6 @@ h1 {
 p {
     text-align: center;
 }
-/*
-        h1{
-            text-align:start;
-            color: #C23A79;
-        }
-    */
 
 
 
@@ -79,7 +73,7 @@ p {
     box-shadow: 6px 6px 6px #5c6b6a2e;
     width: 800px;
     height: auto;
-    margin: 20px auto; /* 💡 esto centra el div horizontalmente */
+    margin: 20px auto; /* esto centra el div horizontalmente */
     text-align: left; /* para que el texto dentro no quede centrado */
 }
 
@@ -88,3 +82,56 @@ p {
     border-radius: 10px;
     box-shadow: 5px #C23A79;
 }
+
+/* RESPONSIVE (340PX)*/
+@media screen and (min-width: 340px) and (max-width: 820px) {
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 0.9rem;
+        padding: 0 10px;
+    }
+
+    .voluntariados-container {
+        padding: 10px;
+        gap: 20px;
+        max-width: 100%;
+    }
+
+    .voluntariado-item {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 15px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .img-voluntariado {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .texto-voluntariado {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        text-align: justify;
+    }
+
+    .vol-container {
+        width: 100%;
+        margin: 10px auto;
+        padding: 10px;
+    }
+
+    .req-vol {
+        flex-direction: column;
+        width: 100%;
+    }
+
+}
+

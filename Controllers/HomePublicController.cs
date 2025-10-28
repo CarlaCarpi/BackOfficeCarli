@@ -73,28 +73,30 @@ namespace SantaRamona.BackOffice.Controllers
             var client = _http.CreateClient("Api");
 
             // Obtener animales
-            var respAnimals = await client.GetAsync("/api/Animal");
-            if (!respAnimals.IsSuccessStatusCode)
+            var respAnimales = await client.GetAsync("/api/Animal");
+            if (!respAnimales.IsSuccessStatusCode)
             {
-                var body = await respAnimals.Content.ReadAsStringAsync();
-                ViewBag.ApiError = $"GET /api/Animal -> {(int)respAnimals.StatusCode} {respAnimals.ReasonPhrase}. Respuesta: {body}";
+                var body = await respAnimales.Content.ReadAsStringAsync();
+                ViewBag.ApiError = $"GET /api/Animal -> {(int)respAnimales.StatusCode} {respAnimales.ReasonPhrase}. Respuesta: {body}";
                 return View(Enumerable.Empty<Animal>());
             }
 
-            var animalsJson = await respAnimals.Content.ReadAsStringAsync();
-            var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(animalsJson,
+            var animalesJson = await respAnimales.Content.ReadAsStringAsync();
+            var animales = JsonSerializer.Deserialize<IEnumerable<Animal>>(animalesJson,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
 
             // Filtrar solo animales en adopción
-            var animalsEnAdopcion = animals.Where(a => a.id_estadoAnimal == 2).ToList();
+            //var animalesEnAdopcion = animals.Where(a => a.id_estadoAnimal == 2).ToList();
+            var animalesEnAdopcion = animales.Where(a => a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
+
 
             // ==== PAGINACIÓN ====
             int pageSize = 1; // cantidad de animales por página 6/12/18
-            int totalPages = (int)Math.Ceiling(animalsEnAdopcion.Count / (double)pageSize);
+            int totalPages = (int)Math.Ceiling(animalesEnAdopcion.Count / (double)pageSize);
             int currentPage = page ?? 1;
 
             // Obtener solo los animales de la página actual
-            var animalsPaged = animalsEnAdopcion
+            var animalesPaged = animalesEnAdopcion
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
@@ -116,7 +118,7 @@ namespace SantaRamona.BackOffice.Controllers
             ViewBag.CurrentPage = currentPage;
             ViewBag.TotalPages = totalPages;
 
-            return View(animalsPaged);
+            return View(animalesPaged);
         }
 
 
