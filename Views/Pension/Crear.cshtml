@@ -116,7 +116,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Estado de Pensión</label>
-                        <select asp-for="id_estadoPension" asp-items="ViewBag.EstadosPension" class="form-select"></select>
+                        <select asp-for="id_estadoPension" asp-items="ViewBag.Estados" class="form-select"></select>
                         <span asp-validation-for="id_estadoPension" class="text-danger"></span>
                     </div>
 
@@ -141,7 +141,10 @@
 
                     <div class="col-md-4">
                         <label asp-for="montoDia" class="form-label">Monto por día</label>
-                        <input asp-for="montoDia" class="form-control" type="number" step="0.01" min="0" />
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input asp-for="montoDia" class="form-control" type="number" step="0.01" min="0" />
+                        </div>
                         <span asp-validation-for="montoDia" class="text-danger"></span>
                     </div>
                 </div>
@@ -231,4 +234,5 @@
             });
         })();
     </script>
+
 }

@@ -1,9 +1,9 @@
 ﻿@model SantaRamona.Backoffice.Models.Pension
 @{
     // Diccionarios que envía el controller
-    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
-    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
-    var estadosPension = ViewBag.EstadosPension as Dictionary<int, string> ?? new();
+    var provincias = ViewBag.Provincias as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidades as Dictionary<int, string> ?? new();
+    var estadosPension = ViewBag.Estados as Dictionary<int, string> ?? new();
     // Opcional: si el controller manda usuarios
     var usuarios = ViewBag.Usuarios as Dictionary<int, string> ?? new();
 
