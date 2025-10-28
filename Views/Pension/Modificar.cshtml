@@ -116,7 +116,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Estado de Pensión</label>
-                        <select asp-for="id_estadoPension" asp-items="ViewBag.EstadosPension" class="form-select"></select>
+                        <select asp-for="id_estadoPension" asp-items="ViewBag.Estados" class="form-select"></select>
                         <span asp-validation-for="id_estadoPension" class="text-danger"></span>
                     </div>
 
@@ -127,9 +127,9 @@
                     </div>
 
                     <!-- Fechas y monto -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label asp-for="fechaIngreso" class="form-label">Fecha de ingreso</label>
-                        <input asp-for="fechaIngreso" class="form-control" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH\\:mm}" />
+                        <input asp-for="fechaIngreso" class="form-control" type="date" />
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
                     </div>
 

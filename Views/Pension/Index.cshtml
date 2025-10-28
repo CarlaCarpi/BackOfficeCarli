@@ -3,8 +3,8 @@
     await Html.RenderPartialAsync("_PensionTopNav"); // opcional si tenés top nav
     ViewData["Title"] = "Lista de Pensiones";
 
-    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
-    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
+    var provincias = ViewBag.Provincias as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidades as Dictionary<int, string> ?? new();
     var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
 
     string Txt(Dictionary<int, string> d, int? id) =>
