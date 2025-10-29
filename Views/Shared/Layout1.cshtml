@@ -25,13 +25,6 @@
                 <span>Santa Ramona</span>
             </div>
 
-            <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-            </button>
 @* 
             <nav aria-label="Principal">
                 <ul class="nav">
@@ -84,33 +77,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.querySelector('.menu-toggle');
-            const nav = document.querySelector('nav');
-
-            menuToggle.addEventListener('click', function() {
-                // Alternar la clase 'is-open' en el elemento <nav>
-                nav.classList.toggle('is-open');
-
-                // Alternar el atributo aria-expanded para accesibilidad
-                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
-                menuToggle.setAttribute('aria-expanded', !isExpanded);
-            });
-
-            // Opcional: Cerrar el menú al hacer clic en un enlace (útil para la navegación)
-            const navLinks = document.querySelectorAll('.nav a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (nav.classList.contains('is-open')) {
-                        nav.classList.remove('is-open');
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                    }
-                });
-            });
-        });
-    </script>
 
   
     @await RenderSectionAsync("Scripts", required: false)
