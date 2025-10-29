@@ -37,12 +37,11 @@ body {
     display: flex; /* Convertimos el body en un contenedor flex */
     flex-direction: column; /* Organizamos los hijos (header, main, footer) en columna */
     /* Esto permite que el footer se "empuje" hacia abajo usando flex:1 en el main */
-   
+
 
 
     overflow-x: hidden;
-
-
+    
 }
 
 
@@ -224,7 +223,7 @@ nav {
 
 .sub {
     opacity: .95;
-    max-width: 520px
+    max-width: 920px
 }
 
 /* Carousel sections */
@@ -391,7 +390,7 @@ section {
 }
 
 .logo-badge {
-    width: 180px;
+    width: 300px;
     aspect-ratio: 1/1;
     border-radius: 50%;
     background: #fff;
@@ -447,7 +446,7 @@ footer {
         display: none
     }
 
-   
+
 
     /* HEADER RESPONSIVE */
     /*@media screen and (max-width: 600px) {
@@ -624,6 +623,45 @@ footer {
             display: none !important; /* Oculta la versión móvil en escritorio */
         }
     }
+
+    /* Oculta la barra de desplazamiento horizontal del carrusel */
+    .scroller {
+        overflow: hidden; /* oculta completamente la barra */
+
+        scrollbar-width: none !important;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(250px, 1fr);
+        gap: 22px;
+        overflow-x: hidden; /* ✅ evita el scroll manual y oculta la barra */
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        padding: 12px 4px 4px;
+        scroll-padding-left: 4px;
+    }
+
+    .scroller::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+            
+    }
+
+    .scroller {
+        -ms-overflow-style: none; /* IE y Edge */
+        scrollbar-width: none; /* Firefox */
+       
+    }
+
+    /* estado visual de las flechas */
+
+    .arrow {
+        transition: opacity 0.3s ease;
+    }
+
+        .arrow[style*="none"] {
+            opacity: 0;
+            pointer-events: none;
+        }
+
 }
 
 

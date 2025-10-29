@@ -28,9 +28,45 @@ namespace SantaRamona.BackOffice.Controllers
         }
 
         // Página principal (inicio público)
-        public IActionResult IndexPublic()
+        [HttpGet]
+        public async Task<IActionResult>  IndexPublic(int? page)
         {
-            return View();
+            var client = _http.CreateClient("Api");
+
+            // Obtener animales
+            var respAnimales = await client.GetAsync("/api/Animal");
+            if (!respAnimales.IsSuccessStatusCode)
+            {
+                var body = await respAnimales.Content.ReadAsStringAsync();
+                ViewBag.ApiError = $"GET /api/Animal -> {(int)respAnimales.StatusCode} {respAnimales.ReasonPhrase}. Respuesta: {body}";
+                return View(Enumerable.Empty<Animal>());
+            }
+
+            var animalesJson = await respAnimales.Content.ReadAsStringAsync();
+            var animales = JsonSerializer.Deserialize<IEnumerable<Animal>>(animalesJson,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
+
+            // Filtrar solo animales en adopción
+            //var animalesEnAdopcion = animals.Where(a => a.id_estadoAnimal == 2).ToList();
+            var animalesEnAdopcion = animales.Where(a => a.id_estadoAnimal == 1 || a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
+
+
+            // ==== Obtener listas de referencia en paralelo ====
+            var tEsp = client.GetAsync("/api/Especie");
+            var tRaza = client.GetAsync("/api/Raza");
+            var tTam = client.GetAsync("/api/Tamano");
+            var tEst = client.GetAsync("/api/estadoAnimal");
+            await Task.WhenAll(tEsp, tRaza, tTam, tEst);
+
+            // ==== Guardar en ViewBag ====
+            ViewBag.Especies = await ToDict<Especie>(tEsp.Result, x => x.id_especie, x => x.especie);
+            ViewBag.Razas = await ToDict<Raza>(tRaza.Result, x => x.id_raza, x => x.raza);
+            ViewBag.Tamanos = await ToDict<Tamano>(tTam.Result, x => x.id_tamano, x => x.tamano);
+            ViewBag.Estados = await ToDict<Estado_Animal>(tEst.Result, x => x.id_estadoAnimal, x => x.estado);
+
+            
+
+            return View(animalesEnAdopcion);
         }
 
         // Política de privacidad

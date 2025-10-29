@@ -1,12 +1,15 @@
-﻿<!DOCTYPE html>
-<html lang="es">
+﻿@section Styles {
+<link rel="stylesheet" href="~/css/StyleSheet.css" asp-append-version="true" />
+}
+
+@model IEnumerable<SantaRamona.Backoffice.Models.Animal>
+
 @{
     ViewData["Title"] = "HomePublic";
     Layout = "~/Views/Shared/Layout1.cshtml";
+
 }
-@section Styles {
-    <link rel="stylesheet" href="~/css/StyleSheet.css" asp-append-version="true" />
-}
+
 <body id="top">
      
         <!-- Hero -->
@@ -15,8 +18,12 @@
             <img src="images/gatoperro.jpg" alt="Perro de fondo" />
         </div>
         <div class="content">
-            <h1 class="kicker">Campaña de adopciones</h1>
-            <p class="sub">Brindale vida y esperanza a un animal postulándote para tránsito.</p>
+            <h1 class="kicker">Adopción Responsable</h1>
+            <p class="sub">
+                Adoptar una mascota es un acto de amor, pero también una gran responsabilidad. No se trata solo de darle un hogar, sino de ofrecerle una vida digna, saludable y feliz. Antes de adoptar, es importante reflexionar: ¿tengo tiempo, espacio y recursos para cuidar de un animal durante toda su vida?
+                Una adopción responsable implica compromiso, paciencia y respeto. Las mascotas no son juguetes ni regalos: son seres vivos que sienten, necesitan compañía, atención médica, alimentación adecuada y mucho cariño.
+                Cuando adoptas, no solo cambiás la vida de un animal, también contribuís a reducir el abandono y fomentás una sociedad más solidaria y consciente.
+            </p>
             <a class="btn ghost" asp-controller="HomePublic" asp-action="Adopcion">IR A ADOPCIONES</a>
         </div>
     </section>
@@ -24,58 +31,67 @@
     <section id="adoptar" class="adopcion">
         <div class="section-inner">
             <div class="section-title">
-                <h2>Patitas en adopción</h2>
+                <h2>Ramoncitos en adopción</h2>
                 <span aria-hidden="true">🐾</span>
             </div>
 
-            <div class="scroller-wrap">
-                <!-- Botón IZQUIERDA -->
-                <button class="arrow left" aria-label="Desplazar a la izquierda" data-arrow="left" data-target="adopcion">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6" />
-                    </svg>
-                </button>
+            @{
+                // Filtramos los animales por estado
+                var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 1 || a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
+            }
 
-                <!-- Contenedor de tarjetas (solo tarjetas dentro) -->
-                <div class="scroller" id="scroller-adopcion" role="list">
-                    <!-- 🐶 Luna -->
-                    <a asp-controller="Adopcion" asp-action="InfoAdopcion" asp-route-id="1" class="card pet-card" role="listitem">
-                        <img src="/images/adoptados/Labrador.luna.jpg" alt="Luna, perra labrador" loading="lazy">
-                        <div class="pet-body">
-                            <div class="pet-name">Luna</div>
-                            <div class="pet-meta"> </div>
-                        </div>
-                    </a>
+            @if (animalesEnAdopcion != null && animalesEnAdopcion.Any())
+            {
+                <div class="scroller-wrap adopcion">
+                    <!-- Botón IZQUIERDA -->
+                    <button class="arrow left" aria-label="Desplazar a la izquierda" data-arrow="left" data-target="adopcion">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6" />
+                        </svg>
+                    </button>
 
-                    <!-- Repite las demás tarjetas (Max, Onix, Toby, etc.) -->
-                    <a asp-controller="Adopcion" asp-action="InfoAdopcion" asp-route-id="2" class="card pet-card" role="listitem">
-                        <img src="/images/adoptados/Beagle.max.jpg" alt="Max, perro beagle" loading="lazy">
-                        <div class="pet-body"><div class="pet-name">Max</div><div class="pet-meta"></div></div>
-                    </a>
+                    <div class="scroller" id="petsGrid">
+                        @foreach (var item in animalesEnAdopcion)
+                        {
+                            <a asp-action="InfoAdopcion" asp-route-id="@item.id_animal" class="card pet-card" role="listitem" style="text-decoration:none; color:inherit;">
 
-                    <!-- ... tarjetas 3 a 10 ... -->
-                    <a asp-controller="Adopcion" asp-action="InfoAdopcion" asp-route-id="3" class="card pet-card" role="listitem">
-                        <img src="/images/adoptados/Caniche.onix.jpg" alt="Onix" loading="lazy">
-                        <div class="pet-body"><div class="pet-name">Onix</div><div class="pet-meta"></div></div>
-                    </a>
+                                <div class="pet-image">
+                                    @if (item.imagen != null && item.imagen.Length > 0)
+                                    {
+                                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.imagen)" alt="Imagen de @item.nombre" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/placeholder.jpg" alt="Sin imagen disponible" />
+                                    }
+                                </div>
+                                <div class="pet-body">
+                                    <h3 class="pet-name">@item.nombre</h3>
+                                    
+                                </div>
+                            </a>
+                        }
+                    </div>
 
-                    <!-- Agrega aquí las tarjetas 4..10 tal como tenías -->
-                    <!-- ... -->
-
+                    <!-- Botón DERECHA -->
+                    <button class="arrow right" aria-label="Desplazar a la derecha" data-arrow="right" data-target="adopcion">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                    </button>
                 </div>
-
-                <!-- Botón DERECHA -->
-                <button class="arrow right" aria-label="Desplazar a la derecha" data-arrow="right" data-target="adopcion">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                </button>
-            </div>
+            }
+            else
+            {
+                <div class="pet-no">
+                    No hay animales en adopción.
+                </div>
+            }
         </div>
     </section>
-    <!-- Patitas en tránsito -->
+   @*  <!-- Patitas en tránsito -->
     <section id="transitos" class="transito">
         <div class="section-inner">
             <div class="section-title">
@@ -117,7 +133,7 @@
                 </button>
             </div>
         </div>
-    </section>
+    </section> *@
 
     <!-- Novedades -->
     <section aria-labelledby="news-title">
@@ -125,13 +141,40 @@
             <div class="news">
                 <div class="news-grid">
                     <div>
-                        <h2 id="news-title">Novedades</h2>
-                        <h3>Nueva campaña de castración</h3>
-                        <p>La castración es un acto de amor y responsabilidad que ayuda a mejorar la calidad de vida de nuestros animales y a reducir la sobrepoblación. A través de esta campaña buscamos concientizar y brindar la posibilidad de acceder a turnos accesibles para que más perros y gatos puedan ser esterilizados. Castrar previene enfermedades, evita camadas no deseadas y contribuye a una comunidad más sana y solidaria con los animales.</p>
-                        <a class="btn primary" href="#">LEER ARTÍCULO COMPLETO</a>
+
+                        <h2>Concientización sobre la Castración</h2>
+                        <p>
+                            La castración es un acto de responsabilidad y amor hacia los animales. No solo ayuda a controlar la superpoblación, sino que también mejora su salud y comportamiento.
+                            Castrar a tu mascota previene enfermedades graves como tumores, infecciones uterinas o problemas de próstata, y reduce conductas como el marcaje, la agresividad o las fugas. Además, evitás que nazcan más animales que podrían terminar abandonados o en la calle.
+                            La castración es un procedimiento seguro y rápido, realizado por profesionales veterinarios. Promoverla es cuidar la vida y el bienestar de todos los animales.
+                        </p>
+                        
                     </div>
                     <div>
                         <img src="images/ramonareal.jpg" alt="Perro sonriente" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section aria-labelledby="news-title">
+        <div class="section-inner">
+            <div class="news">
+                <div class="news-grid">
+                    <div>
+
+                        <h2>Concientización sobre el Maltrato Animal</h2>
+                        <p>
+                            El maltrato animal es un acto de violencia que debe ser erradicado. Los animales sienten dolor, miedo y tristeza, al igual que nosotros, y merecen vivir libres de sufrimiento.
+                            El maltrato no solo es físico; también incluye el abandono, la falta de alimento, de atención médica o de afecto. Todos tenemos la responsabilidad de denunciar los casos de abuso y de educar en el respeto y la empatía hacia los animales.
+                            Una sociedad que cuida y protege a sus animales es una sociedad más justa, sensible y humana. Decir no al maltrato es decir sí a la vida y al respeto.
+
+                        </p>
+
+                    </div>
+                    <div>
+                        <img src="images/ramona.png" alt="Perrito" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -143,7 +186,23 @@
         <div class="section-inner about">
             <div>
                 <h2 id="about-title">¿Quiénes somos?</h2>
-                <p>Somos Santa Ramona, una protectora sin refugio físico. Trabajamos con hogares de tránsito y una red de voluntariado para rescatar, recuperar y reubicar animales. Transparencia, castración y educación son nuestras bases.</p>
+                <p>
+                    Somos Santa Ramona, una protectora de animales sin refugio físico, conformada por un grupo de personas unidas por el amor, el respeto y el compromiso hacia los animales. Nuestro trabajo se sostiene gracias a una red solidaria de hogares de tránsito, voluntarios y donantes que nos permite rescatar, recuperar y reubicar a perros y gatos en situación de abandono, maltrato o riesgo.
+                    
+                    Creemos profundamente en el poder de la empatía y la acción colectiva: cada rescate es una oportunidad de transformar una vida, y cada adopción responsable es una historia que comienza de nuevo.
+                    
+                    Nos guiamos por tres pilares fundamentales:
+                    
+                    Transparencia, para que cada persona sepa cómo y en qué se destinan los recursos.
+                    
+                    Castración, como herramienta esencial para controlar la superpoblación animal y evitar el sufrimiento.
+                    
+                    Educación, porque solo a través de la conciencia y el respeto lograremos un cambio duradero.
+                   
+                    Si querés sumarte como voluntario/a, ofrecer tu hogar como tránsito o realizar una donación, ¡te necesitamos!
+                    
+                    Cada pequeño gesto, cada aporte y cada minuto de tu tiempo pueden marcar la diferencia y darle una segunda oportunidad a quienes más lo necesitan.
+                </p>
                 <p>Si querés sumarte como voluntario/a, ofrecer tránsito o hacer una donación, ¡te necesitamos! Cada pequeño aporte suma para cambiar una vida.</p>
             </div>
             <div class="logo-badge" aria-hidden="true">
@@ -154,16 +213,6 @@
 
     <!--botón para subir-->
     <a class="btn top" href="#top">↑</a>
-    
-
-    <!-- CTA Final -->
-  @*   <section class="cta" aria-labelledby="cta-title">
-        <div class="section-inner" style="text-align:center">
-            <h2 id="cta-title">¿Querés ser parte de Santa Ramona?</h2>
-            <p>Sumate como voluntario/a, casa de tránsito o colaborá con insumos.</p>
-            <a class="btn primary" href="#">¡Sumate!</a>
-        </div>
-    </section> *@
 
     @section ExtraContent {
         <!-- CTA Final -->
@@ -178,4 +227,81 @@
    
   
 </body>
-</html>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const buttons = document.querySelectorAll(".arrow");          
+        const scroller = document.getElementById("petsGrid");
+        const btnPrev = document.querySelector(".arrow.left");
+        const btnNext = document.querySelector(".arrow.right");
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const target = btn.dataset.target;
+                const scroller = document.querySelector(`#${target === "adopcion" ? "petsGrid" : ""}`);
+
+                if (!scroller) return;
+
+                const scrollAmount = 300; // cuánto se mueve por clic
+                if (btn.dataset.arrow === "left") {
+                    scroller.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+                } else {
+                    scroller.scrollBy({ left: scrollAmount, behavior: "smooth" });
+                }
+            });
+        });
+
+        const style = document.createElement("style");
+        style.textContent = `
+            .scroller {
+            overflow-x: auto;
+            }
+            .scroller::-webkit-scrollbar {
+            display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+
+       @* ---------------- Flechitas --------------- *@
+
+          const updateArrows = () => {
+            const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
+            const scrollLeft = scroller.scrollLeft;
+
+           @*  Si estamos al principio, ocultar la izquierda *@
+            if (scrollLeft <= 0) {
+              btnPrev.style.display = "none";
+            } else {
+              btnPrev.style.display = "flex";
+            }
+
+            @* Si estamos al final, ocultar la derecha *@
+            if (scrollLeft >= maxScrollLeft - 5) {
+              btnNext.style.display = "none";
+            } else {
+              btnNext.style.display = "flex";
+            }
+          };
+
+         @*  mover el scroll cuando se clickea *@
+          btnNext.addEventListener("click", () => {
+            scroller.scrollBy({ left: 300, behavior: "smooth" });
+          });
+
+          btnPrev.addEventListener("click", () => {
+            scroller.scrollBy({ left: -300, behavior: "smooth" });
+          });
+
+         @*  actualizar flechas cuando el usuario scrollea *@
+          scroller.addEventListener("scroll", updateArrows);
+
+          @* ejecutar al cargar *@
+          updateArrows();
+
+    });
+
+</script>
