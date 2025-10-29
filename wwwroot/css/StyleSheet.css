@@ -520,12 +520,12 @@ footer {
 
     
 
-    /* Ocultar nav por defecto en móviles */
+     /*Ocultar nav por defecto en móviles */
     nav {
         display: none !important;
         width: 100%;
         position: absolute; /* Para que salga del flujo del header */
-        top: 100%; /* Se posiciona justo debajo del header */
+        top: 100%;  /*Se posiciona justo debajo del header */
         left: 0;
         z-index: 40; /* Asegura que esté sobre el contenido */
     }
@@ -547,7 +547,7 @@ footer {
 
     .nav-donate-mobile {
         display: block;
-        margin-top: 10px; /* Separación de los otros links */
+        margin-top: 10px;  /*Separación de los otros links */
     }
 
     .nav {
@@ -576,5 +576,6 @@ footer {
         display: block;
     }
 }
+
 
 
