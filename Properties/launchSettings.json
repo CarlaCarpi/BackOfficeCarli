@@ -18,7 +18,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7176;http://localhost:5030"
+      "applicationUrl": "https://localhost:7176;http://localhost:5030",
+      "launchUrl": "admin/santa/back"
     },
     "IIS Express": {
       "commandName": "IISExpress",

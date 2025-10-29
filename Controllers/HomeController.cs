@@ -7,6 +7,8 @@ using System.Text.Json;
 
 namespace SantaRamona.Backoffice.Controllers
 {
+    // Prefijo del panel
+    [Route("admin/santa/back")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -19,21 +21,30 @@ namespace SantaRamona.Backoffice.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public HomeController(ILogger<HomeController> logger) => _logger = logger;
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        // GET /admin/santa/back
+        [HttpGet("")]
+        public IActionResult Index() => View();
+
+
+        // GET /admin/santa/back/privacy
+        [HttpGet("privacy")]
+        public IActionResult Privacy() => View();
+
+
+        //public IActionResult Privacy()
+        //{
+        //    return View();
+        //}
 
         public IActionResult IndexPublic()
         {
             return View();
         }
 
+        // GET /admin/santa/back/error
+        [HttpGet("error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -41,5 +52,10 @@ namespace SantaRamona.Backoffice.Controllers
         }
 
       
+
+        
+        //public IActionResult Error()
+        //    => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
     }
 }
