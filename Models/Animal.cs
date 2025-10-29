@@ -39,7 +39,7 @@ namespace SantaRamona.Backoffice.Models
         public int id_tamano { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione una raza válida.")]
-        public int? id_raza { get; set; }
+        public int id_raza { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione un estado válido.")]
         [Required(ErrorMessage = "El estado es obligatorio.")]
