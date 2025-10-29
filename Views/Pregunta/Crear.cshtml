@@ -172,19 +172,19 @@
                 <div asp-validation-summary="ModelOnly" class="summary-errors"></div>
 
                 <div class="form-group">
-                    <label asp-for="pregunta" class="form-label">Pregunta</label>
-                    <input asp-for="pregunta" class="form-control" maxlength="300" />
-                    <span class="help">Máx. 300 caracteres.</span>
-                    <span asp-validation-for="pregunta" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
                     <label asp-for="id_tipoFormulario" class="form-label">Tipo de formulario</label>
                     <select asp-for="id_tipoFormulario"
                             class="form-select"
                             asp-items="@(new SelectList((IEnumerable<SelectListItem>)ViewBag.Tipos, "Value","Text"))">
                     </select>
                     <span asp-validation-for="id_tipoFormulario" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="pregunta" class="form-label">Pregunta</label>
+                    <input asp-for="pregunta" class="form-control" maxlength="1000" />
+                    <span class="help">Máx. 1000 caracteres.</span>
+                    <span asp-validation-for="pregunta" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">

@@ -74,12 +74,26 @@
             </a>
         </div>
 
+        <!-- PLANTILLA FORMULARIO (activo) -->
+        <div class="col">
+            <a asp-controller="Pregunta" asp-action="PlantillaFormulario" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">📋</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Plantilla Formulario</div>
+                </div>
+            </a>
+        </div>
+
         <!-- FORMULARIOS (placeholder) -->
         <div class="col">
             <div class="p-3 text-center shadow-sm tile tile-off" title="Próximamente">
                 <div class="d-inline-flex align-items-center justify-content-center mb-2"
                      style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
-                    <span style="font-size:30px;">📝</span>                   
+                    <span style="font-size:30px;">📝</span>     
+        
                     <!-- FORMULARIOS (activo) oculto por el momento hasta wue este bien la logica -->
                     @* <div class="col">
             <a asp-controller="Formulario" asp-action="Index" class="text-decoration-none">

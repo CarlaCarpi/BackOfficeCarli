@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<SantaRamona.Backoffice.Models.Pregunta>
 @{
+    await Html.RenderPartialAsync("_PreguntaTopNav");
     ViewData["Title"] = "Preguntas";
 
     var tipos = ViewBag.TiposDict as Dictionary<int, string> ?? new();
@@ -134,7 +135,6 @@
 
 <div class="container mt-4 main-container">
     <div class="header-pregunta">
-        <a asp-controller="Home" asp-action="Index" class="link-back">← Volver al menú</a>
         <h1 class="titulo-pregunta">LISTA DE PREGUNTAS</h1>
         <a asp-controller="Pregunta" asp-action="Crear" class="btn-primary">Agregar Nueva Pregunta</a>
     </div>
@@ -166,10 +166,10 @@
         <table class="styled-table">
             <thead>
                 <tr>
-                    <th style="width:120px;">Código</th>
+                    @*<th style="width:120px;">Código</th>*@
+                    <th style="width:220px;">Tipo Formulario</th>
                     <th>Pregunta</th>
-                    <th style="width:220px;">Tipo de Formulario</th>
-                    <th style="width:120px;">Orden</th>
+                    <th style="width:120px;">N° Pregunta</th>
                     <th style="text-align:center; width: 260px;">Acciones</th>
                 </tr>
             </thead>
@@ -177,9 +177,9 @@
                 @foreach (var p in Model)
                 {
                     <tr>
-                        <td>@p.id_pregunta</td>
-                        <td>@p.pregunta</td>
+                        @*<td>@p.id_pregunta</td>*@
                         <td>@TipoTxt(p.id_tipoFormulario)</td>
+                        <td>@p.pregunta</td>
                         <td>@(p.orden?.ToString() ?? "-")</td>
                         <td class="actions-cell">
                             <div class="actions">

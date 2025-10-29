@@ -180,8 +180,10 @@
                         <option value="">Seleccione...</option>
                         <option value="M" selected="@(Model?.tipo == "M")">Medicamentos</option>
                         <option value="I" selected="@(Model?.tipo == "I")">Insumos</option>
+                        <option value="B" selected="@(Model?.tipo == "B")">Banco</option>
+                        <option value="MP">Mercado Pago selected="@(Model?.tipo == "MP")">Mercado Pago</option>
                     </select>
-                    <span class="help">Ej.: Paracetamol → Medicamentos (M) | Alimento balanceado → Insumos (I)</span>
+                    <span class="help">Ej.: Paracetamol → Medicamentos (M) | Alimento balanceado → Insumos (I) | Banco Ciudad (B) | Mercado Pago (MP)</span>
                     <span asp-validation-for="tipo" class="text-danger"></span>
                 </div>
 

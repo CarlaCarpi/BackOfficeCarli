@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Eliminar Donación";
 
-    string TipoTxt(string t) => t == "M" ? "Medicamentos" : t == "I" ? "Insumos" : t;
+    string TipoTxt(string t) => t == "M" ? "Medicamentos" : t == "I" ? "Insumos" : t == "B" ? "Banco" : t == "MP" ? "Mercado Pago" : t;
 }
 
 <style>
