@@ -46,8 +46,8 @@ namespace SantaRamona.Backoffice.Controllers
         public async Task<IActionResult> Crear([FromForm] string tipo, [FromForm] string descripcion)
         {
             // Validaciones mínimas
-            if (string.IsNullOrWhiteSpace(tipo) || !(tipo == "M" || tipo == "I"))
-                ModelState.AddModelError("tipo", "Debe seleccionar un tipo válido (M = Medicamentos, I = Insumos).");
+            if (string.IsNullOrWhiteSpace(tipo) || !(tipo == "M" || tipo == "I" || tipo == "B" || tipo == "MP"))
+                ModelState.AddModelError("tipo", "Debe seleccionar un tipo válido (M = Medicamentos, I = Insumos, B = Banco, MP = Mercado Pago).");
 
             if (string.IsNullOrWhiteSpace(descripcion))
                 ModelState.AddModelError("descripcion", "La descripción es obligatoria.");
@@ -103,8 +103,8 @@ namespace SantaRamona.Backoffice.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Modificar([FromForm] int id_donacion, [FromForm] string tipo, [FromForm] string descripcion)
         {
-            if (string.IsNullOrWhiteSpace(tipo) || !(tipo == "M" || tipo == "I"))
-                ModelState.AddModelError("tipo", "Debe seleccionar un tipo válido (M = Medicamentos, I = Insumos).");
+            if (string.IsNullOrWhiteSpace(tipo) || !(tipo == "M" || tipo == "I" || tipo == "B" || tipo == "MP"))
+                ModelState.AddModelError("tipo", "Debe seleccionar un tipo válido (M = Medicamentos, I = Insumos, B = Banco, MP = Mercado Pago).");
 
             if (string.IsNullOrWhiteSpace(descripcion))
                 ModelState.AddModelError("descripcion", "La descripción es obligatoria.");

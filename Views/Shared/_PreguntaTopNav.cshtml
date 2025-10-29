@@ -1,0 +1,76 @@
+﻿@* /Views/Shared/_PreguntaTopNav.cshtml *@
+@{
+    // Detecta el controller actual para marcar pestaña activa
+    var ctrl = (ViewContext.RouteData.Values["controller"]?.ToString() ?? "").ToLowerInvariant();
+    string Active(string name) => ctrl == name.ToLowerInvariant() ? "active" : "";
+}
+
+<div class="container mt-3 sr-topnav">
+    <div class="d-flex align-items-center gap-3 flex-wrap">
+        <!-- Volver al menú (misma estética que Animal) -->
+        <a href="@Url.Action("Index", "Home")"
+           class="btn"
+           style="border:1px solid #2FA8A2; color:#2FA8A2; background:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            ← Volver al menú
+        </a>
+
+        <!-- Pestañas del módulo Formularios -->
+        <ul class="nav nav-pills gap-2 flex-wrap mb-0">
+            <li class="nav-item">
+                <a href="@Url.Action("PlantillaFormulario", "Pregunta")"
+                   class="nav-link @( (ctrl=="pregunta" && (ViewContext.RouteData.Values["action"]?.ToString()??"").Equals("PlantillaFormulario", System.StringComparison.OrdinalIgnoreCase)) ? "active" : "" )">
+                    Plantilla de formularios
+                </a>
+            <li class="nav-item">
+                <a href="@Url.Action("Index", "Pregunta")" class="nav-link @Active("pregunta")">Preguntas</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    /* Botón "Volver al menú" con estilo turquesa */
+    .sr-topnav .sr-backlink {
+        background: #fff;
+        color: #2FA8A2;
+        border: 1px solid #2FA8A2;
+        border-radius: 12px;
+        padding: .45rem 1rem;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        transition: all .2s ease-in-out;
+    }
+
+        .sr-topnav .sr-backlink:hover {
+            background: #E6F6F5;
+            color: #155e59;
+        }
+
+    /* Pestañas */
+    .sr-topnav .nav-link {
+        background: #fff;
+        color: #2FA8A2;
+        border: 1px solid #2FA8A2;
+        border-radius: 12px;
+        padding: .45rem 1rem;
+        transition: all .2s ease-in-out;
+    }
+
+        .sr-topnav .nav-link:hover {
+            background: #E6F6F5;
+            color: #155e59;
+        }
+
+        .sr-topnav .nav-link.active {
+            background: #2FA8A2 !important;
+            color: #fff !important;
+            border-color: #2FA8A2 !important;
+            font-weight: 600;
+        }
+
+        .sr-topnav .nav-link:focus {
+            box-shadow: 0 0 0 .15rem rgba(47,168,162,.25);
+        }
+</style>
+

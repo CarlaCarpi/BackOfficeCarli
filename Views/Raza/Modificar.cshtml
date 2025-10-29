@@ -3,7 +3,15 @@
     ViewData["Title"] = "Modificar raza";
 }
 
-<div class="container mt-4">
+<style>
+    /* 🔒 Parche local: evita texto inyectado por traductores/extensiones en botones */
+    .container .btn::before,
+    .container .btn::after {
+        content: none !important;
+    }
+</style>
+
+<div class="container mt-4 notranslate" translate="no">
     <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
         MODIFICAR RAZA
     </h1>

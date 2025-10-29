@@ -7,7 +7,7 @@ namespace SantaRamona.Backoffice.Models
         public int id_donacion { get; set; }
 
         [Required(ErrorMessage = "El tipo de donación es obligatorio.")]
-        [RegularExpression("^(M|I)$", ErrorMessage = "Seleccione 'M' (Medicamento) o 'I' (Insumo).")]
+        [RegularExpression("^(M|I|B|MP)$", ErrorMessage = "Seleccione 'M' (Medicamento) o 'I' (Insumo) o 'B' (Banco) o 'MP' (Mercado Pago).")]
         [Display(Name = "Tipo de donación")]
         public string tipo { get; set; } = string.Empty;
 

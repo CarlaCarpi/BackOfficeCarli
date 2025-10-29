@@ -47,8 +47,8 @@
             <table class="table mb-0">
                 <thead>
                     <tr style="background:#2FA8A2; color:#fff;">
-                        <th style="border-top-left-radius:10px;">Código</th>
-                        <th>Nombre</th>
+                        @*<th style="border-top-left-radius:10px;">Código</th>*@
+                        <th style ="border-top-left-radius:10px;">Nombre</th>
                         <th>Edad</th>
                         <th>Especie</th>
                         <th>Raza</th>
@@ -63,7 +63,7 @@
                         foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.id_animal</td>
+                                @*<td>@item.id_animal</td>*@
                                 <td>@item.nombre</td>
                                 <td>@EdadTxt(item.edadValor, item.edadUnidad)</td>
                                 <td>@Txt(especies, item.id_especie)</td>

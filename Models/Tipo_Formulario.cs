@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SantaRamona.Backoffice.Models
 {
@@ -15,5 +16,9 @@ namespace SantaRamona.Backoffice.Models
         [RegularExpression("^(Activo|Inactivo)$", ErrorMessage = "El estado debe ser Activo o Inactivo.")]
         [StringLength(50)]
         public string Estado { get; set; } = "Activo";
+
+        [NotMapped]
+        public List<Pregunta> PreguntasAsociadas { get; set; } = new();
+
     }
 }

@@ -6,7 +6,6 @@ namespace SantaRamona.Backoffice.Models
 {
     public class Animal
     {
-        
         public int id_animal { get; set; }
 
         [Required(ErrorMessage = "El nombre es obligatorio.")]
@@ -32,15 +31,18 @@ namespace SantaRamona.Backoffice.Models
         public byte[]? imagen { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione una especie válida.")]
+        [Required(ErrorMessage = "La especie es obligatorio.")]
         public int id_especie { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione un tamaño válido.")]
+        [Required(ErrorMessage = "El tamaño es obligatorio.")]
         public int id_tamano { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione una raza válida.")]
-        public int id_raza { get; set; }
+        public int? id_raza { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione un estado válido.")]
+        [Required(ErrorMessage = "El estado es obligatorio.")]
         public int id_estadoAnimal { get; set; }
         //validamos que sea > 0.
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione una persona válida.")]

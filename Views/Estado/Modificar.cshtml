@@ -2,8 +2,15 @@
 @{
     ViewData["Title"] = "Modificar estado";
 }
+<style>
+    /* 🔒 Parche local: evita texto inyectado por el traductor o extensiones */
+    .container .btn::before,
+    .container .btn::after {
+        content: none !important;
+    }
+</style>
 
-<div class="container mt-4">
+<div class="container mt-4 notranslate" translate="no">
     <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
         MODIFICAR ESTADO
     </h1>

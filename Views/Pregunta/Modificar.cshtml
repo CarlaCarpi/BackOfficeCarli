@@ -35,6 +35,14 @@
             background: #40ADB0;
         }
 
+    /* 🔒 Parche local: bloquea texto inyectado por Google Translate o extensiones */
+    .main-container .btn-submit::before,
+    .main-container .btn-submit::after,
+    .main-container .btn-cancel::before,
+    .main-container .btn-cancel::after {
+        content: none !important;
+    }
+
     .summary-errors {
         color: #40ADB0;
         font-weight: 600;
@@ -139,10 +147,10 @@
     }
 </style>
 
-<div class="main-container">
+<div class="main-container notranslate" translate="no">
     <h2 class="form-title">Modificar Pregunta</h2>
 
-    @* Carteles (mismo patrón) *@
+    @* Carteles *@
     @if (ViewBag.MensajeExito != null)
     {
         <div id="ok-banner" class="alert-ok">@ViewBag.MensajeExito</div>
@@ -174,8 +182,8 @@
 
                 <div class="form-group">
                     <label asp-for="pregunta" class="form-label">Pregunta</label>
-                    <input asp-for="pregunta" class="form-control" maxlength="300" />
-                    <span class="help">Máx. 300 caracteres.</span>
+                    <input asp-for="pregunta" class="form-control" maxlength="1000" />
+                    <span class="help">Máx. 1000 caracteres.</span>
                     <span asp-validation-for="pregunta" class="text-danger"></span>
                 </div>
 
@@ -224,4 +232,3 @@
         setTimeout(() => { const b = document.getElementById('ok-banner'); if (b) b.style.display = 'none'; }, 3500);
     </script>
 }
-

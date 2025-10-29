@@ -102,6 +102,13 @@
                     </div>
                 </div>
 
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Fecha de ingreso</label>
+                    <div class="form-control" readonly>
+                        @(Model.fechaIngreso.HasValue ? Model.fechaIngreso.Value.ToString("dd/MM/yyyy") : "—")
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
