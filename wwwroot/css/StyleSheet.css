@@ -426,7 +426,7 @@ footer {
 }
 
     /* Responsive */
-@media (max-width: 960px) {
+@media (max-width: 900px) {
     .news-grid {
         grid-template-columns: 1fr
     }
@@ -486,16 +486,16 @@ footer {
         color: #0b3840;
     }*/
 
-    /* Mostrar nav cuando esté activo */
-    /*nav.active {
+     /*Mostrar nav cuando esté activo */
+  /*  nav.active {
             display: block;
-        }
+    }
 
     .nav-donate-mobile {
         display: block;
-        margin-top: 10px;*/ /*Separación de los otros links */
-    /*}
-
+        margin-top: 10px; Separación de los otros links 
+    }*/
+/*
     .nav {
         flex-direction: column;
         gap: 8px;
@@ -521,7 +521,7 @@ footer {
         margin: 10px auto;
         display: block;
     }
-}*/
+/*}*/
 
     /* 1. Ocultar el botón de hamburguesa por defecto (solo visible en móvil) */
     .menu-toggle {
