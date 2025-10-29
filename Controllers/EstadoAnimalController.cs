@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace SantaRamona.Backoffice.Controllers
 {
-    [Route("admin/santa/back/[controller]/[action]")]
+    [Route("admin/santa/back/[controller]/[action]/{id?}")]
     public class EstadoController : Controller
     {
         private readonly IHttpClientFactory _http;

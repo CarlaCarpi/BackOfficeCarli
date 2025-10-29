@@ -9,7 +9,7 @@ using SantaRamona.Backoffice.Models;
 
 namespace SantaRamona.Backoffice.Controllers
 {
-    [Route("admin/santa/back/[controller]/[action]")]
+    [Route("admin/santa/back/[controller]/[action]/{id?}")]
     // [Authorize(Roles = "Administrador")]
     public class UsuarioController : Controller
     {

@@ -6,7 +6,7 @@ using SantaRamona.Backoffice.Models;
 
 namespace SantaRamona.Backoffice.Controllers
 {
-    [Route("admin/santa/back/[controller]/[action]")]
+    [Route("admin/santa/back/[controller]/[action]/{id?}")]
     public class AnimalController : Controller
     {
         private readonly IHttpClientFactory _http;
@@ -244,6 +244,50 @@ namespace SantaRamona.Backoffice.Controllers
 
             await CargarDiccionariosBasicos();
             return PartialView("DetalleAnimal", model);
+        }
+        // ===================== ELIMINAR (GET) =====================
+        // Muestra la vista de confirmación
+        [HttpGet]
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            var client = _http.CreateClient("Api");
+            var resp = await client.GetAsync($"/api/Animal/{id}");
+            if (!resp.IsSuccessStatusCode)
+            {
+                TempData["Error"] = $"No se pudo cargar el animal #{id} para eliminar.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var model = JsonSerializer.Deserialize<Animal>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (model is null)
+            {
+                TempData["Error"] = $"Animal #{id} no encontrado.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model); // Views/Animal/Eliminar.cshtml
+        }
+
+        // ===================== ELIMINAR (POST) =====================
+        // Ejecuta el borrado contra la API
+        [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
+        public async Task<IActionResult> EliminarConfirmado(int id)
+        {
+            var client = _http.CreateClient("Api");
+            var resp = await client.DeleteAsync($"/api/Animal/{id}");
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                var body = await resp.Content.ReadAsStringAsync();
+                TempData["Error"] = $"Error al eliminar animal #{id}: {body}";
+                return RedirectToAction(nameof(Eliminar), new { id });
+            }
+
+            TempData["Ok"] = $"Animal #{id} eliminado correctamente.";
+            return RedirectToAction(nameof(Index));
         }
 
         // ===================== HELPERS =====================
