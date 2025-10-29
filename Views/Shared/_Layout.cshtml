@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SantaRamona.Backoffice.styles.css" asp-append-version="true" />
+    <html lang="es" translate="no">
+    <meta name="google" content="notranslate">    
 </head>
 <body>
     <header>
@@ -45,5 +47,18 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const kill = () => {
+            // borra nodos sospechosos de texto largo fuera de tus alerts
+            document.querySelectorAll('body *').forEach(el => {
+              const t = el.textContent?.trim() || '';
+              if (t.startsWith('Adultos mayores de 60 años')) el.remove();
+            });
+          };
+          kill();
+          new MutationObserver(kill).observe(document.body, {subtree:true, childList:true});
+        });
+    </script>
 </body>
 </html>

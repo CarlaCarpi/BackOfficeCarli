@@ -9,7 +9,7 @@ using System.Net.Http;
 
 namespace SantaRamona.Backoffice.Controllers
 {
-    [Route("admin/santa/back/[controller]/[action]")]
+    [Route("admin/santa/back/[controller]/[action]/{id?}")]
     public class PersonaController : Controller
     {
         private readonly IHttpClientFactory _http;

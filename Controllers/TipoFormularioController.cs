@@ -5,7 +5,7 @@ using SantaRamona.Backoffice.Models;
 
 namespace SantaRamona.Backoffice.Controllers
 {
-    [Route("admin/santa/back/[controller]/[action]")]
+    [Route("admin/santa/back/[controller]/[action]/{id?}")]
     public class TipoFormularioController : Controller
     {
         private readonly IHttpClientFactory _http;
