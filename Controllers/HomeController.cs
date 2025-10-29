@@ -5,29 +5,24 @@ using System.Diagnostics;
 
 namespace SantaRamona.Backoffice.Controllers
 {
+    // Prefijo del panel
+    [Route("admin/santa/back")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        public HomeController(ILogger<HomeController> logger) => _logger = logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        // GET /admin/santa/back
+        [HttpGet("")]
+        public IActionResult Index() => View();
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        // GET /admin/santa/back/privacy
+        [HttpGet("privacy")]
+        public IActionResult Privacy() => View();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        // GET /admin/santa/back/error
+        [HttpGet("error")]
         public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+            => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

@@ -28,6 +28,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
+app.MapControllers();
+
 // que abra Home/Index por defecto
 app.MapControllerRoute(
     name: "default",
