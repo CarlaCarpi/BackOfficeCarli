@@ -172,10 +172,6 @@ nav {
      scroll-behavior: smooth; /* scroll suave al hacer clic */
  }
 
-.menu-toggle{
-    display:none;
-}
-
 /* Hero */
 
 .hero {
@@ -430,125 +426,75 @@ footer {
 }
 
     /* Responsive */
-    media (max-width: 960px) {
-    .news-grid
-
-{
-    grid-template-columns: 1fr
-}
-
-.about {
-    grid-template-columns: 1fr
-}
-
-.logo-badge {
-    justify-self: start
-}
-
-.hero .content {
-    padding: 46px 16px 70px
-}
-
-.arrow {
-    display: none
-}
-
-/*Prueba Voluntariado*/
-.voluntariados-container {
-    display: flex;
-    flex-direction: column;
-    gap: 40px; /* separación entre bloques */
-    max-width: 1000px;
-    margin: 0 auto; /*centrar en la página */
-    padding: 20px;
-    background-color: var(--bg);
-}
-
-.voluntariado-item {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    background-color: #C23A79;
-    border-radius: 12px;
-    width: 800px;
-}
-
-    /* cuando la clase es "left": imagen izquierda */
-    .voluntariado-item.left {
-        flex-direction: row;
-        margin-left: 10px;
-        margin-right: auto;
+@media (max-width: 960px) {
+    .news-grid {
+        grid-template-columns: 1fr
     }
 
-    /* cuando la clase es "right": imagen derecha */
-    .voluntariado-item.right {
-        flex-direction: row-reverse;
-        margin-left: auto;
-        margin-right: 0px;
+    .about {
+        grid-template-columns: 1fr
     }
 
-.img-voluntariado {
-    width: 150px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
+    .logo-badge {
+        justify-self: start
+    }
 
-.texto-voluntariado {
-    flex: 1;
-    font-size: larger;
-    line-height: 1.6;
-    color: black;
-    font-family: 'Times New Roman', Times, serif;
-}
+    .hero .content {
+        padding: 46px 16px 70px
+    }
 
-/* HEADER RESPONSIVE */
-@media screen and (max-width: 600px) {
+    .arrow {
+        display: none
+    }
+
+   
+
+    /* HEADER RESPONSIVE */
+    /*@media screen and (max-width: 600px) {
 
     .site-header .inner {
         flex-direction: row;
-        justify-content: space-between; /* Logo a la izquierda, botón a la derecha */
-        align-items: center;
+        justify-content: space-between;*/ /* Logo a la izquierda, botón a la derecha */
+    /*align-items: center;
         gap: 10px;
         padding: 10px 12px;
     }
 
     .site-header .btn.magenta {
         display: none !important; 
-    }
+    }*/
 
-    
 
-     /*Ocultar nav por defecto en móviles */
-    nav {
+
+    /*Ocultar nav por defecto en móviles */
+    /*nav {
         display: none !important;
         width: 100%;
-        position: absolute; /* Para que salga del flujo del header */
-        top: 100%;  /*Se posiciona justo debajo del header */
-        left: 0;
-        z-index: 40; /* Asegura que esté sobre el contenido */
-    }
+        position: absolute;*/ /* Para que salga del flujo del header */
+    /*top: 100%;*/ /*Se posiciona justo debajo del header */
+    /*left: 0;
+        z-index: 40;*/ /* Asegura que esté sobre el contenido */
+    /*}*/
 
     /* Mostrar el botón hamburguesa en línea */
-    .menu-toggle {
+    /*.menu-toggle {
         display: inline-block;
         font-size: 1.5rem;
         background: none;
         border: none;
         cursor: pointer;
         color: #0b3840;
-    }
+    }*/
 
-        /* Mostrar nav cuando esté activo */
-        nav.active {
+    /* Mostrar nav cuando esté activo */
+    /*nav.active {
             display: block;
         }
 
     .nav-donate-mobile {
         display: block;
-        margin-top: 10px;  /*Separación de los otros links */
-    }
+        margin-top: 10px;*/ /*Separación de los otros links */
+    /*}
 
     .nav {
         flex-direction: column;
@@ -574,6 +520,109 @@ footer {
         font-size: 1rem;
         margin: 10px auto;
         display: block;
+    }
+}*/
+
+    /* 1. Ocultar el botón de hamburguesa por defecto (solo visible en móvil) */
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 100; /* Asegura que esté por encima del menú */
+    }
+
+        /* 2. Estilizar el icono de la hamburguesa */
+        .menu-toggle .icon-bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #0b3840; /* Color de tus enlaces */
+            margin: 5px 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* 3. Estilos del menú cuando está abierto (para la animación) */
+        .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(2) {
+            opacity: 0; /* Oculta la barra del medio */
+        }
+
+        .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg); /* Gira y mueve para formar una X */
+        }
+
+        .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg); /* Gira y mueve para formar una X */
+        }
+
+    /* 4. MEDIA QUERY: Se activa cuando el ancho es de 800px o menos */
+    @media screen and (min-width: 340px) and (max-width: 800px) {
+
+        /* Mostrar el botón de hamburguesa y ocultar la navegación principal */
+        .menu-toggle {
+            display: block; /* Muestra el botón de hamburguesa */
+            margin-left: auto; /* Para que se alinee a la derecha */
+        }
+
+        nav {
+            /* Oculta el menú por defecto en pantallas pequeñas */
+            display: none;
+            /* Posiciona el menú desplegable */
+            position: absolute;
+            top: 80px; /* Ajusta según la altura de tu header.inner */
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            z-index: 40;
+        }
+
+            /* Estilo del menú cuando se abre con JavaScript */
+            nav.is-open {
+                display: block;
+            }
+
+        .nav {
+            /* Cambia el flexbox a un diseño de columna */
+            flex-direction: column;
+            align-items: center; /* Centra los elementos */
+            gap: 10px;
+        }
+
+            .nav li {
+                width: 100%; /* Para que los links ocupen todo el ancho si quieres */
+                text-align: center;
+            }
+
+            .nav a {
+                display: block;
+                padding: 15px 20px;
+                border-radius: 0;
+                font-size: 1.1em;
+                font-weight: 700;
+                color: #0b3840;
+            }
+
+        /* Ocultar el botón de Donar en el header normal (si existiera) 
+       y mostrar el botón de Donar dentro del menú desplegable */
+        .nav-donate-mobile {
+            display: list-item; /* Asegura que el botón DONAR se vea en el menú */
+            margin-top: 15px;
+        }
+
+            .nav-donate-mobile a.btn {
+                width: 80%;
+                margin: auto;
+            }
+    }
+
+    /* Asegurar que el elemento de donar en el menú solo sea visible en móvil (si antes no lo era) */
+    @media (min-width: 901px) {
+        .nav-donate-mobile {
+            display: none !important; /* Oculta la versión móvil en escritorio */
+        }
     }
 }
 

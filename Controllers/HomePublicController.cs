@@ -87,7 +87,7 @@ namespace SantaRamona.BackOffice.Controllers
 
             // Filtrar solo animales en adopción
             //var animalesEnAdopcion = animals.Where(a => a.id_estadoAnimal == 2).ToList();
-            var animalesEnAdopcion = animales.Where(a => a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
+            var animalesEnAdopcion = animales.Where(a => a.id_estadoAnimal == 1 || a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
 
 
             // ==== PAGINACIÓN ====
