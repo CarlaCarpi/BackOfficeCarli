@@ -131,28 +131,48 @@ namespace SantaRamona.Backoffice.Controllers
                            ?? Enumerable.Empty<Persona>();
 
             // =============================
-            // 2) FILTRO LOCAL SI HAY q
+            // 2) CARGAR ESTADOS (lo usamos en el filtro)
+            // =============================
+            var estadosDict = await CargarEstadosDictAsync(client);
+            ViewBag.Estados = estadosDict;
+
+            // =============================
+            // 3) FILTRO LOCAL SI HAY q
+            //    (por Nombre, Apellido y EstadoPersona)
             // =============================
             if (!string.IsNullOrWhiteSpace(q))
             {
-                var term = q;
+                var term = q.Trim();
 
-                if (int.TryParse(term, out int idBuscado))
+                personas = personas.Where(p =>
                 {
-                    personas = personas.Where(p => p.id_persona == idBuscado);
-                }
-                else
-                {
-                    personas = personas.Where(p =>
-                        (!string.IsNullOrWhiteSpace(p.nombre) && p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase))
-                    );
-                }
+                    // Nombre
+                    bool porNombre = !string.IsNullOrWhiteSpace(p.nombre) &&
+                                     p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    // Apellido
+                    bool porApellido = !string.IsNullOrWhiteSpace(p.apellido) &&
+                                       p.apellido.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    // Estado (descripcion)
+                    string estadoTxt = "";
+                    if (p.id_estadoPersona is int idEst &&
+                        estadosDict.TryGetValue(idEst, out var descEstado) &&
+                        !string.IsNullOrWhiteSpace(descEstado))
+                    {
+                        estadoTxt = descEstado;
+                    }
+
+                    bool porEstado = !string.IsNullOrWhiteSpace(estadoTxt) &&
+                                     estadoTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    return porNombre || porApellido || porEstado;
+                });
             }
 
             // =============================
-            // 3) CARGAR DICCIONARIOS
+            // 4) CARGAR DICCIONARIOS RESTO
             // =============================
-            ViewBag.Estados = await CargarEstadosDictAsync(client);
 
             // Provincias
             var respProv = await client.GetAsync(RUTA_PROVINCIA);
@@ -225,13 +245,13 @@ namespace SantaRamona.Backoffice.Controllers
             }
 
             // =============================
-            // 4) MENSAJES TEMP
+            // 5) MENSAJES TEMP
             // =============================
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
             if (TempData["Error"] is string err) ViewBag.Error = err;
 
             // =============================
-            // 5) CALCULAR HASMORE
+            // 6) CALCULAR HASMORE
             // =============================
             int total = 0;
             bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
@@ -239,7 +259,6 @@ namespace SantaRamona.Backoffice.Controllers
                 int.TryParse(vals!.FirstOrDefault(), out total);
 
             bool hasMore;
-
             if (total > 0)
             {
                 hasMore = (page * pageSize) < total;
@@ -268,15 +287,16 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.HasMore = hasMore;
 
             // =============================
-            // 6) ORDEN FINAL
+            // 7) ORDEN FINAL
             // =============================
             personas = personas.OrderByDescending(p => p.id_persona);
 
             // =============================
-            // 7) DEVOLVER LISTA
+            // 8) DEVOLVER LISTA
             // =============================
             return View(personas);
         }
+
 
         // Devuelve más filas para el botón "Ver más"
         [HttpGet]

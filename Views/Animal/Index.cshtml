@@ -55,10 +55,12 @@
         <form method="get" class="d-flex" style="max-width:520px; width:100%;">
             <input type="text" name="q" value="@q"
                    class="form-control"
-                   placeholder="Buscar por Nombre, Especie, Estado..."
-                   style="border:1px solid #2FA8A2; border-radius:10px 0 0 10px;">
+                   placeholder="Buscar por Nombre, Especie, Tamaño o Estado..."
+                   style="border:1px solid #2FA8A2; border-radius:10px 0 0 10px; outline:none; box-shadow:none;">
+
             <input type="hidden" name="page" value="1" />
             <input type="hidden" name="pageSize" value="@pageSize" />
+
             <button class="btn"
                     style="background:#2FA8A2; color:#fff; border-radius:0 10px 10px 0;">
                 Buscar

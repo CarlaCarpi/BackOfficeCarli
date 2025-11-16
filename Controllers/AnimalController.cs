@@ -32,7 +32,7 @@ namespace SantaRamona.Backoffice.Controllers
             // === 1) Animales (API con paginación server-side) ===
             var url = $"{RUTA_ANIMAL}?pagina={page}&pageSize={pageSize}";
             if (!string.IsNullOrWhiteSpace(q))
-                url += $"&q={Uri.EscapeDataString(q)}";
+                url += $"&q={Uri.EscapeDataString(q)}";   // si la API implementa algo básico
 
             var resp = await client.GetAsync(url);
             if (!resp.IsSuccessStatusCode)
@@ -58,32 +58,52 @@ namespace SantaRamona.Backoffice.Controllers
             var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
 
-            // === 2) Filtro local por q (por si la API NO implementa q) ===
-            if (!string.IsNullOrWhiteSpace(q))
-            {
-                var term = q;
-                if (int.TryParse(term, out int idBuscado))
-                {
-                    animals = animals.Where(a => a.id_animal == idBuscado);
-                }
-                else
-                {
-                    animals = animals.Where(a =>
-                        (!string.IsNullOrWhiteSpace(a.nombre) &&
-                         a.nombre.Contains(term, StringComparison.OrdinalIgnoreCase))
-                    );
-                }
-            }
-
-            // === 3) Catálogos para la vista (texto de especie/tamaño/estado) ===
+            // === 2) Catálogos para la vista (texto de especie/tamaño/estado) ===
             var tEsp = client.GetAsync("/api/Especie");
             var tTam = client.GetAsync("/api/Tamano");
             var tEst = client.GetAsync("/api/estadoAnimal");
             await Task.WhenAll(tEsp, tTam, tEst);
 
-            ViewBag.Especies = await ToDict<Especie>(tEsp.Result, x => x.id_especie, x => x.especie);
-            ViewBag.Tamanos = await ToDict<Tamano>(tTam.Result, x => x.id_tamano, x => x.tamano);
-            ViewBag.Estados = await ToDict<Estado_Animal>(tEst.Result, x => x.id_estadoAnimal, x => x.estado);
+            var especiesDict = await ToDict<Especie>(tEsp.Result, x => x.id_especie, x => x.especie);
+            var tamanosDict = await ToDict<Tamano>(tTam.Result, x => x.id_tamano, x => x.tamano);
+            var estadosDict = await ToDict<Estado_Animal>(tEst.Result, x => x.id_estadoAnimal, x => x.estado);
+
+            ViewBag.Especies = especiesDict;
+            ViewBag.Tamanos = tamanosDict;
+            ViewBag.Estados = estadosDict;
+
+            // === 3) Filtro local POR TODO (id, nombre, especie, tamaño, estado) ===
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var term = q; // tal cual, usamos Contains con OrdinalIgnoreCase
+
+                animals = animals.Where(a =>
+                {
+                    bool porId = false;
+                    if (int.TryParse(term, out int idBuscado))
+                        porId = a.id_animal == idBuscado;
+
+                    bool porNombre = !string.IsNullOrWhiteSpace(a.nombre) &&
+                                     a.nombre.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    string espTxt = (a.id_especie != 0 && especiesDict.TryGetValue(a.id_especie, out var esp))
+                        ? esp : "";
+                    bool porEspecie = !string.IsNullOrWhiteSpace(espTxt) &&
+                                      espTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    string tamTxt = (a.id_tamano != 0 && tamanosDict.TryGetValue(a.id_tamano, out var tam))
+                        ? tam : "";
+                    bool porTamano = !string.IsNullOrWhiteSpace(tamTxt) &&
+                                     tamTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    string estTxt = (a.id_estadoAnimal != 0 && estadosDict.TryGetValue(a.id_estadoAnimal, out var est))
+                        ? est : "";
+                    bool porEstado = !string.IsNullOrWhiteSpace(estTxt) &&
+                                     estTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    return porId || porNombre || porEspecie || porTamano || porEstado;
+                });
+            }
 
             // === 4) HasMore por header o por sondeo ===
             int total = 0;
@@ -117,11 +137,12 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.HasMore = hasMore;
             ViewBag.Query = q ?? "";
 
-            // Ordenar si querés (por ID desc, por ejemplo)
+            // Opcional: ordenar
             animals = animals.OrderByDescending(a => a.id_animal);
 
             return View(animals);
         }
+
 
         // === Acción AJAX para "Ver más" ===
         // Devuelve sólo las filas/cards (partial) y marca X-HasMore para que el JS sepa si ocultar el botón.
