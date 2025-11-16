@@ -137,7 +137,7 @@ namespace SantaRamona.Backoffice.Controllers
             // ENCABEZADOS (condicionales para Historia / Seguimiento)
             var headers = new List<string>
     {
-        "ID","Nombre","Sexo","EdadValor","EdadUnidad",
+        "Nombre","Sexo","EdadValor","EdadUnidad",
         "Especie","Tamano","Estado","Persona","Pension",
         "FechaIngreso","FechaAdopcion"
     };
@@ -159,7 +159,7 @@ namespace SantaRamona.Backoffice.Controllers
 
                 var cols = new List<string>
         {
-            a.id_animal.ToString(),
+            
             Esc(a.nombre),
             SexoTxt(a.sexo),
             a.edadValor.ToString(),

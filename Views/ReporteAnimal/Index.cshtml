@@ -29,13 +29,13 @@
 }
 
 <style>
-    /* ===== Estética original restaurada ===== */
     .card {
         border: 1px solid #2FA8A2;
         border-radius: 12px;
         box-shadow: 0 2px 8px rgba(0,0,0,.05);
         background: #fff;
     }
+
     .card-header {
         background: #2FA8A2;
         color: #fff;
@@ -43,40 +43,56 @@
         border-top-right-radius: 12px;
         padding: .85rem 1rem;
     }
-    .btn-main, .btn-outline {
+
+    /* ---- Botones (mismos que Reporte Personas) ---- */
+    .btn-outline,
+    .btn-outline:link,
+    .btn-outline:visited,
+    button.btn-outline {
         border-radius: 10px;
         padding: .45rem .9rem;
-        text-decoration: none;
-        display: inline-flex; align-items: center; gap:.35rem;
-    }
-    .btn-main {
-        background: #fff;
-        color: #2FA8A2;
-        border: 1px solid #fff;
-    }
-    .btn-main:hover { filter: brightness(0.95); }
-    .btn-outline {
         background: #fff;
         color: #155e59;
         border: 1px solid #155e59;
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        line-height: 1.2;
     }
-    .btn-outline:hover {
-        background: #E6F6F5;
-    }
+
+        .btn-outline:hover,
+        button.btn-outline:hover {
+            background: #E6F6F5;
+        }
+
     .table thead th {
         background: #E6F6F5;
         color: #155e59;
         border-bottom: 1px solid #cfeaea;
     }
+
     details summary {
         cursor: pointer;
         color: #155e59;
         user-select: none;
     }
-    details[open] summary { opacity:.85; }
-    /* Espaciado de filtros */
-    .filter-row .form-label { font-weight: 600; color:#155e59; }
-    .filter-actions { border-top: 1px dashed #cfeaea; padding-top: .75rem; }
+
+    details[open] summary {
+        opacity: .85;
+    }
+
+    .filter-row .form-label {
+        font-weight: 600;
+        color: #155e59;
+    }
+
+    /* Igual que Personas: sin línea punteada */
+    .filter-actions {
+        padding-top: .75rem;
+    }
 </style>
 
 <div class="container mt-3">
@@ -115,22 +131,22 @@
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Ingreso desde</label>
+                    <label class="form-label">Fecha Ingreso desde</label>
                     <input type="date" name="fechaIngresoDesde" value="@Q("fechaIngresoDesde")" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Ingreso hasta</label>
+                    <label class="form-label">Fecha Ingreso hasta</label>
                     <input type="date" name="fechaIngresoHasta" value="@Q("fechaIngresoHasta")" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Adopción desde</label>
+                    <label class="form-label">Fecha Adopción desde</label>
                     <input type="date" name="fechaAdopcionDesde" value="@Q("fechaAdopcionDesde")" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Adopción hasta</label>
+                    <label class="form-label">Fecha Adopción hasta</label>
                     <input type="date" name="fechaAdopcionHasta" value="@Q("fechaAdopcionHasta")" class="form-control" />
                 </div>
 

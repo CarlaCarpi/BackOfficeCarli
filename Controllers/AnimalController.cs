@@ -233,9 +233,17 @@ namespace SantaRamona.Backoffice.Controllers
         [Authorize(Policy = "AdminOrColab")]
         public async Task<IActionResult> Crear([FromForm] Animal model, IFormFile? imagenFile)
         {
+            // 1) Tomamos el id_usuario desde las claims del usuario logueado
+            var idUsuarioClaim = User.FindFirst("IdUsuario")
+                               ?? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+            int idUsuario = 0;
+            if (idUsuarioClaim != null && int.TryParse(idUsuarioClaim.Value, out var parsed))
+                idUsuario = parsed;
+
+            // 2) Mantengo la idea de fallback a 1 si algo falla, como en Modificar
             ModelState.Remove(nameof(Animal.id_usuario));
-            if (model.id_usuario <= 0)
-                model.id_usuario = 1;
+            model.id_usuario = idUsuario > 0 ? idUsuario : 1;
 
             ModelState.Remove(nameof(Animal.edadValor));
             ModelState.Remove(nameof(Animal.id_especie));

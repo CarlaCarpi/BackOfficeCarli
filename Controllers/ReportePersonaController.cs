@@ -339,9 +339,10 @@ namespace SantaRamona.Backoffice.Controllers
                             table.Cell().Element(Cell).Text(loc ?? $"#{p.id_localidad}");
                             table.Cell().Element(Cell).Text(est ?? $"#{p.id_estadoPersona}");
                             table.Cell().Element(Cell).Text(p.fechaIngreso.ToString("dd/MM/yyyy"));
+                            table.Cell().Element(Cell).Text(tipos);
                             if (incluirMotivoEgreso)
                                 table.Cell().Element(Cell).Text(string.IsNullOrWhiteSpace(p.motivoEgreso) ? "—" : p.motivoEgreso);
-                            table.Cell().Element(Cell).Text(tipos);
+                            
                         }
                     });
 
