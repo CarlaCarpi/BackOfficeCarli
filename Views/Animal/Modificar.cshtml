@@ -72,7 +72,7 @@
                     <div class="col-md-6">
                         <label asp-for="edadValor" class="form-label">Edad</label>
                         <input asp-for="edadValor"
-                               class="form-control"
+                               class="form-control sin-flechas"
                                type="number"
                                min="1"
                                max="20"
@@ -185,3 +185,16 @@
         </div>
     </div>
 </div>
+<style>
+    .sin-flechas::-webkit-inner-spin-button,
+    .sin-flechas::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .sin-flechas {
+        -moz-appearance: textfield;
+    }
+
+</style>
+

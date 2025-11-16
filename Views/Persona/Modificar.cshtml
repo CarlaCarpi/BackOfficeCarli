@@ -27,6 +27,7 @@
             <form id="form-modificar" asp-action="Modificar" method="post">
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(m => m.id_persona)
+                @Html.HiddenFor(m => m.fechaEgreso)
 
                 <div class="row g-3">
                     <!-- Datos básicos -->
@@ -138,11 +139,11 @@
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-3">
+                    @* <div class="col-md-3">
                         <label asp-for="fechaEgreso" class="form-label">Fecha de última modificación</label>
                         <input asp-for="fechaEgreso" class="form-control" type="date" />
                         <span asp-validation-for="fechaEgreso" class="text-danger"></span>
-                    </div>
+                    </div> *@
 
                     <div class="col-12">
                         <label asp-for="motivoEgreso" class="form-label">Observaciones</label>

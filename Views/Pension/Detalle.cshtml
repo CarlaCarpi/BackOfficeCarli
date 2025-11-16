@@ -9,7 +9,7 @@
 
     string Str(string? s) => string.IsNullOrWhiteSpace(s) ? "—" : s;
     string IntTxt(int? n) => n.HasValue ? n.Value.ToString() : "—";
-    string DateTxt(DateTime? d) => d.HasValue ? d.Value.ToString("dd/MM/yyyy HH:mm") : "—";
+    string DateTxt(DateTime? d) => d.HasValue ? d.Value.ToString("dd/MM/yyyy") : "—";
     string MoneyTxt(decimal? m) => m.HasValue ? m.Value.ToString("0.00") : "—";
 
     string Txt(Dictionary<int, string> dict, int? id)

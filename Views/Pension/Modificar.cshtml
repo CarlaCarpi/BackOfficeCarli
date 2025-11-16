@@ -42,6 +42,8 @@
         <div class="card-body">
             <form id="form-modificar" asp-action="Modificar" method="post">
                 @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.fechaEgreso)
+                @Html.HiddenFor(m => m.id_usuario)
                 <input type="hidden" asp-for="id_pension" />
 
                 <div class="row g-3">
@@ -120,11 +122,11 @@
                         <span asp-validation-for="id_estadoPension" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    @* <div class="col-md-6">
                         <label asp-for="id_usuario" class="form-label">Usuario</label>
                         <select asp-for="id_usuario" asp-items="ViewBag.Usuarios" class="form-select"></select>
                         <span asp-validation-for="id_usuario" class="text-danger"></span>
-                    </div>
+                    </div> *@
 
                     <!-- Fechas y monto -->
                     <div class="col-md-3">
@@ -133,7 +135,7 @@
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-4">
+                    @* <div class="col-md-4">
                         <label class="form-label">Fecha de última modificación</label>
 
                         <!-- Lo que ve el usuario -->
@@ -143,7 +145,7 @@
 
                         <!-- Lo que se envía en el form -->
                         <input asp-for="fechaEgreso" id="fechaEgreso" type="hidden" />
-                    </div>
+                    </div> *@
 
                     <div class="col-md-4">
                         <label asp-for="montoDia" class="form-label">Monto por día</label>
