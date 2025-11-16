@@ -107,7 +107,8 @@ namespace SantaRamona.Backoffice.Controllers
 
             // === 1) Pido a la API con paginación (y q si viene) ===
             string url = $"{RUTA_PENSION}?pagina={page}&pageSize={pageSize}";
-            if (!string.IsNullOrWhiteSpace(q)) url += $"&q={Uri.EscapeDataString(q.Trim())}";
+            if (!string.IsNullOrWhiteSpace(q))
+                url += $"&q={Uri.EscapeDataString(q.Trim())}";
 
             var resp = await client.GetAsync(url);
             IEnumerable<Pension> pensiones = Enumerable.Empty<Pension>();
@@ -138,7 +139,7 @@ namespace SantaRamona.Backoffice.Controllers
                     await retry.Content.ReadAsStringAsync(), JsonOps
                 ) ?? Enumerable.Empty<Pension>();
 
-                // Filtro local (igual que tenías)
+                // 🔍 Filtro local (ya lo tenías acá)
                 if (!string.IsNullOrWhiteSpace(q))
                 {
                     var term = q.Trim();
@@ -146,7 +147,7 @@ namespace SantaRamona.Backoffice.Controllers
                         all = all.Where(p => p.id_pension == idBuscado);
                     else
                         all = all.Where(p => !string.IsNullOrWhiteSpace(p.nombre)
-                                          && p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase));
+                                           && p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase));
                 }
 
                 all = all.OrderByDescending(p => p.id_pension);
@@ -164,6 +165,18 @@ namespace SantaRamona.Backoffice.Controllers
                     await resp.Content.ReadAsStringAsync(), JsonOps
                 ) ?? Enumerable.Empty<Pension>();
 
+                // 🔍➡️ AGREGADO: filtrar también cuando la API responde bien
+                if (!string.IsNullOrWhiteSpace(q))
+                {
+                    var term = q.Trim();
+                    if (int.TryParse(term, out int idBuscado))
+                        pensiones = pensiones.Where(p => p.id_pension == idBuscado);
+                    else
+                        pensiones = pensiones.Where(p =>
+                            !string.IsNullOrWhiteSpace(p.nombre) &&
+                            p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase));
+                }
+
                 // === 2) Calcular HasMore (por header o sondeo) ===
                 int total = 0;
                 bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
@@ -177,12 +190,15 @@ namespace SantaRamona.Backoffice.Controllers
                 else
                 {
                     var probeUrl = $"{RUTA_PENSION}?pagina={page + 1}&pageSize=1";
-                    if (!string.IsNullOrWhiteSpace(q)) probeUrl += $"&q={Uri.EscapeDataString(q.Trim())}";
+                    if (!string.IsNullOrWhiteSpace(q))
+                        probeUrl += $"&q={Uri.EscapeDataString(q.Trim())}";
+
                     var probe = await client.GetAsync(probeUrl);
                     if (probe.IsSuccessStatusCode)
                     {
                         var pj = await probe.Content.ReadAsStringAsync();
-                        var next = JsonSerializer.Deserialize<IEnumerable<Pension>>(pj, JsonOps) ?? Enumerable.Empty<Pension>();
+                        var next = JsonSerializer.Deserialize<IEnumerable<Pension>>(pj, JsonOps)
+                                   ?? Enumerable.Empty<Pension>();
                         hasMore = next.Any();
                     }
                     else hasMore = false;
@@ -193,7 +209,7 @@ namespace SantaRamona.Backoffice.Controllers
                 ViewBag.HasMore = hasMore;
             }
 
-            // === 3) Diccionarios auxiliares (usa tu helper) ===
+            // === 3) Diccionarios auxiliares ===
             ViewBag.Estados = await CargarEstadosPensionDictAsync(client);
 
             var respProv = await client.GetAsync(RUTA_PROVINCIA);
@@ -223,6 +239,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             return View(pensiones);
         }
+
 
 
 

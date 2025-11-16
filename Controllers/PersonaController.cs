@@ -96,9 +96,19 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
-            // === Personas (pide página 1 a la API usando "pagina" y "pageSize") ===
+            // Normalizar y guardar búsqueda
+            q = (q ?? "").Trim();
+            ViewBag.Query = q;
+
+            // ============================
+            // 1) PEDIDO A LA API (con q)
+            // ============================
             var url = $"{RUTA_PERSONA}?pagina={page}&pageSize={pageSize}";
+            if (!string.IsNullOrWhiteSpace(q))
+                url += $"&q={Uri.EscapeDataString(q)}";
+
             var resp = await client.GetAsync(url);
+
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
@@ -107,157 +117,61 @@ namespace SantaRamona.Backoffice.Controllers
                 ViewBag.Provincia = new Dictionary<int, string>();
                 ViewBag.Localidad = new Dictionary<int, string>();
                 ViewBag.FormTiposByPersona = new Dictionary<int, List<string>>();
+
+                ViewBag.Page = 1;
+                ViewBag.PageSize = pageSize;
+                ViewBag.HasMore = false;
+
                 return View(Enumerable.Empty<Persona>());
             }
 
+            // Parseo inicial
             var json = await resp.Content.ReadAsStringAsync();
-            var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JsonOps) ?? Enumerable.Empty<Persona>();
+            var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JsonOps)
+                           ?? Enumerable.Empty<Persona>();
 
-            // === Estados ===
+            // =============================
+            // 2) FILTRO LOCAL SI HAY q
+            // =============================
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var term = q;
+
+                if (int.TryParse(term, out int idBuscado))
+                {
+                    personas = personas.Where(p => p.id_persona == idBuscado);
+                }
+                else
+                {
+                    personas = personas.Where(p =>
+                        (!string.IsNullOrWhiteSpace(p.nombre) && p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase))
+                    );
+                }
+            }
+
+            // =============================
+            // 3) CARGAR DICCIONARIOS
+            // =============================
             ViewBag.Estados = await CargarEstadosDictAsync(client);
 
-            // === Provincias ===
+            // Provincias
             var respProv = await client.GetAsync(RUTA_PROVINCIA);
             if (respProv.IsSuccessStatusCode)
             {
                 var jsonProv = await respProv.Content.ReadAsStringAsync();
-                var provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(jsonProv, JsonOps) ?? Enumerable.Empty<Provincia>();
+                var provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(jsonProv, JsonOps)
+                                 ?? Enumerable.Empty<Provincia>();
                 ViewBag.Provincia = provincias.ToDictionary(p => p.id_provincia, p => p.nombre);
             }
             else ViewBag.Provincia = new Dictionary<int, string>();
 
-            // === Localidades ===
+            // Localidades
             var respLoc = await client.GetAsync(RUTA_LOCALIDAD);
             if (respLoc.IsSuccessStatusCode)
             {
                 var jsonLoc = await respLoc.Content.ReadAsStringAsync();
-                var localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(jsonLoc, JsonOps) ?? Enumerable.Empty<Localidad>();
-                ViewBag.Localidad = localidades.ToDictionary(l => l.id_localidad, l => l.nombre);
-            }
-            else ViewBag.Localidad = new Dictionary<int, string>();
-
-            // === Tipos de formulario por persona (opcional) ===
-            try
-            {
-                var tiposDict = new Dictionary<int, string>();
-                var tHttp = await client.GetAsync("/api/TipoFormulario");
-                if (tHttp.IsSuccessStatusCode)
-                {
-                    using var doc = JsonDocument.Parse(await tHttp.Content.ReadAsStringAsync());
-                    if (doc.RootElement.ValueKind == JsonValueKind.Array)
-                    {
-                        foreach (var el in doc.RootElement.EnumerateArray())
-                        {
-                            if (el.TryGetProperty("id_tipoFormulario", out var idProp) && idProp.ValueKind == JsonValueKind.Number)
-                            {
-                                var idTipo = idProp.GetInt32();
-                                var nombre = el.TryGetProperty("tipo", out var pTipo) ? (pTipo.GetString() ?? "")
-                                          : el.TryGetProperty("nombre", out var pNom) ? (pNom.GetString() ?? "")
-                                          : $"Tipo {idTipo}";
-                                if (idTipo > 0) tiposDict[idTipo] = string.IsNullOrWhiteSpace(nombre) ? $"Tipo {idTipo}" : nombre;
-                            }
-                        }
-                    }
-                }
-
-                var formTiposByPersona = new Dictionary<int, List<string>>();
-                var fHttp = await client.GetAsync("/api/Formulario");
-                if (fHttp.IsSuccessStatusCode)
-                {
-                    var fJson = await fHttp.Content.ReadAsStringAsync();
-                    var formularios = JsonSerializer.Deserialize<IEnumerable<FormularioMin>>(fJson, JsonOps) ?? Enumerable.Empty<FormularioMin>();
-
-                    foreach (var g in formularios.Where(f => f.id_persona > 0).GroupBy(f => f.id_persona))
-                    {
-                        var lst = g.Select(f => tiposDict.TryGetValue(f.id_tipoFormulario, out var nom) ? nom : $"Tipo {f.id_tipoFormulario}")
-                                   .Where(s => !string.IsNullOrWhiteSpace(s))
-                                   .Distinct(StringComparer.OrdinalIgnoreCase)
-                                   .OrderBy(s => s)
-                                   .ToList();
-                        formTiposByPersona[g.Key] = lst;
-                    }
-                }
-
-                ViewBag.FormTiposByPersona = formTiposByPersona;
-            }
-            catch
-            {
-                ViewBag.FormTiposByPersona = new Dictionary<int, List<string>>();
-            }
-
-            // Mensajes
-            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
-            if (TempData["Error"] is string err) ViewBag.Error = err;
-
-            // === Cálculo de HasMore con dos estrategias: header o SONDEO ===
-            int total = 0;
-            bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
-            if (hasHeader) int.TryParse(vals!.FirstOrDefault(), out total);
-
-            bool hasMore;
-            if (total > 0)
-            {
-                hasMore = (page * pageSize) < total;
-            }
-            else
-            {
-                // Fallback: sondeo de página siguiente (pide 1 elemento)
-                var probe = await client.GetAsync($"{RUTA_PERSONA}?pagina={page + 1}&pageSize=1");
-                if (probe.IsSuccessStatusCode)
-                {
-                    var pj = await probe.Content.ReadAsStringAsync();
-                    var next = JsonSerializer.Deserialize<IEnumerable<Persona>>(pj, JsonOps) ?? Enumerable.Empty<Persona>();
-                    hasMore = next.Any();
-                }
-                else hasMore = false;
-            }
-
-            ViewBag.Page = page;
-            ViewBag.PageSize = pageSize;
-            ViewBag.HasMore = hasMore;
-            ViewBag.Query = q ?? "";
-
-            var persona = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JsonOps)
-               ?? Enumerable.Empty<Persona>();
-
-            personas = personas.OrderByDescending(p => p.id_persona); // o fechaIngreso
-
-            return View(personas);
-            
-           
-        }
-
-        // Devuelve más filas (partial) y marca X-HasMore
-        [HttpGet]
-        public async Task<IActionResult> Mas(int page = 2, int pageSize = 20, string? q = null)
-        {
-            var client = _http.CreateClient("Api");
-
-            // Pedimos la página solicitada a la API
-            var url = $"{RUTA_PERSONA}?pagina={page}&pageSize={pageSize}";
-            var resp = await client.GetAsync(url);
-            if (!resp.IsSuccessStatusCode) return Content("");
-
-            var json = await resp.Content.ReadAsStringAsync();
-            var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JsonOps) ?? Enumerable.Empty<Persona>();
-
-            // Diccionarios necesarios para renderizar las filas
-            ViewBag.Estados = await CargarEstadosDictAsync(client);
-
-            var respProv = await client.GetAsync(RUTA_PROVINCIA);
-            if (respProv.IsSuccessStatusCode)
-            {
-                var jsonProv = await respProv.Content.ReadAsStringAsync();
-                var provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(jsonProv, JsonOps) ?? Enumerable.Empty<Provincia>();
-                ViewBag.Provincia = provincias.ToDictionary(p => p.id_provincia, p => p.nombre);
-            }
-            else ViewBag.Provincia = new Dictionary<int, string>();
-
-            var respLoc = await client.GetAsync(RUTA_LOCALIDAD);
-            if (respLoc.IsSuccessStatusCode)
-            {
-                var jsonLoc = await respLoc.Content.ReadAsStringAsync();
-                var localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(jsonLoc, JsonOps) ?? Enumerable.Empty<Localidad>();
+                var localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(jsonLoc, JsonOps)
+                                  ?? Enumerable.Empty<Localidad>();
                 ViewBag.Localidad = localidades.ToDictionary(l => l.id_localidad, l => l.nombre);
             }
             else ViewBag.Localidad = new Dictionary<int, string>();
@@ -270,17 +184,221 @@ namespace SantaRamona.Backoffice.Controllers
                 if (tHttp.IsSuccessStatusCode)
                 {
                     using var doc = JsonDocument.Parse(await tHttp.Content.ReadAsStringAsync());
+                    foreach (var el in doc.RootElement.EnumerateArray())
+                    {
+                        if (el.TryGetProperty("id_tipoFormulario", out var idProp) &&
+                            idProp.ValueKind == JsonValueKind.Number)
+                        {
+                            var idTipo = idProp.GetInt32();
+                            var nombre = el.TryGetProperty("tipo", out var pTipo) ? pTipo.GetString()
+                                      : el.TryGetProperty("nombre", out var pNom) ? pNom.GetString()
+                                      : $"Tipo {idTipo}";
+                            tiposDict[idTipo] = string.IsNullOrWhiteSpace(nombre) ? $"Tipo {idTipo}" : nombre!;
+                        }
+                    }
+                }
+
+                var formTiposByPersona = new Dictionary<int, List<string>>();
+                var fHttp = await client.GetAsync("/api/Formulario");
+                if (fHttp.IsSuccessStatusCode)
+                {
+                    var fJson = await fHttp.Content.ReadAsStringAsync();
+                    var formularios = JsonSerializer.Deserialize<IEnumerable<FormularioMin>>(fJson, JsonOps)
+                                      ?? Enumerable.Empty<FormularioMin>();
+
+                    foreach (var g in formularios.Where(f => f.id_persona > 0).GroupBy(f => f.id_persona))
+                    {
+                        var lst = g.Select(f => tiposDict.TryGetValue(f.id_tipoFormulario, out var nom) ? nom : $"Tipo {f.id_tipoFormulario}")
+                                   .Distinct(StringComparer.OrdinalIgnoreCase)
+                                   .OrderBy(s => s)
+                                   .ToList();
+
+                        formTiposByPersona[g.Key] = lst;
+                    }
+                }
+
+                ViewBag.FormTiposByPersona = formTiposByPersona;
+            }
+            catch
+            {
+                ViewBag.FormTiposByPersona = new Dictionary<int, List<string>>();
+            }
+
+            // =============================
+            // 4) MENSAJES TEMP
+            // =============================
+            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
+            if (TempData["Error"] is string err) ViewBag.Error = err;
+
+            // =============================
+            // 5) CALCULAR HASMORE
+            // =============================
+            int total = 0;
+            bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
+            if (hasHeader)
+                int.TryParse(vals!.FirstOrDefault(), out total);
+
+            bool hasMore;
+
+            if (total > 0)
+            {
+                hasMore = (page * pageSize) < total;
+            }
+            else
+            {
+                // si la API no manda total → sondeo
+                var probeUrl = $"{RUTA_PERSONA}?pagina={page + 1}&pageSize=1";
+                if (!string.IsNullOrWhiteSpace(q))
+                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
+
+                var probe = await client.GetAsync(probeUrl);
+                if (probe.IsSuccessStatusCode)
+                {
+                    var pj = await probe.Content.ReadAsStringAsync();
+                    var next = JsonSerializer.Deserialize<IEnumerable<Persona>>(pj, JsonOps)
+                               ?? Enumerable.Empty<Persona>();
+                    hasMore = next.Any();
+                }
+                else
+                    hasMore = false;
+            }
+
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.HasMore = hasMore;
+
+            // =============================
+            // 6) ORDEN FINAL
+            // =============================
+            personas = personas.OrderByDescending(p => p.id_persona);
+
+            // =============================
+            // 7) DEVOLVER LISTA
+            // =============================
+            return View(personas);
+        }
+
+        // Devuelve más filas para el botón "Ver más"
+        [HttpGet]
+        public async Task<IActionResult> Mas(int page = 2, int pageSize = 20, string? q = null)
+        {
+            var client = _http.CreateClient("Api");
+
+            q = (q ?? "").Trim();
+
+            // === 1) Pedir la página siguiente a la API (con q si viene) ===
+            var url = $"{RUTA_PERSONA}?pagina={page}&pageSize={pageSize}";
+            if (!string.IsNullOrWhiteSpace(q))
+                url += $"&q={Uri.EscapeDataString(q)}";
+
+            var resp = await client.GetAsync(url);
+            if (!resp.IsSuccessStatusCode)
+            {
+                // si algo falla, que el front pueda mostrar "Intentar de nuevo"
+                return StatusCode((int)resp.StatusCode);
+            }
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JsonOps)
+                           ?? Enumerable.Empty<Persona>();
+
+            // 🔍 Filtro local por si la API todavía no implementa q
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var term = q;
+                if (int.TryParse(term, out int idBuscado))
+                {
+                    personas = personas.Where(p => p.id_persona == idBuscado);
+                }
+                else
+                {
+                    personas = personas.Where(p =>
+                        !string.IsNullOrWhiteSpace(p.nombre) &&
+                        p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase));
+                }
+            }
+
+            // si realmente ya no hay más personas, devolvemos 204
+            if (!personas.Any())
+            {
+                Response.Headers["X-HasMore"] = "false";
+                return StatusCode(204); // No Content
+            }
+
+            // === 2) Calcular HasMore (por header o sondeo) ===
+            int total = 0;
+            bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
+            bool hasMore;
+
+            if (hasHeader && int.TryParse(vals!.FirstOrDefault(), out total) && total > 0)
+            {
+                hasMore = (page * pageSize) < total;
+            }
+            else
+            {
+                var probeUrl = $"{RUTA_PERSONA}?pagina={page + 1}&pageSize=1";
+                if (!string.IsNullOrWhiteSpace(q))
+                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
+
+                var probe = await client.GetAsync(probeUrl);
+                if (probe.IsSuccessStatusCode)
+                {
+                    var pj = await probe.Content.ReadAsStringAsync();
+                    var next = JsonSerializer.Deserialize<IEnumerable<Persona>>(pj, JsonOps)
+                               ?? Enumerable.Empty<Persona>();
+                    hasMore = next.Any();
+                }
+                else
+                    hasMore = false;
+            }
+
+            Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
+
+            // === 3) Diccionarios que usa la vista para Provincia / Localidad / Estado / Formularios ===
+
+            ViewBag.Estados = await CargarEstadosDictAsync(client);
+
+            var respProv = await client.GetAsync(RUTA_PROVINCIA);
+            if (respProv.IsSuccessStatusCode)
+            {
+                var jsonProv = await respProv.Content.ReadAsStringAsync();
+                var provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(jsonProv, JsonOps)
+                                 ?? Enumerable.Empty<Provincia>();
+                ViewBag.Provincia = provincias.ToDictionary(p => p.id_provincia, p => p.nombre);
+            }
+            else ViewBag.Provincia = new Dictionary<int, string>();
+
+            var respLoc = await client.GetAsync(RUTA_LOCALIDAD);
+            if (respLoc.IsSuccessStatusCode)
+            {
+                var jsonLoc = await respLoc.Content.ReadAsStringAsync();
+                var localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(jsonLoc, JsonOps)
+                                  ?? Enumerable.Empty<Localidad>();
+                ViewBag.Localidad = localidades.ToDictionary(l => l.id_localidad, l => l.nombre);
+            }
+            else ViewBag.Localidad = new Dictionary<int, string>();
+
+            // Tipos de formulario por persona (para la columna "Formulario")
+            try
+            {
+                var tiposDict = new Dictionary<int, string>();
+                var tHttp = await client.GetAsync("/api/TipoFormulario");
+                if (tHttp.IsSuccessStatusCode)
+                {
+                    using var doc = JsonDocument.Parse(await tHttp.Content.ReadAsStringAsync());
                     if (doc.RootElement.ValueKind == JsonValueKind.Array)
                     {
                         foreach (var el in doc.RootElement.EnumerateArray())
                         {
-                            if (el.TryGetProperty("id_tipoFormulario", out var idProp) && idProp.ValueKind == JsonValueKind.Number)
+                            if (el.TryGetProperty("id_tipoFormulario", out var idProp) &&
+                                idProp.ValueKind == JsonValueKind.Number)
                             {
                                 var idTipo = idProp.GetInt32();
                                 var nombre = el.TryGetProperty("tipo", out var pTipo) ? (pTipo.GetString() ?? "")
                                           : el.TryGetProperty("nombre", out var pNom) ? (pNom.GetString() ?? "")
                                           : $"Tipo {idTipo}";
-                                if (idTipo > 0) tiposDict[idTipo] = string.IsNullOrWhiteSpace(nombre) ? $"Tipo {idTipo}" : nombre;
+                                if (idTipo > 0)
+                                    tiposDict[idTipo] = string.IsNullOrWhiteSpace(nombre) ? $"Tipo {idTipo}" : nombre;
                             }
                         }
                     }
@@ -291,7 +409,8 @@ namespace SantaRamona.Backoffice.Controllers
                 if (fHttp.IsSuccessStatusCode)
                 {
                     var fJson = await fHttp.Content.ReadAsStringAsync();
-                    var formularios = JsonSerializer.Deserialize<IEnumerable<FormularioMin>>(fJson, JsonOps) ?? Enumerable.Empty<FormularioMin>();
+                    var formularios = JsonSerializer.Deserialize<IEnumerable<FormularioMin>>(fJson, JsonOps)
+                                      ?? Enumerable.Empty<FormularioMin>();
 
                     foreach (var g in formularios.Where(fm => fm.id_persona > 0).GroupBy(fm => fm.id_persona))
                     {
@@ -303,6 +422,7 @@ namespace SantaRamona.Backoffice.Controllers
                         formTiposByPersona[g.Key] = lst;
                     }
                 }
+
                 ViewBag.FormTiposByPersona = formTiposByPersona;
             }
             catch
@@ -310,32 +430,14 @@ namespace SantaRamona.Backoffice.Controllers
                 ViewBag.FormTiposByPersona = new Dictionary<int, List<string>>();
             }
 
-            // === HasMore por header o por sondeo ===
-            int total = 0;
-            bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
-            if (hasHeader) int.TryParse(vals!.FirstOrDefault(), out total);
+            // Orden para mantener consistencia
+            personas = personas.OrderByDescending(p => p.id_persona);
 
-            bool hasMore;
-            if (total > 0)
-            {
-                hasMore = (page * pageSize) < total;
-            }
-            else
-            {
-                var probe = await client.GetAsync($"{RUTA_PERSONA}?pagina={page + 1}&pageSize=1");
-                if (probe.IsSuccessStatusCode)
-                {
-                    var pj = await probe.Content.ReadAsStringAsync();
-                    var next = JsonSerializer.Deserialize<IEnumerable<Persona>>(pj, JsonOps) ?? Enumerable.Empty<Persona>();
-                    hasMore = next.Any();
-                }
-                else hasMore = false;
-            }
-
-            Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
+            // === 4) Devolver SOLO filas <tr> usando un partial ===
             return PartialView("_PersonaRows", personas);
-
         }
+
+
 
         // ===================== DETALLE ==============================
 

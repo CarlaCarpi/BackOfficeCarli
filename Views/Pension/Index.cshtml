@@ -6,6 +6,7 @@
     var provincias = ViewBag.Provincias as Dictionary<int, string> ?? new();
     var localidades = ViewBag.Localidades as Dictionary<int, string> ?? new();
     var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+  
 
     string Txt(Dictionary<int, string> d, int? id) =>
         (id.HasValue && d.TryGetValue(id.Value, out var v)) ? v : "—";
@@ -174,7 +175,7 @@
             })();
 
             // --- Ver más (AJAX) ---
-            (() => {
+                      (() => {
               const btn = document.getElementById('btnVerMasPensiones');
               if (!btn) return;
 
@@ -207,16 +208,26 @@
                     credentials: 'same-origin'
                   });
 
-                  if (resp.status === 204) { setNoMore(); return; }
+                  // Caso sin contenido explícito
+                  if (resp.status === 204) {
+                    setNoMore();
+                    return;
+                  }
 
                   const html = await resp.text();
                   const trimmed = html.trim();
 
-                  if (!trimmed) { setNoMore(); return; }
+                  // Si no vino nada, también asumimos que no hay más
+                  if (!trimmed) {
+                    setNoMore();
+                    return;
+                  }
+
+                  // 👇 Antes lo tratabas como "error / intentar de nuevo".
+                  // Si para vos esto significa que ya no hay más filas válidas, lo marcamos como "No hay más".
                   if (trimmed && !trimmed.startsWith('<tr')) {
-                    console.error('Respuesta inesperada (no <tr>):', trimmed.slice(0, 200));
-                    btn.disabled = false;
-                    btn.textContent = 'Intentar de nuevo';
+                    console.warn('Respuesta sin <tr> (asumimos que no hay más):', trimmed.slice(0, 200));
+                    setNoMore();
                     return;
                   }
 
@@ -225,7 +236,10 @@
                   const headerHasMore = (resp.headers.get('X-HasMore') || '').toLowerCase() === 'true';
                   const arrivedCount = (trimmed.match(/<tr[\s>]/g) || []).length;
 
-                  if (!headerHasMore || arrivedCount < pageSize) { setNoMore(); return; }
+                  if (!headerHasMore || arrivedCount < pageSize) {
+                    setNoMore();
+                    return;
+                  }
 
                   page += 1;
                   btn.disabled = false;
@@ -237,7 +251,7 @@
                   btn.textContent = 'Intentar de nuevo';
                 }
               });
-            })();
+            })();             
         </script>
     }
 </div>

@@ -25,10 +25,14 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
-            // === Animales (API con paginación server-side) ===
+            // Normalizar y guardar búsqueda
+            q = (q ?? "").Trim();
+            ViewBag.Query = q;
+
+            // === 1) Animales (API con paginación server-side) ===
             var url = $"{RUTA_ANIMAL}?pagina={page}&pageSize={pageSize}";
             if (!string.IsNullOrWhiteSpace(q))
-                url += $"&q={Uri.EscapeDataString(q.Trim())}";
+                url += $"&q={Uri.EscapeDataString(q)}";
 
             var resp = await client.GetAsync(url);
             if (!resp.IsSuccessStatusCode)
@@ -38,9 +42,15 @@ namespace SantaRamona.Backoffice.Controllers
                 ViewBag.Especies = new Dictionary<int, string>();
                 ViewBag.Tamanos = new Dictionary<int, string>();
                 ViewBag.Estados = new Dictionary<int, string>();
-                ViewBag.Page = 1; ViewBag.PageSize = pageSize; ViewBag.HasMore = false; ViewBag.Query = q ?? "";
+
+                ViewBag.Page = 1;
+                ViewBag.PageSize = pageSize;
+                ViewBag.HasMore = false;
+                ViewBag.Query = q ?? "";
+
                 return View(Enumerable.Empty<Animal>());
             }
+
             if (TempData["OkAnimal"] is string ok) ViewBag.Ok = ok;
             if (TempData["ErrorAnimal"] is string err) ViewBag.Error = err;
 
@@ -48,7 +58,24 @@ namespace SantaRamona.Backoffice.Controllers
             var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
 
-            // === Catálogos para la vista (texto de especie/tamaño/estado) ===
+            // === 2) Filtro local por q (por si la API NO implementa q) ===
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var term = q;
+                if (int.TryParse(term, out int idBuscado))
+                {
+                    animals = animals.Where(a => a.id_animal == idBuscado);
+                }
+                else
+                {
+                    animals = animals.Where(a =>
+                        (!string.IsNullOrWhiteSpace(a.nombre) &&
+                         a.nombre.Contains(term, StringComparison.OrdinalIgnoreCase))
+                    );
+                }
+            }
+
+            // === 3) Catálogos para la vista (texto de especie/tamaño/estado) ===
             var tEsp = client.GetAsync("/api/Especie");
             var tTam = client.GetAsync("/api/Tamano");
             var tEst = client.GetAsync("/api/estadoAnimal");
@@ -58,7 +85,7 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Tamanos = await ToDict<Tamano>(tTam.Result, x => x.id_tamano, x => x.tamano);
             ViewBag.Estados = await ToDict<Estado_Animal>(tEst.Result, x => x.id_estadoAnimal, x => x.estado);
 
-            // === HasMore por header o por sondeo ===
+            // === 4) HasMore por header o por sondeo ===
             int total = 0;
             bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
             if (hasHeader) int.TryParse(vals!.FirstOrDefault(), out total);
@@ -71,7 +98,9 @@ namespace SantaRamona.Backoffice.Controllers
             else
             {
                 var probeUrl = $"{RUTA_ANIMAL}?pagina={page + 1}&pageSize=1";
-                if (!string.IsNullOrWhiteSpace(q)) probeUrl += $"&q={Uri.EscapeDataString(q.Trim())}";
+                if (!string.IsNullOrWhiteSpace(q))
+                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
+
                 var probe = await client.GetAsync(probeUrl);
                 if (probe.IsSuccessStatusCode)
                 {
@@ -88,6 +117,9 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.HasMore = hasMore;
             ViewBag.Query = q ?? "";
 
+            // Ordenar si querés (por ID desc, por ejemplo)
+            animals = animals.OrderByDescending(a => a.id_animal);
+
             return View(animals);
         }
 
@@ -98,16 +130,48 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
+            q = (q ?? "").Trim();
+
             var url = $"{RUTA_ANIMAL}?pagina={page}&pageSize={pageSize}";
             if (!string.IsNullOrWhiteSpace(q))
-                url += $"&q={Uri.EscapeDataString(q.Trim())}";
+                url += $"&q={Uri.EscapeDataString(q)}";
 
             var resp = await client.GetAsync(url);
-            if (!resp.IsSuccessStatusCode) return Content("");
+
+            // Si falla la API → devolvemos 204 y HasMore=false para que el front corte prolijo
+            if (!resp.IsSuccessStatusCode)
+            {
+                Response.Headers["X-HasMore"] = "false";
+                return StatusCode(204); // No Content
+            }
 
             var json = await resp.Content.ReadAsStringAsync();
             var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
+
+            // 🔍 Filtro local por q
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var term = q;
+                if (int.TryParse(term, out int idBuscado))
+                {
+                    animals = animals.Where(a => a.id_animal == idBuscado);
+                }
+                else
+                {
+                    animals = animals.Where(a =>
+                        (!string.IsNullOrWhiteSpace(a.nombre) &&
+                         a.nombre.Contains(term, StringComparison.OrdinalIgnoreCase))
+                    );
+                }
+            }
+
+            // Si después del filtro no queda nada → no hay más
+            if (!animals.Any())
+            {
+                Response.Headers["X-HasMore"] = "false";
+                return StatusCode(204); // No Content
+            }
 
             // Catálogos (para que el partial pueda mostrar textos)
             var tEsp = client.GetAsync("/api/Especie");
@@ -119,20 +183,21 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Tamanos = await ToDict<Tamano>(tTam.Result, x => x.id_tamano, x => x.tamano);
             ViewBag.Estados = await ToDict<Estado_Animal>(tEst.Result, x => x.id_estadoAnimal, x => x.estado);
 
-            // HasMore igual que en Index
+            // === HasMore igual que en Index ===
             int total = 0;
             bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
-            if (hasHeader) int.TryParse(vals!.FirstOrDefault(), out total);
-
             bool hasMore;
-            if (total > 0)
+
+            if (hasHeader && int.TryParse(vals!.FirstOrDefault(), out total) && total > 0)
             {
                 hasMore = (page * pageSize) < total;
             }
             else
             {
                 var probeUrl = $"{RUTA_ANIMAL}?pagina={page + 1}&pageSize=1";
-                if (!string.IsNullOrWhiteSpace(q)) probeUrl += $"&q={Uri.EscapeDataString(q.Trim())}";
+                if (!string.IsNullOrWhiteSpace(q))
+                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
+
                 var probe = await client.GetAsync(probeUrl);
                 if (probe.IsSuccessStatusCode)
                 {
@@ -144,15 +209,15 @@ namespace SantaRamona.Backoffice.Controllers
                 else hasMore = false;
             }
 
-            if (!animals.Any())
-            {
-                Response.Headers["X-HasMore"] = "false";
-                return NoContent(); // 204
-            }
-
             Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
+
+            // Orden por prolijidad
+            animals = animals.OrderByDescending(a => a.id_animal);
+
+            // Partial con las filas o cards (lo que uses en el Index)
             return PartialView("_AnimalRows", animals);
         }
+
 
         // ===================== CREAR =====================
 

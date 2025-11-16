@@ -225,73 +225,92 @@
               });
             })();
 
-            // --- Ver más (versión mejorada con ocultar al final) ---
+                        // --- Ver más (versión mejorada) ---
             (() => {
-              const btn = document.getElementById('btnVerMas');
-              if (!btn) return;
+                const btn = document.getElementById('btnVerMas');
+                if (!btn) return;
 
-              const baseMas = '@Url.Action("Mas", "Persona")';
-              let page = Number(btn.getAttribute('data-next-page')) || 2;
-              const pageSize = @ViewBag.PageSize;
-              const q = '@(ViewBag.Query as string ?? "")';
-              const tbody = document.getElementById('tbody-personas');
+                const baseMas = '@Url.Action("Mas", "Persona")';
+                let page = Number(btn.getAttribute('data-next-page')) || 2;
+                const pageSize = @ViewBag.PageSize;
 
-              // 👉 función auxiliar para ocultar o deshabilitar el botón cuando no hay más
-              function setNoMore() {
-                btn.textContent = 'No hay más';
-                btn.disabled = true;
-                btn.style.display = 'none'; // oculta el botón completamente
-              }
+                // usar JSON para evitar romper la cadena si q tiene comillas
+                const q = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.Query as string ?? ""));
+                const tbody = document.getElementById('tbody-personas');
 
-              btn.addEventListener('click', async (ev) => {
-                ev.preventDefault();
-                ev.stopPropagation();
-                if (btn.disabled) return;
-                btn.disabled = true;
-
-                try {
-                  const url = `${baseMas}?page=${page}&pageSize=${pageSize}&q=${encodeURIComponent(q)}`;
-                  const resp = await fetch(url, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                    credentials: 'same-origin'
-                  });
-
-                  const html = await resp.text();
-                  const trimmed = html.trim();
-
-                  // si vino algo que no son filas <tr>, abortamos
-                  if (trimmed && !trimmed.startsWith('<tr')) {
-                    console.error('Respuesta inesperada (no <tr>):', trimmed.slice(0, 200));
-                    btn.disabled = false;
-                    btn.textContent = 'Intentar de nuevo';
-                    return;
-                  }
-
-                  // si hay filas, agregamos
-                  if (trimmed) {
-                    tbody.insertAdjacentHTML('beforeend', trimmed);
-                  }
-
-                  // comprobamos si hay más registros
-                  const headerHasMore = (resp.headers.get('X-HasMore') || '').toLowerCase() === 'true';
-                  const arrivedCount = (trimmed.match(/<tr[\s>]/g) || []).length;
-
-                  if (!headerHasMore || arrivedCount < pageSize || !trimmed) {
-                    setNoMore();
-                    return;
-                  }
-
-                  // si todavía hay más, incrementamos página y reactivamos el botón
-                  page += 1;
-                  btn.disabled = false;
-                  btn.textContent = 'Ver más';
-
-                } catch (e) {
-                  console.error(e);
-                  btn.disabled = false;
-                  btn.textContent = 'Intentar de nuevo';
+                function setNoMore() {
+                    btn.textContent = 'No hay más';
+                    btn.disabled = true;
+                    btn.style.opacity = '0.6';
+                    btn.style.cursor = 'default';
+                    // si preferís ocultarlo del todo:
+                    // btn.style.display = 'none';
                 }
-              });
+
+                btn.addEventListener('click', async (ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    if (btn.disabled) return;
+
+                    btn.disabled = true;
+                    btn.textContent = 'Cargando...';
+
+                    try {
+                        const url = `${baseMas}?page=${page}&pageSize=${pageSize}&q=${encodeURIComponent(q)}`;
+
+                        const resp = await fetch(url, {
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                            credentials: 'same-origin'
+                        });
+
+                        // 👉 si el backend devuelve 204 No Content, asumimos que no hay más
+                        if (resp.status === 204) {
+                            setNoMore();
+                            return;
+                        }
+
+                        const html = await resp.text();
+                        const trimmed = html.trim();
+
+                        // 👉 si no vino nada de HTML, no hay más filas
+                        if (!trimmed) {
+                            setNoMore();
+                            return;
+                        }
+
+                        // 👉 si lo que vino no empieza con <tr, lo tomamos como "no hay más",
+                        //    NO como error tipo "Intentar de nuevo"
+                        if (!trimmed.startsWith('<tr')) {
+                            console.warn('Respuesta sin <tr> (asumimos fin de datos):', trimmed.slice(0, 200));
+                            setNoMore();
+                            return;
+                        }
+
+                        // Insertar nuevas filas
+                        tbody.insertAdjacentHTML('beforeend', trimmed);
+
+                        // Revisar header X-HasMore que manda el controller
+                        const headerHasMore = (resp.headers.get('X-HasMore') || '').toLowerCase() === 'true';
+                        const arrivedCount = (trimmed.match(/<tr[\s>]/g) || []).length;
+
+                        // Si la API dice que no hay más, o vino menos que pageSize, cortamos
+                        if (!headerHasMore || arrivedCount < pageSize) {
+                            setNoMore();
+                            return;
+                        }
+
+                        // Todavía hay más → siguiente página
+                        page += 1;
+                        btn.disabled = false;
+                        btn.textContent = 'Ver más';
+
+                    } catch (e) {
+                        console.error(e);
+                        btn.disabled = false;
+                        btn.textContent = 'Intentar de nuevo'; // esto queda solo para errores reales
+                    }
+                });
             })();
+
         </script>
     }
