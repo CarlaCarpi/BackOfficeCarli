@@ -1,0 +1,85 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Animal>
+
+@{
+    var especies = ViewBag.Especies as Dictionary<int, string> ?? new();
+    var tamanos = ViewBag.Tamanos as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
+    string EdadTxt(int valor, string unidad) =>
+        unidad == "M" ? $"{valor} {(valor == 1 ? "mes" : "meses")}"
+                      : $"{valor} {(valor == 1 ? "año" : "años")}";
+    string SexoTxt(string? s) =>
+        s?.Trim().ToUpper() switch
+        {
+            "M" => "Macho",
+            "H" => "Hembra",
+            "MACHO" => "Macho",
+            "HEMBRA" => "Hembra",
+            _ => s ?? "-"
+        };
+}
+
+@foreach (var item in Model ?? Enumerable.Empty<SantaRamona.Backoffice.Models.Animal>())
+{
+    <tr>
+        <td>@item.nombre</td>
+        <td>@EdadTxt(item.edadValor, item.edadUnidad)</td>
+        <td>@SexoTxt(item.sexo)</td>
+        <td>@Txt(especies, item.id_especie)</td>
+        <td>@Txt(tamanos, item.id_tamano)</td>
+        <td>@Txt(estados, item.id_estadoAnimal)</td>
+        <td class="text-end">
+            <a href="javascript:void(0)" data-ver-animal="@item.id_animal"
+               class="btn btn-sm"
+               style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                Ver
+            </a>
+
+            <a asp-action="Modificar" asp-route-id="@item.id_animal"
+               class="btn btn-sm"
+               style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                Modificar
+            </a>
+
+            <a asp-controller="Animal" asp-action="Eliminar" asp-route-id="@item.id_animal"
+               class="btn btn-sm"
+               style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                Eliminar
+            </a>
+        </td>
+    </tr>
+}
+<style>
+    /* Reafirmamos el estilo para las nuevas filas */
+    #tbody-personas .text-end {
+        text-align: right !important;
+        white-space: nowrap;
+    }
+
+        #tbody-personas .text-end .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            padding: .4rem .9rem;
+            margin-right: .25rem;
+            font-size: .9rem;
+        }
+
+    #tbody-personas .btn {
+        background-color: #2FA8A2;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        transition: filter 0.2s;
+    }
+
+        #tbody-personas .btn:hover {
+            filter: brightness(0.9);
+        }
+
+        #tbody-personas .btn.btn-delete {
+            background-color: #A71A6C;
+        }
+</style>

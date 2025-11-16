@@ -1,0 +1,448 @@
+﻿/* === CONTENEDOR DE TARJETAS === */
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    justify-items: center;
+    align-items: stretch;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* === TARJETAS DE MASCOTAS === */
+.pet-card {
+    aspect-ratio: 1 / 1.4;
+    width: 100%;
+    min-width: 260px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    /*display: flex;
+    flex-direction: column;
+    justify-content: space-between;*/ /*Es lo que estaba antes*/
+    /*align-items: center;*/
+    display: grid;
+    grid-template-rows: 310px auto;
+}
+
+    .pet-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    }
+
+.pet-ima {
+    flex: 1; /* ocupa el espacio disponible */
+    overflow: hidden;
+}
+
+    /* === IMÁGENES === */
+    .pet-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-bottom: 3px solid #f3f3f3;
+    }
+
+/* === INFORMACIÓN === */
+.pet-info {
+    padding: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: #333;
+    background-color: #fff;
+}
+
+.pet-no´ {
+    text-align: center;
+    margin-bottom: 10px;
+}
+/* === TÍTULO Y PÁRRAFO === */
+h1 {
+    text-align: center;
+    color: #C23A79;
+    font-size: 2rem;
+    margin-top: 10px;
+    font-weight: 800;
+
+}
+h3 {
+    text-align: center;
+    color: #C23A79;
+    font-size: 1.5rem;
+    /*margin-top: 10px;*/
+    /*margin-bottom: 10px;*/ /* ✅ NUEVO: define un pequeño espacio inferior */
+    font-weight: 800;
+    flex-grow: 1; /* ✅ Permite que ocupe el espacio restante */
+    display: flex; /* ✅ Lo convertimos en contenedor flexible */
+    align-items: center; /* ✅ Centra verticalmente el texto */
+    justify-content: center; /* ✅ Centra horizontalmente */
+    margin: 0; /* ✅ Elimina márgenes que lo desplacen */
+    /*background-color: #fff;  ✅ Asegura fondo blanco */
+}
+p {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 0.9rem; /* ✅ "Apartir de aca se agrego". más chico para pantallas pequeñas */
+    line-height: 1.6; /* ✅ más aire entre líneas */
+    padding: 0 10px; /* ✅ agrega espacio lateral dentro del párrafo */
+}
+
+.section-inner {
+    max-width: var(--container);
+    margin: auto;
+    display: list-item;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center; /* centra horizontalmente */
+    align-items: center; /* centra verticalmente si hay más altura */
+    gap: 20px; /* espacio entre los botones */
+    margin-top: 20px;
+    margin-bottom:20px;
+}
+        @media (max-width: 600px) {
+            .button-container {
+                flex-direction: column;
+            }
+
+                .button-container a {
+                    width: 80%;
+                    max-width: 300px;
+                }
+        }
+
+
+.btn.primary {
+    background: #2DB8B5;
+    color: white;
+    font-weight: 700;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.btn.primary.adop {
+    background: #C23A79 !important;
+}
+
+/* === PAGINACIÓN === */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 30px 0 50px;
+    flex-wrap: nowrap;
+    text-align: center;
+}
+
+    .pagination button {
+        background-color: #2DB8B5;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        white-space: nowrap;
+    }
+
+        .pagination button:hover {
+            background-color: #249d9a;
+            transform: translateY(-2px);
+        }
+
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+
+    /* === RESPONSIVE === */
+    @media (max-width: 625px) {
+
+
+
+       /*PAGINACIÓN*/
+        .pagination button {
+            padding: 8px 14px;
+            font-size: 14px;
+        }
+       
+        /*BOTONES
+        .btn.primary {
+            padding: 8px 16px;
+            font-size: 13px;
+        }*/
+
+        .button-container a {
+            width: 75%;
+            max-width: 260px; /* antes 300px */
+        }
+    }
+
+ 
+
+    /* 📱 Celulares medianos (≤665px): 2 columnas */
+    @media (max-width: 540px) {
+  
+
+        /*PAGINACIÓN*/
+        .pagination button {
+            padding: 8px 14px;
+            font-size: 14px;
+        }
+
+        /*BOTONES*/
+        .btn.primary {
+            padding: 7px 14px;
+            font-size: 12.5px;
+        }
+
+        .button-container a {
+            width: 70%;
+            max-width: 230px;
+        }
+    }
+
+
+
+
+
+    /* 📱 Pantallas chicas (≤480px) */
+    @media (max-width: 340px) {
+
+
+        /*PAGINACIÓN*/
+        .pagination {
+            gap: 8px;
+            transform: scale(0.92);
+        }
+
+            .pagination button {
+                padding: 7px 14px;
+                font-size: 13px;
+            }
+         /*BOTONES*/
+        .btn.primary {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .button-container a {
+            width: 65%;
+            max-width: 200px;
+        }
+    }
+    /* 📱 Muy chicas (≤400px) */
+    /*@media (max-width: 400px) {
+        .pagination {
+            gap: 6px;
+            transform: scale(0.85);
+        }
+
+            .pagination button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }*/
+        /*BOTONES*/
+        /*.btn.primary {
+            padding: 6px 10px;
+            font-size: 11.5px;
+        }
+
+        .button-container a {
+            width: 60%;
+            max-width: 180px;
+        }
+    }*/
+    /* 📱 Mínimo absoluto (≤340px) → sigue en una línea */
+    /*@media (max-width: 340px) {
+        .pagination {
+            gap: 4px;
+            transform: scale(0.75);
+        }
+
+            .pagination button {
+                padding: 4px 8px;
+                font-size: 11px;
+            }*/
+       /*BOTONES*/
+        /*.btn.primary {
+            padding: 5px 10px;
+            font-size: 11px;
+        }
+
+        .button-container a {
+            width: 55%;
+            max-width: 160px;
+        }
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* 📱 Botones más chicos para todos los tamaños de celular */
+    /*@media (max-width: 740px) {
+        .btn.primary {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .button-container a {
+            width: 75%;
+            max-width: 260px;*/ /* antes 300px */
+        /*}
+    }
+
+    @media (max-width: 665px) {
+        .btn.primary {
+            padding: 7px 14px;
+            font-size: 12.5px;
+        }
+
+        .button-container a {
+            width: 70%;
+            max-width: 230px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .btn.primary {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .button-container a {
+            width: 65%;
+            max-width: 200px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .btn.primary {
+            padding: 6px 10px;
+            font-size: 11.5px;
+        }
+
+        .button-container a {
+            width: 60%;
+            max-width: 180px;
+        }
+    }
+
+    @media (max-width: 340px) {
+        .btn.primary {
+            padding: 5px 10px;
+            font-size: 11px;
+        }
+
+        .button-container a {
+            width: 55%;
+            max-width: 160px;
+        }
+    }*/
+
+
+
+
+       /* AGREGO RESPONSIVE DE TARJETAS*/
+    /* 📱 En celulares: mostrar 1 tarjeta por fila */
+    @media (max-width: 450px) {
+        .pets-grid {
+            grid-template-columns: 1fr !important;
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .pet-card {
+            max-width: 100%;
+            aspect-ratio: 1 / 1.25;
+        }
+    }
+
+   
+
+
+    /* 📱 Tamaños para CELULARES: achicar h1 y h3 */
+    @media (max-width: 740px) {
+        h1 {
+            font-size: 1.5rem; /* antes 2rem */
+        }
+
+        h3 {
+            font-size: 1.3rem; /* antes 1.2rem */
+        }
+    }
+
+    /* 📱 EXTRA PEQUEÑOS (menos de 450px) */
+    @media (max-width: 450px) {
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+    }
+
+    /* 📱 SUPER CHICOS (340px) */
+    @media (max-width: 340px) {
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+    }
+
+

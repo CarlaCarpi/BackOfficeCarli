@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Usuario>
+
+@{
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+    string EstadoTxt(int id) => estados.TryGetValue(id, out var v) ? v : $"#{id}";
+    var rolesPorUsuario = ViewBag.RolPorUsuario as Dictionary<int, string> ?? new();
+    string RolDe(int id) => rolesPorUsuario.TryGetValue(id, out var v) ? v : "-";
+}
+
+@foreach (var u in Model)
+{
+    <tr>
+        <td>@u.id_usuario</td>
+        <td>@u.apellido, @u.nombre</td>
+        <td>@u.email</td>
+        <td>@(u.telefono == 0 ? "-" : u.telefono.ToString()) </td>
+        <td>@RolDe(u.id_usuario)</td>
+        <td>@EstadoTxt(u.id_estadoUsuario)</td>
+        <td class="text-end" style="white-space:nowrap;">
+            <a href="javascript:void(0)" data-ver-usuario="@u.id_usuario"
+               class="btn btn-sm"
+               style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                Ver
+            </a>
+
+            <a asp-action="Modificar" asp-route-id="@u.id_usuario"
+               class="btn btn-sm"
+               style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                Modificar
+            </a>
+
+            <a asp-action="Eliminar" asp-route-id="@u.id_usuario"
+               class="btn btn-sm"
+               style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                Eliminar
+            </a>
+        </td>
+    </tr>
+}
+

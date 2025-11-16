@@ -1,0 +1,302 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Animal>
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    await Html.RenderPartialAsync("_ReporteTopNav");
+    ViewData["Title"] = "Reporte de Animales";
+
+    // Selects que vienen del controller
+    var lEsp = (IEnumerable<SelectListItem>)(ViewBag.Especies ?? Enumerable.Empty<SelectListItem>());
+    var lTam = (IEnumerable<SelectListItem>)(ViewBag.Tamanos ?? Enumerable.Empty<SelectListItem>());
+    var lEst = (IEnumerable<SelectListItem>)(ViewBag.Estados ?? Enumerable.Empty<SelectListItem>());
+    var lPer = (IEnumerable<SelectListItem>)(ViewBag.Personas ?? Enumerable.Empty<SelectListItem>());
+    var lPen = (IEnumerable<SelectListItem>)(ViewBag.Pensiones ?? Enumerable.Empty<SelectListItem>());
+
+    // Helpers seguros
+    Func<string, string> Q = key => Context.Request.Query[key].ToString();
+    Func<string?, string> SexoTxt = s => s == "M" ? "Macho" : (s == "H" ? "Hembra" : "—");
+    Func<string?, string> UnidadEdad = u => u == "M" ? "mes(es)" : "año(s)";
+    Func<IEnumerable<SelectListItem>, int?, string> Opt = (items, id) =>
+    {
+        if (!id.HasValue) return "—";
+        var it = items.FirstOrDefault(x => x.Value == id.Value.ToString());
+        return it?.Text ?? $"#{id.Value}";
+    };
+
+    // Checks (mantiene tu lógica actual)
+    var chkHistoria = string.Equals(Q("incluirHistoria"), "true", StringComparison.OrdinalIgnoreCase);
+    var chkSeguimiento = string.Equals(Q("incluirSeguimiento"), "true", StringComparison.OrdinalIgnoreCase);
+}
+
+<style>
+    /* ===== Estética original restaurada ===== */
+    .card {
+        border: 1px solid #2FA8A2;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        background: #fff;
+    }
+    .card-header {
+        background: #2FA8A2;
+        color: #fff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: .85rem 1rem;
+    }
+    .btn-main, .btn-outline {
+        border-radius: 10px;
+        padding: .45rem .9rem;
+        text-decoration: none;
+        display: inline-flex; align-items: center; gap:.35rem;
+    }
+    .btn-main {
+        background: #fff;
+        color: #2FA8A2;
+        border: 1px solid #fff;
+    }
+    .btn-main:hover { filter: brightness(0.95); }
+    .btn-outline {
+        background: #fff;
+        color: #155e59;
+        border: 1px solid #155e59;
+    }
+    .btn-outline:hover {
+        background: #E6F6F5;
+    }
+    .table thead th {
+        background: #E6F6F5;
+        color: #155e59;
+        border-bottom: 1px solid #cfeaea;
+    }
+    details summary {
+        cursor: pointer;
+        color: #155e59;
+        user-select: none;
+    }
+    details[open] summary { opacity:.85; }
+    /* Espaciado de filtros */
+    .filter-row .form-label { font-weight: 600; color:#155e59; }
+    .filter-actions { border-top: 1px dashed #cfeaea; padding-top: .75rem; }
+</style>
+
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="fw-bold">Reporte Animales</div>
+        </div>
+
+        <div class="card-body">
+            @* ---------- FILTROS ---------- *@
+            <form method="get" asp-action="Index" class="row g-3 mb-3 filter-row">
+
+                <div class="col-md-3">
+                    <label class="form-label">Especie</label>
+                    <select name="id_especie" class="form-select" asp-items="lEsp"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Tamaño</label>
+                    <select name="id_tamano" class="form-select" asp-items="lTam"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Estado</label>
+                    <select name="id_estadoAnimal" class="form-select" asp-items="lEst"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Persona</label>
+                    <select name="id_persona" class="form-select" asp-items="lPer"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Pensión</label>
+                    <select name="id_pension" class="form-select" asp-items="lPen"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Ingreso desde</label>
+                    <input type="date" name="fechaIngresoDesde" value="@Q("fechaIngresoDesde")" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Ingreso hasta</label>
+                    <input type="date" name="fechaIngresoHasta" value="@Q("fechaIngresoHasta")" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Adopción desde</label>
+                    <input type="date" name="fechaAdopcionDesde" value="@Q("fechaAdopcionDesde")" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Adopción hasta</label>
+                    <input type="date" name="fechaAdopcionHasta" value="@Q("fechaAdopcionHasta")" class="form-control" />
+                </div>
+
+                <!-- Checks (mantengo tu nueva funcionalidad) -->
+                <div class="col-12 d-flex align-items-center gap-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="incluirHistoria" name="incluirHistoria" value="true" @(chkHistoria ? "checked" : "") />
+                        <label class="form-check-label" for="incluirHistoria">Incluir Historia</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="incluirSeguimiento" name="incluirSeguimiento" value="true" @(chkSeguimiento ? "checked" : "") />
+                        <label class="form-check-label" for="incluirSeguimiento">Incluir Seguimiento</label>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex gap-2 mt-2 filter-actions">
+                    <button type="submit" class="btn-outline">Buscar</button>
+                    <a class="btn-outline" asp-action="Index">Limpiar</a>
+
+                    @* Exporta CSV con filtros + checks *@
+                    <a id="expCsv" class="btn-outline"
+                       asp-controller="ReporteAnimal"
+                       asp-action="ExportarCsv"
+                       asp-route-id_especie="@Context.Request.Query["id_especie"]"
+                       asp-route-id_tamano="@Context.Request.Query["id_tamano"]"
+                       asp-route-id_estadoAnimal="@Context.Request.Query["id_estadoAnimal"]"
+                       asp-route-id_persona="@Context.Request.Query["id_persona"]"
+                       asp-route-id_pension="@Context.Request.Query["id_pension"]"
+                       asp-route-fechaIngresoDesde="@Context.Request.Query["fechaIngresoDesde"]"
+                       asp-route-fechaIngresoHasta="@Context.Request.Query["fechaIngresoHasta"]"
+                       asp-route-fechaAdopcionDesde="@Context.Request.Query["fechaAdopcionDesde"]"
+                       asp-route-fechaAdopcionHasta="@Context.Request.Query["fechaAdopcionHasta"]"
+                       asp-route-incluirHistoria="@(chkHistoria ? "true" : "false")"
+                       asp-route-incluirSeguimiento="@(chkSeguimiento ? "true" : "false")">
+                        Exportar Excel
+                    </a>
+
+                    <a id="expPdf" class="btn-outline"
+                       asp-action="ExportarPdf"
+                       asp-route-id_especie="@Context.Request.Query["id_especie"]"
+                       asp-route-id_tamano="@Context.Request.Query["id_tamano"]"
+                       asp-route-id_estadoAnimal="@Context.Request.Query["id_estadoAnimal"]"
+                       asp-route-id_persona="@Context.Request.Query["id_persona"]"
+                       asp-route-id_pension="@Context.Request.Query["id_pension"]"
+                       asp-route-fechaIngresoDesde="@Context.Request.Query["fechaIngresoDesde"]"
+                       asp-route-fechaIngresoHasta="@Context.Request.Query["fechaIngresoHasta"]"
+                       asp-route-fechaAdopcionDesde="@Context.Request.Query["fechaAdopcionDesde"]"
+                       asp-route-fechaAdopcionHasta="@Context.Request.Query["fechaAdopcionHasta"]"
+                       asp-route-incluirHistoria="@(chkHistoria ? "true" : "false")"
+                       asp-route-incluirSeguimiento="@(chkSeguimiento ? "true" : "false")">
+                        Exportar PDF
+                    </a>
+                </div>
+            </form>
+
+            @if (ViewBag.ApiError != null)
+            {
+                <div class="alert alert-danger">@ViewBag.ApiError</div>
+            }
+
+            @* ---------- RESULTADOS ---------- *@
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Sexo</th>
+                            <th>Edad</th>
+                            <th>Especie</th>
+                            <th>Tamaño</th>
+                            <th>Estado</th>
+                            <th>Persona</th>
+                            <th>Pensión</th>
+                            <th>Ingreso</th>
+                            <th>Adopción</th>
+                            <th>Historia</th>
+                            <th>Seguimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            bool hayDatos = Model != null && Model.Any();
+                        }
+                        @if (hayDatos)
+                        {
+                            foreach (var a in Model)
+                            {
+                                <tr>
+                                    <td>@a.nombre</td>
+                                    <td>@SexoTxt(a.sexo)</td>
+                                    <td>@($"{a.edadValor} {UnidadEdad(a.edadUnidad)}")</td>
+                                    <td>@Opt(lEsp, a.id_especie)</td>
+                                    <td>@Opt(lTam, a.id_tamano)</td>
+                                    <td>@Opt(lEst, a.id_estadoAnimal)</td>
+                                    <td>@Opt(lPer, a.id_persona)</td>
+                                    <td>@Opt(lPen, a.id_pension)</td>
+                                    <td>@(a.fechaIngreso.HasValue ? a.fechaIngreso.Value.ToString("dd/MM/yyyy") : "—")</td>
+                                    <td>@(a.fechaAdopcion.HasValue ? a.fechaAdopcion.Value.ToString("dd/MM/yyyy") : "—")</td>
+
+                                    <td style="max-width:380px; white-space:normal; word-wrap:break-word;">
+                                        @{
+                                            var h = a.historia;
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(h))
+                                        {
+                                            <details>
+                                                <summary>ver</summary>
+                                                <div>@h</div>
+                                            </details>
+                                        }
+                                        else
+                                        {
+                                            @:—
+                                        }
+                                    </td>
+
+                                    <td style="max-width:380px; white-space:normal; word-wrap:break-word;">
+                                        @{
+                                            var s = a.seguimiento;
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(s))
+                                        {
+                                            <details>
+                                                <summary>ver</summary>
+                                                <div>@s</div>
+                                            </details>
+                                        }
+                                        else
+                                        {
+                                            @:—
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="12" class="text-center text-muted">Sin resultados para los filtros aplicados.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script>
+(function(){
+    const chkH = document.getElementById('incluirHistoria');
+    const chkS = document.getElementById('incluirSeguimiento');
+    const aCsv = document.getElementById('expCsv');
+    const aPdf = document.getElementById('expPdf');
+
+    function actualizarHref(a){
+        const url = new URL(a.href, window.location.origin);
+        url.searchParams.set('incluirHistoria', chkH && chkH.checked ? 'true' : 'false');
+        url.searchParams.set('incluirSeguimiento', chkS && chkS.checked ? 'true' : 'false');
+        a.href = url.pathname + url.search;
+    }
+
+    [aCsv, aPdf].forEach(a => {
+        if(a) a.addEventListener('click', () => actualizarHref(a));
+    });
+})();
+</script>
+}

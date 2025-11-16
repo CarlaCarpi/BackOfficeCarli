@@ -1,0 +1,133 @@
+﻿@model SantaRamona.Backoffice.Models.Punto_Acopio
+@{
+    ViewData["Title"] = "Eliminar punto de acopio";
+
+    // Diccionarios llegados desde el controller (GET Eliminar)
+    var provincias = ViewBag.Provincias as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidades as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int id) =>
+        d.TryGetValue(id, out var v) ? v : $"#{id}";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        ELIMINAR PUNTO DE ACOPIO
+    </h1>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @TempData["Error"]
+            @if (TempData["ApiDetail"] is string det && !string.IsNullOrWhiteSpace(det))
+            {
+                <div class="small mt-1 text-muted">@det</div>
+            }
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver al listado</a>
+
+            <div class="d-flex gap-2">
+                <button type="button" class="btn"
+                        data-bs-toggle="modal" data-bs-target="#confirmEliminar"
+                        style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
+                    Eliminar
+                </button>
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="alert" role="alert"
+                 style="background:#fff8e6; border:1px solid #f0ad4e; color:#8a6d3b; border-radius:10px;">
+                Esta acción <strong>eliminará definitivamente</strong> el punto de acopio.
+            </div>
+
+            <div class="row g-3">
+                <!-- ID -->
+                <div class="col-md-3">
+                    <label class="form-label">ID</label>
+                    <input class="form-control" value="@Model.id_puntoAcopio" readonly />
+                </div>
+
+                <!-- Nombre / Descripción -->
+                <div class="col-md-5">
+                    <label class="form-label">Nombre</label>
+                    <input class="form-control" value="@Model.nombre" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Estado</label>
+                    <input class="form-control"
+                           value="@(Model.activo ? "Activo" : "Inactivo")" readonly />
+                </div>
+
+                <!-- Dirección -->
+                <div class="col-md-5">
+                    <label class="form-label">Calle</label>
+                    <input class="form-control" value="@Model.calle" readonly />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Altura</label>
+                    <input class="form-control" value="@Model.altura" readonly />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Dpto</label>
+                    <input class="form-control" value="@Model.departamento" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Provincia</label>
+                    <input class="form-control" value="@Txt(provincias, Model.id_provincia)" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Localidad</label>
+                    <input class="form-control" value="@Txt(localidades, Model.id_localidad)" readonly />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Descripción</label>
+                    <textarea class="form-control" rows="2" readonly>@Model.descripcion</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmEliminar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:14px;">
+                <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                    <h5 class="modal-title">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Desea eliminar el punto de acopio <strong>@Model.nombre</strong>?
+                </div>
+                <div class="modal-footer" style="border-top:none;">
+                    <form asp-action="Eliminar" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.id_puntoAcopio" />
+                        <button type="submit" class="btn"
+                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                            Sí, eliminar
+                        </button>
+                    </form>
+
+                    <button type="button" class="btn" data-bs-dismiss="modal"
+                            style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                        No
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,247 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es-ar">
+<head>
+    <meta charset="UTF-8" />
+    <title>Iniciar sesión - Santa Ramona</title>
+    <style>
+        /* 🎨 PALETA SANTA RAMONA */
+        /* #A71A6C → Bordó
+                           #FFE3E3 → Rosita claro
+                           #40ADB0 → Azul
+                           #FCE03F → Amarillo */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Consolas, sans-serif;
+            background-color: #FFE3E3;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            display: flex;
+            width: 900px;
+            height: 550px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(64,173,176,0.35);
+            overflow: hidden;
+        }
+
+        .login-left {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: #A71A6C;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        label {
+            color: #40ADB0;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.4rem;
+            width: 100%;
+            text-align: left;
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 1.2rem;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #40ADB0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #A71A6C;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #A71A6C;
+        }
+
+        /* 🔹 Grupo flex para input + botón */
+        .password-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            width: 100%;
+        }
+
+            .password-row input {
+                flex: 1; /* ocupa todo el espacio posible */
+            }
+
+        .view-btn {
+            background-color: #40ADB0;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0.9rem 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .view-btn:hover {
+                background-color: #2b8e91;
+            }
+
+        .forgot {
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: #A71A6C;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+            .forgot:hover {
+                text-decoration: underline;
+            }
+
+        .btn {
+            background-color: #40ADB0;
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #A71A6C;
+            }
+
+        .error {
+            color: #A71A6C;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .login-right {
+            flex: 1;
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+            .login-right img {
+                max-width: 80%;
+                height: auto;
+                object-fit: contain;
+                filter: drop-shadow(0 0 10px rgba(64,173,176,0.5));
+            }
+
+        @@media (max-width: 800px) {
+            .login-container {
+                flex-direction: column;
+                width: 90%;
+                height: auto;
+            }
+
+            .login-right {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <h1>¡Bienvenido de vuelta!</h1>
+            <p class="subtitle">Iniciá sesión para continuar gestionando con Santa Ramona</p>
+
+            <form method="post" action="/Login/Login">
+                @Html.AntiForgeryToken()
+
+                <div class="input-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" placeholder="Ingresá tu mail" required />
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <div class="password-row">
+                        <input type="password" id="password" name="password" placeholder="Ingresá tu contraseña" required />
+                        <button type="button" class="view-btn" onclick="togglePassword()">Ver</button>
+                    </div>
+                </div>
+
+                <a asp-controller="Login" asp-action="Recuperar" class="forgot">¿Olvidaste tu contraseña?</a>
+
+
+                <button type="submit" class="btn">Ingresar</button>
+
+                @if (!string.IsNullOrEmpty(ViewBag.Error as string))
+                {
+                    <p class="error">@ViewBag.Error</p>
+                }
+            </form>
+        </div>
+
+        <div class="login-right">
+            <img src="~/images/santaramona.png" alt="Logo Santa Ramona" />
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const pass = document.getElementById("password");
+            const btn = document.querySelector(".view-btn");
+            const isHidden = pass.getAttribute("type") === "password";
+            pass.setAttribute("type", isHidden ? "text" : "password");
+            btn.textContent = isHidden ? "Ocultar" : "Ver";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+﻿@{
+	ViewData["Title"] = "Voluntariado";
+    Layout = "~/Views/Shared/Layout1.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/Voluntariado.css" asp-append-version="true" />
+}
+
+
+
+@model List<PruebaFront.Models.VoluntariadoInfo>
+
+@* <!-- Hero -->
+<section class="hero" id="inicio" role="banner" aria-label="Campaña de tránsitos">
+    <div class="media" aria-hidden="true">
+        <img src="~/images/perrogato.png" alt="Perro de fondo" />
+    </div>
+    <div class="content">
+        <h1 class="kicker">Voluntariados</h1>
+        <p class="sub">Un pequeño gesto, una gran huella </p>
+    </div>
+</section> *@
+<h1>Voluntariados</h1>
+<p>Acá encontraras todos los requisitos necesarios que se deben cumplir para poder ser voluntario de Santa Ramona: </p>
+
+<h1>Requisitos</h1>
+<div class="vol-container">
+    <div class="req-vol">
+        <ul>
+            <li>Ser mayor de 18 años </li>
+            <li>Amar a los animales</li>
+            <li>Disponibilidad horaria, cualquier tiempo que puedas dedicar es valioso</li>
+            <li>Compromiso y responsabilidad</li>
+            <li>Colaboración</li>
+        </ul>
+     
+    </div>
+    <p> Sí compartís nuestra pasión por hacer del mundo un lugar mejor para los animales ¡te estamos esperando!</p>
+</div>
+
+
+@* <div class="voluntariados-container">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        var v = Model[i];
+        <div class="voluntariado-item @(i % 2 == 0 ? "par" : "impar")">
+            <div class="imagen-voluntariado">
+                <img src="@v.ImagenUrl" alt="Imagen voluntariado" class="img-voluntariado" />
+            </div>
+            <div class="texto-voluntariado">
+                <p>@v.Texto</p>
+            </div>
+        </div>
+    }
+</div> *@
+
+@section ExtraContent {
+    <!-- CTA Final -->
+    <section class="cta" aria-labelledby="cta-title">
+        <div class="section-inner" style="text-align:center">
+            <h2 id="cta-title">¿Querés ser parte de Santa Ramona?</h2>
+            <p>Sumate como voluntario/a!</p>
+            <a class="btn primary" asp-controller="FormPersonaVoluntariado" asp-action="PersonaVoluntario">¡Sumate!</a>
+        </div>
+    </section>
+}

@@ -1,0 +1,150 @@
+﻿
+:root {
+    --accent: #C23A79;
+    --teal: #178C94;
+    --bg: #f3f8f7;
+    --card: #ffffff;
+}
+
+/* Reset simple */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+/*body {
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg, #fbfefc 0%, var(--bg) 100%);*/ /*DEGRADE DE FONDO*/
+    /*color: #1f2933;
+}*/
+
+h1 {
+    text-align: center;
+    color: var(--accent);
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+
+
+/* Layout principal */
+.donar-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 0 auto;
+    margin-top: 40px;
+    align-items: flex-start;
+}
+
+/* TARJETA */
+.box-donar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 520px;
+    background: var(--card);
+    border-radius: 14px;
+    padding: 20px 10px;
+    box-shadow: 0 0 40px 0 rgba(0,0,0,.2);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: transform .18s ease, box-shadow .18s ease;
+    margin: 10px;
+}
+
+    .box-donar:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 22px 40px rgba(16,24,32,0.12);
+    }
+
+    .box-donar h2 {
+        color: var(--accent);
+        text-align: center;
+        font-size: 1.2rem;
+        margin-top: 4px;
+    }
+
+/* DETAILS estilizado: aspecto claramente visible */
+details {
+    background: linear-gradient(90deg, rgba(23,140,148,0.12), rgba(194,58,121,0.08));
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 14px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #043c3d;
+}
+
+    summary::before {
+        content: "+";
+        display: inline-block;
+        min-width: 20px;
+        text-align: center;
+        color: var(--teal);
+        font-size: 1rem;
+        transition: transform .15s ease;
+    }
+
+details[open] summary::before {
+    content: "-";
+}
+
+/* contenido dentro de details */
+details > ul {
+    padding: 10px 18px 14px 22px;
+    background: #fff;
+    border-top: 1px solid rgba(0,0,0,0.03);
+}
+
+details li {
+    list-style: none;
+    position: relative;
+    padding-left: 18px;
+    margin: 8px 0;
+    color: #385055;
+}
+
+    details li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--teal);
+        font-weight: 700;
+    }
+
+/* Enlaces  */
+.link {
+    color: var(--teal);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+    .link:hover {
+        text-decoration: underline;
+    }
+
+.donar-row {
+    gap: 12px;
+}
+
+.box-donar {
+    padding: 14px;
+}
+
+
+
+

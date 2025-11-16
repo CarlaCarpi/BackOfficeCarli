@@ -1,0 +1,94 @@
+﻿@model List<SantaRamona.Backoffice.Models.Pregunta>
+@{
+    ViewData["Title"] = "Formulario de Tránsito";
+    Layout = "~/Views/Shared/Layout1.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/FormPerTransito.css" asp-append-version="true" />
+}
+<div>
+    <h1>Formulario de Tránsito</h1>
+
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert-box error">
+            <span style="color:red;">@ViewBag.ApiError</span>
+            <button class="close-btn" aria-label="Cerrar alerta">&times;</button>
+        </div>
+    }
+
+    @if (TempData["Ok"] != null)
+    {
+        <div class="alert-box success">
+            <span style="color:green;">@TempData["Ok"]</span>
+            <button class="close-btn" aria-label="Cerrar alerta">&times;</button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert-box success">
+            <span style="color:red;">@TempData["Error"]</span>
+            <button class="close-btn" aria-label="Cerrar alerta">&times;</button>
+        </div>
+    }
+    <div class="vol-container">
+
+        <form asp-action="FormularioTransito" asp-controller="FormPersonaTransito" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="idPersona" value="@ViewBag.IdPersona" />
+
+            @foreach (var pregunta in Model)
+            {
+                <div style="margin-bottom:40px;">
+                    <label for="pregunta_@pregunta.id_pregunta">@pregunta.pregunta</label>
+
+                    <textarea type="text"
+                              id="pregunta_@pregunta.id_pregunta"
+                              name="respuestas[@pregunta.id_pregunta]"
+                              required
+                              style="width:100%;padding:5px;"></textarea><br />
+
+
+                   @*  <input type="text"
+                           id="pregunta_@pregunta.id_pregunta"
+                           name="respuestas[@pregunta.id_pregunta]"
+                           required
+                           style="width:100%;padding:5px;" /> *@
+                </div>
+            }
+
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 🔹 Función para cerrar con animación
+            const closeAlert = (alert) => {
+                alert.style.transition = "opacity 0.3s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 300);
+            };
+
+            // 🔹 Cerrar manualmente con la X
+            document.addEventListener("click", (e) => {
+                if (e.target.classList.contains("close-btn")) {
+                    const alert = e.target.closest(".alert-box");
+                    closeAlert(alert);
+                }
+            });
+
+            // 🔹 Cerrar automáticamente después de 5 segundos
+            const alerts = document.querySelectorAll(".alert-box");
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    closeAlert(alert);
+                }, 5000);
+            });
+        });
+    </script>
+}

@@ -1,0 +1,204 @@
+﻿@model SantaRamona.Backoffice.Models.Persona
+@{
+    Layout = null;
+
+    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+    var usuarios = ViewBag.Usuarios as Dictionary<int, string> ?? new();
+
+    var formularios = ViewBag.Formularios as List<SantaRamona.Backoffice.Models.Formulario> ?? new();
+    var tipoDict = ViewBag.TipoDict as Dictionary<int, string> ?? new();
+    var preguntasByTipo = ViewBag.PreguntasByTipo as Dictionary<int, List<SantaRamona.Backoffice.Models.Pregunta>> ?? new();
+    var respByForm = ViewBag.RespuestasByForm as Dictionary<int, List<SantaRamona.Backoffice.Models.Respuesta>> ?? new();
+
+    string Str(string? s) => string.IsNullOrWhiteSpace(s) ? "—" : s;
+    string IntTxt(int? n) => n.HasValue ? n.Value.ToString() : "—";
+    string DateTxt(DateTime? d) => d.HasValue ? d.Value.ToString("dd/MM/yyyy") : "—";
+    string Txt(Dictionary<int, string> dict, int? id)
+        => id.HasValue && dict.TryGetValue(id.Value, out var v) ? v : (id.HasValue ? $"#{id}" : "—");    
+    string TxtOrId(Dictionary<int, string> dict, int? id)
+    => id.HasValue ? (dict.TryGetValue(id.Value, out var v) ? v : $"#{id}") : "—";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0" style="color:#2FA8A2;">Detalle de persona</h5>
+
+        <!-- 🔹 BOTÓN NUEVO CON ESTILO SANTA RAMONA -->
+        <a asp-action="DetallePdf"
+           asp-route-id="@Model.id_persona"
+           target="_blank"
+           class="btn btn-sm"
+           style="background:#2FA8A2;
+                  color:#fff;
+                  border-radius:10px;
+                  padding:.35rem .9rem;
+                  display:inline-flex;
+                  align-items:center;
+                  gap:.35rem;">
+            <span>📄</span>
+            <span>Descargar PDF</span>
+        </a>
+    </div>
+
+    <!-- ===== Datos de Persona ===== -->
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Código</label>
+            <div class="form-control" readonly>@Model.id_persona</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Nombre</label>
+            <div class="form-control" readonly>@Str(Model.nombre)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Apellido</label>
+            <div class="form-control" readonly>@Str(Model.apellido)</div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">DNI</label>
+            <div class="form-control" readonly>@IntTxt(Model.dni)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Fecha de nacimiento</label>
+            <div class="form-control" readonly>@DateTxt(Model.fechaNacimiento)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Email</label>
+            <div class="form-control" readonly>@Str(Model.email)</div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Calle</label>
+            <div class="form-control" readonly>@Str(Model.calle)</div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label fw-semibold">Altura</label>
+            <div class="form-control" readonly>@IntTxt(Model.altura)</div>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label fw-semibold">Depto</label>
+            <div class="form-control" readonly>@Str(Model.departamento)</div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Provincia</label>
+            <div class="form-control" readonly>@Txt(provincias, Model.id_provincia)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Localidad</label>
+            <div class="form-control" readonly>@Txt(localidades, Model.id_localidad)</div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label fw-semibold">Redes sociales</label>
+            <div class="form-control" style="min-height:56px;" readonly>@Str(Model.redesSociales)</div>
+        </div>
+        <!-- Estado / Usuario -->
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Estado de pensión</label>
+            <div class="form-control" readonly>@Txt(estados, Model.id_estadoPersona)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Usuario</label>
+            <div class="form-control" readonly>@TxtOrId(usuarios, Model.id_usuario)</div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Fecha de alta</label>
+            <div class="form-control" readonly>@DateTxt(Model.fechaIngreso)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Fecha de última modificación</label>
+            <div class="form-control" readonly>@DateTxt(Model.fechaEgreso)</div>
+        </div>
+        <div class="col-12">
+            <label class="form-label fw-semibold">Observaciones</label>
+            <div class="form-control" style="min-height:70px;" readonly>@Str(Model.motivoEgreso)</div>
+        </div>
+    </div>
+
+    <!-- ===== Formularios + Preguntas/Respuestas ===== -->
+    <hr class="my-3" />
+    <h5 class="fw-bold" style="color:#2FA8A2;">Formulario respondido</h5>
+
+    @if (formularios.Any())
+    {
+        <div class="accordion" id="accForms">
+            @{
+                var idx = 0;
+            }
+            @foreach (var f in formularios)
+            {
+                var accId = $"form-{f.id_formulario}";
+                var tipoTxt = tipoDict.TryGetValue(f.id_tipoFormulario, out var t) ? t : $"Tipo {f.id_tipoFormulario}";
+                var preguntas = preguntasByTipo.TryGetValue(f.id_tipoFormulario, out var ql) 
+                    ? ql
+                            // ✔ solo mostrar preguntas activas
+                            // ✔ o preguntas inactivas que sí tengan respuesta histórica
+                            .Where(p => p.activo || respByForm[f.id_formulario].Any(r => r.id_pregunta == p.id_pregunta))
+                            .ToList()
+                    : new List<SantaRamona.Backoffice.Models.Pregunta>();
+
+                var respuestas = respByForm.TryGetValue(f.id_formulario, out var rl) ? rl : new List<SantaRamona.Backoffice.Models.Respuesta>();
+
+                <div class="accordion-item" style="border:1px solid #2FA8A2; border-radius:10px; margin-bottom:.5rem;">
+                    <h2 class="accordion-header" id="h-@accId">
+                        <button class="accordion-button @((idx>0 ? "collapsed" : ""))" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#c-@accId"
+                                aria-expanded="@(idx==0 ? "true" : "false")"
+                                aria-controls="c-@accId"
+                                style="background:#E6F6F5;">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold" style="color:#155e59;">@tipoTxt</span>
+                                <small class="text-muted">
+                                </small>
+                            </div>
+                        </button>
+                    </h2>
+
+                    <div id="c-@accId" class="accordion-collapse collapse @(idx==0 ? "show" : "")"
+                         aria-labelledby="h-@accId" data-bs-parent="#accForms">
+                        <div class="accordion-body">
+                            @if (preguntas.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-sm align-middle mb-0">
+                                        <thead>
+                                            <tr style="background:#2FA8A2; color:#fff;">
+                                                <th style="border-top-left-radius:8px;">Pregunta</th>
+                                                <th style="border-top-right-radius:8px;">Respuesta</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var q in preguntas)
+                                            {
+                                                var r = respuestas.FirstOrDefault(x => x.id_pregunta == q.id_pregunta);
+                                                <tr>
+                                                    <td style="width:55%;">@q.pregunta</td>
+                                                    <td style="width:45%;">@(string.IsNullOrWhiteSpace(r?.respuesta) ? "—" : r!.respuesta)</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-muted">No hay preguntas configuradas para este tipo.</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                idx++;
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-muted">Esta persona no tiene formularios registrados.</div>
+    }
+</div>

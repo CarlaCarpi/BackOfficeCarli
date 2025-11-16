@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        MENÚ
+    </h1>
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3 mt-3">
+
+        <!-- ANIMALES (activo) -->
+        <div class="col">
+            <a asp-controller="Animal" asp-action="Index" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">🐾</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Animales</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- PERSONAS (activo) -->
+        <div class="col">
+            <a asp-controller="Persona" asp-action="Index" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">👤</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Personas</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- PENSIONES (activo) -->
+        <div class="col">
+            <a asp-controller="Pension" asp-action="Index" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">🏠</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Pensión</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- DONACIONES (activo) -->
+        <div class="col">
+            <a asp-controller="Donacion" asp-action="Index" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">🎁</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Donaciones</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- PUNTOS DE ACOPIO (activo) -->
+        <div class="col">
+            <a asp-controller="PuntoAcopio" asp-action="Index" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">📍</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Puntos de Acopio</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- PLANTILLA FORMULARIO (activo) -->
+        <div class="col">
+            <a asp-controller="Pregunta" asp-action="PlantillaFormulario" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">📋</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Plantilla Formulario</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- REPORTES (Activo) -->
+        <div class="col">
+            <a asp-controller="Reportes" asp-action="Index" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">📊</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Reportes</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- USUARIOS (activo) -->
+        <div class="col">
+            <a asp-controller="Usuario" asp-action="Index" class="text-decoration-none">
+                <div class="p-3 text-center shadow-sm tile">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-2"
+                         style="width:60px;height:60px;border-radius:14px;background:#E6F6F5;">
+                        <span style="font-size:30px;">🧑‍🤝‍🧑</span>
+                    </div>
+                    <div class="fw-semibold" style="color:#2FA8A2;">Usuarios</div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .tile {
+        border: 1px solid #E6F6F5;
+        border-radius: 14px;
+        background: #fff;
+        transition: transform .08s ease;
+    }
+
+        .tile:hover {
+            transform: translateY(-1px);
+        }
+
+    .tile-off {
+        opacity: .65;
+        cursor: default;
+    }
+</style>

@@ -1,0 +1,240 @@
+﻿@model SantaRamona.Backoffice.Models.Donacion
+@{
+    ViewData["Title"] = "Agregar Donación";
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Segoe UI',sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #40ADB0;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-submit, .btn-cancel {
+        background: #40ADB0;
+        color: #fff;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color .3s;
+        display: inline-block;
+    }
+
+        .btn-submit:hover, .btn-cancel:hover {
+            background: #40ADB0;
+        }
+
+    .summary-errors {
+        color: #40ADB0;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .donacion-card {
+        background: #fff;
+        border: 2px solid #40ADB0;
+        border-radius: .5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        overflow: hidden;
+    }
+
+    .donacion-card-header {
+        background: #40ADB0;
+        color: #fff;
+        padding: 1rem;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    .donacion-card-body {
+        padding: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: .35rem;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: .6rem .75rem;
+        font-size: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: .5rem;
+        outline: none;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            outline: none !important;
+            box-shadow: none !important;
+            border-color: #2FA8A2 !important; /* opcional: bordecito verde suave */
+        }
+
+    .actions-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .link-back {
+        display: inline-block;
+        padding: .45rem 1.2rem;
+        border: 1px solid #2FA8A2;
+        border-radius: 10px;
+        color: #2FA8A2 !important;
+        background: #fff;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .link-back:hover {
+            background: #2FA8A2;
+            color: #fff !important;
+        }
+
+
+    .alert-ok {
+        background: #E6D9F8;
+        color: #40ADB0;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #c5a9cb;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .alert-error {
+        background: #fff3f3;
+        color: #a94442;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: 1px solid #d9534f;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .help {
+        font-size: .9rem;
+        color: #6c757d;
+        margin-top: .25rem;
+        display: block;
+    }
+</style>
+
+<div class="main-container">
+    <h2 class="form-title">Agregar Nueva Donación</h2>
+
+    @* cartel de éxito *@
+    @if (TempData["Ok"] != null)
+    {
+        <div style="
+        background:#E6F6F5;
+        border:2px solid #2FA8A2;
+        color:#155e59;
+        padding:.8rem 1rem;
+        border-radius:10px;
+        margin-bottom:1rem;
+        font-weight:600;">
+            @TempData["Ok"]
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert-error">@ViewBag.ApiError</div>
+    }
+
+    <div class="donacion-card">
+        <div class="donacion-card-header">Datos de la Donación</div>
+        <div class="donacion-card-body">
+            <form asp-action="Crear" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                <div class="actions-bar">
+                    <a asp-controller="Donacion" asp-action="Index" class="link-back">
+                        <span aria-hidden="true">←</span><span>Volver al listado</span>
+                    </a>
+
+                    <div style="display:flex; gap:.5rem;">
+                        <button type="submit" class="btn-submit">Guardar</button>
+                        <button type="button" class="btn-cancel" onclick="showCancelModal()">Cancelar</button>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="summary-errors"></div>
+
+                <div class="form-group">
+                    <label asp-for="tipo" class="form-label">Tipo de donación</label>
+                    <select asp-for="tipo" class="form-select">
+                        <option value="">Seleccione...</option>
+                        <option value="M">Medicamentos</option>
+                        <option value="I">Insumos</option>
+                        <option value="B">Banco</option>
+                        <option value="P">No Bancario</option>
+                    </select>
+                    <span class="help">Ej.: Paracetamol → Medicamentos (M) | Alimento balanceado → Insumos (I) | Banco Ciudad (B) | Mercado Pago (P)</span>
+                    <span asp-validation-for="tipo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="descripcion" class="form-label">Descripción</label>
+                    <input asp-for="descripcion" class="form-control" maxlength="40" />
+                    <span asp-validation-for="descripcion" class="text-danger"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="cancel-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+        background-color: rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:#fff; padding:2rem; border-radius:1rem; max-width:400px; text-align:center; box-shadow:0 0 10px rgba(0,0,0,0.3); margin:auto;">
+            <p style="font-size:1.2rem; margin-bottom:1.5rem; color:#40ADB0;">
+                ¿Realmente desea cancelar?
+            </p>
+            <div style="display:flex; justify-content:center; gap:1rem;">
+                <button onclick="confirmCancelYes()" class="btn-submit">Sí</button>
+                <button onclick="closeCancelModal()" class="btn-submit" style="background-color:#aaa;">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function showCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'flex';
+        }
+        function closeCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'none';
+        }
+        function confirmCancelYes() {
+            window.location.href = "@Url.Action("Index", "Donacion")";
+        }
+        setTimeout(() => {
+            const b = document.getElementById('ok-banner');
+            if (b) b.style.display = 'none';
+        }, 3500);
+    </script>
+}

@@ -1,0 +1,208 @@
+﻿﻿@using System.Security.Claims
+@{
+    // var displayName =
+    //     User?.Claims?.FirstOrDefault(c => c.Type == "name")?.Value ??
+    //     User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ??
+    //     User?.Claims?.FirstOrDefault(c => c.Type == "given_name")?.Value ??
+    //     (User?.Identity?.IsAuthenticated == true ? (User.Identity?.Name ?? "") : null) ??
+    //     (ViewBag.Usuario as string) ?? "Usuario";
+
+    // intenta primero el ClaimTypes.Name (donde guardaste nombre y apellido)
+    var displayName = User?.FindFirst(ClaimTypes.Name)?.Value;
+
+    // fallback: usa el mail solo si no hay nombre
+    if (string.IsNullOrWhiteSpace(displayName))
+        displayName = User?.FindFirst(ClaimTypes.Email)?.Value ?? "Usuario";
+}
+
+<!DOCTYPE html>
+<html lang="es" translate="no">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - SantaRamona</title>
+    <link rel="icon" type="png" href="~/images/Logo_Santa_Ramona-ISO.png" />
+
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SantaRamona.Backoffice.styles.css" asp-append-version="true" />
+
+    <style>
+        :root {
+            --sr-azul: #2FA8A2;
+            --sr-bordo: #A71A6C;
+            --sr-hover: #DE5C8F;
+            --sr-text: #14373B;
+        }
+
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .navbar {
+            background: #fff;
+            border-bottom: 3px solid var(--sr-azul);
+            box-shadow: 0 2px 6px rgba(0,0,0,.05);
+            min-height: 84px;
+        }
+
+        /* LOGO + texto */
+        .navbar-brand {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--sr-bordo) !important; /* ahora bordó */
+            letter-spacing: .5px;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            line-height: 1;
+            text-decoration: none !important;
+        }
+
+            .navbar-brand img {
+                height: 150px;
+                width: auto;
+            }
+
+        /* Botones del menú tipo píldora celestes */
+        .sr-pill {
+            background: var(--sr-azul);
+            color: #fff !important;
+            border: 1px solid var(--sr-azul);
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            padding: .48rem .9rem;
+            line-height: 1;
+            transition: all 0.2s ease;
+        }
+
+            .sr-pill:hover, .sr-pill:focus {
+                background: var(--sr-bordo);
+                border-color: var(--sr-bordo);
+                color: #fff !important;
+            }
+
+        /* Saludo + cerrar sesión */
+        .sr-hello {
+            color: var(--sr-text);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+            .sr-hello .name {
+                color: var(--sr-azul);
+                font-weight: 800;
+            }
+
+        .sr-btn-cerrar {
+            background: var(--sr-bordo);
+            color: #fff !important;
+            border: 1px solid var(--sr-bordo);
+            border-radius: 12px;
+            font-weight: 700;
+            padding: .48rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+            .sr-btn-cerrar:hover {
+                background: var(--sr-hover);
+                border-color: var(--sr-hover);
+            }
+
+        /* Alineación */
+        .navbar .container-fluid {
+            align-items: center;
+        }
+
+        .sr-navwrap {
+            gap: .5rem;
+        }
+
+        @@media (max-width: 991.98px) {
+            .sr-navwrap {
+                gap: .5rem;
+                margin-top: .75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <!-- LOGO + texto bordó (Home) -->
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/Logo_Santa_Ramona-HORIZONTAL.png" alt="Logo">
+
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSR" aria-controls="navbarSR" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div id="navbarSR" class="collapse navbar-collapse justify-content-between">
+                    <!-- Menú -->
+                    <div class="d-flex flex-wrap sr-navwrap">
+                        <a class="btn sr-pill" href="https://santaramona.somee.com" target="_blank" rel="noopener noreferrer">
+                            Sitio Web
+                        </a>
+
+                     <!--<a class="btn sr-pill" asp-controller="Animal" asp-action="Index">Animales</a>
+                        <a class="btn sr-pill" asp-controller="Usuario" asp-action="Index">Usuarios</a>
+                        <a class="btn sr-pill" asp-controller="Persona" asp-action="Index">Personas</a>
+                        <a class="btn sr-pill" asp-controller="PlantillaFormulario" asp-action="Index">Forms</a> -->
+
+                        <!--<a class="btn sr-pill" asp-controller="Animal" asp-action="Index">Animales</a>
+                           <a class="btn sr-pill" asp-controller="Usuario" asp-action="Index">Usuarios</a>
+                           <a class="btn sr-pill" asp-controller="Persona" asp-action="Index">Personas</a>
+                           <a class="btn sr-pill" asp-controller="PlantillaFormulario" asp-action="Index">Forms</a> -->
+
+                    </div>
+
+                    <!-- Derecha: saludo + cerrar sesión -->
+                    <div class="d-flex align-items-center gap-3 ms-lg-3">
+                        <span class="sr-hello">Hola, <span class="name">@displayName</span></span>
+                        <form asp-controller="Login" asp-action="Logout" method="post" class="m-0">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn sr-btn-cerrar">Cerrar sesión</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted mt-auto text-center">
+        <div class="container">
+            &copy; 2025 - SantaRamona -
+            <a asp-controller="Home" asp-action="Privacy">Privacidad</a>
+        </div>
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

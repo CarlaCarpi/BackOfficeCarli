@@ -1,0 +1,235 @@
+﻿@model SantaRamona.Backoffice.Models.Usuario
+@{
+    await Html.RenderPartialAsync("_UsuarioTopNav");
+    ViewData["Title"] = "Crear Usuario";
+
+    var estados = ViewBag.Estados as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? new();
+    var roles = ViewBag.Roles as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? new();
+
+    var ahora = DateTime.Now;
+    var fechaDefault = (Model?.fechaAlta == default ? ahora : Model!.fechaAlta)
+                       .ToString("yyyy-MM-ddTHH:mm");
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2;">CREAR USUARIO</h1>
+
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #A71A6C; color:#A71A6C; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="card mt-3" style="border:1px solid #2FA8A2; border-radius:14px; overflow:hidden;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#E6F6F5; border-bottom:1px solid #2FA8A2;">
+            <a asp-action="Index" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px;">← Volver</a>
+            <div class="d-flex gap-2">
+                <button type="submit" form="form-crear" class="btn"
+                        style="background:#2FA8A2; color:#fff; border-radius:10px;">
+                    Guardar
+                </button>
+                <a asp-action="Index" class="btn" style="background:#A71A6C; color:#fff; border-radius:10px;">Cancelar</a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <form id="form-crear" asp-action="Crear" method="post" autocomplete="off">
+                @Html.AntiForgeryToken()
+
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <label asp-for="nombre" class="form-label">Nombre</label>
+                        <input asp-for="nombre" class="form-control" />
+                        <span asp-validation-for="nombre" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="apellido" class="form-label">Apellido</label>
+                        <input asp-for="apellido" class="form-control" />
+                        <span asp-validation-for="apellido" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="email" class="form-label">Email</label>
+                        <input asp-for="email" class="form-control" />
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Clave (igual a Modificar) -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="clave" class="form-label">Clave</label>
+                        <div class="d-flex gap-2 align-items-start">
+                            <input asp-for="clave" class="form-control flex-grow-1" type="password" id="claveCrearInput" />
+                            <button type="button" id="btnVerCrear"
+                                    class="btn text-white"
+                                    style="background:#40ADB0; border-color:#2FA8A2;">
+                                Ver
+                            </button>
+                        </div>
+                        <small class="text-muted d-block mt-1">
+                            Debe tener al menos 8 caracteres, incluyendo letras y números.
+                        </small>
+                        <span asp-validation-for="clave" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="direccion" class="form-label">Dirección</label>
+                        <input asp-for="direccion" class="form-control" />
+                        <span asp-validation-for="direccion" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="altura" class="form-label">Altura</label>
+                        <input asp-for="altura" class="form-control" />
+                        <span asp-validation-for="altura" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="departamento" class="form-label">Deparmanento</label>
+                        <input asp-for="departamento" class="form-control" />
+                        <span asp-validation-for="departamento" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="telefono" class="form-label">Teléfono</label>
+                        <input asp-for="telefono" class="form-control" />
+                        <span asp-validation-for="telefono" class="text-danger"></span>
+                    </div>
+
+                    <!-- Fecha Alta (calendar UI) -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="fechaAlta" class="form-label">Fecha Alta</label>
+                        <input asp-for="fechaAlta" class="form-control sr-datetime"
+                               type="datetime-local"
+                               value="@fechaDefault"
+                               max="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                        <span asp-validation-for="fechaAlta" class="text-danger"></span>
+                    </div>
+
+                    <!-- Estado + Rol -->
+                    <div class="col-12 col-md-6">
+                        <label asp-for="id_estadoUsuario" class="form-label">Estado</label>
+                        <select asp-for="id_estadoUsuario" class="form-select sr-select" asp-items="estados">
+                            
+                        </select>
+                        <span asp-validation-for="id_estadoUsuario" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Rol</label>
+                        <select asp-for="id_rol" class="form-select sr-select" asp-items="roles">
+                            
+                        </select>
+                        <span asp-validation-for="id_rol" class="text-danger"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.min.js"></script>
+
+    <script>
+        // Mostrar/Ocultar clave
+        (() => {
+          const btn = document.getElementById('btnVerCrear');
+          const input = document.getElementById('claveCrearInput');
+          if (!btn || !input) return;
+          btn.addEventListener('click', () => {
+            const showing = input.type === 'text';
+            input.type = showing ? 'password' : 'text';
+            btn.textContent = showing ? 'Ver' : 'Ocultar';
+          });
+        })();
+
+        // Validación básica de contraseña en Crear
+        (() => {
+          const form = document.getElementById('form-crear');
+          const input = document.getElementById('claveCrearInput');
+          if (!form || !input) return;
+          const isStrong = v => /[A-Za-z]/.test(v) && /\d/.test(v) && v.length >= 8;
+          form.addEventListener('submit', (e) => {
+            const val = (input.value || '').trim();
+            if (!isStrong(val)) {
+              e.preventDefault();
+              alert('La contraseña debe tener al menos 8 caracteres, incluyendo letras y números.');
+              input.focus();
+            }
+          });
+        })();
+
+        // Flatpickr (estilo calendario + max hoy + default hoy)
+        (() => {
+          const el = document.querySelector('.sr-datetime');
+          if (!el) return;
+          flatpickr(el, {
+            enableTime: true,
+            time_24hr: true,
+            dateFormat: "Y-m-d H:i",
+            defaultDate: new Date(),
+            maxDate: new Date(),
+            allowInput: true,
+            plugins: [new confirmDatePlugin({ showAlways: true })]
+          });
+        })();
+    </script>
+}
+
+<style>
+    /* Selects con hover rosa */
+    .sr-select {
+        border-radius: 10px;
+    }
+
+        .sr-select option:hover, .sr-select option:focus {
+            background-color: #FCE1E5 !important;
+        }
+
+        .sr-select:focus {
+            outline: 2px solid #FCE1E5;
+            outline-offset: 1px;
+        }
+
+    /* Estética del calendario */
+    .flatpickr-calendar {
+        border-radius: 14px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    }
+
+    .flatpickr-day:hover, .flatpickr-day:focus {
+        background: #FCE1E5;
+    }
+
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+        background: #111;
+        color: #fff;
+    }
+
+    .flatpickr-confirm, .flatpickr-cancel {
+        border-radius: 10px !important;
+        padding: .45rem .9rem !important;
+    }
+
+    .flatpickr-confirm {
+        background: #A71A6C !important;
+        color: #fff !important;
+        border: none !important;
+    }
+
+    .flatpickr-cancel {
+        background: #fff !important;
+        color: #A71A6C !important;
+        border: 1px solid #A71A6C !important;
+    }
+</style>

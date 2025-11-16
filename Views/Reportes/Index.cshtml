@@ -1,0 +1,122 @@
+﻿@{
+    await Html.RenderPartialAsync("_ReporteTopNav");
+    ViewData["Title"] = "Reportes del Refugio";
+}
+
+<div class="container mt-5 mb-5">
+
+    <h1 class="text-center mb-4" style="color:#2a9d8f; font-weight:bold;">
+        <i class="bi bi-bar-chart-fill"></i> Reportes Generales del Refugio
+    </h1>
+
+    <!-- 🔹 NUEVO: Gráfico de torta -->
+    <div class="text-center mb-5">
+        <canvas id="graficoEstados" width="320" height="320"></canvas>
+    </div>
+
+    <!-- Animales -->
+    <h3 class="text-center mt-4 mb-3" style="color:#264653;">🐾 Animales</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#f0fdf4;">
+            <h6>Total</h6>
+            <h3 class="text-success">@ViewBag.TotalAnimales</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#e3f2fd;">
+            <h6>Perros</h6>
+            <h3 class="text-primary">@ViewBag.TotalPerros</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#fff3e0;">
+            <h6>Gatos</h6>
+            <h3 class="text-warning">@ViewBag.TotalGatos</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#fce4ec;">
+            <h6>Otros</h6>
+            <h3 class="text-danger">@ViewBag.TotalOtros</h3>
+        </div>
+    </div>
+
+    <!-- Estados -->
+    <h3 class="text-center mt-4 mb-3" style="color:#264653;">🏠 Estados de Animales</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#e0f7fa;">
+            <h6>En Adopción</h6>
+            <h3 class="text-info">@ViewBag.TotalEnAdopcion</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#fffde7;">
+            <h6>En Tránsito</h6>
+            <h3 class="text-warning">@ViewBag.TotalEnTransito</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#ede7f6;">
+            <h6>En Pensión</h6>
+            <h3 class="text-secondary">@ViewBag.TotalEnPension</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#e8f5e9;">
+            <h6>Adoptados</h6>
+            <h3 class="text-success">@ViewBag.TotalAdoptados</h3>
+        </div>
+    </div>
+
+    <!-- Formularios -->
+    <h3 class="text-center mt-4 mb-3" style="color:#264653;">📝 Formularios</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#ede7f6;">
+            <h6>Totales</h6>
+            <h3>@ViewBag.TotalFormularios</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#f1f8e9;">
+            <h6>Adopciones</h6>
+            <h3 class="text-success">@ViewBag.TotalAdopciones</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#e3f2fd;">
+            <h6>Tránsitos</h6>
+            <h3 class="text-primary">@ViewBag.TotalTransitos</h3>
+        </div>
+        <div class="card p-3 text-center shadow-sm border-0" style="width:180px; background-color:#fff8e1;">
+            <h6>Voluntariados</h6>
+            <h3 class="text-warning">@ViewBag.TotalVoluntariados</h3>
+        </div>
+    </div>
+
+    <!-- 🔹 NUEVO: Totales de personas y pensiones al final -->
+    <div class="text-center mt-5">
+        <div class="d-flex flex-wrap justify-content-center gap-4">
+            <div class="card p-3 text-center shadow-sm border-0" style="width:250px; background-color:#e0f7f4;">
+                <h5 style="color:#006d68;">👥 Total Personas</h5>
+                <h3 style="color:#008b83;">@ViewBag.TotalPersonas</h3>
+            </div>
+            <div class="card p-3 text-center shadow-sm border-0" style="width:250px; background-color:#fce4ec;">
+                <h5 style="color:#ad1457;">🏩 Total Pensiones</h5>
+                <h3 style="color:#c2185b;">@ViewBag.TotalPensiones</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🔹 NUEVO: Script para Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('graficoEstados');
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['En Adopción', 'Adoptados'],
+            datasets: [{
+                data: [
+    @ViewBag.TotalEnAdopcion,
+    @ViewBag.TotalAdoptados
+                ],
+                backgroundColor: ['#29b6f6', '#ffeb3b'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: true, text: 'Distribución de Estados de Animales', color: '#264653', font: { size: 16 } }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>

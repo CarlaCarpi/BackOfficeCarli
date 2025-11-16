@@ -1,0 +1,151 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Rol>
+@{
+    await Html.RenderPartialAsync("_UsuarioTopNav");
+    ViewData["Title"] = "Roles";
+}
+
+<style>
+    .main-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #2FA8A2;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+    }
+
+    .styled-table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+        border: 2px solid #2FA8A2;
+        border-radius: .5rem;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    }
+
+        .styled-table th {
+            background-color: #2FA8A2;
+            color: #fff;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .styled-table td {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+    .btn-primary {
+        background: #40ADB0;
+        color: #fff;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: filter .2s;
+        display: inline-block;
+    }
+
+        .btn-primary:hover {
+            background: #2e888b !important;
+        }
+
+    .btn-danger {
+        background: #A71A6C;
+        color: #fff;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: .5rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: filter .2s;
+        display: inline-block;
+    }
+
+        .btn-danger:hover {
+            filter: brightness(.95);
+        }
+
+    .toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin: 1rem 0;
+    }
+
+    .summary-errors {
+        color: #d9534f;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="container mt-4 main-container">
+    <h1 class="form-title">ROLES</h1>
+
+    @if (TempData["Ok"] != null || ViewBag.Ok != null)
+    {
+        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #40ADB0; background:#EAF6F6; border-radius:.5rem;">
+            @(TempData["Ok"] ?? ViewBag.Ok)
+        </div>
+    }
+    @if (TempData["Error"] != null || ViewBag.Error != null || ViewBag.ApiError != null)
+    {
+        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #ff6b6b; background:#ffecec; border-radius:.5rem;">
+            <strong>@(TempData["Error"] ?? ViewBag.Error ?? ViewBag.ApiError)</strong>
+            @if (TempData["ApiDetail"] != null)
+            {
+                <div style="margin-top:.4rem; color:#555; white-space:pre-wrap;">@TempData["ApiDetail"]</div>
+            }
+        </div>
+    }
+
+    @*  Botón crear (deshabilitado por ahora)
+    <div class="toolbar">
+        <a asp-controller="Rol" asp-action="Crear" class="btn-primary">Agregar Rol</a>
+    </div>
+    *@
+
+    @if (Model?.Any() == true)
+    {
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Código</th>
+                    <th style="text-align:left;">Descripción</th>
+                    @* <th class="text-end" style="width:220px; padding-right:12px;">Acciones</th> *@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.id_rol</td>
+                        <td>@r.descripcion</td>
+                        @* <td class="text-end" style="white-space:nowrap;">
+                            <a asp-controller="Rol" asp-action="Modificar" asp-route-id="@r.id_rol" class="btn-primary">Modificar</a>
+                            <a asp-controller="Rol" asp-action="Eliminar"   asp-route-id="@r.id_rol" class="btn-danger">Eliminar</a>
+                           </td> *@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="color:#666;">No hay roles cargados.</p>
+    }
+</div>

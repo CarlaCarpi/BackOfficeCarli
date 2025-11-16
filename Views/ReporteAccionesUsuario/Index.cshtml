@@ -1,0 +1,142 @@
+﻿@using SantaRamona.Backoffice.Controllers
+@model IEnumerable<SantaRamona.Backoffice.Models.EventoUsuarioViewModel>
+
+@{
+    await Html.RenderPartialAsync("_ReporteTopNav");
+    ViewData["Title"] = "Reporte de Acciones por Usuario";
+    var nombreUsuario = ViewBag.NombreUsuario as string ?? "Usuario";
+    var idUsuario = ViewBag.IdUsuario as int?;
+    var usuarios = ViewBag.Usuarios as IEnumerable<SantaRamona.Backoffice.Models.Usuario>
+                   ?? Enumerable.Empty<SantaRamona.Backoffice.Models.Usuario>();
+}
+
+<div class="container mt-1">
+    <!-- 🔹 antes era mt-4, lo subimos un poco -->
+    <!-- Filtro por usuario -->
+    <div class="card mb-5 shadow-sm" style="border-radius:12px; padding-bottom:3rem;">
+        <!-- 🔹 antes mb-3 sin padding; ahora más espacio abajo -->
+        <div class="card-body">
+            <form method="get"
+                  asp-controller="ReporteAccionesUsuario"
+                  asp-action="Index"
+                  class="row g-3 align-items-end">
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold" style="color:#2FA8A2;">
+                        Usuario
+                    </label>
+                    <select id="selectUsuario" name="idUsuario" class="form-select" required>
+                        <option value="">Seleccione un usuario...</option>
+                        @foreach (var u in usuarios)
+                        {
+                            int uid = u.id_usuario;
+                            string nom = u.nombre;
+                            var selected = idUsuario.HasValue && idUsuario.Value == uid ? "selected" : "";
+                            <option value="@uid" selected="@(selected == "selected")">@nom</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit"
+                            class="btn w-100"
+                            style="background:#2FA8A2; color:#fff; border-radius:10px;">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header acciones + botón PDF -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h2 class="fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+            Historial de acciones – @nombreUsuario
+        </h2>
+
+        @if (idUsuario != null && Model.Any())
+        {
+            <a asp-controller="ReporteAccionesUsuario"
+               asp-action="ExportarPdf"
+               asp-route-idUsuario="@idUsuario"
+               asp-route-nombreUsuario="@nombreUsuario"
+               class="btn"
+               style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.45rem 1.1rem;">
+                Descargar PDF
+            </a>
+        }
+    </div>
+
+    <!-- Mensajes / resultados -->
+    @if (idUsuario == null)
+    {
+        <div class="alert alert-info" style="border-radius:10px;">
+            Seleccione un usuario y haga clic en <strong>Buscar</strong> para ver sus movimientos.
+        </div>
+    }
+    else if (!Model.Any())
+    {
+        <div class="alert alert-info" style="border-radius:10px;">
+            Este usuario no registra acciones.
+        </div>
+    }
+    else
+    {
+        @foreach (var e in Model)
+        {
+            <div class="card mb-5 shadow-sm" style="border-radius:12px; padding-bottom:2rem;">
+                <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <span class="badge me-2"
+                              style="background:#2FA8A2; padding:.35rem .7rem; font-size:.85rem;">
+                            @e.Accion
+                        </span>
+
+                        <strong>
+                            @e.Entidad:
+                            @{
+                                var nombre = e.NombreRegistro;
+                                if (string.IsNullOrWhiteSpace(nombre))
+                                {
+                                    @($"#{e.IdRegistro}")
+                                }
+                                else
+                                {
+                                    @nombre
+                                }
+                            }
+                        </strong>
+
+                        <div class="text-muted" style="font-size:.9rem;">
+                            @e.Fecha.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sel = document.getElementById("selectUsuario");
+            if (!sel) return;
+
+            const ensureSpaceDown = () => {
+                const rect = sel.getBoundingClientRect();
+                const vh = window.innerHeight || document.documentElement.clientHeight;
+
+                // Si el select está muy cerca de la parte baja de la pantalla,
+                // subimos un poco el scroll para que el navegador abra el desplegable hacia abajo.
+                if (rect.bottom > vh * 0.75) {
+                    const scrollAmount = rect.bottom - vh * 0.5;
+                    window.scrollBy({ top: scrollAmount, left: 0, behavior: "smooth" });
+                }
+            };
+
+            sel.addEventListener("focus", ensureSpaceDown);
+            sel.addEventListener("click", ensureSpaceDown);
+        });
+    </script>
+}

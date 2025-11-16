@@ -1,0 +1,264 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Pension>
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    await Html.RenderPartialAsync("_ReporteTopNav");
+    ViewData["Title"] = "Reporte de Pensiones";
+
+    var lProv = (IEnumerable<SelectListItem>)(ViewBag.Provincias ?? Enumerable.Empty<SelectListItem>());
+    var lLoc = (IEnumerable<SelectListItem>)(ViewBag.Localidades ?? Enumerable.Empty<SelectListItem>());
+    var lEst = (IEnumerable<SelectListItem>)(ViewBag.Estados ?? Enumerable.Empty<SelectListItem>());
+
+    var provinciasDict = lProv.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => int.Parse(i.Value), i => i.Text);
+    var localidadesDict = lLoc.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => int.Parse(i.Value), i => i.Text);
+    var estadosDict = lEst.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => int.Parse(i.Value), i => i.Text);
+
+    Func<string, string> Q = key => Context.Request.Query[key].ToString();
+    string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
+    string F(DateTime? dt) => dt.HasValue ? dt.Value.ToString("dd/MM/yyyy") : "—";
+
+    bool incRedes = string.Equals(Q("incluirRedes"), "true", StringComparison.OrdinalIgnoreCase);
+    bool incMonto = string.Equals(Q("incluirMonto"), "true", StringComparison.OrdinalIgnoreCase);
+}
+
+<style>
+    .card {
+        border: 1px solid #2FA8A2;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        background: #fff;
+    }
+
+    .card-header {
+        background: #2FA8A2;
+        color: #fff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: .85rem 1rem;
+    }
+
+    .table thead th {
+        background: #E6F6F5;
+        color: #155e59;
+        border-bottom: 1px solid #cfeaea;
+    }
+
+    .filter-row .form-label {
+        font-weight: 600;
+        color: #155e59;
+    }
+
+    .filter-actions {
+        padding-top: .75rem;
+    }
+
+    .btn-outline,
+    .btn-outline:link,
+    .btn-outline:visited,
+    button.btn-outline {
+        border-radius: 10px;
+        padding: .45rem .9rem;
+        background: #fff;
+        color: #155e59;
+        border: 1px solid #155e59;
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        line-height: 1.2;
+    }
+
+        .btn-outline:hover,
+        button.btn-outline:hover {
+            background: #E6F6F5;
+        }
+</style>
+
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="fw-bold">Reporte Pensiones</div>
+        </div>
+
+        <div class="card-body">
+            <form id="frmFiltros" method="get" asp-action="Index" class="row g-3 mb-3 filter-row">
+
+                <!-- Fila 1 -->
+                <div class="col-md-3">
+                    <label class="form-label">Provincia</label>
+                    <select id="id_provincia" name="id_provincia" class="form-select" asp-items="lProv"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Localidad</label>
+                    <select id="id_localidad" name="id_localidad" class="form-select" asp-items="lLoc"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Estado</label>
+                    <select name="id_estadoPension" class="form-select" asp-items="lEst"></select>
+                </div>
+
+                <div class="w-100 d-none d-md-block"></div>
+
+                <!-- Fechas -->
+                <div class="col-md-3">
+                    <label class="form-label">Ingreso desde</label>
+                    <input type="date" name="fechaIngresoDesde" value="@Q("fechaIngresoDesde")" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Ingreso hasta</label>
+                    <input type="date" name="fechaIngresoHasta" value="@Q("fechaIngresoHasta")" class="form-control" />
+                </div>
+
+                <!-- Checks -->
+                <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="incluirRedes" name="incluirRedes" value="true" @(incRedes ? "checked" : "") />
+                        <label class="form-check-label" for="incluirRedes">Mostrar redes sociales</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="incluirMonto" name="incluirMonto" value="true" @(incMonto ? "checked" : "") />
+                        <label class="form-check-label" for="incluirMonto">Mostrar monto día</label>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="col-12 d-flex gap-2 mt-2 filter-actions">
+                    <button type="submit" class="btn-outline">Buscar</button>
+                    <a class="btn-outline" asp-action="Index">Limpiar</a>
+                    <a id="expCsv" class="btn-outline" asp-controller="ReportePension" asp-action="ExportarCsv">Exportar Excel</a>
+                    <a id="expPdf" class="btn-outline" asp-controller="ReportePension" asp-action="ExportarPdf">Exportar PDF</a>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Tel. 1</th>
+                            <th>Calle</th>
+                            <th>Altura</th>
+                            <th>Depto</th>
+                            <th>Provincia</th>
+                            <th>Localidad</th>
+                            <th>Estado</th>
+                            <th>Ingreso</th>
+                            @if (incRedes)
+                            {
+                                <th>Redes</th>
+                            }
+                            @if (incMonto)
+                            {
+                                <th>Monto Día</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model?.Any() == true)
+                        {
+                            foreach (var p in Model)
+                            {
+                                <tr>
+                                    <td>@(p.nombre ?? "—")</td>
+                                    <td>@(p.email ?? "—")</td>
+                                    <td>@(p.telefono1 ?? "—")</td>
+                                    <td>@(p.calle ?? "—")</td>
+                                    <td>@p.altura</td>
+                                    <td>@(p.departamento ?? "—")</td>
+                                    <td>@Txt(provinciasDict, p.id_provincia)</td>
+                                    <td>@Txt(localidadesDict, p.id_localidad)</td>
+                                    <td>@Txt(estadosDict, p.id_estadoPension)</td>
+                                    <td>@F(p.fechaIngreso)</td>
+                                    @if (incRedes)
+                                    {
+                                        <td>@(p.redesSociales ?? "—")</td>
+                                    }
+                                    @if (incMonto)
+                                    {
+                                        <td>@(p.montoDia.HasValue ? p.montoDia.Value.ToString("0.##") : "—")</td>
+                                    }
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="12" class="text-center text-muted">Sin resultados para los filtros aplicados.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+          const form = document.getElementById('frmFiltros');
+          const csv = document.getElementById('expCsv');
+          const pdf = document.getElementById('expPdf');
+          const selProv = form?.querySelector('#id_provincia');
+          const selLoc  = form?.querySelector('#id_localidad');
+
+          function val(name) {
+            const el = form?.querySelector(`[name="${name}"]`);
+            if (!el) return '';
+            if (el.type === 'checkbox') return el.checked ? 'true' : '';
+            return el.value ? el.value.trim() : '';
+          }
+
+          function buildQuery() {
+            const p = new URLSearchParams();
+            ['id_provincia','id_localidad','id_estadoPension','fechaIngresoDesde','fechaIngresoHasta','incluirRedes','incluirMonto']
+              .forEach(n => { const v = val(n); if (v) p.set(n, v); });
+            return p.toString();
+          }
+
+          function wireExport(a){
+            if(!a) return;
+            a.addEventListener('click', function(e){
+              e.preventDefault();
+              const base = a.getAttribute('href');
+              const q = buildQuery();
+              const url = q ? (base + '?' + q) : base;
+              window.location.href = url;
+            });
+          }
+          wireExport(csv);
+          wireExport(pdf);
+
+          async function cargarLocalidades(provId) {
+            if (!selLoc) return;
+            selLoc.innerHTML = '<option value="">Cargando...</option>';
+            try {
+              if (!provId) { selLoc.innerHTML = '<option value="">Seleccione...</option>'; return; }
+              const url = `/admin/santa/back/Persona/LocalidadesPorProvincia?provinciaId=${encodeURIComponent(provId)}`;
+              const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+              if (!resp.ok) throw new Error('Error HTTP ' + resp.status);
+              const data = await resp.json();
+              selLoc.innerHTML = ['<option value="">Seleccione...</option>']
+                .concat(data.map(l => `<option value="${l.id_localidad}">${l.nombre}</option>`))
+                .join('');
+              const locIni = new URLSearchParams(window.location.search).get('id_localidad');
+              if (locIni) selLoc.value = locIni;
+            } catch (e) {
+              selLoc.innerHTML = '<option value="">Seleccione...</option>';
+              console.error('LocalidadesPorProvincia:', e);
+            }
+          }
+
+          selProv?.addEventListener('change', () => cargarLocalidades(selProv.value));
+          const provIni = new URLSearchParams(window.location.search).get('id_provincia');
+          if (provIni) cargarLocalidades(provIni);
+        })();
+    </script>
+}

@@ -1,0 +1,297 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Persona>
+
+@{
+    await Html.RenderPartialAsync("_PersonaTopNav");
+    ViewData["Title"] = "Lista de Personas";
+
+    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+    var formTiposByPersona = ViewBag.FormTiposByPersona as Dictionary<int, List<string>> ?? new();
+
+    string Txt(Dictionary<int, string> d, int? id) =>
+        (id.HasValue && d.TryGetValue(id.Value, out var v)) ? v : "—";
+    string FechaCorta(DateTime? f) => f.HasValue ? f.Value.ToString("dd/MM/yyyy") : "—";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        LISTA DE PERSONAS
+    </h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mt-3 gap-2 flex-wrap">
+        <form method="get" class="d-flex" style="max-width:520px; width:100%;">
+            <input type="text" name="q" value="@(ViewBag.Query as string ?? "")"
+                   class="form-control"
+                   placeholder="Buscar por ID, Nombre o Apellido..."
+                   style="border:1px solid #2FA8A2; border-radius:10px 0 0 10px;">
+            <button class="btn"
+                    style="background:#2FA8A2; color:#fff; border-radius:0 10px 10px 0;">
+                Buscar
+            </button>
+        </form>
+
+        <a asp-action="Crear" class="btn"
+           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            Agregar Nueva Persona
+        </a>
+    </div>
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="table-responsive">
+            <table id="tabla-personas" class="table styled-table">
+                <thead>
+                    <tr style="background:#2FA8A2; color:#fff;">
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                        <th>Provincia</th>
+                        <th>Localidad</th>
+                        <th>Estado</th>
+                        <th>Ingreso</th>
+                        <th>Formulario</th>
+                        <th class="text-end" style="border-top-right-radius:10px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-personas">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var p in Model)
+                        {
+                            var tipos = formTiposByPersona.TryGetValue(p.id_persona, out var l) ? l : new List<string>();
+                            var textoTipos = (tipos != null && tipos.Any()) ? string.Join(", ", tipos) : "—";
+
+                            <tr>
+                                <td>@p.nombre</td>
+                                <td>@p.apellido</td>
+                                <td>@p.dni</td>
+                                <td>@Txt(provincias, p.id_provincia)</td>
+                                <td>@Txt(localidades, p.id_localidad)</td>
+                                <td>@Txt(estados, p.id_estadoPersona)</td>
+                                <td>@FechaCorta(p.fechaIngreso)</td>
+                                <td>@textoTipos</td>
+                                <td class="actions text-end">
+                                    <a href="javascript:void(0)" data-ver-persona="@p.id_persona"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Ver
+                                    </a>
+                                    <a asp-action="Modificar" asp-route-id="@p.id_persona"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Modificar
+                                    </a>
+                                    <a asp-action="Eliminar" asp-route-id="@p.id_persona"
+                                       class="btn btn-sm"
+                                       style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9" class="text-center text-muted p-4">No hay personas cargadas.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center my-3">
+        <button id="btnVerMas"
+                class="btn"
+                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.55rem 1.25rem;"
+                data-next-page="@((int)(ViewBag.Page ?? 1) + 1)"
+        @(((bool)(ViewBag.HasMore ?? false)) ? "" : "disabled")>
+            @(((bool)(ViewBag.HasMore ?? false)) ? "Ver más" : "No hay más")
+        </button>
+    </div>
+
+    <!-- Modal Detalle -->
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border-radius:14px;">
+                <div class="modal-header"
+                     style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                    <h5 class="modal-title">Detalle de la persona</h5>
+                    <button type="button" class="btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="modalDetalleBody"></div>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* ✅ Reafirmar estilos para la tabla y botones */
+        .table.styled-table th,
+        .table.styled-table td {
+            text-align: left;
+            vertical-align: middle;
+            padding: .75rem;
+        }
+
+            /* ✅ Forzar alineación derecha en la columna de acciones */
+            .table.styled-table td.actions,
+            .table.styled-table th.actions {
+                text-align: right !important;
+                white-space: nowrap !important;
+            }
+
+                /* ✅ Botones dentro de Acciones */
+                .table.styled-table td.actions .btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 90px;
+                    padding: .4rem .9rem;
+                    margin-right: .25rem;
+                    font-size: .9rem;
+                    border: none;
+                    border-radius: 10px;
+                    transition: filter 0.2s;
+                    background-color: #2FA8A2;
+                    color: #fff;
+                }
+
+                    .table.styled-table td.actions .btn:hover {
+                        filter: brightness(0.9);
+                    }
+
+                    .table.styled-table td.actions .btn.btn-delete {
+                        background-color: #A71A6C;
+                    }
+
+        /* ✅ Ajustes responsive */
+        @@media (max-width: 768px) {
+            .d-flex.justify-content-between.flex-wrap
+
+        {
+            gap: .5rem;
+        }
+
+        .d-flex.justify-content-between.flex-wrap form {
+            width: 100%;
+        }
+
+        }
+    </style>
+
+
+    @section Scripts {
+        <script>
+            // --- Modal Detalle (tu lógica actual) ---
+            (() => {
+              const baseUrl = '@Url.Action("DetalleFull", "Persona")';
+
+              document.addEventListener('click', async (ev) => {
+                const btn = ev.target.closest('[data-ver-persona]');
+                if (!btn) return;
+
+                const id = btn.getAttribute('data-ver-persona');
+
+                try {
+                  const resp = await fetch(`${baseUrl}/${id}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                  });
+                  const html = await resp.text();
+                  if (!resp.ok) throw new Error(html || `HTTP ${resp.status}`);
+
+                  document.getElementById('modalDetalleBody').innerHTML = html;
+                  const modal = new bootstrap.Modal(document.getElementById('modalDetalle'));
+                  modal.show();
+                } catch (err) {
+                  console.error(err);
+                  alert('No se pudo cargar el detalle de la persona.');
+                }
+              });
+            })();
+
+            // --- Ver más (versión mejorada con ocultar al final) ---
+            (() => {
+              const btn = document.getElementById('btnVerMas');
+              if (!btn) return;
+
+              const baseMas = '@Url.Action("Mas", "Persona")';
+              let page = Number(btn.getAttribute('data-next-page')) || 2;
+              const pageSize = @ViewBag.PageSize;
+              const q = '@(ViewBag.Query as string ?? "")';
+              const tbody = document.getElementById('tbody-personas');
+
+              // 👉 función auxiliar para ocultar o deshabilitar el botón cuando no hay más
+              function setNoMore() {
+                btn.textContent = 'No hay más';
+                btn.disabled = true;
+                btn.style.display = 'none'; // oculta el botón completamente
+              }
+
+              btn.addEventListener('click', async (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                if (btn.disabled) return;
+                btn.disabled = true;
+
+                try {
+                  const url = `${baseMas}?page=${page}&pageSize=${pageSize}&q=${encodeURIComponent(q)}`;
+                  const resp = await fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    credentials: 'same-origin'
+                  });
+
+                  const html = await resp.text();
+                  const trimmed = html.trim();
+
+                  // si vino algo que no son filas <tr>, abortamos
+                  if (trimmed && !trimmed.startsWith('<tr')) {
+                    console.error('Respuesta inesperada (no <tr>):', trimmed.slice(0, 200));
+                    btn.disabled = false;
+                    btn.textContent = 'Intentar de nuevo';
+                    return;
+                  }
+
+                  // si hay filas, agregamos
+                  if (trimmed) {
+                    tbody.insertAdjacentHTML('beforeend', trimmed);
+                  }
+
+                  // comprobamos si hay más registros
+                  const headerHasMore = (resp.headers.get('X-HasMore') || '').toLowerCase() === 'true';
+                  const arrivedCount = (trimmed.match(/<tr[\s>]/g) || []).length;
+
+                  if (!headerHasMore || arrivedCount < pageSize || !trimmed) {
+                    setNoMore();
+                    return;
+                  }
+
+                  // si todavía hay más, incrementamos página y reactivamos el botón
+                  page += 1;
+                  btn.disabled = false;
+                  btn.textContent = 'Ver más';
+
+                } catch (e) {
+                  console.error(e);
+                  btn.disabled = false;
+                  btn.textContent = 'Intentar de nuevo';
+                }
+              });
+            })();
+        </script>
+    }

@@ -1,0 +1,133 @@
+﻿
+@section Styles {
+    <link rel="stylesheet" href="~/css/adopcion.css" asp-append-version="true" />
+    }
+
+@model IEnumerable<SantaRamona.Backoffice.Models.Animal>
+
+
+@{
+    ViewData["Title"] = "Adopcion";
+    Layout = "~/Views/Shared/Layout1.cshtml";
+
+
+
+
+    var especies = ViewBag.Especies as Dictionary<int, string> ?? new();
+    var razas = ViewBag.Razas as Dictionary<int, string> ?? new();
+    var tamanos = ViewBag.Tamanos as Dictionary<int, string> ?? new();
+    var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
+    var historia = ViewBag.historia as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int id) => d.TryGetValue(id, out var v) ? v : $"#{id}";
+    string EdadTxt(int m) => m < 12 ? $"{m} {(m == 1 ? "mes" : "meses")}" : $"{m / 12} {((m / 12) == 1 ? "año" : "años")}";
+}
+<div class="section-inner about">
+    <h1>Adopción responsable</h1>
+    <p>
+        Adoptar una animal es un acto de amor, pero también una gran responsabilidad.
+        No se trata solo de darle un hogar, sino de ofrecerle una vida digna, saludable y feliz.
+    </p>
+    <h3>Antes de adoptar, es importante reflexionar</h3>
+    <p>
+        ¿Tengo tiempo, espacio y recursos para cuidar de un animal durante toda su vida? Una adopción responsable implica compromiso, paciencia y respeto. Los animales no son juguetes ni regalos: son seres vivos que sienten, necesitan compañía, atención médica, alimentación adecuada y mucho cariño. Cuando adoptas, no solo cambiás la vida de un animal, también contribuís a reducir el abandono y fomentás una sociedad más solidaria y consciente.
+    </p>
+</div>
+   
+
+<div class="pets-grid" id="petsGrid"></div>
+
+@{
+    // Filtramos solo los animales con estado = 2
+    //var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 2).ToList();
+    var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 1 || a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
+
+}
+
+@if (animalesEnAdopcion != null && animalesEnAdopcion.Any())
+{ 
+    <div class="pets-grid" id="petsGrid">
+        @foreach (var item in animalesEnAdopcion)
+        {
+            <a asp-action="InfoAdopcion" asp-route-id="@item.id_animal" class="pet-card" style="text-decoration:none; color:inherit;">
+           
+                <div class="pet-card">
+
+                    <div class="pet-image">
+                        @if (item.imagen != null && item.imagen.Length > 0)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.imagen)" alt="Imagen de @item.nombre" />
+                        }
+                        else
+                        {
+                            <img src="/img/placeholder.jpg" alt="Sin imagen disponible" />
+                        }
+                    </div>
+                    <div class="pet-body">
+                        <h3 class="pet-name">@item.nombre</h3>
+
+                    </div>
+                   
+
+                </div>
+            </a>
+        }     
+
+
+    </div>
+}
+else
+{
+    <div class="pet-no">
+        No hay animales en adopción.
+    </div>
+}
+
+
+
+@if (ViewBag.TotalPages > 1)
+{
+//         <div class="pagination-container">
+//             <div class="pagination" style="margin-top: 20px; text-align: center;">
+//                 <button id="prevPageBtn">◄ Página anterior</button>
+//                 <span id="pageInfo" style="margin: 0 10px;">
+//                     Página @ViewBag.CurrentPage de @ViewBag.TotalPages
+//                 </span>
+//                 <button id="nextPageBtn">Siguiente página ►</button>
+//             </div>
+//         </div>
+// }
+
+
+    <div class="pagination-container">
+        <div class="pagination" style="margin-top: 20px; text-align: center;">
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <a href="@Url.Action("Adopcion", new { page = ViewBag.CurrentPage - 1 })" class="prevPageBtn">
+                   
+                    <button id="prevPageBtn">◄ ATRAS </button>
+
+                </a>
+            }
+
+            <span id="pageInfo" style="margin: 0 10px;">
+                 @ViewBag.CurrentPage de @ViewBag.TotalPages
+            </span>
+           
+
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
+                <a href="@Url.Action("Adopcion", new { page = ViewBag.CurrentPage + 1 })" class="nextPageBtn">
+
+                    <button id="nextPageBtn">VER MAS ►</button>
+
+                </a>
+            }
+        </div>
+    </div>
+}
+<div class="button-container">
+    <a asp-controller="FormPersona" asp-action="PersonaAdoptar" class="btn primary adop">QUIERO ADOPTAR</a>
+    <!-- IMPORTANTE LA RUTA DEL CONTROLADOR CON SU METODO CORRECTO SINO NO FUNCIONA-->
+    <a asp-controller="FormPersonaTransito" asp-action="PersonaTransito" class="btn primary">QUIERO TRANSITAR</a>
+</div>

@@ -1,0 +1,163 @@
+﻿@model SantaRamona.Backoffice.Models.Donacion
+@{
+    ViewData["Title"] = "Eliminar donación";
+
+    // Traducción del tipo
+    string TipoTxt(string t) =>
+        t == "M" ? "Medicamentos" :
+        t == "I" ? "Insumos" :
+        t == "B" ? "Banco" :
+        t == "P" ? "No bancario / Mercado Pago" :
+                    t;
+
+    // Si querés bloquear la eliminación
+    bool bloqueado = (ViewBag.Bloqueado as bool?) ?? false;
+    string motivo = ViewBag.Motivo as string ?? string.Empty;
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        ELIMINAR DONACIÓN
+    </h1>
+
+    @* -------- ALERTAS (idénticas a Pensión) -------- *@
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.Error
+            @if (TempData["ApiDetail"] is string det && !string.IsNullOrWhiteSpace(det))
+            {
+                <div class="small mt-1 text-muted">@det</div>
+            }
+        </div>
+    }
+
+    @if (TempData["Ok"] != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @TempData["Ok"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @TempData["Error"]
+        </div>
+    }
+
+    @* -------- CARD PRINCIPAL (CLON EXACTO DE PENSIÓN) -------- *@
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver al listado</a>
+
+            <div class="d-flex gap-2">
+                @if (!bloqueado)
+                {
+                    <button type="button" class="btn"
+                            data-bs-toggle="modal" data-bs-target="#confirmEliminar"
+                            style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
+                        Eliminar
+                    </button>
+                }
+
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @if (bloqueado)
+            {
+                <div class="alert" role="alert"
+                     style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+                    No se puede eliminar esta donación porque @motivo.
+                    Podés corregir los datos desde <strong>Modificar</strong>.
+                </div>
+            }
+
+            <div class="row g-3">
+
+                <!-- ID -->
+                <div class="col-md-4">
+                    <label class="form-label">Código</label>
+                    <input class="form-control" value="@Model.id_donacion" readonly />
+                </div>
+
+                <!-- Tipo -->
+                <div class="col-md-4">
+                    <label class="form-label">Tipo</label>
+                    <input class="form-control" value="@TipoTxt(Model.tipo)" readonly />
+                </div>
+
+                <!-- Descripción -->
+                <div class="col-12">
+                    <label class="form-label">Descripción</label>
+                    <input class="form-control" value="@Model.descripcion" readonly />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @* -------- MODAL CONFIRMACIÓN (CLON DE PENSIÓN) -------- *@
+    @if (!bloqueado)
+    {
+        <div class="modal fade" id="confirmEliminar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border-radius:14px;">
+
+                    <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        ¿Realmente desea eliminar esta donación?
+                    </div>
+
+                    <div class="modal-footer" style="border-top:none;">
+                        <form asp-action="Eliminar" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.id_donacion" />
+
+                            <button type="submit" class="btn"
+                                    style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                                Sí, eliminar
+                            </button>
+                        </form>
+
+                        <button type="button" class="btn" data-bs-dismiss="modal"
+                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                            No
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

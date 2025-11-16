@@ -1,0 +1,133 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es-ar">
+<head>
+    <meta charset="UTF-8" />
+    <title>Recuperar contraseña - Santa Ramona</title>
+    <style>
+        /* === Mismos estilos del Index (copiados) === */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Consolas, sans-serif;
+            background-color: #FFE3E3;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            display: flex;
+            width: 900px;
+            height: 550px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(64,173,176,0.35);
+            overflow: hidden;
+        }
+
+        .login-left {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: #A71A6C;
+            font-size: 2rem;
+            margin-bottom: .5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: .95rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .btn {
+            background-color: #40ADB0;
+            color: #fff;
+            border: none;
+            padding: .9rem 1.2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn:hover {
+                background-color: #A71A6C;
+            }
+
+        .mail {
+            color: #A71A6C;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .login-right {
+            flex: 1;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+            .login-right img {
+                max-width: 80%;
+                height: auto;
+                object-fit: contain;
+                filter: drop-shadow(0 0 10px rgba(64,173,176,.5));
+            }
+        @@media (max-width: 800px) {
+            .login-container
+
+        {
+            flex-direction: column;
+            width: 90%;
+            height: auto;
+        }
+
+        .login-right {
+            display: none;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <h1>Recuperación de contraseña</h1>
+            <p class="subtitle">
+                Para cambiar tu contraseña, comunicate con el administrador al mail
+               @*  <a class="mail" href="mailto:admin@santaramona.somee.com">admin@santaramona.somee.com</a>  o al*@
+                 <a class="mail" href="mailto:santaramonaprotectora@gmail.com">santaramonaprotectora@gmail.com</a>
+            </p>
+
+            <a asp-controller="Login" asp-action="Index" class="btn">Volver al inicio de sesión</a>
+        </div>
+
+        <div class="login-right">
+            <img src="~/images/santaramona.png" alt="Logo Santa Ramona" />
+        </div>
+    </div>
+</body>
+</html>

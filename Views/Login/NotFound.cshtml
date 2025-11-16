@@ -1,0 +1,165 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Página no encontrada";
+    var imgSrc = Url.Content("~/images/santaramona.png");
+}
+
+<!DOCTYPE html>
+<html lang="es-ar">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Santa Ramona</title>
+
+    <style>
+        :root {
+            --bordo: #A71A6C;
+            --rosita: #FFE3E3;
+            --azul: #40ADB0;
+            --amarillo: #FCE03F;
+            --card: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Consolas, sans-serif;
+            background-color: #FFE3E3;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            width: min(980px, 96vw);
+            min-height: 520px;
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(64,173,176,.30);
+            display: flex;
+            overflow: hidden;
+        }
+
+        .left {
+            flex: 1;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .right {
+            flex: 1;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 1.25rem;
+        }
+
+            .right::before {
+                content: "";
+                position: absolute;
+                width: 260px;
+                height: 260px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(64,173,176,.22) 0%, transparent 70%);
+                z-index: 0;
+            }
+
+            .right img {
+                position: relative;
+                z-index: 1;
+                max-width: 78%;
+                height: auto;
+                filter: drop-shadow(0 0 18px rgba(64,173,176,.45));
+            }
+
+        h1 {
+            margin: 0 0 .75rem 0;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: var(--bordo);
+        }
+
+        .subtitle {
+            color: #555;
+            margin: 0 0 1.5rem 0;
+            font-size: 1rem;
+            max-width: 45ch;
+        }
+
+        .notice {
+            border: 2px dashed var(--azul);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            background: rgba(64,173,176,.06);
+            margin-bottom: 1.75rem;
+            max-width: 560px;
+            color: #2a2a2a;
+        }
+
+        .btn {
+            background: var(--azul);
+            color: #fff;
+            padding: .95rem 1.25rem;
+            min-width: 240px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform .06s ease, background .25s ease;
+        }
+
+            .btn:hover {
+                transform: translateY(-1px);
+                background: var(--bordo);
+            }
+
+        @@media (max-width: 860px) {
+            .card {
+                flex-direction: column;
+            }
+
+            .right {
+                display: none;
+            }
+
+            .left {
+                padding: 2.5rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="card" role="main">
+        <section class="left">
+            <h1>404</h1>
+            <p class="subtitle">La página que estás buscando no existe.</p>
+
+            <div class="notice">
+                Puede que el enlace esté roto, que hayas escrito mal la dirección,
+                o simplemente que el contenido ya no esté disponible.
+            </div>
+
+            <a class="btn" href="/HomePublic/IndexPublic">Volver al inicio</a>
+        </section>
+
+        <aside class="right" aria-hidden="true">
+            <img src="@imgSrc" alt="Página no encontrada" />
+        </aside>
+    </main>
+</body>
+</html>

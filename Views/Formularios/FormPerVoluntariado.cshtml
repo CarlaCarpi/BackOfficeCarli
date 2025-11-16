@@ -1,0 +1,227 @@
+﻿@{
+	ViewData["Title"] = "Formulario Persona";
+	Layout = "~/Views/Shared/Layout1.cshtml";
+}
+@section Styles {
+	<link rel="stylesheet" href="~/css/FormPerVoluntariado.css" asp-append-version="true" />
+}
+
+
+@model SantaRamona.Backoffice.Models.Persona
+
+
+
+<div>
+	<h1>Datos Personales</h1>
+
+	
+
+	<div class="vol-container">
+		<form asp-action="PersonaVoluntario" asp-controller="FormPersonaVoluntariado" method="post">
+
+			@Html.AntiForgeryToken()
+
+			@if (!ViewData.ModelState.IsValid)
+			{
+				<div class="alert alert-danger">
+					⚠️ Por favor, revisá los campos marcados en rojo.
+				</div>
+			}
+
+			<input type="hidden" name="idPersona" value="@ViewBag.IdPersona" />
+
+			<!-- ======= DATOS PERSONALES ======= -->
+			<div class="form-row">
+				<div class="form-group">
+					<label asp-for="nombre">Nombre:</label>
+					<input asp-for="nombre" class="form-control" id="nombre" required />
+					<span asp-validation-for="nombre" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="apellido">Apellido:</label>
+					<input asp-for="apellido" class="form-control" id="apellido" required />
+					<span asp-validation-for="apellido" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="form-group">
+					<label asp-for="dni" class="form-label">DNI</label>
+					<input asp-for="dni" class="form-control" type="text" inputmode="numeric"
+						   value="@(Model.dni == 0 ? "" : Model.dni.ToString())"
+						   pattern="\d*" autocomplete="off" oninput="this.value=this.value.replace(/\D/g,'')" />
+					<span asp-validation-for="dni" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="fechaNacimiento">Fecha de Nacimiento:</label>
+					<input asp-for="fechaNacimiento" class="form-control" id="fechaNacimiento" type="date" required />
+					<span asp-validation-for="fechaNacimiento" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="email">Correo Electrónico:</label>
+				<input asp-for="email" class="form-control" id="email" type="email" placeholder="nombre@dominio.com" />
+				<span asp-validation-for="email" class="text-danger"></span>
+			</div>
+
+
+			<div class="form-group">
+				<label asp-for="telefono1" class="form-label">Teléfono</label>
+				<input asp-for="telefono1" class="form-control" />
+				<span asp-validation-for="telefono1" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="telefono2" class="form-label">Teléfono</label>
+				<input asp-for="telefono2" class="form-control" />
+				<span asp-validation-for="telefono2" class="text-danger"></span>
+			</div>
+
+
+			<div class="form-row">
+				<div class="form-group">
+					<label asp-for="calle">Calle:</label>
+					<textarea asp-for="calle" class="form-control" id="calle"></textarea>
+
+					@* <input asp-for="calle" class="form-control" id="calle" /> *@
+					<span asp-validation-for="calle" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="altura">Altura:</label>
+					<input asp-for="altura" class="form-control" id="altura" type="number" />
+					<span asp-validation-for="altura" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="form-group">
+					<label asp-for="departamento">Departamento:</label>
+					<input asp-for="departamento" class="form-control" id="departamento" />
+					<span asp-validation-for="departamento" class="text-danger"></span>
+				</div>
+
+
+				<!-- ======= UBICACIÓN ======= -->
+
+				<div class="form-group">
+					<label asp-for="id_provincia">Provincia:</label>
+					<select asp-for="id_provincia" asp-items="ViewBag.Provincia" class="form-select" id="id_provincia">
+						<option value="">Seleccione provincia...</option>
+					</select>
+					<span asp-validation-for="id_provincia" class="text-danger"></span>
+
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<label asp-for="id_localidad">Localidad:</label>
+				<select asp-for="id_localidad" class="form-control" id="id_localidad">
+					<option value="">Seleccione una provincia primero</option>
+				</select>
+				<span asp-validation-for="id_localidad" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="redesSociales">Redes Sociales:</label>
+				<textarea asp-for="redesSociales" class="form-control" id="redesSociales" placeholder="usuario"> </textarea>
+
+				@* <input asp-for="redesSociales" class="form-control" id="redesSociales" placeholder="usuario" /> *@
+				<span asp-validation-for="redesSociales" class="text-danger"></span>
+			</div>
+
+			<input type="hidden" name="id_estadoPersona" value="1" />
+
+			
+			<button type="submit" class="btn btn-primary">Guardar y continuar</button>
+
+
+		</form>
+	</div>
+	<div class="back-button-container" style="text-align:center; margin-top:20px;">
+		<button type="button" class="btn primary" onclick="history.back()">Volver</button>
+	</div>
+
+</div>
+<style>
+	input[type=number]::-webkit-outer-spin-button,
+	input[type=number]::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	input[type=number] {
+		-moz-appearance: textfield;
+		appearance: textfield;
+	}
+</style>
+
+
+@section Scripts {
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$('#id_provincia').change(function () {
+				var provinciaId = $(this).val(); // 👈 nombre corregido
+
+				var $localidadSelect = $('#id_localidad');
+				$localidadSelect.empty();
+				$localidadSelect.append('<option value="">Cargando localidades...</option>');
+
+				if (provinciaId) {
+					// 👇 nombre de acción y parámetro corregidos
+					$.get('/FormPersona/LocalidadesPorProvincia', { provinciaId: provinciaId })
+						.done(function (data) {
+							$localidadSelect.empty();
+							$localidadSelect.append('<option value="">Seleccione localidad...</option>');
+
+							$.each(data, function (i, item) {
+								$localidadSelect.append('<option value="' + item.id_localidad + '">' + item.nombre + '</option>');
+							});
+						})
+						.fail(function () {
+							$localidadSelect.empty();
+							$localidadSelect.append('<option value="">Error al cargar localidades</option>');
+						});
+				} else {
+					$localidadSelect.empty();
+					$localidadSelect.append('<option value="">Seleccione provincia primero...</option>');
+				}
+			});
+		});
+	</script>
+
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+
+
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const fechaInput = document.getElementById("fechaNacimiento");
+
+			fechaInput.addEventListener("change", function () {
+				const fechaNacimiento = new Date(this.value);
+				const hoy = new Date();
+				const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+				const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+
+				// Ajuste si aún no cumplió años este año
+				const edadReal = (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) ? edad - 1 : edad;
+
+				if (edadReal < 18) {
+					alert("Debes ser mayor de 18 años para continuar.");
+					this.value = ""; // limpia el campo
+				}
+			});
+		});
+	</script>
+
+}
+

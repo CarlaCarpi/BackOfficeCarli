@@ -1,0 +1,191 @@
+﻿@model SantaRamona.Backoffice.Models.Pension
+@{
+    ViewData["Title"] = "Eliminar pensión";
+
+    // Diccionarios llegados desde el controller
+    var provincias = ViewBag.Provincia as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidad as Dictionary<int, string> ?? new();
+    var estadosPension = ViewBag.EstadosPension as Dictionary<int, string> ?? new();
+
+    string Txt(Dictionary<int, string> d, int? id) =>
+        (id.HasValue && d.TryGetValue(id.Value, out var v)) ? v : (id.HasValue ? $"#{id}" : "—");
+    string F(DateTime? dt) => dt.HasValue ? dt.Value.ToString("dd/MM/yyyy HH:mm") : "";
+
+    bool bloqueado = (ViewBag.Bloqueado as bool?) ?? false; // si hay reglas que impiden eliminar
+    string motivo = ViewBag.Motivo as string ?? string.Empty;
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        ELIMINAR PENSIÓN
+    </h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.Error
+            @if (TempData["ApiDetail"] is string det && !string.IsNullOrWhiteSpace(det))
+            {
+                <div class="small mt-1 text-muted">@det</div>
+            }
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver al listado</a>
+
+            <div class="d-flex gap-2">
+                @if (!bloqueado)
+                {
+                    <button type="button" class="btn"
+                            data-bs-toggle="modal" data-bs-target="#confirmEliminar"
+                            style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
+                        Eliminar
+                    </button>
+                }
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @if (bloqueado)
+            {
+                <div class="alert" role="alert"
+                     style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+                    No se puede eliminar esta pensión porque @motivo.
+                    Podés corregir los datos desde <strong>Modificar</strong>.
+                </div>
+            }
+
+            <div class="row g-3">
+                <!-- ID -->
+                <div class="col-md-4">
+                    <label class="form-label">ID</label>
+                    <input class="form-control" value="@Model.id_pension" readonly />
+                </div>
+
+                <!-- Nombre / Email -->
+                <div class="col-md-4">
+                    <label class="form-label">Nombre</label>
+                    <input class="form-control" value="@Model.nombre" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Email</label>
+                    <input class="form-control" value="@Model.email" readonly />
+                </div>
+
+                <!-- Teléfonos -->
+                <div class="col-md-4">
+                    <label class="form-label">Teléfono 1</label>
+                    <input class="form-control" value="@Model.telefono1" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Teléfono 2</label>
+                    <input class="form-control" value="@Model.telefono2" readonly />
+                </div>
+
+                <!-- Dirección -->
+                <div class="col-md-4">
+                    <label class="form-label">Calle</label>
+                    <input class="form-control" value="@Model.calle" readonly />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Altura</label>
+                    <input class="form-control" value="@Model.altura" readonly />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Departamento</label>
+                    <input class="form-control" value="@Model.departamento" readonly />
+                </div>
+
+                <!-- Provincia / Localidad -->
+                <div class="col-md-3">
+                    <label class="form-label">Provincia</label>
+                    <input class="form-control" value="@Txt(provincias, Model.id_provincia)" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Localidad</label>
+                    <input class="form-control" value="@Txt(localidades, Model.id_localidad)" readonly />
+                </div>
+
+                <!-- Redes -->
+                <div class="col-12">
+                    <label class="form-label">Redes sociales</label>
+                    <input class="form-control" value="@Model.redesSociales" readonly />
+                </div>
+
+                <!-- Estado / Usuario -->
+                <div class="col-md-4">
+                    <label class="form-label">Estado de Pensión</label>
+                    <input class="form-control" value="@Txt(estadosPension, Model.id_estadoPension)" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Usuario (ID)</label>
+                    <input class="form-control" value="@Model.id_usuario" readonly />
+                </div>
+
+                <!-- Fechas y monto -->
+                <div class="col-md-4">
+                    <label class="form-label">Fecha de alta</label>
+                    <input class="form-control" value="@F(Model.fechaIngreso)" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha de última modificación</label>
+                    <input class="form-control" value="@F(Model.fechaEgreso)" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Monto por día</label>
+                    <input class="form-control" value="@(Model.montoDia.HasValue ? Model.montoDia.Value.ToString("0.00") : "")" readonly />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!bloqueado)
+    {
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="confirmEliminar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border-radius:14px;">
+                    <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Realmente desea eliminar esta pensión?
+                    </div>
+                    <div class="modal-footer" style="border-top:none;">
+                        <form asp-action="Eliminar" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.id_pension" />
+                            <button type="submit" class="btn"
+                                    style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                                Sí, eliminar
+                            </button>
+                        </form>
+
+                        <button type="button" class="btn" data-bs-dismiss="modal"
+                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

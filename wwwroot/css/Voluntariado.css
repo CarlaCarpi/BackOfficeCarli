@@ -1,0 +1,138 @@
+﻿/*--------------------*/
+h1 {
+    text-align: center;
+    color: #C23A79;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+p {
+    text-align: center;
+}
+
+
+
+/*Prueba Voluntariado*/
+.voluntariados-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* separación entre bloques */
+    max-width: 1000px;
+    margin: 0 auto; /*centrar en la página */
+    padding: 20px;
+    background-color: var(--bg);
+}
+
+.voluntariado-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border-radius: 12px;
+    width: 800px;
+    background-color: #C23A79;
+    margin-right: auto;
+    margin-bottom: 0;
+}
+
+    /* cuando la clase es "left": imagen izquierda */
+    .voluntariado-item.par {
+        flex-direction: row;
+        margin-left: 10px;
+    }
+
+    /* cuando la clase es "right": imagen derecha */
+    .voluntariado-item.impar {
+        flex-direction: row-reverse;
+        margin-left: auto;
+        margin-right: 0px;
+    }
+
+.img-voluntariado {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    bottom: 0;
+}
+
+.texto-voluntariado {
+    flex: 1; /* ocupa todo el espacio sobrante */
+    font-size: larger;
+    line-height: 1.6;
+    color: black;
+    font-family: 'Times New Roman', Times, serif
+}
+
+.vol-container {
+    display: grid;
+    border-radius: 15px;
+    background-color: white;
+    justify-content: start;
+    box-shadow: 6px 6px 6px #5c6b6a2e;
+    width: 800px;
+    height: auto;
+    margin: 20px auto; /* esto centra el div horizontalmente */
+    text-align: left; /* para que el texto dentro no quede centrado */
+}
+
+.req-vol {
+    display: flex;
+    border-radius: 10px;
+    box-shadow: 5px #C23A79;
+}
+
+/* RESPONSIVE (340PX)*/
+@media screen and (min-width: 340px) and (max-width: 820px) {
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 0.9rem;
+        padding: 0 10px;
+    }
+
+    .voluntariados-container {
+        padding: 10px;
+        gap: 20px;
+        max-width: 100%;
+    }
+
+    .voluntariado-item {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 15px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .img-voluntariado {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .texto-voluntariado {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        text-align: justify;
+    }
+
+    .vol-container {
+        width: 95%;
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    .req-vol {
+        flex-direction: column;
+        width: 100%;
+    }
+
+}
+
+

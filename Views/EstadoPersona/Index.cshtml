@@ -1,0 +1,77 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Estado_Persona>
+@{
+    await Html.RenderPartialAsync("_PersonaTopNav");
+    ViewData["Title"] = "Estados de Persona";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        ESTADOS DE PERSONAS
+    </h1>
+
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="d-flex justify-content-end mt-3">
+        <a asp-action="Crear" class="btn"
+           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            Agregar Estado
+        </a>
+    </div>
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead>
+                    <tr style="background:#2FA8A2; color:#fff;">
+                        <th style="border-top-left-radius:10px;">Código</th>
+                        <th>Descripción</th>
+                        <th class="text-end" style="border-top-right-radius:10px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var e in Model)
+                        {
+                            <tr>
+                                <td>@e.id_estadoPersona</td>
+                                <td>@e.descripcion</td>
+                                <td class="text-end" style="white-space:nowrap;">
+                                    <a asp-action="Modificar" asp-route-id="@e.id_estadoPersona"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Modificar
+                                    </a>
+                                    <a asp-action="Eliminar" asp-route-id="@e.id_estadoPersona"
+                                       class="btn btn-sm"
+                                       style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted p-4">No hay estados cargados.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

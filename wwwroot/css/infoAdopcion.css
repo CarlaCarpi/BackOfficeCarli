@@ -1,0 +1,230 @@
+﻿h1 {
+    text-align: center;
+    color: #C23A79;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+/* 🔹 Contenedor principal ocupa casi toda la pantalla */
+.pet-detail-container {
+    display: flex;
+    flex-wrap: wrap; /* permite que se acomode en pantallas pequeñas */
+    width: 95%;
+    max-width: 1200px;
+    min-height: auto; /*52vh;  ocupa el 80% de la altura de la ventana */
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    align-items: stretch;
+}
+
+/* 🔹 Imagen ocupa la mitad izquierda y se adapta al alto */
+.pet-detail-image {
+    flex: 1;
+    min-width: 300px; /* asegura que no se deforme en pantallas chicas */
+    max-height: 60vh;
+    overflow: hidden;
+    display: block;
+
+
+    object-fit: contain;
+}
+
+
+    .pet-detail-image img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: cover; /*object-fit:contain;*/
+        object-position: center; /* centra la imagen al recortar */
+        display: block;
+        border-radius: 20px
+    }
+
+
+/* 🔹 Info a la derecha con tipografía más grande */
+.pet-detail-info {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+}
+
+    .pet-detail-info p {
+        font-size: 20px;
+        line-height: 1.6;
+        font-family: 'Nunito', sans-serif;
+        color: #222;
+        margin-bottom: 15px;
+    }
+
+    .pet-detail-info strong {
+        color: #2DB8B5;
+    }
+
+/* 🔹 Botones */
+.buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+}
+
+.btn.primary {
+    background: #2DB8B5;
+    color: white;
+    font-weight: 700;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+    margin-bottom: 20px;
+    margin-top:20px;
+}
+
+
+    .btn.primary.adop {
+        background: #C23A79 !important;
+        
+    }
+
+
+/* 🔹 Responsivo hasta 1000px (tablets y pantallas medianas) */
+@media (max-width: 800px) {    /*ANTES 1000PX*/
+    .pet-detail-container {
+        flex-direction: column;
+        align-items: center;
+        min-width: auto; /* permite que se reduzca */
+        width: 95%;
+        height: auto;
+       /* padding: 20px;*/
+        
+    }
+
+    .pet-detail-image {
+        width: 100%;
+        height: 100%;
+       /* padding: 20px;
+        max-height: 350px;*/
+        max-height: 100%;
+    }
+        .pet-detail-image img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            /* padding: 20px;
+        max-height: 350px;*/
+        }
+
+    .pet-detail-info {
+        width: 100%;
+        padding: 30px 25px;
+        text-align: center;
+    }
+
+        .pet-detail-info p {
+            font-size: 18px;
+        }
+
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .btn.primary {
+        width: 30%;
+    }
+}
+
+/* 🔹 Responsivo hasta 600px (celulares medianos) */
+@media (max-width: 600px) {
+    .pet-detail-container {
+        width: 95%;
+        margin: 20px auto;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .pet-detail-info {
+        padding: 20px;
+    }
+
+        .pet-detail-info p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .pet-detail-info h2 {
+            font-size: 22px;
+        }
+
+    .pet-detail-image {
+        width: 100%;
+        max-height: 100%;
+    }
+
+    .btn.primary {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+/* 🔹 Responsivo hasta 340px (celulares muy chicos) */
+@media (max-width: 360px) {
+   /* h1 {
+        font-size: 1.4rem;
+        margin-top: 10px;
+    }*/
+
+    .pet-detail-container {
+        width: 95%; /*ANTES 100%
+        border-radius: 0;
+        box-shadow: none;*/
+        margin: 20px auto;
+    }
+
+    .pet-detail-info {
+        padding: 15px;
+    }
+
+        .pet-detail-info p {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+    /*.buttons {
+        flex-direction: column;
+        gap: 10px;
+    }*/
+
+    .btn.primary {
+        font-size: 10px;
+        padding: 12px;
+    }
+
+    .pet-detail-image {
+        width: 100%;
+        max-height: 100%;
+    }
+}
+@media (max-width: 350px) {
+
+    .pet-detail-container {
+        width: 94%; /*ANTES 100%
+        border-radius: 0;
+        box-shadow: none;*/
+        margin: 10px auto;
+    }
+
+    .pet-detail-image {
+        width: 100%;
+        max-height: 100%;
+    }
+}

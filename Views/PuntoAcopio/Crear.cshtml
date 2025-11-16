@@ -1,0 +1,177 @@
+﻿@model SantaRamona.Backoffice.Models.Punto_Acopio
+@{
+    ViewData["Title"] = "Agregar punto de acopio";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        AGREGAR PUNTO DE ACOPIO
+    </h1>
+
+    @* Mensajes opcionales *@
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <a asp-action="Index" class="btn" style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver al listado</a>
+            <div class="d-flex gap-2">
+                <button type="submit" form="form-crear" class="btn"
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Guardar
+                </button>
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form id="form-crear" asp-action="Crear" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="row g-3">
+                    <!-- Datos básicos -->
+                    <div class="col-md-6">
+                        <label asp-for="nombre" class="form-label">Nombre del punto</label>
+                        <input asp-for="nombre" class="form-control" />
+                        <span asp-validation-for="nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="descripcion" class="form-label">Descripción</label>
+                        <input asp-for="descripcion" class="form-control" placeholder="(opcional) horarios, referencias, etc." />
+                        <span asp-validation-for="descripcion" class="text-danger"></span>
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="col-md-6">
+                        <label asp-for="calle" class="form-label">Calle</label>
+                        <input asp-for="calle" class="form-control" />
+                        <span asp-validation-for="calle" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="altura" class="form-label">Altura</label>
+                        <input asp-for="altura" class="form-control" type="number" min="0" />
+                        <span asp-validation-for="altura" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="departamento" class="form-label">Departamento</label>
+                        <input asp-for="departamento" class="form-control" />
+                        <span asp-validation-for="departamento" class="text-danger"></span>
+                    </div>
+
+                    <!-- Provincia / Localidad -->
+                    <div class="col-md-6">
+                        <label class="form-label">Provincia</label>
+                        <select asp-for="id_provincia" asp-items="ViewBag.Provincia" class="form-select" id="id_provincia">
+                            <option value="">Seleccione provincia...</option>
+                        </select>
+                        <span asp-validation-for="id_provincia" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Localidad</label>
+                        <select asp-for="id_localidad" asp-items="ViewBag.Localidad" class="form-select" id="id_localidad">
+                            <option value="">Seleccione una provincia primero</option>
+                        </select>
+                        <span asp-validation-for="id_localidad" class="text-danger"></span>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" asp-for="activo" id="chk_activo">
+                            <label class="form-check-label" for="chk_activo">Punto activo</label>
+                        </div>
+                        <span asp-validation-for="activo" class="text-danger ms-2"></span>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-2"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        (function () {
+            var $prov = $("#id_provincia");
+            var $loc  = $("#id_localidad");
+
+            function setLoading() { $loc.empty().append(new Option("Cargando localidades...", "")); }
+            function setEmpty()   { $loc.empty().append(new Option("Seleccione una provincia primero", "")); }
+            function setNoData()  { $loc.empty().append(new Option("No hay localidades", "")); }
+
+            function cargarLocalidades(idProvincia, selectedId) {
+                if (!idProvincia) { setEmpty(); return; }
+                setLoading();
+
+                // 🔗 Usa el action del controller PuntoAcopio
+                var url = "@Url.Action("LocalidadesPorProvincia", "PuntoAcopio")" + "?provinciaId=" + idProvincia;
+
+                $.getJSON(url)
+                    .done(function (data) {
+                        $loc.empty();
+                        if (!data || data.length === 0) { setNoData(); return; }
+                        $loc.append(new Option("Seleccione localidad...", ""));
+                        data.forEach(function (l) {
+                            var opt = new Option(l.nombre, l.id_localidad);
+                            if (selectedId && Number(selectedId) === Number(l.id_localidad)) opt.selected = true;
+                            $loc.append(opt);
+                        });
+                    })
+                    .fail(function (xhr) {
+                        console.error("Error cargando localidades:", xhr);
+                        $loc.empty().append(new Option("Error al cargar localidades", ""));
+                    });
+            }
+
+            $prov.on("change", function () {
+                cargarLocalidades($(this).val(), null);
+            });
+
+            // Si ya viene provincia en ViewBag (p.ej. re-render por validación)
+            $(document).ready(function () {
+                var provinciaInicial = $prov.val();
+                var localidadInicial = $loc.val();
+                if (provinciaInicial) { cargarLocalidades(provinciaInicial, localidadInicial); }
+                else { setEmpty(); }
+            });
+        })();
+    </script>
+}

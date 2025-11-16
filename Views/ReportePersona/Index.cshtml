@@ -1,0 +1,283 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Persona>
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    await Html.RenderPartialAsync("_ReporteTopNav");
+    ViewData["Title"] = "Reporte Personas";
+
+    // Selects del controller
+    var lProv = (IEnumerable<SelectListItem>)(ViewBag.Provincias ?? Enumerable.Empty<SelectListItem>());
+    var lLoc = (IEnumerable<SelectListItem>)(ViewBag.Localidades ?? Enumerable.Empty<SelectListItem>());
+    var lEst = (IEnumerable<SelectListItem>)(ViewBag.Estados ?? Enumerable.Empty<SelectListItem>());
+    var lTipo = (IEnumerable<SelectListItem>)(ViewBag.TiposFormulario ?? Enumerable.Empty<SelectListItem>());
+
+    // Diccionarios de texto (para mostrar IDs como texto)
+    var provinciasDict = lProv.Where(i => !string.IsNullOrWhiteSpace(i.Value))
+        .ToDictionary(i => int.Parse(i.Value), i => i.Text);
+    var localidadesDict = lLoc.Where(i => !string.IsNullOrWhiteSpace(i.Value))
+        .ToDictionary(i => int.Parse(i.Value), i => i.Text);
+    var estadosDict = lEst.Where(i => !string.IsNullOrWhiteSpace(i.Value))
+        .ToDictionary(i => int.Parse(i.Value), i => i.Text);
+
+    // Tipos por persona (para mostrar en la tabla)
+    var formTiposByPersona = ViewBag.FormTiposByPersona as Dictionary<int, List<string>> ?? new();
+
+    // Helpers
+    Func<string, string> Q = key => Context.Request.Query[key].ToString();
+    string Txt(Dictionary<int, string> d, int? id) => (id.HasValue && d.TryGetValue(id.Value, out var v)) ? v : "—";
+    string F(DateTime? dt) => dt.HasValue ? dt.Value.ToString("dd/MM/yyyy") : "—";
+}
+
+<style>
+    .card {
+        border: 1px solid #2FA8A2;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        background: #fff;
+    }
+
+    .card-header {
+        background: #2FA8A2;
+        color: #fff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: .85rem 1rem;
+    }
+
+    /* ---- Botones (unificados) ---- */
+    .btn-outline,
+    .btn-outline:link,
+    .btn-outline:visited,
+    button.btn-outline {
+        border-radius: 10px;
+        padding: .45rem .9rem;
+        background: #fff;
+        color: #155e59;
+        border: 1px solid #155e59;
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        line-height: 1.2;
+    }
+
+        .btn-outline:hover,
+        button.btn-outline:hover {
+            background: #E6F6F5;
+        }
+
+    .table thead th {
+        background: #E6F6F5;
+        color: #155e59;
+        border-bottom: 1px solid #cfeaea;
+    }
+
+    .filter-row .form-label {
+        font-weight: 600;
+        color: #155e59;
+    }
+    /* Sacamos la línea punteada */
+    .filter-actions {
+        padding-top: .75rem;
+    }
+</style>
+
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="fw-bold">Reporte Personas</div>
+        </div>
+
+        <div class="card-body">
+            @* ---------- FILTROS ---------- *@
+            <form id="frmFiltros" method="get" asp-action="Index" class="row g-3 mb-3 filter-row">
+
+                <div class="col-md-3">
+                    <label class="form-label">Provincia</label>
+                    <select id="id_provincia" name="id_provincia" class="form-select" asp-items="lProv"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Localidad</label>
+                    <select id="id_localidad" name="id_localidad" class="form-select" asp-items="lLoc"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Estado</label>
+                    <select name="id_estadoPersona" class="form-select" asp-items="lEst"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Tipo de Formulario</label>
+                    <select name="id_tipoFormulario" class="form-select" asp-items="lTipo"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Ingreso desde</label>
+                    <input type="date" name="fechaIngresoDesde" value="@Q("fechaIngresoDesde")" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Ingreso hasta</label>
+                    <input type="date" name="fechaIngresoHasta" value="@Q("fechaIngresoHasta")" class="form-control" />
+                </div>
+
+                <div class="col-md-3 d-flex align-items-center">
+                    <div class="form-check mt-4">
+                        <input class="form-check-input" type="checkbox" id="incluirMotivoEgreso" name="incluirMotivoEgreso"
+                               value="true" @(Q("incluirMotivoEgreso") == "true" ? "checked" : "") />
+                        <label class="form-check-label" for="incluirMotivoEgreso">Incluir observaciones</label>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex gap-2 mt-2 filter-actions">
+                    <button type="submit" class="btn-outline">Buscar</button>
+                    <a class="btn-outline" asp-action="Index">Limpiar</a>
+
+                    @* Exporta CSV/PDF con filtros actuales *@
+                    <a id="expCsv" class="btn-outline"
+                       asp-controller="ReportePersona"
+                       asp-action="ExportarCsv">Exportar Excel</a>
+
+                    <a id="expPdf" class="btn-outline"
+                       asp-controller="ReportePersona"
+                       asp-action="ExportarPdf">Exportar PDF</a>
+                </div>
+            </form>
+
+            @if (ViewBag.ApiError != null)
+            {
+                <div class="alert alert-danger">@ViewBag.ApiError</div>
+            }
+
+            @* ---------- RESULTADOS ---------- *@
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Apellido</th>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Provincia</th>
+                            <th>Localidad</th>
+                            <th>Estado</th>
+                            <th>Ingreso</th>
+                            <th>Formularios</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            bool hayDatos = Model != null && Model.Any();
+                        }
+                        @if (hayDatos)
+                        {
+                            foreach (var p in Model)
+                            {
+                                var tipos = formTiposByPersona.TryGetValue(p.id_persona, out var lst) ? string.Join(", ", lst) : "—";
+                                <tr>
+                                    <td>@p.apellido</td>
+                                    <td>@p.nombre</td>
+                                    <td>@p.dni</td>
+                                    <td>@Txt(provinciasDict, p.id_provincia)</td>
+                                    <td>@Txt(localidadesDict, p.id_localidad)</td>
+                                    <td>@Txt(estadosDict, p.id_estadoPersona)</td>
+                                    <td>@F(p.fechaIngreso)</td>
+                                    <td>@tipos</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center text-muted">Sin resultados para los filtros aplicados.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+          const form = document.getElementById('frmFiltros');
+          const csv = document.getElementById('expCsv');
+          const pdf = document.getElementById('expPdf');
+          const selProv = form?.querySelector('#id_provincia');
+          const selLoc  = form?.querySelector('#id_localidad');
+
+          function val(name) {
+            const el = form?.querySelector(`[name="${name}"]`);
+            if (!el) return '';
+            if (el.type === 'checkbox') return el.checked ? 'true' : '';
+            return el.value ? el.value.trim() : '';
+          }
+
+          function buildQuery() {
+            const p = new URLSearchParams();
+            [
+              'id_provincia',
+              'id_localidad',
+              'id_estadoPersona',
+              'id_tipoFormulario',
+              'fechaIngresoDesde',
+              'fechaIngresoHasta',
+              'incluirMotivoEgreso' // mantiene el mismo nombre que usa el controller
+            ].forEach(n => {
+              const v = val(n);
+              if (v) p.set(n, v);
+            });
+            return p.toString();
+          }
+
+          function wireExport(a){
+            if(!a) return;
+            a.addEventListener('click', function(e){
+              e.preventDefault();
+              const base = a.getAttribute('href'); // /admin/santa/back/ReportePersona/ExportarCsv o ExportarPdf
+              const q = buildQuery();
+              const url = q ? (base + '?' + q) : base;
+              window.location.href = url;
+            });
+          }
+          wireExport(csv);
+          wireExport(pdf);
+
+          // --- Cascada Provincia -> Localidad (AJAX) ---
+          async function cargarLocalidades(provId, locSeleccionada) {
+            if (!selLoc) return;
+            selLoc.innerHTML = '<option value="">Cargando...</option>';
+            try {
+              if (!provId) {
+                selLoc.innerHTML = '<option value="">Seleccione...</option>';
+                return;
+              }
+              const url = `/admin/santa/back/Persona/LocalidadesPorProvincia?provinciaId=${encodeURIComponent(provId)}`;
+              const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+              if (!resp.ok) throw new Error('Error HTTP ' + resp.status);
+              const data = await resp.json(); // [{id_localidad, nombre}]
+              const opts = ['<option value="">Seleccione...</option>']
+                .concat(data.map(l => {
+                  const sel = (locSeleccionada && String(l.id_localidad) === String(locSeleccionada)) ? ' selected' : '';
+                  return `<option value="${l.id_localidad}"${sel}>${l.nombre}</option>`;
+                }));
+              selLoc.innerHTML = opts.join('');
+            } catch (e) {
+              selLoc.innerHTML = '<option value="">Seleccione...</option>';
+              console.error('LocalidadesPorProvincia:', e);
+            }
+          }
+
+          selProv?.addEventListener('change', () => cargarLocalidades(selProv.value, null));
+
+          // al cargar: si hay provincia/loc en la query, reconstruyo
+          const provIni = val('id_provincia');
+          const locIni  = val('id_localidad');
+          if (provIni) cargarLocalidades(provIni, locIni);
+        })();
+    </script>
+}

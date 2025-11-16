@@ -1,0 +1,64 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+/* elimina margen por defecto del body */
+body {
+    margin: 0;
+}
+
+/* asegura que el hero no empuje hacia abajo */
+.hero {
+    margin-top: 0;
+}
+
+/* si tu navbar tiene una línea o sombra, la anulamos */
+.navbar, .navbar.fixed-top, header.navbar {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+}
+
+.hero .media {
+    width: 100%;
+    /* sin altura fija: la define la imagen */
+    overflow: hidden;
+    background: #fff; /* por si sobra algo, mismo color que el fondo */
+}
+
+    .hero .media img {
+        width: 100%;
+        height: auto; /* ?? esto evita CUALQUIER recorte */
+        display: block;
+        margin: 0;
+        border: 0;
+    }
+/* Elimina el borde o glow azul en todos los botones Bootstrap */
+.btn:focus,
+.btn:active:focus,
+.btn:focus-visible,
+.btn-check:focus + .btn,
+.btn-primary:focus,
+.btn-danger:focus,
+.btn-secondary:focus,
+.btn-success:focus,
+.btn-warning:focus,
+.btn-info:focus,
+.btn-light:focus,
+.btn-dark:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Donacion>
+
+@{
+    Layout = null;
+    string TipoTxt(string t) => t == "M" ? "Medicamentos"
+        : t == "I" ? "Insumos"
+        : t == "B" ? "Banco"
+        : t == "P" ? "No Bancario"
+        : t;
+}
+
+@foreach (var d in Model)
+{
+    <tr>
+        <td>@d.id_donacion</td>
+        <td>@TipoTxt(d.tipo)</td>
+        <td>@d.descripcion</td>
+        <td class="actions-cell">
+            <div class="actions">
+                <a asp-controller="Donacion"
+                   asp-action="Modificar"
+                   asp-route-id="@d.id_donacion"
+                   class="btn-primary">
+                    Modificar
+                </a>
+
+                <a asp-controller="Donacion"
+                   asp-action="Eliminar"
+                   asp-route-id="@d.id_donacion"
+                   class="btn btn-sm"
+                   style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                    Eliminar
+                </a>
+            </div>
+        </td>
+    </tr>
+}

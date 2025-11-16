@@ -1,0 +1,1129 @@
+﻿
+:root {
+    --bg: #F6FBFA;
+    --text: #1D2B2A;
+    --muted: #5c6b6a;
+    --teal-900: #0C6A73; /* hero overlay */
+    --teal-700: #178C94;
+    --teal: #2DB8B5; /* botones y acentos */
+    --aqua: #6DD6D1; /* tarjetas adopción */
+    --petal: #FFE6EF; /* panel novedades */
+    --magenta: #C23A79; /* acento primario / DONAR */
+    --magenta-700: #A22B63; /* tránsito */
+    --shadow: 0 10px 30px rgba(0,0,0,.12);
+    --radius: 22px;
+    --radius-lg: 28px;
+    --container: 1060px;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html, body {
+    height: 100%;
+
+    /* AGREGUE */
+    margin: 0; /* Quitamos márgenes por defecto del body */
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+    line-height: 1.55;
+    /* AGREGUE */
+    display: flex; /* Convertimos el body en un contenedor flex */
+    flex-direction: column; /* Organizamos los hijos (header, main, footer) en columna */
+    /* Esto permite que el footer se "empuje" hacia abajo usando flex:1 en el main */
+
+
+
+    overflow-x: hidden;
+    
+}
+
+
+main{
+    flex: 1;
+    /*padding: 20px;*/
+}
+
+h1, h2, h3 {
+    font-family: Nunito, Inter, system-ui;
+    line-height: 1.2;
+    margin: 0 0 .4em
+}
+
+h1 {
+    font-weight: 800
+}
+
+h2 {
+    font-weight: 800;
+    color: #A71A6C  
+}
+
+h3 {
+    font-weight: 700
+}
+
+p {
+    margin: .25rem 0 .75rem;
+   
+
+}
+
+a {
+    color: inherit
+}
+
+/* Header */
+.site-header {
+    /*position: sticky;*/
+    top: 0;
+    z-index: 50;
+    /*backdrop-filter: saturate(1.2) blur(6px)*/
+    background-color: white; 
+}
+
+    .site-header .inner {
+        max-width: var(--container);
+        margin: auto;
+        display: flex;
+        justify-content:space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 14px 20px;
+    }
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-family: Nunito;
+    letter-spacing: .3px
+}
+
+    .brand img {
+       /* width: 95px;*/
+        height: 100px;
+        border-radius: 2%;
+        object-fit: cover
+    }
+
+nav {
+    margin-left: auto
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: larger;
+}
+
+    .nav a {
+        display: inline-block;
+        padding: 8px 10px;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight: 600;
+        color: #0b3840
+    }
+    .nav li a:hover {
+        color: #A22B63;
+    }
+
+.btn {
+    display: inline-grid;
+    place-items: center;
+    padding: 12px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: .4px;
+
+    
+}
+
+    .btn.primary {
+        background: var(--teal);
+        color: white;
+        box-shadow: var(--shadow)
+    }
+
+    .btn.ghost {
+        border: 2px solid rgba(255,255,255,.9);
+        color: white
+    }
+
+    .btn.magenta {
+        background: #2DB8B5;
+        color: white
+    }
+
+        .btn.magenta:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+            color:white !important;
+        }
+    .btn.top {
+        background: var(--magenta);
+        color: white;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,.2);
+    
+        font-size: 22px;
+        padding: 10px 15px;
+        border-radius: 50%;
+        text-decoration: none;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(10px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        z-index: 999;
+    }
+
+        /* 🔹 Cuando se muestra */
+        .btn.top.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+            animation: bounce 1s infinite alternate ease-in-out;
+        }
+
+/* ✨ Animación tipo rebote */
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-6px);
+    }
+}
+
+
+
+
+
+.btn.primary.td{
+    margin-top:15px;
+}
+html {
+    scroll-behavior: smooth; /* scroll suave al hacer clic */
+}
+
+/* Hero */
+
+/*.hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    min-height:60vh;*/ /* asegura que .hero tenga altura */
+    /* Forzar que el hero ocupe todo el ancho del viewport */
+    /*width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+
+
+    .hero .media {
+        position: absolute;
+        inset: 0;
+        z-index: -2
+    }*/
+
+    /* Imagen */
+    /*.hero img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;*/ /* <- hace que cubra todo el contenedor sin deformarse */
+        /*object-position: center;*/ /* <- centra la parte visible */
+        /*filter: grayscale(0.1);
+    }*/
+
+   /* .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(12,106,115,.88) 0%, rgba(12,106,115,.82) 50%, rgba(12,106,115,.88) 100%);
+        z-index: -1
+    }*/
+
+    /*.hero .content {
+        max-width: var(--container);
+        margin: auto;
+        padding: 64px 20px 84px;
+        color: white
+    }*/
+
+/* HERO */
+.hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    width: 100vw;
+    max-height: 60vh; /* 🔹 evita que crezca demasiado en pantallas grandes */
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+   
+}
+
+    /* Imagen */
+    .hero img {
+        width: 100%;
+        max-height: 60vh;
+        /*aspect-ratio: 1440 / 656;  👈 Mantiene proporción original */
+        object-fit: contain; /* 🔹 muestra la imagen completa */
+        object-position: center;
+        background-color: #FEE2E5;
+       
+        /*background-color:#AB216E ;  color de relleno si sobran márgenes */
+        /*background-color:  #FFF;*/
+    }
+
+
+
+
+
+                    /* ===== Responsive ===== */
+
+                    /* Para pantallas <= 900px: 2 columnas, sin scroll horizontal */
+                    @media (max-width: 900px) {
+                        .scroller {
+                            display: grid;
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 16px;
+                            overflow-x: visible;
+                            padding-bottom: 0;
+                        }
+
+                        .pet-card {
+                            width: 100%; /* Para que ocupe todo el ancho de la columna */
+                            max-width: none;
+                        }
+                    }
+
+                    /* Para pantallas <= 340px: ajustar tamaño de imagen y texto */
+                    @media (max-width: 340px) {
+                        .pet-image img {
+                            height: 140px;
+                        }
+
+                        .pet-name {
+                            font-size: 1rem;
+                        }
+
+                        .pet-body {
+                            padding: 8px;
+                        }
+                    }
+            /* Pantallas medianas (tablets, <=900px) */
+            /*@media (max-width: 900px) {
+                .hero .media .section{
+                    min-height: 30vh;
+                    padding: 40px 14px;
+                }
+
+                    .hero .content {
+                        padding: 14px;
+                    }
+            }*/
+
+            /* Pantallas chicas (teléfonos, <=600px) */
+            /*@media (max-width: 600px) {
+                .hero .media .section {
+                    min-height: 30vh;
+                    padding: 40px 14px;
+                }
+
+                    .hero .content {
+                        font-size: 0.95rem;
+                    }
+            }*/
+
+            /* Tamaños muy pequeños (<=340px) */
+            /*@media (max-width: 340px) {
+                .hero .media .section {
+                    min-height: 25vh;*/ /* un poco más alta para texto legible */
+                    /*padding: 30px 10px;
+                }
+
+                    .hero .content {
+                        font-size: 0.9rem;*/ /* ajusta el texto */
+                    /*}
+
+                    .hero img {
+                        object-position: center;*/ /* centra mejor la imagen */
+                    /*}
+            }*/
+
+
+.kicker {
+    font-weight: 800;
+    font-size: clamp(28px, 3vw + 10px, 44px);
+    font-family: Nunito
+}
+
+.sub {
+    opacity: .95;
+    max-width: 920px
+}
+
+/* Carousel sections */
+section {
+    padding: 35px 20px;
+}
+
+.section-inner {
+    max-width: var(--container);
+    margin: auto
+}
+
+.section-title {
+    font-size: 32px;
+    font-family: Nunito;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px
+}
+
+.scroller-wrap {
+    position: relative;
+    overflow: visible;
+}
+
+.scroller {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(250px, 1fr);
+    gap: 18px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity; /* menos agresivo que mandatory */
+    scroll-padding-left: 12px; /* espacio para que la primera tarjeta no quede pegada/oculta */
+    padding: 12px 8px;
+    align-items: start;
+}
+
+.card {
+    scroll-snap-align: start;
+    border-radius: var(--radius-lg);
+    background: white;
+    box-shadow: var(--shadow);
+    overflow: hidden
+}
+/* Tarjeta */
+
+/* Pet cards: igual para adopción y tránsito */
+.pet-card {
+    display: grid;
+    grid-template-rows: 300px auto auto;
+    min-height: 260px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 18px rgba(0,0,0,.1);
+    background: #fff;
+}
+
+    .pet-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* recorta la imagen para que quede pareja */
+        display: block;
+    }
+
+.pet-image {
+    flex: 1; /* ocupa el espacio disponible */
+    overflow: hidden;
+}
+
+.pet-body {
+    padding: 14px 16px 18px;
+    text-align: center;
+}
+
+.pet-name {
+    font-family: Nunito, sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.pet-meta {
+    font-size: .82rem;
+    color: #3b4a49;
+    opacity: .9;
+}
+
+/* tarjetas como elementos no flexibles (evita que "se encojan") */
+.card, .pet-card, .card.pet-card {
+    min-inline-size: 240px; /* tamaño mínimo en horizontal */
+    max-inline-size: 240px;
+    inline-size: auto;
+    /*width: auto;*/
+    flex: none; /* si hay algún contenedor flex */
+    scroll-snap-align: start;
+}
+
+/* Adoption colorway */
+.adopcion .card {
+    background: linear-gradient(180deg, var(--aqua) 0%, #BFEDEB 100%)
+}
+
+.adopcion .pet-body, .adopcion .pet-cta {
+    background: transparent
+}
+
+/* Transit colorway */
+.transito .card {
+    background: linear-gradient(180deg, #F7D0E4 0%, #FFD8EA 100%)
+}
+
+/* Scroller arrows */
+.arrow {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: #2DB8B5;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+}
+
+    .arrow svg {
+        width: 24px;
+        height: 24px
+    }
+
+    .arrow.left {
+        left: -20px
+    }
+
+    .arrow.right {
+        right: -20px
+    }
+                
+
+                /* ===== Responsive ===== */
+
+                /* Ajuste hasta 900px */
+                @media (max-width: 1110px) {
+                    .scroller {
+                        /* grid-auto-columns: minmax(220px, 1fr);*/
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 10px;
+                        justify-items: center;
+                        display: grid;
+                    }
+                    /*.pet-card {
+                        width: 100%;
+                        
+                    }*/
+                    .card, .pet-card, .card.pet-card {
+                        min-inline-size: 230px; /* tamaño mínimo en horizontal */
+                        max-inline-size: 230px;
+                        inline-size: auto;
+                        /*width: auto;*/
+                        flex: none; /* si hay algún contenedor flex */
+                        scroll-snap-align: start;
+                    }
+
+                    #adoptar .section-title h2 {
+                        font-size: 2.5rem;
+                    }
+                }
+
+                /* Desde 630px hacia abajo → 2 columnas */
+                @media (max-width: 630px) {
+                    .scroller {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        grid-auto-flow: unset;
+                        overflow-x: visible;
+                        padding-bottom: 0;
+                        justify-items: center;
+                        gap: 7px;
+                    }
+
+/*                    .pet-card {
+                        width: 100%;
+                        max-width: 240px;
+                    }*/
+                    .card, .pet-card, .card.pet-card {
+                        min-inline-size: 220px; /* tamaño mínimo en horizontal */
+                        max-inline-size: 220px;
+                        inline-size: auto;
+                        /*width: auto;*/
+                        flex: none; /* si hay algún contenedor flex */
+                        scroll-snap-align: start;
+                    }
+
+                    #adoptar .section-title h2 {
+                        font-size: 2.5rem;
+                    }
+                }
+
+                /* Ajuste progresivo hasta 340px */
+                @media (max-width: 480px) {
+/*                    .pet-card {
+                        max-width: 230px;
+                    }*/
+                    .card, .pet-card, .card.pet-card {
+                        min-inline-size: 210px; /* tamaño mínimo en horizontal */
+                        max-inline-size: 210px;
+                        inline-size: auto;
+                        /*width: auto;*/
+                        flex: none; /* si hay algún contenedor flex */
+                        scroll-snap-align: start;
+                    }
+
+                    #adoptar .section-title h2 {
+                        font-size: 2.4rem;
+                    }
+                }
+
+                @media (max-width: 340px) {
+/*                    .pet-card {
+                        max-width: 230px;
+                    }*/
+                    .card, .pet-card, .card.pet-card {
+                        min-inline-size: 200px; /* tamaño mínimo en horizontal */
+                        max-inline-size: 200px;
+                        inline-size: auto;
+                        /*width: auto;*/
+                        flex: none; /* si hay algún contenedor flex */
+                        scroll-snap-align: start;
+                    }
+
+                    #adoptar .section-title h2 {
+                        font-size: 2.5rem;
+                    }
+                }
+
+/* Textos Informativos */
+.news {
+   /* background: var(--petal);*/
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 24px
+
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: 1.4fr .9fr;
+    gap: 20px;
+    align-items: center
+}
+.news-grid1 {
+    display: grid;
+    grid-template-columns: 0.9fr 1.4fr;
+    gap: 20px;
+    align-items: center
+}
+
+    .news-grid1 > div:first-child {
+        order: 2; /* el texto pasa a la derecha */
+    }
+
+    .news-grid1 > div:last-child {
+        order: 1; /* la imagen pasa a la izquierda */
+    }
+
+.news h3 {
+    color: var(--teal-900)
+}
+
+.news img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 16px
+}
+                /* ====== RESPONSIVE ====== */
+
+                /* Pantallas medianas (<=900px): una columna y centrado */
+                @media (max-width: 900px) {
+                .news-grid {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+                    text-align: center;
+                }
+
+                .news img {
+                    height: 70%;
+                    width: 70%;
+                    border-radius: 14px;
+                }
+
+                .news h2 {
+                    font-size: 1.5rem;
+                }
+                }
+
+                /* Pantallas pequeñas (<=600px): espaciado compacto */
+                @media (max-width: 600px) {
+                .news {
+                    padding: 24px 16px;
+                    border-radius: 18px;
+                }
+
+                .news-grid {
+                    gap: 16px;
+                }
+
+                .news h2 {
+                    font-size: 1.3rem;
+                }
+
+                .news img {
+                    height: 70%;
+                    border-radius: 12px;
+                }
+
+                .news p {
+                    font-size: 0.95rem;
+                }
+                }
+
+                /* Pantallas muy pequeñas (<=340px): contenido compacto y legible */
+                @media (max-width: 340px) {
+                .news {
+                    padding: 16px 10px;
+                    border-radius: 14px;
+                }
+
+                .news-grid {
+                    gap: 12px;
+                }
+
+                .news h2 {
+                    font-size: 1.1rem;
+                }
+
+                .news img {
+                    height: 160px;
+                    border-radius: 10px;
+                    max-width: 100%;
+                }
+
+                .news p {
+                    font-size: 0.9rem;
+                }
+                }
+/* Pantallas medianas (<=900px): una columna y centrado */
+@media (max-width: 900px) {
+    .news-grid1 {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+        .news-grid1 > div:first-child {
+            order: 1; /* el texto pasa a la derecha */
+        }
+
+        .news-grid1 > div:last-child {
+            order: 2; /* la imagen pasa a la izquierda */
+        }
+}
+
+/* Pantallas pequeñas (<=600px): espaciado compacto */
+@media (max-width: 600px) {
+   
+    .news-grid1 {
+        gap: 16px;
+    }
+}
+
+/* Pantallas muy pequeñas (<=340px): contenido compacto y legible */
+@media (max-width: 340px) {
+    
+    .news-grid1 {
+        gap: 12px;
+    }
+}
+
+
+
+/* Quiénes somos */
+.about {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 20px;
+    align-items: center
+}
+
+.logo-badge {
+    width: 300px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow);
+    justify-self: end
+}
+
+    .logo-badge img {
+        width: 70%;
+        height: 70%;
+        object-fit: contain
+                }
+            /* ====== RESPONSIVE ====== */
+
+            /* Pantallas medianas y tablets (<=900px): 1 columna, logo centrado */
+            @media (max-width: 900px) {
+                .about {
+                    grid-template-columns: 1fr;
+                    gap: 25px;
+                    text-align: center;
+                }
+
+                .logo-badge {
+                    justify-self: center;
+                    width: 240px;
+                }
+
+                .about p {
+                    text-align: justify;
+                }
+            }
+
+            /* Pantallas chicas (<=600px): ajustar tamaños y espacios */
+            @media (max-width: 600px) {
+                #nosotros {
+                    padding: 35px 14px;
+                }
+
+                .about {
+                    gap: 25px;
+                }
+
+                .logo-badge {
+                    width: 200px;
+                    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+                }
+
+                .about h2 {
+                    font-size: 1.4rem;
+                }
+
+                .about p {
+                    font-size: 0.95rem;
+                }
+            }
+
+            /* Móviles muy pequeños (<=340px): contenido compacto y centrado */
+            @media (max-width: 340px) {
+                #nosotros {
+                    padding: 35px 10px;
+                }
+
+                .about {
+                    gap: 25px;
+                }
+
+                .logo-badge {
+                    width: 160px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+                }
+
+                .about h2 {
+                    font-size: 1.2rem;
+                }
+
+                .about p {
+                    font-size: 0.9rem;
+                }
+            }
+
+
+
+/* CTA final */
+.cta {
+    background: linear-gradient(180deg, #FFF6C9 0%, #FFEAA1 100%);
+    text-align: center;
+    padding: 44px 20px;
+    margin:0;
+}
+
+
+/* Footer */
+footer {
+    color: #fff;
+    background: var(--magenta-700);
+    text-align: center;
+    padding: 24px;
+    margin-top:0;
+}
+
+
+    /* 1. Ocultar el botón de hamburguesa por defecto (solo visible en móvil) */
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 100; 
+    }
+
+        /* 2. Estilizar el icono de la hamburguesa */
+        .menu-toggle .icon-bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #0b3840;
+            margin: 5px 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* 3. Estilos del menú cuando está abierto (para la animación) */
+        .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(2) {
+            opacity: 0; /* Oculta la barra del medio */
+        }
+
+        .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg); /* Gira y mueve para formar una X */
+        }
+
+        .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg); /* Gira y mueve para formar una X */
+        }
+
+    /* 4. MEDIA QUERY: Se activa cuando el ancho es de 800px o menos */
+    @media screen and (min-width: 340px) and (max-width: 855px) {
+
+        .menu-toggle {
+            display: block; /* Muestra el botón de hamburguesa */
+            margin-left: auto; /* Para que se alinee a la derecha */
+        }
+
+        nav {
+            display: none;
+            position: absolute;
+            top: 80px; /* Ajusta según la altura de tu header.inner */
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            z-index: 40;
+        }
+
+            /* Estilo del menú cuando se abre con JavaScript */
+            nav.is-open {
+                display: block;
+            }
+
+        .nav {
+            flex-direction: column;
+            align-items: center; 
+            gap: 10px;
+        }
+
+            .nav li {
+                width: 100%; 
+                text-align: center;
+            }
+
+            .nav a {
+                display: block;
+                padding: 15px 20px;
+                border-radius: 0;
+                font-size: 1.1em;
+                font-weight: 700;
+                color: #0b3840;
+            }
+
+        /* Ocultar el botón de Donar en el header normal (si existiera) 
+       y mostrar el botón de Donar dentro del menú desplegable */
+        .nav-donate-mobile {
+            display: list-item; /* Asegura que el botón DONAR se vea en el menú */
+            margin-top: 15px;
+            
+        }
+
+            .nav-donate-mobile a.btn {
+                width: 60%;
+                margin: auto;
+                border-radius: 100px;
+            }
+    }
+
+
+
+
+
+
+
+    /* Oculta la barra de desplazamiento horizontal del carrusel ADOPCION */
+    .scroller {
+        overflow: hidden; /* oculta completamente la barra */
+
+        scrollbar-width: none !important;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(250px, 1fr);
+        gap: 22px;
+        overflow-x: hidden; /* ✅ evita el scroll manual y oculta la barra */
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        padding: 12px 4px 4px;
+        scroll-padding-left: 4px;
+    }
+
+    .scroller::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+            
+    }
+
+    .scroller {
+        -ms-overflow-style: none; /* IE y Edge */
+        scrollbar-width: none; /* Firefox */
+       
+    }
+
+    /* estado visual de las flechas */
+
+    .arrow {
+        transition: opacity 0.3s ease;
+    }
+
+        .arrow[style*="none"] {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+
+
+/* 🌟 Alertas */
+.alert-box {
+    position: relative;
+    margin: 20px auto;
+    padding: 16px 48px 16px 16px;
+    border-radius: 10px;
+    font-size: 1rem;
+    max-width: 700px;
+    text-align: center;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    animation: slideDown 0.4s ease-out;
+}
+
+    .alert-box.success {
+        background-color: #e6f7e9;
+        color: #207544;
+        border: 1px solid #b7e1c2;
+    }
+
+    .alert-box.error {
+        background-color: #fdeaea;
+        color: #a32020;
+        border: 1px solid #f5b5b5;
+    }
+
+    /* Botón de cierre */
+    .alert-box .close-btn {
+        position: absolute;
+        right: 12px;
+        top: 8px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: inherit;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+        .alert-box .close-btn:hover {
+            transform: scale(1.2);
+        }
+
+/* Animación de aparición */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* === Redes Sociales (footer o header) === */
+.d-inline-flex a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    margin: 5px;
+    border-radius: 50%;
+    font-size: 20px;
+    color: white; /* color de icono */
+    background-color:  #2DB8B5; /* color de fondo principal */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+    /* 🔹 Efecto hover */
+    .d-inline-flex a:hover {
+        background-color: #57D6D4; /* tono más claro */
+        transform: translateY(-3px);
+        box-shadow: 0 6px 10px rgba(0,0,0,0.25);
+    }
+
+    /* 🔹 Instagram personalizado */
+    .d-inline-flex a .fa-instagram {
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* 🔹 Facebook */
+    .d-inline-flex a .fa-facebook-f {
+        color: #fff;
+    }
+
+/* 🔹 Ajuste responsive si está en el footer */
+@media (max-width: 768px) {
+    .col-lg-6.text-right {
+        text-align: center !important;
+        margin-top: 10px;
+    }
+}

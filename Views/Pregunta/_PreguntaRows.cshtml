@@ -1,0 +1,44 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Pregunta>
+
+@{
+    Layout = null;
+    var tiposDict = ViewBag.TiposDict as Dictionary<int, string> ?? new();
+
+    string TipoTxt(int? idTipo)
+        => (idTipo.HasValue && tiposDict.TryGetValue(idTipo.Value, out var v))
+           ? v
+           : "—";
+}
+
+@foreach (var p in Model)
+{
+    <tr>
+        <td>@p.id_pregunta</td>
+        <td>@TipoTxt(p.id_tipoFormulario)</td>
+        <td>@p.pregunta</td>
+        <!-- 🟢 Nueva columna ESTADO -->
+        <td>
+            @if (p.activo)
+            {
+                <span class="badge badge-ok">Activo</span>
+            }
+            else
+            {
+                <span class="badge badge-off">Inactivo</span>
+            }
+        </td>
+        <td class="text-end" style="white-space:nowrap;">
+            <a asp-action="Modificar" asp-route-id="@p.id_pregunta"
+               class="btn btn-sm"
+               style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                Modificar
+            </a>
+            <a asp-action="Eliminar" asp-route-id="@p.id_pregunta"
+               class="btn btn-sm"
+               style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                Eliminar
+            </a>
+        </td>
+    </tr>
+}
+

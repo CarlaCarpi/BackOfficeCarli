@@ -1,0 +1,42 @@
+0000000000000000000000000000000000000000 698b83c455f9362bc330c6c87cc5354615167db5 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761759920 -0300	clone: from https://github.com/CarlaCarpi/BackOfficeCarli.git
+698b83c455f9362bc330c6c87cc5354615167db5 a39736a83c3b690cd1ff35afd6938781df227b77 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761789186 -0300	merge origin/main: Fast-forward
+a39736a83c3b690cd1ff35afd6938781df227b77 e026937e11437bf3e6c76fff0219d534fac38670 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761808943 -0300	commit: Mejoras front
+e026937e11437bf3e6c76fff0219d534fac38670 4eab364153fd606ebce2c114aedd048aee2c6e0d AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761844832 -0300	merge origin/main: Fast-forward
+4eab364153fd606ebce2c114aedd048aee2c6e0d 45a931978c8ac606662debd3395222a3cc0fd4e3 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761846398 -0300	commit: Correccion de error
+45a931978c8ac606662debd3395222a3cc0fd4e3 636e102e99e7a4c4ca4ac64f1a1e0ac31b8430ea AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761846653 -0300	commit: Actualizo .gitignore y limpio archivos compilados
+636e102e99e7a4c4ca4ac64f1a1e0ac31b8430ea 547d7f2c355cd9cffc17e9b974049fcef1203bdd AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761847539 -0300	commit: Ignorar carpetas de Visual Studio y compilación
+547d7f2c355cd9cffc17e9b974049fcef1203bdd ae165335e1566fb127572607b3b363c39ca8ca44 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761848762 -0300	reset: moving to origin/main
+ae165335e1566fb127572607b3b363c39ca8ca44 113cc46d28228bf8df0c6f16ae1f20a6bd3a8fb8 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761930598 -0300	merge origin/main: Fast-forward
+113cc46d28228bf8df0c6f16ae1f20a6bd3a8fb8 8c98b802b9bab6e09a1a79084fe506400554bd34 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761936995 -0300	merge origin/main: Fast-forward
+8c98b802b9bab6e09a1a79084fe506400554bd34 fe41cc364a6afaee662033ebb7f96724e4fbd62f AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761949268 -0300	commit: Cambios front
+fe41cc364a6afaee662033ebb7f96724e4fbd62f cfbb4d479baa36fa00da8d1efd95c90e2e0c40b2 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761950117 -0300	commit: modificaciones front
+cfbb4d479baa36fa00da8d1efd95c90e2e0c40b2 c73e85698bc677514acb6877ad40bdf1890de1cc AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1761957844 -0300	commit: donar
+c73e85698bc677514acb6877ad40bdf1890de1cc d99983535fe3a29d4eced8e3bf84563bfc9c85c4 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762190942 -0300	merge origin/main: Fast-forward
+d99983535fe3a29d4eced8e3bf84563bfc9c85c4 7133957f8a01bc917f5a47f2f6e7a4bdaa89e702 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762224463 -0300	merge origin/main: Fast-forward
+7133957f8a01bc917f5a47f2f6e7a4bdaa89e702 79ecbdfc8d98e3bf3f592dcdf1f07a9fc0172071 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762225434 -0300	merge origin/main: Fast-forward
+79ecbdfc8d98e3bf3f592dcdf1f07a9fc0172071 70b3d0b267c4765d3bd8161fdc59751f2a3c6c16 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762236895 -0300	merge origin/main: Fast-forward
+70b3d0b267c4765d3bd8161fdc59751f2a3c6c16 58b6d7ffe8cdac6ed0286dd9cc750b994d4d60ee AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762236994 -0300	commit: Formularios persona - desplegables de provincia y localidad ok
+58b6d7ffe8cdac6ed0286dd9cc750b994d4d60ee 213723000aa50d502e524251aca5d631722db191 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762287922 -0300	merge origin/main: Fast-forward
+213723000aa50d502e524251aca5d631722db191 9197ed44ad5997f40f868e464ed6484cf9c9282b AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762287981 -0300	commit: Donar - puntos de acopio no funciona
+9197ed44ad5997f40f868e464ed6484cf9c9282b c64ae8c4b5ad7c0799a28eed233e2479ac09569a AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762394651 -0300	merge origin/main: Fast-forward
+c64ae8c4b5ad7c0799a28eed233e2479ac09569a 5f153ef666ed4725753eb6d9309f2bcdabfd82a5 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762394826 -0300	commit: Formilario Adopcion
+5f153ef666ed4725753eb6d9309f2bcdabfd82a5 8ab9e75d0b9253f11bda7162992c3f4063936525 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762396215 -0300	merge origin/main: Fast-forward
+8ab9e75d0b9253f11bda7162992c3f4063936525 43d99b43a4dae7e1ae6d1010b48a817770735994 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762409903 -0300	commit: Cambio de imagenes
+43d99b43a4dae7e1ae6d1010b48a817770735994 1b03897e7b1755fe9a7d2d45a77e4139427bf048 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762411146 -0300	rebase (finish): refs/heads/main onto 58924e9555f534c06268db74989ebfb770fc5c61
+1b03897e7b1755fe9a7d2d45a77e4139427bf048 675f256343f0e3036958a8bf89bef66caf6ffa50 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762487281 -0300	merge origin/main: Fast-forward
+675f256343f0e3036958a8bf89bef66caf6ffa50 d2a48d7cbd94838ceb3cf2a66129434da1a6ebd4 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762500418 -0300	merge origin/main: Fast-forward
+d2a48d7cbd94838ceb3cf2a66129434da1a6ebd4 41f1253f2d60994fb3b14a1fefa29bc6754fa474 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762500511 -0300	commit: Front cambios estetica
+41f1253f2d60994fb3b14a1fefa29bc6754fa474 b9ddc23ee02757338532374e520b3cd1b60cae47 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762556112 -0300	commit: Banner y Formularios - Mensajes de envio autocerrables
+b9ddc23ee02757338532374e520b3cd1b60cae47 47f04165586dcca717ac206d985c2f51891ae58b AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762982720 -0300	reset: moving to origin/main
+47f04165586dcca717ac206d985c2f51891ae58b 2dc5dc5918131d2469bf7c84dbbf5a36fe10f7f7 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762990794 -0300	merge origin/main: Fast-forward
+2dc5dc5918131d2469bf7c84dbbf5a36fe10f7f7 41cb99880a5d69d90b4f7bb5a5a5216fc5fdd762 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1762990878 -0300	commit: Front INDEX de nuevo andando
+41cb99880a5d69d90b4f7bb5a5a5216fc5fdd762 decdb1978f12c886af7fec3a421f6b2b36c31449 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763004942 -0300	commit: modificaciones varias en front
+decdb1978f12c886af7fec3a421f6b2b36c31449 d3ccabdb7f698f5a8315d9193dc186b6bea97444 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763048279 -0300	merge origin/main: Fast-forward
+d3ccabdb7f698f5a8315d9193dc186b6bea97444 646670870d3f48ac311a44e3f84a5bbd193b9dad AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763055491 -0300	commit: mejoras en edopcion-index
+646670870d3f48ac311a44e3f84a5bbd193b9dad f1147b8e86097aef268558c698586d26d8474159 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763152825 -0300	merge origin/main: Fast-forward
+f1147b8e86097aef268558c698586d26d8474159 cb68f190f0df3f818db0ad29a03b25874bf1cb6b AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763187009 -0300	merge origin/main: Fast-forward
+cb68f190f0df3f818db0ad29a03b25874bf1cb6b f777947b1fd0f3861cdf8beb6373c89319d0f1d7 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763187074 -0300	commit: Modificaciones en info adoptar
+f777947b1fd0f3861cdf8beb6373c89319d0f1d7 0b1ba39b672f2c60ca4ac7422d2bfe99423d988a AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763250074 -0300	merge origin/main: Fast-forward
+0b1ba39b672f2c60ca4ac7422d2bfe99423d988a 708f2ffcc4ed5a72beb533998e81ca3599ba8a93 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763268796 -0300	merge origin/main: Fast-forward
+708f2ffcc4ed5a72beb533998e81ca3599ba8a93 b9231e69b53b7f68baea75bc4e5ef0d367751007 AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763269775 -0300	commit: Modificaciones Formularios
+b9231e69b53b7f68baea75bc4e5ef0d367751007 1a480408c0432fa0aae6a41cc30949f92f04737a AtilaEzequiel <112121260+AtilaEzequiel@users.noreply.github.com> 1763279746 -0300	merge origin/main: Fast-forward
