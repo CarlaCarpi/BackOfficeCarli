@@ -105,36 +105,36 @@ namespace SantaRamona.Backoffice.Controllers
             }
 
             // ========= ANIMALES =========
-            //var rAni = await client.GetAsync("/api/Animal");
-            //if (rAni.IsSuccessStatusCode)
-            //{
-            //    var json = await rAni.Content.ReadAsStringAsync();
-            //    var animales = JsonSerializer.Deserialize<IEnumerable<Animal>>(json, JOps) ?? Enumerable.Empty<Animal>();
+            var rAni = await client.GetAsync("/api/Animal");
+            if (rAni.IsSuccessStatusCode)
+            {
+                var json = await rAni.Content.ReadAsStringAsync();
+                var animales = JsonSerializer.Deserialize<IEnumerable<Animal>>(json, JOps) ?? Enumerable.Empty<Animal>();
 
-            //    // CREAR
-            //    eventos.AddRange(animales
-            //        .Where(a => a.id_usuario == idUsuario && a.fechaIngreso.HasValue)
-            //        .Select(a => new EventoUsuarioViewModel
-            //        {
-            //            Entidad = "Animal",
-            //            IdRegistro = a.id_animal,
-            //            NombreRegistro = a.nombre,
-            //            Accion = "CREAR",
-            //            Fecha = a.fechaIngreso!.Value
-            //        }));
+                // CREAR
+                eventos.AddRange(animales
+                    .Where(a => a.id_usuario == idUsuario && a.fechaIngreso.HasValue)
+                    .Select(a => new EventoUsuarioViewModel
+                    {
+                        Entidad = "Animal",
+                        IdRegistro = a.id_animal,
+                        NombreRegistro = a.nombre,
+                        Accion = "CREAR",
+                        Fecha = a.fechaIngreso!.Value
+                    }));
 
-            //    // MODIFICAR
-            //    eventos.AddRange(animales
-            //        .Where(a => a.id_usuario == idUsuario && a.fechaModificacion.HasValue)
-            //        .Select(a => new EventoUsuarioViewModel
-            //        {
-            //            Entidad = "Animal",
-            //            IdRegistro = a.id_animal,
-            //            NombreRegistro = a.nombre,
-            //            Accion = "MODIFICAR",
-            //            Fecha = a.fechaModificacion!.Value
-            //        }));
-            //}
+                // MODIFICAR
+                eventos.AddRange(animales
+                    .Where(a => a.id_usuario == idUsuario && a.fechaModificacion.HasValue)
+                    .Select(a => new EventoUsuarioViewModel
+                    {
+                        Entidad = "Animal",
+                        IdRegistro = a.id_animal,
+                        NombreRegistro = a.nombre,
+                        Accion = "MODIFICAR",
+                        Fecha = a.fechaModificacion!.Value
+                    }));
+            }
 
             // ========= PENSIONES =========
             var rPen = await client.GetAsync("/api/Pension");
