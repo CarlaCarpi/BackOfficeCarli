@@ -446,7 +446,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             // Filtrar solo preguntas del formulario de adopción (tipoFormulario = 1)
             preguntas = preguntas
-                .Where(p => p.id_tipoFormulario == 1)
+                .Where(p => p.id_tipoFormulario == 1 & p.activo)
                 .OrderBy(p => p.orden)
                 .ToList();
 

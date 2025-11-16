@@ -70,7 +70,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             // Filtrar solo preguntas del formulario de voluntariado (tipoFormulario = 3)
             preguntas = preguntas
-                .Where(p => p.id_tipoFormulario == 3) 
+                .Where(p => p.id_tipoFormulario == 3 & p.activo) 
                 .OrderBy(p => p.orden)
                 .ToList();
 
