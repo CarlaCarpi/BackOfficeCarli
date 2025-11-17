@@ -8,7 +8,7 @@
         MODIFICAR TAMAÑO
     </h1>
 
-    @* Avisos arriba, como en Especie *@
+    @* Avisos arriba, igual estilo que Animal/Especie *@
     @if (ViewBag.Ok != null)
     {
         <div class="alert mt-3"
@@ -27,29 +27,26 @@
     }
 
     <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
-        <div class="card-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
-            <strong>Datos del Tamaño</strong>
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">
+                ← Volver al listado
+            </a>
+
+            <div class="d-flex gap-2">
+                <button type="submit" form="form-edit" class="btn"
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Guardar
+                </button>
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
         </div>
 
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <a asp-action="Index" class="btn"
-                   style="border:1px solid #2FA8A2; color:#2FA8A2; border-radius:10px;">
-                    ← Volver al listado
-                </a>
-
-                <div class="d-flex gap-2">
-                    <button type="submit" form="form-edit" class="btn"
-                            style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
-                        Guardar
-                    </button>
-                    <button type="button" id="btn-cancelar" class="btn"
-                            style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
-                        Cancelar
-                    </button>
-                </div>
-            </div>
-
             <form id="form-edit" asp-action="Modificar" method="post" novalidate>
                 @Html.AntiForgeryToken()
 
@@ -62,58 +59,20 @@
                            style="border:1px solid #2FA8A2; border-radius:10px; height:44px;" />
                     <span asp-validation-for="tamano" class="text-danger"></span>
                 </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-2"></div>
             </form>
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         </div>
     </div>
 </div>
 
-<!-- Modal Confirmación Cancelar -->
-<div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius:14px;">
-            <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
-                <h5 class="modal-title">Cancelar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body" style="color:#000;">
-                ¿Realmente desea cancelar?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn"
-                        style="background:#2FA8A2; color:#fff; border-radius:10px;"
-                        data-bs-dismiss="modal">
-                    No
-                </button>
-                <a asp-action="Index" class="btn"
-                   style="background:#2FA8A2; color:#fff; border-radius:10px;">Sí</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        (function () {
-            const cancelBtn = document.getElementById('btn-cancelar');
-            if (cancelBtn) {
-                cancelBtn.addEventListener('click', function () {
-                    const modal = new bootstrap.Modal(document.getElementById('confirmCancelModal'));
-                    modal.show();
-                });
-            }
-        })();
-    </script>
-}
 <style>
     /* Quitar borde azul de TODOS los inputs, selects y textareas */
     .form-control:focus,
     .form-select:focus,
     textarea:focus {
         box-shadow: none !important;
-        border-color: #2FA8A2 !important; /* si querés que quede tu color */
+        border-color: #2FA8A2 !important;
         outline: none !important;
     }
 
@@ -131,7 +90,7 @@
         box-shadow: none !important;
     }
 
-    /* Para inputs type=date que a veces agregan borde azul propio */
+    /* Para inputs type=date que a veces agregan borde azul propio (por si los hubiera en el futuro) */
     input[type="date"] {
         outline: none !important;
     }
@@ -140,4 +99,25 @@
             border-color: #2FA8A2 !important;
             box-shadow: none !important;
         }
+
+    /* Quitar borde/glow azul de todos los botones */
+    .btn:focus,
+    .btn:active:focus,
+    .btn:focus-visible,
+    .btn-check:focus + .btn,
+    .btn-primary:focus,
+    .btn-danger:focus,
+    .btn-secondary:focus,
+    .btn-success:focus,
+    .btn-warning:focus,
+    .btn-info:focus,
+    .btn-light:focus,
+    .btn-dark:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
 </style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

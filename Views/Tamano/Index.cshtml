@@ -1,115 +1,27 @@
 ﻿@model IEnumerable<SantaRamona.Backoffice.Models.Tamano>
+
 @{
     await Html.RenderPartialAsync("_AnimalTopNav");
-}
-
-
-@{
     ViewData["Title"] = "Tamaños";
 }
 
-<style>
-    .main-container {
-        max-width: 900px;
-        margin: 2rem auto;
-        padding: 1rem;
-        font-family: 'Segoe UI', sans-serif;
-    }
-
-    .form-title {
-        text-align: center;
-        color: #40ADB0;
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-        text-transform: uppercase;
-    }
-
-    .styled-table {
-        border-collapse: collapse;
-        width: 100%;
-        background-color: #fff;
-        border: 2px solid #40ADB0;
-        border-radius: 0.5rem;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-        .styled-table th {
-            background-color: #40ADB0;
-            color: white;
-            padding: 1rem;
-            text-align: left;
-        }
-
-        .styled-table td {
-            padding: 1rem;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .styled-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-    .btn-primary, .btn-danger {
-        background-color: #40ADB0;
-        color: white;
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-        border: none;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        text-decoration: none;
-        transition: filter 0.2s;
-        display: inline-block;
-    }
-
-        .btn-primary:hover, .btn-danger:hover {
-            background-color: #40ADB0 !important;
-        }
-
-    .actions-cell {
-        text-align: center;
-        white-space: nowrap;
-    }
-
-    .actions {
-        display: inline-flex;
-        gap: 0.5rem;
-    }
-
-    .summary-errors {
-        color: #d9534f;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    .toolbar {
-        display: flex;
-        justify-content: flex-end;
-        margin: 1rem 0;
-    }
-
-    @@media (max-width: 560px) {
-        .actions {
-            flex-direction: column;
-        }
-    }
-</style>
-
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
         LISTA DE TAMAÑOS
     </h1>
 
+    @* Mensajes *@
     @if (TempData["Ok"] != null)
     {
-        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #40ADB0; background:#EAF6F6; border-radius:.5rem;">
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
             @TempData["Ok"]
         </div>
     }
     @if (TempData["Error"] != null)
     {
-        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #ff6b6b; background:#ffecec; border-radius:.5rem;">
+        <div class="alert mt-3" role="alert"
+             style="background:#ffecec; border:1px solid #ff6b6b; color:#a94442; border-radius:10px;">
             <strong>@TempData["Error"]</strong>
             @if (TempData["ApiDetail"] != null)
             {
@@ -119,55 +31,87 @@
     }
     @if (ViewBag.ApiError != null)
     {
-        <div class="summary-errors">@ViewBag.ApiError</div>
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
     }
 
-    <div class="toolbar">
-        <a asp-controller="Tamano" asp-action="Crear" class="btn-primary">Agregar Nuevo Tamaño</a>
+    <!-- 🔘 Botón Crear -->
+    <div class="d-flex justify-content-end mt-3">
+        <a asp-controller="Tamano" asp-action="Crear" class="btn"
+           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            Agregar Nuevo Tamaño
+        </a>
     </div>
 
     @if (Model?.Any() == true)
     {
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th style="text-align:left;">Código</th>
-                    <th style="text-align:left;">Descripción</th>
-                    <th class="text-end" style="width:220px; border-top-right-radius:10px; padding-right:12px;">
-                        Acciones
-                    </th>
+        <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+            <div class="table-responsive">
+                <table class="table styled-table">
+                    <thead>
+                        <tr style="background:#2FA8A2; color:#fff;">
+                            <th style="border-top-left-radius:10px;">Código</th>
+                            <th>Descripción</th>
+                            <th class="text-end" style="border-top-right-radius:10px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.id_tamano</td>
+                                <td>@item.tamano</td>
+                                <td class="text-end">
+                                    <a asp-controller="Tamano"
+                                       asp-action="Modificar"
+                                       asp-route-id="@item.id_tamano"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Modificar
+                                    </a>
 
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.id_tamano</td>
-                        <td>@item.tamano</td>
-                        <td class="actions-cell">
-                            <div class="actions">
-                                <a asp-controller="Tamano"
-                                   asp-action="Modificar"
-                                   asp-route-id="@item.id_tamano"
-                                   class="btn-primary">
-                                    Modificar
-                                </a>
-
-                                <a asp-action="Eliminar" asp-route-id="@item.id_tamano"
-                                   class="btn btn-sm"
-                                   style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
-                                    Eliminar
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                    <a asp-action="Eliminar"
+                                       asp-route-id="@item.id_tamano"
+                                       class="btn btn-sm"
+                                       style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     }
     else
     {
-        <p style="color: #666;">No hay tamaños cargados.</p>
+        <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+            <div class="p-4 text-center text-muted">
+                No hay tamaños cargados.
+            </div>
+        </div>
     }
 </div>
+
+<style>
+    .table.styled-table th,
+    .table.styled-table td {
+        text-align: left;
+        vertical-align: middle;
+        padding: .75rem;
+    }
+
+        .table.styled-table th:last-child,
+        .table.styled-table td:last-child {
+            text-align: right;
+        }
+
+    @@media (max-width: 768px) {
+        .d-flex.justify-content-end {
+            width: 100%;
+        }
+    }
+</style>

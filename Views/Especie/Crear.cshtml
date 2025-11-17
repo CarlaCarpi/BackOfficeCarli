@@ -8,7 +8,7 @@
         AGREGAR NUEVA ESPECIE
     </h1>
 
-    @* Avisos arriba, igual que en Tamaño *@
+    @* Avisos arriba, igual que en Animal *@
     @if (ViewBag.Ok != null)
     {
         <div class="alert mt-3"
@@ -27,95 +27,57 @@
     }
 
     <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
-        <div class="card-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
-            <strong>Datos de la Especie</strong>
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">
+                ← Volver al listado
+            </a>
+
+            <div class="d-flex gap-2">
+                <button type="submit" form="form-create-especie" class="btn"
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Guardar
+                </button>
+
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
         </div>
 
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <a asp-action="Index" class="btn" style="border:1px solid #2FA8A2; color:#2FA8A2; border-radius:10px;">
-                    ← Volver al listado
-                </a>
-
-                <div class="d-flex gap-2">
-                    <button type="submit" form="form-create-especie" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
-                        Guardar
-                    </button>
-                    <button type="button" id="btn-cancelar-especie" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
-                        Cancelar
-                    </button>
-                </div>
-            </div>
 
             <form id="form-create-especie" asp-action="Crear" method="post" novalidate>
                 @Html.AntiForgeryToken()
 
                 <div class="mb-3">
-                    <label asp-for="especie" class="form-label">Descripción</label>
+                    <label asp-for="especie" class="form-label fw-semibold">Descripción</label>
                     <input asp-for="especie" class="form-control"
                            style="border:1px solid #2FA8A2; border-radius:10px; height:44px;" />
                     <span asp-validation-for="especie" class="text-danger"></span>
                 </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-2"></div>
+
             </form>
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         </div>
     </div>
 </div>
-
-<!-- Modal Confirmación Cancelar -->
-<div class="modal fade" id="confirmCancelModalEspecie" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius:14px;">
-            <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
-                <h5 class="modal-title">Cancelar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body" style="color:#000;">
-                ¿Realmente desea cancelar?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn"
-                        style="background:#2FA8A2; color:#fff; border-radius:10px;" data-bs-dismiss="modal">
-                    No
-                </button>
-                <a asp-action="Index" class="btn"
-                   style="background:#2FA8A2; color:#fff; border-radius:10px;">
-                    Sí
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        (function () {
-            const cancelBtn = document.getElementById('btn-cancelar-especie');
-            if (cancelBtn) {
-                cancelBtn.addEventListener('click', function () {
-                    const modalEl = document.getElementById('confirmCancelModalEspecie');
-                    const modal = new bootstrap.Modal(modalEl);
-                    modal.show();
-                });
-            }
-        })();
-    </script>
-}
 
 <style>
-   
-    /* Quitar borde azul de TODOS los inputs, selects y textareas */
+
+    /* Mismos estilos que en Crear Animal */
     .form-control:focus,
     .form-select:focus,
     textarea:focus {
         box-shadow: none !important;
-        border-color: #2FA8A2 !important; /* si querés que quede tu color */
+        border-color: #2FA8A2 !important;
         outline: none !important;
     }
 
-    /* Evitar borde azul de campos válidos de Bootstrap */
     .form-control.is-valid,
     .form-select.is-valid {
         border-color: #ced4da !important;
@@ -123,13 +85,11 @@
         box-shadow: none !important;
     }
 
-    /* Evitar borde rojo exagerado de inválidos */
     .form-control.is-invalid,
     .form-select.is-invalid {
         box-shadow: none !important;
     }
 
-    /* Para inputs type=date que a veces agregan borde azul propio */
     input[type="date"] {
         outline: none !important;
     }
@@ -138,13 +98,9 @@
             border-color: #2FA8A2 !important;
             box-shadow: none !important;
         }
+
 </style>
 
-input:focus,
-textarea:focus,
-select:focus {
-    outline: none !important;
-    box-shadow: none !important;
-    border-color: #2FA8A2 !important; /* o el color que quieras */
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
-</style>

@@ -33,38 +33,44 @@
     }
 
     <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
-        <div class="card-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
-            <strong>Datos del Tamaño</strong>
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">
+                ← Volver al listado
+            </a>
+
+            <div class="d-flex gap-2">
+                @* Eliminar solo si NO está en uso *@
+                @if (!enUso)
+                {
+                    <button type="button" class="btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#confirmarEliminar"
+                            style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
+                        Eliminar
+                    </button>
+                }
+
+                @* Cancelar siempre visible *@
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
         </div>
+
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <a asp-action="Index" class="btn" style="border:1px solid #2FA8A2; color:#2FA8A2; border-radius:10px;">← Volver al listado</a>
-
-                <div class="d-flex gap-2">
-                    @* Eliminar solo si NO está en uso *@
-                    @if (!enUso)
-                    {
-                        <button type="button" class="btn"
-                                data-bs-toggle="modal" data-bs-target="#confirmarEliminar"
-                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
-                            Eliminar
-                        </button>
-                    }
-                    @* Cancelar SIEMPRE visible *@
-                    <a asp-action="Index" class="btn"
-                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
-                        Cancelar
-                    </a>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Código</label>
+                    <input class="form-control" value="@Model.id_tamano" readonly />
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label class="form-label">Identificación</label>
-                <input class="form-control" value="@Model.id_tamano" disabled />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <input class="form-control" value="@Model.tamano" disabled />
+                <div class="col-md-8">
+                    <label class="form-label">Descripción</label>
+                    <input class="form-control" value="@Model.tamano" readonly />
+                </div>
             </div>
         </div>
     </div>
@@ -78,7 +84,8 @@
                     <div class="modal-header"
                          style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
                         <h5 class="modal-title">Confirmar eliminación</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        <button type="button" class="btn-close btn-close-white"
+                                data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body" style="color:#000;">
                         ¿Realmente desea eliminar este tamaño?
@@ -103,3 +110,20 @@
         </div>
     }
 </div>
+
+<style>
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        box-shadow: none !important;
+        border-color: #2FA8A2 !important;
+        outline: none !important;
+    }
+
+    .btn:focus,
+    .btn:active:focus,
+    .btn:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+</style>
