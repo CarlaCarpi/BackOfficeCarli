@@ -37,6 +37,10 @@
         box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
     }
 
+.pet-name.small-text {
+    font-size: 17px; /* 🔹 Nuevo tamaño si supera los 20 caracteres */
+}
+
 .pet-ima {
     flex: 1; /* ocupa el espacio disponible */
     overflow: hidden;

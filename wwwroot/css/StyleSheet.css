@@ -463,6 +463,10 @@ section {
     padding: 14px 16px 18px;
     text-align: center;
 }
+    /* 🔹 Versión reducida si el nombre tiene más de 20 caracteres */
+    .pet-body.compact {
+        padding: 8px 8px 8px; /* ajustá como quieras */
+    }
 
 .pet-name {
     font-family: Nunito, sans-serif;
@@ -470,6 +474,10 @@ section {
     font-size: 20px;
     margin-bottom: 6px;
 }
+
+    .pet-name.small-text {
+        font-size: 17px; /* 🔹 Nuevo tamaño si supera los 20 caracteres */
+    }
 
 .pet-meta {
     font-size: .82rem;

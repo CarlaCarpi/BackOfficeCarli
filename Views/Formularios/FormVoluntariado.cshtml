@@ -40,6 +40,9 @@
         <form asp-action="FormularioVoluntariado" asp-controller="FormPersonaVoluntariado" method="post">
             @Html.AntiForgeryToken()
 
+           
+
+
             <input type="hidden" name="idPersona" value="@ViewBag.IdPersona" />
 
             @foreach (var pregunta in Model)
@@ -51,9 +54,13 @@
                               id="pregunta_@pregunta.id_pregunta"
                               name="respuestas[@pregunta.id_pregunta]"
                               required
+                              class="respuesta-textarea"
+                              data-id="@pregunta.id_pregunta"
                               style="width:100%;padding:5px;"></textarea><br />
 
-
+                    <span class="text-danger mensaje-error" id="error_@pregunta.id_pregunta" style="display:none;">
+                        No se permiten caracteres especiales.
+                    </span>
                     @* <input type="text"
                            id="pregunta_@pregunta.id_pregunta"
                            name="respuestas[@pregunta.id_pregunta]"
@@ -94,6 +101,27 @@
                     closeAlert(alert);
                 }, 5000);
             });
+        });
+    </script>
+
+    <script>
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s.,]+$/;
+
+        document.querySelector("form").addEventListener("submit", function (e) {
+            let ok = true;
+
+            document.querySelectorAll(".respuesta-textarea").forEach(t => {
+                const errorSpan = document.getElementById("error_" + t.dataset.id);
+
+                if (!regex.test(t.value)) {
+                    ok = false;
+                    errorSpan.style.display = "block";
+                } else {
+                    errorSpan.style.display = "none";
+                }
+            });
+
+            if (!ok) e.preventDefault();
         });
     </script>
 }

@@ -329,4 +329,24 @@
             });
         });
     </script>
+
+    <script>
+        document.querySelectorAll('.pet-name').forEach(el => {
+            if (el.textContent.trim().length > 20) {
+                el.classList.add('small-text');
+            }
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.pet-body').forEach(body => {
+            const nameEl = body.querySelector('.pet-name');
+
+            if (nameEl.textContent.trim().length > 20) {
+                nameEl.classList.add('small-text'); // achica la letra
+                body.classList.add('compact');      // achica el padding
+            }
+        });
+    </script>
+
 }
