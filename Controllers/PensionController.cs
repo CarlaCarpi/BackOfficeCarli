@@ -628,7 +628,7 @@ namespace SantaRamona.Backoffice.Controllers
         public async Task<IActionResult> Eliminar(int id)
         {
             var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync($"{RUTA_PENSION}/{id}");
+            var resp = await client.GetAsync($"/api/Pension/{id}");
 
             if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -639,32 +639,138 @@ namespace SantaRamona.Backoffice.Controllers
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
-                TempData["Error"] = $"Error al obtener pensión: {body}";
+                TempData["Error"] = $"GET /api/Pension/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
                 return RedirectToAction(nameof(Index));
             }
 
-            var model = JsonSerializer.Deserialize<Pension>(await resp.Content.ReadAsStringAsync(), JsonOps);
-            ViewBag.Estados = await CargarEstadosPensionDictAsync(client);
+            var json = await resp.Content.ReadAsStringAsync();
+            var model = JsonSerializer.Deserialize<Pension>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (model == null)
+            {
+                TempData["Error"] = "No se pudo cargar la pensión.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // 🔹 Cargar diccionarios para mostrar nombres en la vista
+            await CargarDiccionariosPension();
+
+            // Si querés agregar lógica de bloqueo después:
+            // ViewBag.Bloqueado = false;
+            // ViewBag.Motivo = "";
+
+            // Mensajes opcionales tipo Ok/Error si usás TempData
+            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
+            if (TempData["Error"] is string err) ViewBag.Error = err;
+
             return View(model);
         }
 
-        [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrador")]
+        [ActionName("Eliminar")]
         public async Task<IActionResult> EliminarConfirmado(int id)
         {
             var client = _http.CreateClient("Api");
-            var resp = await client.DeleteAsync($"{RUTA_PENSION}/{id}");
+            var respDel = await client.DeleteAsync($"/api/Pension/{id}");
 
-            if (!resp.IsSuccessStatusCode)
+            if (!respDel.IsSuccessStatusCode)
             {
-                var body = await resp.Content.ReadAsStringAsync();
-                TempData["Error"] = $"Error al eliminar pensión: {body}";
-                return RedirectToAction(nameof(Index));
+                var body = await respDel.Content.ReadAsStringAsync();
+
+                TempData["Error"] = "No se pudo eliminar la pensión.";
+                if (!string.IsNullOrWhiteSpace(body))
+                    TempData["ApiDetail"] = body;
+
+                // Volvemos a la pantalla de eliminar mostrando el error
+                return RedirectToAction(nameof(Eliminar), new { id });
             }
 
             TempData["Ok"] = "Pensión eliminada correctamente.";
             return RedirectToAction(nameof(Index));
         }
+
+
+        private async Task CargarDiccionariosPension()
+        {
+            var client = _http.CreateClient("Api");
+            var ops = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            // PROVINCIAS
+            var respProv = await client.GetAsync("/api/Provincia");
+            if (respProv.IsSuccessStatusCode)
+            {
+                var jsonProv = await respProv.Content.ReadAsStringAsync();
+                var listaProv = JsonSerializer.Deserialize<List<Provincia>>(jsonProv, ops) ?? new();
+                ViewBag.Provincias = listaProv
+                    .GroupBy(p => p.id_provincia)
+                    .ToDictionary(g => g.Key, g => g.First().nombre ?? "");
+            }
+            else
+            {
+                ViewBag.Provincias = new Dictionary<int, string>();
+            }
+
+            // LOCALIDADES
+            var respLoc = await client.GetAsync("/api/Localidad");
+            if (respLoc.IsSuccessStatusCode)
+            {
+                var jsonLoc = await respLoc.Content.ReadAsStringAsync();
+                var listaLoc = JsonSerializer.Deserialize<List<Localidad>>(jsonLoc, ops) ?? new();
+                ViewBag.Localidades = listaLoc
+                    .GroupBy(l => l.id_localidad)
+                    .ToDictionary(g => g.Key, g => g.First().nombre ?? "");
+            }
+            else
+            {
+                ViewBag.Localidades = new Dictionary<int, string>();
+            }
+
+            // ESTADOS DE PENSIÓN
+            var respEst = await client.GetAsync("/api/EstadoPension");
+            if (respEst.IsSuccessStatusCode)
+            {
+                var jsonEst = await respEst.Content.ReadAsStringAsync();
+                var listaEst = JsonSerializer.Deserialize<List<Estado_Pension>>(jsonEst, ops) ?? new();
+                ViewBag.EstadosPension = listaEst
+                    .GroupBy(e => e.id_estadoPension)
+                    .ToDictionary(g => g.Key, g => g.First().descripcion ?? "");
+            }
+            else
+            {
+                ViewBag.EstadosPension = new Dictionary<int, string>();
+            }
+
+            // USUARIOS
+            var respUsr = await client.GetAsync("/api/Usuario");
+            if (respUsr.IsSuccessStatusCode)
+            {
+                var jsonUsr = await respUsr.Content.ReadAsStringAsync();
+                var listaUsr = JsonSerializer.Deserialize<List<Usuario>>(jsonUsr, ops) ?? new();
+                ViewBag.Usuarios = listaUsr
+                    .GroupBy(u => u.id_usuario)
+                    .ToDictionary(
+                        g => g.Key,
+                        g =>
+                        {
+                            var u = g.First();
+                            var nombre = (u.nombre ?? "").Trim();
+                            var apellido = (u.apellido ?? "").Trim();
+                            var full = (nombre + " " + apellido).Trim();
+                            return string.IsNullOrWhiteSpace(full) ? $"Usuario #{u.id_usuario}" : full;
+                        });
+            }
+            else
+            {
+                ViewBag.Usuarios = new Dictionary<int, string>();
+            }
+        }
+
 
         // ============================================================
         // ====== AJAX: Localidades por Provincia (filtrado MVC) ======

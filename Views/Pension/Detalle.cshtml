@@ -97,9 +97,9 @@
             <label class="form-label fw-semibold">Fecha de última modificación</label>
             <div class="form-control" readonly>@DateTxt(Model.fechaEgreso)</div>
         </div>
-        <div class="col-md-4">
-            <label class="form-label fw-semibold">Monto por día</label>
-            <div class="form-control" readonly>@MoneyTxt(Model.montoDia)</div>
+        <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input class="form-control" value="@MoneyTxt(Model.montoDia)" readonly />
         </div>
     </div>
 </div>

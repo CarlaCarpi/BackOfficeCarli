@@ -1,10 +1,10 @@
 ﻿@model SantaRamona.Backoffice.Models.Estado_Pension
 @{
     await Html.RenderPartialAsync("_PensionTopNav");
-    ViewData["Title"] = "Eliminar Estado de Pension";
+    ViewData["Title"] = "Eliminar Estado de Pensión";
 
-    bool bloqueado = (ViewBag.Bloqueado as bool?) ?? false;   // opcional: cuando no se puede eliminar
-    string motivo = ViewBag.Motivo as string ?? string.Empty; // ej: "hay personas usando este estado"
+    bool enUso = (ViewBag.Bloqueado as bool?) ?? false;
+    string motivo = ViewBag.Motivo as string ?? "";
 }
 
 <div class="container mt-4">
@@ -12,94 +12,101 @@
         ELIMINAR ESTADO
     </h1>
 
-    @if (ViewBag.Ok != null)
+    @* === Alertas (idénticas a Tamaño) === *@
+    @if (TempData["Error"] is string err)
     {
-        <div class="alert mt-3" role="alert"
-             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
-            @ViewBag.Ok
+        <div class="alert mt-3"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @err
         </div>
     }
-    @if (ViewBag.ApiError != null)
+
+    @if (TempData["Ok"] is string ok)
     {
-        <div class="alert mt-3" role="alert"
-             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
-            @ViewBag.ApiError
-            @if (TempData["ApiDetail"] is string det && !string.IsNullOrWhiteSpace(det))
-            {
-                <div class="small mt-1 text-muted">@det</div>
-            }
+        <div class="alert mt-3"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ok
+        </div>
+    }
+
+    @if (enUso)
+    {
+        <div class="alert mt-3"
+             style="background:#fff8e6; border:1px solid #f0ad4e; color:#8a6d3b; border-radius:10px;">
+            No se puede eliminar el estado porque @motivo.
         </div>
     }
 
     <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
-        <div class="card-header d-flex justify-content-between align-items-center"
+        <div class="card-header"
              style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
-            <a asp-action="Index" class="btn"
-               style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver</a>
-
-            <div class="d-flex gap-2">
-                @if (!bloqueado)
-                {
-                    <button type="button" class="btn"
-                            data-bs-toggle="modal" data-bs-target="#confirmEliminar"
-                            style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
-                        Eliminar
-                    </button>
-                }
-                <a asp-action="Index" class="btn"
-                   style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
-                    Cancelar
-                </a>
-            </div>
+            <strong>Datos del Estado</strong>
         </div>
 
         <div class="card-body">
-            @if (bloqueado)
-            {
-                <div class="alert" role="alert"
-                     style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
-                    No se puede eliminar este estado porque @motivo.
-                </div>
-            }
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="Index" class="btn"
+                   style="border:1px solid #2FA8A2; color:#2FA8A2; border-radius:10px;">
+                    ← Volver al listado
+                </a>
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">ID</label>
-                    <input class="form-control" value="@Model.id_estadoPension" readonly />
-                </div>
+                <div class="d-flex gap-2">
+                    @if (!enUso)
+                    {
+                        <button type="button" class="btn"
+                                data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+                            Eliminar
+                        </button>
+                    }
 
-                <div class="col-md-8">
-                    <label class="form-label">Descripción</label>
-                    <input class="form-control" value="@Model.descripcion" readonly />
+                    <a asp-action="Index" class="btn"
+                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+                        Cancelar
+                    </a>
                 </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">ID</label>
+                <input class="form-control" value="@Model.id_estadoPension" disabled />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <input class="form-control" value="@Model.descripcion" disabled />
             </div>
         </div>
     </div>
 
-    @if (!bloqueado)
+    @if (!enUso)
     {
-        <!-- Modal de confirmación -->
-        <div class="modal fade" id="confirmEliminar" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="border-radius:14px;">
-                    <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                    <div class="modal-header"
+                         style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
                         <h5 class="modal-title">Confirmar eliminación</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este estado?
+
+                    <div class="modal-body" style="color:#000;">
+                        ¿Realmente desea eliminar este estado?
                     </div>
+
                     <div class="modal-footer" style="border-top:none;">
                         <form asp-action="Eliminar" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.id_estadoPension" />
+
                             <button type="submit" class="btn"
                                     style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
                                 Sí, eliminar
                             </button>
                         </form>
 
-                        <button type="button" class="btn" data-bs-dismiss="modal"
+                        <button type="button" class="btn"
+                                data-bs-dismiss="modal"
                                 style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
                             No
                         </button>

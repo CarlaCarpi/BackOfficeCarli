@@ -1162,6 +1162,7 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
             var resp = await client.GetAsync($"{RUTA_PERSONA}/{id}");
+
             if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 TempData["Error"] = "La persona no existe o ya fue eliminada.";
@@ -1175,8 +1176,13 @@ namespace SantaRamona.Backoffice.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var model = JsonSerializer.Deserialize<Persona>(await resp.Content.ReadAsStringAsync(), JsonOps);
-            ViewBag.Estados = await CargarEstadosDictAsync(client);
+            var model = JsonSerializer.Deserialize<Persona>(
+                await resp.Content.ReadAsStringAsync(),
+                JsonOps
+            );
+
+            // 🔹 Cargar diccionarios de provincias, localidades y estado persona
+            await CargarDiccionariosPersonaAsync(client);
 
             return View(model);
         }
@@ -1189,22 +1195,20 @@ namespace SantaRamona.Backoffice.Controllers
 
             try
             {
-                // 1️⃣ Traer todos los formularios desde la API
+                // 1️⃣ Obtener todos los formularios existentes
                 var fResp = await client.GetAsync("/api/Formulario");
                 if (fResp.IsSuccessStatusCode)
                 {
                     var fJson = await fResp.Content.ReadAsStringAsync();
-                    var todosLosFormularios = JsonSerializer
-                        .Deserialize<List<FormularioMin>>(fJson, JsonOps) ?? new();
+                    var formularios = JsonSerializer.Deserialize<List<FormularioMin>>(fJson, JsonOps) ?? new();
 
-                    // Formularios que pertenecen a esta persona
-                    var formulariosPersona = todosLosFormularios
+                    var formulariosPersona = formularios
                         .Where(f => f.id_persona == id)
                         .ToList();
 
                     foreach (var form in formulariosPersona)
                     {
-                        // 1.a) Traer respuestas de este formulario
+                        // 1.a) Obtener respuestas del formulario
                         var rResp = await client.GetAsync($"/api/Respuesta?formularioId={form.id_formulario}");
                         if (!rResp.IsSuccessStatusCode)
                             rResp = await client.GetAsync($"/api/Respuesta?id_formulario={form.id_formulario}");
@@ -1212,16 +1216,14 @@ namespace SantaRamona.Backoffice.Controllers
                         if (rResp.IsSuccessStatusCode)
                         {
                             var rJson = await rResp.Content.ReadAsStringAsync();
-                            var respuestas = JsonSerializer
-                                .Deserialize<List<RespuestaMin>>(rJson, JsonOps) ?? new();
+                            var respuestas = JsonSerializer.Deserialize<List<RespuestaMin>>(rJson, JsonOps) ?? new();
 
-                            // Me aseguro de filtrar por id_formulario por las dudas
-                            var respuestasDeEsteForm = respuestas
+                            var respuestasDelForm = respuestas
                                 .Where(r => r.id_formulario == form.id_formulario)
                                 .ToList();
 
-                            // 1.b) Eliminar cada respuesta
-                            foreach (var r in respuestasDeEsteForm)
+                            // 1.b) Eliminar respuestas
+                            foreach (var r in respuestasDelForm)
                             {
                                 await client.DeleteAsync($"/api/Respuesta/{r.id_respuesta}");
                             }
@@ -1232,25 +1234,67 @@ namespace SantaRamona.Backoffice.Controllers
                     }
                 }
 
-                // 2️⃣ Ahora sí, tratar de eliminar la persona
-                var resp = await client.DeleteAsync($"/api/Persona/{id}");
+                // 2️⃣ Eliminar persona
+                var respDel = await client.DeleteAsync($"/api/Persona/{id}");
 
-                if (!resp.IsSuccessStatusCode)
+                if (!respDel.IsSuccessStatusCode)
                 {
-                    var body = await resp.Content.ReadAsStringAsync();
-                    TempData["Error"] = $"Error al eliminar persona: {body}";
-                    return RedirectToAction(nameof(Index));
+                    var body = await respDel.Content.ReadAsStringAsync();
+
+                    TempData["Error"] = "No se pudo eliminar la persona.";
+                    if (!string.IsNullOrWhiteSpace(body))
+                        TempData["ApiDetail"] = body;
+
+                    // 👉 Volvemos a la pantalla Eliminar para mostrar el error
+                    return RedirectToAction(nameof(Eliminar), new { id });
                 }
 
-                TempData["Ok"] = "Persona y formularios asociados eliminados correctamente.";
+                TempData["Ok"] = "Persona eliminada correctamente.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TempData["Error"] = "Ocurrió un error al intentar eliminar la persona.";
-                return RedirectToAction(nameof(Index));
+                TempData["Error"] = "Ocurrió un error inesperado al intentar eliminar la persona.";
+                TempData["ApiDetail"] = ex.Message;
+                return RedirectToAction(nameof(Eliminar), new { id });
             }
         }
+
+        private async Task CargarDiccionariosPersonaAsync(HttpClient client)
+        {
+            var ops = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            // PROVINCIAS
+            var respProv = await client.GetAsync("/api/Provincia");
+            if (respProv.IsSuccessStatusCode)
+            {
+                var provJson = await respProv.Content.ReadAsStringAsync();
+                var listaProv = JsonSerializer.Deserialize<List<Provincia>>(provJson, ops) ?? new();
+                ViewBag.Provincias = listaProv.ToDictionary(x => x.id_provincia, x => x.nombre);
+            }
+            else ViewBag.Provincias = new Dictionary<int, string>();
+
+            // LOCALIDADES
+            var respLoc = await client.GetAsync("/api/Localidad");
+            if (respLoc.IsSuccessStatusCode)
+            {
+                var locJson = await respLoc.Content.ReadAsStringAsync();
+                var listaLoc = JsonSerializer.Deserialize<List<Localidad>>(locJson, ops) ?? new();
+                ViewBag.Localidades = listaLoc.ToDictionary(x => x.id_localidad, x => x.nombre);
+            }
+            else ViewBag.Localidades = new Dictionary<int, string>();
+
+            // ESTADOS PERSONA
+            var respEst = await client.GetAsync("/api/EstadoPersona");
+            if (respEst.IsSuccessStatusCode)
+            {
+                var estJson = await respEst.Content.ReadAsStringAsync();
+                var listaEst = JsonSerializer.Deserialize<List<Estado_Persona>>(estJson, ops) ?? new();
+                ViewBag.EstadosPersona = listaEst.ToDictionary(x => x.id_estadoPersona, x => x.descripcion);
+            }
+            else ViewBag.EstadosPersona = new Dictionary<int, string>();
+        }
+
 
         // ============================================================
         // ====== AJAX: Localidades por Provincia (filtrado MVC) ======
