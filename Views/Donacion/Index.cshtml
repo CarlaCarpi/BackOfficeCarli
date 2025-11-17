@@ -1,145 +1,27 @@
 ﻿@model IEnumerable<SantaRamona.Backoffice.Models.Donacion>
+
 @{
     ViewData["Title"] = "Donaciones";
     string TipoTxt(string t) => t == "M" ? "Medicamentos" : t == "I" ? "Insumos" : t == "B" ? "Banco" : t == "P" ? "No Bancario" : t;
 }
 
-<style>
-    .main-container {
-        max-width: 900px;
-        margin: 2rem auto;
-        padding: 1rem;
-        font-family: 'Segoe UI', sans-serif;
-    }
-
-    .header-donacion {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.2rem;
-    }
-
-    .titulo-donacion {
-        text-align: center;
-        color: #2FA8A2;
-        font-weight: bold;
-        letter-spacing: .5px;
-        margin: 0;
-        font-size: 2rem;
-        flex: 1;
-    }
-
-    .styled-table {
-        border-collapse: collapse;
-        width: 100%;
-        background-color: #fff;
-        border: 2px solid #40ADB0;
-        border-radius: 0.5rem;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-        .styled-table th {
-            background-color: #40ADB0;
-            color: white;
-            padding: 1rem;
-            text-align: left;
-        }
-
-        .styled-table td {
-            padding: 1rem;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .styled-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-    .btn-primary {
-        background-color: #40ADB0 !important;
-        color: #fff !important;
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-        border: none;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        text-decoration: none;
-        transition: filter 0.2s, background-color 0.2s;
-        display: inline-block;
-    }
-
-        .btn-primary:hover,
-        .btn-primary:focus,
-        .btn-primary:active {
-            background-color: #40ADB0 !important;
-            color: #fff !important;
-            filter: brightness(0.92);
-        }
-
-    .link-back {
-        background: #fff;
-        border: 1px solid #40ADB0;
-        color: #40ADB0;
-        padding: .5rem 1rem;
-        border-radius: .5rem;
-        text-decoration: none;
-        transition: background-color .2s, color .2s;
-    }
-
-        .link-back:hover {
-            background: #E6F6F6;
-            color: #155e59;
-        }
-
-    .actions-cell {
-        text-align: center;
-        white-space: nowrap;
-    }
-
-    .actions {
-        display: inline-flex;
-        gap: 0.5rem;
-    }
-
-    .summary-errors {
-        color: #d9534f;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    @@media (max-width: 560px) {
-        .header-donacion {
-            flex-direction: column;
-            gap: .5rem;
-        }
-
-        .actions {
-            flex-direction: column;
-        }
-
-        .titulo-donacion {
-            text-align: center;
-        }
-    }
-</style>
-
-<div class="container mt-4">
-    <div class="header-donacion">
-        <a asp-controller="Home" asp-action="Index" class="link-back">← Volver al menú</a>
-        <h1 class="titulo-donacion">LISTA DE DONACIONES</h1>
-        <a asp-controller="Donacion" asp-action="Crear" class="btn-primary">Agregar Nueva Donación</a>
-    </div>
+<div class="container-fluid mt-4">
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        LISTA DE DONACIONES
+    </h1>
 
     @* Mensajes *@
     @if (TempData["Ok"] != null)
     {
-        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #40ADB0; background:#EAF6F6; border-radius:.5rem;">
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
             @TempData["Ok"]
         </div>
     }
     @if (TempData["Error"] != null)
     {
-        <div style="margin:.8rem 0; padding:.6rem; border:2px solid #ff6b6b; background:#ffecec; border-radius:.5rem;">
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
             <strong>@TempData["Error"]</strong>
             @if (TempData["ApiDetail"] != null)
             {
@@ -149,56 +31,75 @@
     }
     @if (ViewBag.ApiError != null)
     {
-        <div class="summary-errors">@ViewBag.ApiError</div>
+        <div class="alert mt-3" role="alert"
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
+            @ViewBag.ApiError
+        </div>
     }
+
+    <!-- Fila con Volver + Crear (similar a buscador + crear de Animal) -->
+    <div class="d-flex justify-content-between align-items-center mt-3 gap-2 flex-wrap">
+        <a asp-controller="Home" asp-action="Index" class="btn"
+           style="background:#fff; color:#2FA8A2; border:1px solid #2FA8A2; border-radius:10px; padding:.45rem 1.1rem;">
+            ← Volver al menú
+        </a>
+
+        <a asp-controller="Donacion" asp-action="Crear" class="btn"
+           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            Agregar Nueva Donación
+        </a>
+    </div>
 
     @if (Model?.Any() == true)
     {
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th style="width:140px;">Código</th>
-                    <th style="width:220px;">Tipo</th>
-                    <th>Descripción</th>
-                    <th style="text-align:center; width: 220px;">Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="tbody-donaciones">
-                @foreach (var d in Model)
-                {
-                    <tr>
-                        <td>@d.id_donacion</td>
-                        <td>@TipoTxt(d.tipo)</td>
-                        <td>@d.descripcion</td>
-                        <td class="actions-cell">
-                            <div class="actions">
-                                <a asp-controller="Donacion"
-                                   asp-action="Modificar"
-                                   asp-route-id="@d.id_donacion"
-                                   class="btn-primary">
-                                    Modificar
-                                </a>
+        <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
+            <div class="table-responsive">
+                <table class="table styled-table">
+                    <thead>
+                        <tr style="background:#2FA8A2; color:#fff;">
+                            <th style="border-top-left-radius:10px; width:140px;">Código</th>
+                            <th style="width:220px;">Tipo</th>
+                            <th>Descripción</th>
+                            <th class="text-end" style="border-top-right-radius:10px; width:220px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-donaciones">
+                        @foreach (var d in Model)
+                        {
+                            <tr>
+                                <td>@d.id_donacion</td>
+                                <td>@TipoTxt(d.tipo)</td>
+                                <td>@d.descripcion</td>
+                                <td class="text-end">
+                                    <a asp-controller="Donacion"
+                                       asp-action="Modificar"
+                                       asp-route-id="@d.id_donacion"
+                                       class="btn btn-sm"
+                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                                        Modificar
+                                    </a>
 
-                                <a asp-controller="Donacion"
-                                   asp-action="Eliminar"
-                                   asp-route-id="@d.id_donacion"
-                                   class="btn btn-sm"
-                                   style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
-                                    Eliminar
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                    <a asp-controller="Donacion"
+                                       asp-action="Eliminar"
+                                       asp-route-id="@d.id_donacion"
+                                       class="btn btn-sm"
+                                       style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <!-- 🔹 Botón Ver más -->
+        <!-- Botón Ver más (igual estilo que Animal) -->
         <div class="d-flex justify-content-center my-3">
             <button id="btnVerMasDonaciones"
                     type="button"
-                    class="btn-primary"
-                    style="padding:.55rem 1.25rem;"
+                    class="btn"
+                    style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.55rem 1.25rem;"
                     data-next-page="@((int)(ViewBag.Page ?? 1) + 1)"
             @(((bool)(ViewBag.HasMore ?? false)) ? "" : "disabled")>
                 @(((bool)(ViewBag.HasMore ?? false)) ? "Ver más" : "No hay más")
@@ -207,11 +108,11 @@
     }
     else
     {
-        <p style="color: #666;">No hay donaciones cargadas.</p>
+        <p class="text-center text-muted p-4 mt-3">No hay donaciones cargadas.</p>
     }
 </div>
 
-@section Scripts {
+@@section Scripts {
     <script>
         (() => {
           const btn = document.getElementById('btnVerMasDonaciones');
@@ -276,3 +177,27 @@
         })();
     </script>
 }
+
+<style>
+    .table.styled-table th,
+    .table.styled-table td {
+        text-align: left;
+        vertical-align: middle;
+        padding: .75rem;
+    }
+
+        .table.styled-table th:last-child,
+        .table.styled-table td:last-child {
+            text-align: right;
+        }
+
+    @@media (max-width: 768px) {
+        .d-flex.justify-content-between.flex-wrap {
+            gap: .5rem;
+        }
+
+            .d-flex.justify-content-between.flex-wrap form {
+                width: 100%;
+            }
+    }
+</style>

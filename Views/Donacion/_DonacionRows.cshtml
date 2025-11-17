@@ -15,23 +15,22 @@
         <td>@d.id_donacion</td>
         <td>@TipoTxt(d.tipo)</td>
         <td>@d.descripcion</td>
-        <td class="actions-cell">
-            <div class="actions">
-                <a asp-controller="Donacion"
-                   asp-action="Modificar"
-                   asp-route-id="@d.id_donacion"
-                   class="btn-primary">
-                    Modificar
-                </a>
+        <td class="text-end">
+            <a asp-controller="Donacion"
+               asp-action="Modificar"
+               asp-route-id="@d.id_donacion"
+               class="btn btn-sm"
+               style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                Modificar
+            </a>
 
-                <a asp-controller="Donacion"
-                   asp-action="Eliminar"
-                   asp-route-id="@d.id_donacion"
-                   class="btn btn-sm"
-                   style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
-                    Eliminar
-                </a>
-            </div>
+            <a asp-controller="Donacion"
+               asp-action="Eliminar"
+               asp-route-id="@d.id_donacion"
+               class="btn btn-sm"
+               style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                Eliminar
+            </a>
         </td>
     </tr>
 }
