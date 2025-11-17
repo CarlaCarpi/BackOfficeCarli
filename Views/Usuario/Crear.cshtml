@@ -7,40 +7,66 @@
     var roles = ViewBag.Roles as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? new();
 
     var ahora = DateTime.Now;
-    var fechaDefault = (Model?.fechaAlta == default ? ahora : Model!.fechaAlta)
-                       .ToString("yyyy-MM-ddTHH:mm");
+
+    // 👉 Si no hay modelo o la fechaAlta viene en default (0001-01-01), usar ahora
+    DateTime fechaAlta;
+    if (Model == null || Model.fechaAlta == default(DateTime))
+    {
+        fechaAlta = ahora;
+    }
+    else
+    {
+        fechaAlta = Model.fechaAlta;
+    }
+
+    // Valor que va dentro del input
+    var fechaDefault = fechaAlta.ToString("yyyy-MM-ddTHH:mm");
+
+    // Tope máximo: ahora, para no permitir futuras
+    var fechaMax = ahora.ToString("yyyy-MM-ddTHH:mm");
+
+    // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
 }
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
-
 <div class="container mt-4">
-    <h1 class="text-center fw-bold" style="color:#2FA8A2;">CREAR USUARIO</h1>
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        AGREGAR NUEVO USUARIO
+    </h1>
 
+    @if (ViewBag.Ok != null)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ViewBag.Ok
+        </div>
+    }
     @if (ViewBag.ApiError != null)
     {
         <div class="alert mt-3" role="alert"
-             style="background:#fff3f3; border:1px solid #A71A6C; color:#A71A6C; border-radius:10px;">
+             style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
             @ViewBag.ApiError
         </div>
     }
 
-    <div class="card mt-3" style="border:1px solid #2FA8A2; border-radius:14px; overflow:hidden;">
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
         <div class="card-header d-flex justify-content-between align-items-center"
-             style="background:#E6F6F5; border-bottom:1px solid #2FA8A2;">
-            <a asp-action="Index" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px;">← Volver</a>
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <a asp-action="Index" class="btn" style="border:1px solid #fff; color:#fff; border-radius:10px;">
+                ← Volver al listado
+            </a>
             <div class="d-flex gap-2">
                 <button type="submit" form="form-crear" class="btn"
-                        style="background:#2FA8A2; color:#fff; border-radius:10px;">
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
                     Guardar
                 </button>
-                <a asp-action="Index" class="btn" style="background:#A71A6C; color:#fff; border-radius:10px;">Cancelar</a>
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
             </div>
         </div>
 
         <div class="card-body">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <form id="form-crear" asp-action="Crear" method="post" autocomplete="off">
                 @Html.AntiForgeryToken()
 
@@ -112,11 +138,11 @@
                         <span asp-validation-for="fechaAlta" class="text-danger"></span>
                     </div>
 
+
                     <!-- Estado + Rol -->
                     <div class="col-12 col-md-6">
                         <label asp-for="id_estadoUsuario" class="form-label">Estado</label>
                         <select asp-for="id_estadoUsuario" class="form-select sr-select" asp-items="estados">
-                            
                         </select>
                         <span asp-validation-for="id_estadoUsuario" class="text-danger"></span>
                     </div>
@@ -124,7 +150,6 @@
                     <div class="col-12 col-md-6">
                         <label class="form-label">Rol</label>
                         <select asp-for="id_rol" class="form-select sr-select" asp-items="roles">
-                            
                         </select>
                         <span asp-validation-for="id_rol" class="text-danger"></span>
                     </div>
@@ -134,11 +159,12 @@
     </div>
 </div>
 
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.min.js"></script>*@
 
     <script>
         // Mostrar/Ocultar clave
@@ -169,7 +195,31 @@
           });
         })();
 
-        // Flatpickr (estilo calendario + max hoy + default hoy)
+        // 👇 NUEVO: setear fecha/hora actual por defecto y bloquear futuro
+        (() => {
+          const input = document.querySelector('.sr-datetime');
+          if (!input) return;
+
+          const now = new Date();
+          const pad = n => n.toString().padStart(2, '0');
+          const yyyy = now.getFullYear();
+          const MM   = pad(now.getMonth() + 1);
+          const dd   = pad(now.getDate());
+          const hh   = pad(now.getHours());
+          const mm   = pad(now.getMinutes());
+
+          const current = `${yyyy}-${MM}-${dd}T${hh}:${mm}`;
+
+          // Si por alguna razón viene vacío (Model default, etc.), lo rellenamos
+          if (!input.value) {
+              input.value = current;
+          }
+
+          // Siempre bloquear fechas futuras
+          input.max = current;
+        })();
+
+        @*  // BLOQUE VIEJO DE FLATPICKR – LO DEJAMOS COMENTADO
         (() => {
           const el = document.querySelector('.sr-datetime');
           if (!el) return;
@@ -183,8 +233,10 @@
             plugins: [new confirmDatePlugin({ showAlways: true })]
           });
         })();
+        *@
     </script>
 }
+
 
 <style>
     /* Selects con hover rosa */
@@ -201,7 +253,7 @@
             outline-offset: 1px;
         }
 
-    /* Estética del calendario */
+ @*    /* Estética del calendario */
     .flatpickr-calendar {
         border-radius: 14px;
         box-shadow: 0 8px 24px rgba(0,0,0,.12);
@@ -231,5 +283,7 @@
         background: #fff !important;
         color: #A71A6C !important;
         border: 1px solid #A71A6C !important;
-    }
+    } *@
+
+
 </style>

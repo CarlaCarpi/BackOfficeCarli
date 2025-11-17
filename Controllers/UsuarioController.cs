@@ -203,6 +203,7 @@ namespace SantaRamona.Backoffice.Controllers
 
         // === Acción AJAX "Ver más" (usa el mismo partial _UsuarioRows que ya tenés) ===
         [HttpGet]
+
         public async Task<IActionResult> Mas(int page = 2, int pageSize = 20, string? q = null)
         {
             var client = _http.CreateClient("Api");
@@ -292,7 +293,7 @@ namespace SantaRamona.Backoffice.Controllers
         // ===================== CREAR =====================
 
         [HttpGet]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Policy = "AdminOrColab")]
         public async Task<IActionResult> Crear()
         {
             await CargarSelects();
@@ -301,7 +302,7 @@ namespace SantaRamona.Backoffice.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Policy = "AdminOrColab")]
         public async Task<IActionResult> Crear(Usuario model)
         {
             if (!(model.id_rol.HasValue && model.id_rol.Value > 0))
@@ -336,7 +337,7 @@ namespace SantaRamona.Backoffice.Controllers
         // ===================== MODIFICAR =====================
 
         [HttpGet]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Policy = "AdminOrColab")]
         public async Task<IActionResult> Modificar(int id)
         {
             var client = _http.CreateClient("Api");
@@ -408,7 +409,7 @@ namespace SantaRamona.Backoffice.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Policy = "AdminOrColab")]
         public async Task<IActionResult> Modificar(Usuario model)
         {
             // No queremos que valide la clave

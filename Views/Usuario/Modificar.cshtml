@@ -11,9 +11,29 @@
     bool unicoAdmin = (ViewBag.UnicoAdmin as bool?) ?? false;
 
     var claveReal = (ViewData["ClaveReal"] as string) ?? "";
+
+    // =============== NUEVO → MISMO CÓDIGO QUE EN CREAR =================
+    var ahora = DateTime.Now;
+
+    DateTime fechaAlta;
+    if (Model == null || Model.fechaAlta == default(DateTime))
+    {
+        fechaAlta = ahora;
+    }
+    else
+    {
+        fechaAlta = Model.fechaAlta;
+    }
+
+    var fechaDefault = fechaAlta.ToString("yyyy-MM-ddTHH:mm");
+    var fechaMax = ahora.ToString("yyyy-MM-ddTHH:mm");
+    // ==================================================================
+
+    // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
 }
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
+
+
 
 <div class="container mt-4">
     <h1 class="text-center fw-bold" style="color:#2FA8A2;">MODIFICAR USUARIO</h1>
@@ -24,20 +44,32 @@
             @ViewBag.Ok
         </div>
     }
-    @if (ViewBag.Error != null)
+    @if (ViewBag.ApiError != null)
     {
-        <div class="alert mt-3" style="background:#fff3f3; border:1px solid #A71A6C; color:#A71A6C; border-radius:10px;">
-            @ViewBag.Error
+        <div class="alert mt-3 sr-error" role="alert">
+            @ViewBag.ApiError
         </div>
     }
 
     <div class="card mt-3" style="border:1px solid #2FA8A2; border-radius:14px; overflow:hidden;">
         <div class="card-header d-flex justify-content-between align-items-center"
-             style="background:#E6F6F5; border-bottom:1px solid #2FA8A2;">
-            <a asp-action="Index" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px;">← Volver</a>
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">
+                ← Volver al listado
+            </a>
+
             <div class="d-flex gap-2">
-                <button type="submit" form="form-modificar" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px;">Guardar</button>
-                <a asp-action="Index" class="btn" style="background:#A71A6C; color:#fff; border-radius:10px;">Cancelar</a>
+                <button type="submit" form="form-modificar" class="btn"
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Guardar
+                </button>
+
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
             </div>
         </div>
 
@@ -101,7 +133,7 @@
                         {
                             <input asp-for="email" class="form-control" disabled />
                             <input type="hidden" asp-for="email" />
-                            <small class="sr-protegido-msg d-block mt-1">
+                            <small class="text-muted d-block mt-1">
                                 No se puede cambiar el email de esta cuenta protegida.
                             </small>
                         }
@@ -154,10 +186,11 @@
                         <label asp-for="fechaAlta" class="form-label">Fecha Alta</label>
                         <input asp-for="fechaAlta" class="form-control sr-datetime"
                                type="datetime-local"
-                               value="@(Model?.fechaAlta == default ? DateTime.Now.ToString("yyyy-MM-ddTHH:mm") : Model.fechaAlta.ToString("yyyy-MM-ddTHH:mm"))"
-                               max="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                               value="@fechaDefault"
+                               max="@fechaMax" />
                         <span asp-validation-for="fechaAlta" class="text-danger"></span>
                     </div>
+
 
                     <!-- Estado -->
                     <div class="col-12 col-md-6">
@@ -167,7 +200,7 @@
                         {
                             <select asp-for="id_estadoUsuario" class="form-select sr-select" asp-items="estados" disabled></select>
                             <input type="hidden" asp-for="id_estadoUsuario" />
-                            <small class="text-warning d-block mt-1">
+                            <small class="text-muted d-block mt-1">
                                 No se puede cambiar el estado de esta cuenta administrativa.
                             </small>
                         }
@@ -187,7 +220,7 @@
                         {
                             <select asp-for="id_rol" class="form-select sr-select" asp-items="roles" disabled></select>
                             <input type="hidden" asp-for="id_rol" />
-                            <small class="text-warning d-block mt-1">
+                            <small class="text-muted d-block mt-1">
                                 No se puede cambiar el rol de esta cuenta administrativa.
                             </small>
                         }
@@ -195,7 +228,7 @@
                         {
                             <select asp-for="id_rol" class="form-select sr-select" asp-items="roles" disabled></select>
                             <input type="hidden" asp-for="id_rol" />
-                            <small class="text-warning d-block mt-1">
+                            <small class="text-muted d-block mt-1">
                                 Es el único Administrador: no se puede cambiar su rol.
                             </small>
                         }
@@ -213,10 +246,33 @@
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.min.js"></script>
 
     <script>
+            // ========== FECHA (comportamiento idéntico al CREAR) ==========
+            (() => {
+              const input = document.querySelector('.sr-datetime');
+              if (!input) return;
+
+              const now = new Date();
+              const pad = n => n.toString().padStart(2, '0');
+              const yyyy = now.getFullYear();
+              const MM   = pad(now.getMonth() + 1);
+              const dd   = pad(now.getDate());
+              const hh   = pad(now.getHours());
+              const mm   = pad(now.getMinutes());
+
+              const current = `${yyyy}-${MM}-${dd}T${hh}:${mm}`;
+
+              // Si el valor viene vacío, rellenar con ahora
+              if (!input.value) {
+                  input.value = current;
+              }
+
+              // Bloquear futuro
+              input.max = current;
+            })();
+
+
         // ================== CLAVE (con validación visual robusta) ==================
         (() => {
           const btn   = document.getElementById('btnVerEditar');
@@ -334,38 +390,51 @@
             outline-offset: 1px;
         }
 
-    .flatpickr-calendar {
-        border-radius: 14px;
-        box-shadow: 0 8px 24px rgba(0,0,0,.12);
-    }
-
-    .flatpickr-day:hover, .flatpickr-day:focus {
-        background: #FCE1E5;
-    }
-
-    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-        background: #111;
-        color: #fff;
-    }
-
-    .flatpickr-confirm, .flatpickr-cancel {
-        border-radius: 10px !important;
-        padding: .45rem .9rem !important;
-    }
-
-    .flatpickr-confirm {
-        background: #A71A6C !important;
-        color: #fff !important;
-        border: none !important;
-    }
-
-    .flatpickr-cancel {
-        background: #fff !important;
-        color: #A71A6C !important;
+    .sr-error {
+        background: #fff3f3 !important;
         border: 1px solid #A71A6C !important;
+        color: #A71A6C !important;
+        border-radius: 10px !important;
     }
 
-    .text-warning {
+    .sr-msg-rojo {
         color: #A71A6C !important;
+        font-size: .9rem;
+        margin-top: .25rem;
     }
+
+    // .flatpickr-calendar {
+    //     border-radius: 14px;
+    //     box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    // }
+
+    // .flatpickr-day:hover, .flatpickr-day:focus {
+    //     background: #FCE1E5;
+    // }
+
+    // .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+    //     background: #111;
+    //     color: #fff;
+    // }
+
+    // .flatpickr-confirm, .flatpickr-cancel {
+    //     border-radius: 10px !important;
+    //     padding: .45rem .9rem !important;
+    // }
+
+    // .flatpickr-confirm {
+    //     background: #A71A6C !important;
+    //     color: #fff !important;
+    //     border: none !important;
+    // }
+
+    // .flatpickr-cancel {
+    //     background: #fff !important;
+    //     color: #A71A6C !important;
+    //     border: 1px solid #A71A6C !important;
+    // }
+
+    // .text-warning {
+    //     color: #A71A6C !important;
+    // }
 </style>
