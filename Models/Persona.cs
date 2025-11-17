@@ -43,7 +43,7 @@ namespace SantaRamona.Backoffice.Models
         [StringLength(100, ErrorMessage = "La calle no puede superar 100 caracteres.")]
         public string? calle { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "La altura debe ser mayor a 0.")]
+        [Range(0, 9999999999, ErrorMessage = "Ingrese una altura válida.")]
         public int? altura { get; set; }
 
         [StringLength(10, ErrorMessage = "El departamento no puede superar 10 caracteres.")]
@@ -56,7 +56,7 @@ namespace SantaRamona.Backoffice.Models
         public int? id_localidad { get; set; }
 
         // === OTROS DATOS ===
-        [StringLength(200, ErrorMessage = "Las redes sociales no pueden superar 200 caracteres.")]
+        [StringLength(100, ErrorMessage = "Las redes sociales no pueden superar 100 caracteres.")]
         public string? redesSociales { get; set; }
 
         [Required(ErrorMessage = "El estado de la persona es obligatorio.")]
