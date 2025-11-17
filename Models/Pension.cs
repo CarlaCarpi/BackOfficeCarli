@@ -61,7 +61,8 @@ namespace SantaRamona.Backoffice.Models
         [DataType(DataType.DateTime)]
         public DateTime? fechaEgreso { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(12,2)")]
+        [Range(0, 9999999999.99, ErrorMessage = "El monto debe tener hasta 10 dígitos enteros y 2 decimales.")]
         public decimal? montoDia { get; set; }
     }
 }

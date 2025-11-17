@@ -181,11 +181,8 @@
 
                     <!-- Fecha ingreso -->
                     <div class="col-md-6">
-                        <label asp-for="fechaIngreso" class="form-label fw-semibold">Fecha de ingreso</label>
-                        <input asp-for="fechaIngreso"
-                               type="date"
-                               class="form-control"
-                               max="@hoy" />
+                        <label asp-for="fechaIngreso" class="form-label fw-semibold">Fecha de alta</label>
+                        <input asp-for="fechaIngreso" class="form-control" type="date" readonly />
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
                     </div>
 

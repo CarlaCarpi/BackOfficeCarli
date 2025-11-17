@@ -5,7 +5,9 @@
 }
 
 <div class="container mt-4">
-    <h1 class="text-center fw-bold" style="color:#2FA8A2;">CREAR ESTADO</h1>
+    <h1 class="text-center fw-bold" style="color:#2FA8A2;">
+        CREAR ESTADO
+    </h1>
 
     @if (ViewBag.Ok != null)
     {
@@ -25,13 +27,21 @@
     <div class="card mt-3" style="border:1px solid #2FA8A2; border-radius:14px; overflow:hidden;">
         <div class="card-header d-flex justify-content-between align-items-center"
              style="background:#E6F6F5; border-bottom:1px solid #2FA8A2; border-radius:0;">
-            <a asp-action="Index" class="btn" style="background:#2FA8A2; color:#fff; border-radius:10px;">← Volver</a>
+            <a asp-action="Index"
+               class="btn"
+               style="background:#2FA8A2; color:#fff; border-radius:10px;">
+                ← Volver
+            </a>
             <div class="d-flex gap-2">
                 <button type="submit" form="form-crear" class="btn"
                         style="background:#2FA8A2; color:#fff; border-radius:10px;">
                     Guardar
                 </button>
-                <a asp-action="Index" class="btn" style="background:#A71A6C; color:#fff; border-radius:10px;">Cancelar</a>
+                <a asp-action="Index"
+                   class="btn"
+                   style="background:#A71A6C; color:#fff; border-radius:10px;">
+                    Cancelar
+                </a>
             </div>
         </div>
 
@@ -54,3 +64,37 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+<style>
+    /* Quitar borde azul de TODOS los inputs, selects y textareas */
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        box-shadow: none !important;
+        border-color: #2FA8A2 !important; /* si querés que quede tu color */
+        outline: none !important;
+    }
+
+    /* Evitar borde azul de campos válidos de Bootstrap */
+    .form-control.is-valid,
+    .form-select.is-valid {
+        border-color: #ced4da !important;
+        background-image: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Evitar borde rojo exagerado de inválidos */
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        box-shadow: none !important;
+    }
+
+    /* Para inputs type=date que a veces agregan borde azul propio */
+    input[type="date"] {
+        outline: none !important;
+    }
+
+        input[type="date"]:focus {
+            border-color: #2FA8A2 !important;
+            box-shadow: none !important;
+        }
+</style>

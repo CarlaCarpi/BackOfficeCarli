@@ -46,8 +46,7 @@
             background-color: #f9f9f9;
         }
 
-    .btn-primary,
-    .btn-danger {
+    .btn-primary, .btn-danger {
         background-color: #40ADB0;
         color: white;
         padding: 0.5rem 1rem;
@@ -60,19 +59,8 @@
         display: inline-block;
     }
 
-        .btn-primary:hover,
-        .btn-danger:hover {
-            background-color: #2e888b !important;
-        }
-
-        /* para que no se ponga azul raro en focus */
-        .btn-primary:focus,
-        .btn-primary:active,
-        .btn-primary:visited {
+        .btn-primary:hover, .btn-danger:hover {
             background-color: #40ADB0 !important;
-            color: #fff !important;
-            outline: none !important;
-            box-shadow: none !important;
         }
 
     .actions-cell {
@@ -98,18 +86,52 @@
     }
 
     @@media (max-width: 560px) {
-        .actions {
-            flex-direction: column;
-        }
+        .actions
+
+    {
+        flex-direction: column;
+    }
+
+    }
+
+    /* FOCUS como en especie */
+    .btn:focus,
+    .btn:active:focus,
+    .btn:focus-visible,
+    .btn-check:focus + .btn,
+    .btn-primary:focus,
+    .btn-danger:focus,
+    .btn-secondary:focus,
+    .btn-success:focus,
+    .btn-warning:focus,
+    .btn-info:focus,
+    .btn-light:focus,
+    .btn-dark:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    a.btn-primary:focus,
+    a.btn-primary:active,
+    a.btn-primary:visited {
+        background-color: #2FA8A2 !important;
+        color: #fff !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    a.btn-primary:hover {
+        background-color: #2FA8A2 !important;
+        color: #fff !important;
     }
 </style>
 
-<div class="container-fluid mt-4 main-container">
+<div class="container-fluid mt-4">
     <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
         LISTA DE ESTADOS DE PERSONA
     </h1>
 
-    @* Mensajes (acepta TempData o ViewBag por si tu controller usa uno u otro) *@
+    @* Mensajes *@
     @if (TempData["Ok"] != null || ViewBag.Ok != null)
     {
         <div style="margin:.8rem 0; padding:.6rem; border:2px solid #40ADB0; background:#EAF6F6; border-radius:.5rem;">

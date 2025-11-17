@@ -6,7 +6,6 @@
     var provincias = ViewBag.Provincias as Dictionary<int, string> ?? new();
     var localidades = ViewBag.Localidades as Dictionary<int, string> ?? new();
     var estados = ViewBag.Estados as Dictionary<int, string> ?? new();
-  
 
     string Txt(Dictionary<int, string> d, int? id) =>
         (id.HasValue && d.TryGetValue(id.Value, out var v)) ? v : "—";
@@ -89,21 +88,23 @@
                                 <td>@Txt(estados, p.id_estadoPension)</td>
                                 <td>@FechaCorta(p.fechaIngreso)</td>
                                 <td class="text-end">
-                                    <a href="javascript:void(0)" data-ver-pension="@p.id_pension"
-                                       class="btn btn-sm"
-                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
-                                        Ver
-                                    </a>
-                                    <a asp-action="Modificar" asp-route-id="@p.id_pension"
-                                       class="btn btn-sm"
-                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
-                                        Modificar
-                                    </a>
-                                    <a asp-action="Eliminar" asp-route-id="@p.id_pension"
-                                       class="btn btn-sm"
-                                       style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
-                                        Eliminar
-                                    </a>
+                                    <div class="actions justify-content-end">
+                                        <a href="javascript:void(0)" data-ver-pension="@p.id_pension"
+                                           class="btn btn-sm"
+                                           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                            Ver
+                                        </a>
+                                        <a asp-action="Modificar" asp-route-id="@p.id_pension"
+                                           class="btn btn-sm"
+                                           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                            Modificar
+                                        </a>
+                                        <a asp-action="Eliminar" asp-route-id="@p.id_pension"
+                                           class="btn btn-sm"
+                                           style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                                            Eliminar
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -119,13 +120,13 @@
         </div>
     </div>
 
-    <!-- 👇 Botón Ver más -->
+    <!-- 👇 Botón Ver más con AJAX (agrega filas) -->
     <div class="d-flex justify-content-center my-3">
         <button id="btnVerMasPensiones"
                 class="btn"
                 style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.55rem 1.25rem;"
                 data-next-page="@(page + 1)"
-        @(hasMore ? null : "disabled")>
+        @(hasMore ? "" : "disabled")>
             @(hasMore ? "Ver más" : "No hay más")
         </button>
     </div>
@@ -149,115 +150,120 @@
         <script>
             // --- Modal Detalle ---
             (() => {
-              const baseUrl = '@Url.Action("Detalle", "Pension")';
+                const baseUrl = '@Url.Action("Detalle", "Pension")';
 
-              document.addEventListener('click', async (ev) => {
-                const btn = ev.target.closest('[data-ver-pension]');
-                if (!btn) return;
+                document.addEventListener('click', async (ev) => {
+                    const btn = ev.target.closest('[data-ver-pension]');
+                    if (!btn) return;
 
-                const id = btn.getAttribute('data-ver-pension');
+                    const id = btn.getAttribute('data-ver-pension');
 
-                try {
-                  const resp = await fetch(`${baseUrl}/${id}`, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                  });
+                    try {
+                        const resp = await fetch(`${baseUrl}/${id}`, {
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        });
 
-                  const html = await resp.text();
-                  if (!resp.ok) throw new Error(html || `HTTP ${resp.status}`);
+                        const html = await resp.text();
+                        if (!resp.ok) throw new Error(html || `HTTP ${resp.status}`);
 
-                  document.getElementById('modalDetalleBody').innerHTML = html;
-                  const modal = new bootstrap.Modal(document.getElementById('modalDetalle'));
-                  modal.show();
-                } catch (err) {
-                  console.error(err);
-                  alert('No se pudo cargar el detalle de la pensión.');
-                }
-              });
+                        document.getElementById('modalDetalleBody').innerHTML = html;
+                        const modal = new bootstrap.Modal(document.getElementById('modalDetalle'));
+                        modal.show();
+                    } catch (err) {
+                        console.error(err);
+                        alert('No se pudo cargar el detalle de la pensión.');
+                    }
+                });
             })();
 
-            // --- Ver más (AJAX) ---
-                      (() => {
-              const btn = document.getElementById('btnVerMasPensiones');
-              if (!btn) return;
+            // --- Ver más (AJAX que agrega filas) ---
+            (() => {
+                const btn = document.getElementById('btnVerMasPensiones');
+                if (!btn) return;
 
-              const baseMas = '@Url.Action("Mas", "Pension")';
-              let page = Number(btn.getAttribute('data-next-page')) || 2;
-              const pageSize = @pageSize;
-              const q = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(q));
-              const tbody = document.getElementById('tbody-pensiones');
+                const baseMas = '@Url.Action("Mas", "Pension")';
+                let page = Number(btn.getAttribute('data-next-page')) || 2;
+                const pageSize = @pageSize;
+                const q = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(q));
+                const tbody = document.getElementById('tbody-pensiones');
 
-              function setNoMore() {
-                btn.textContent = 'No hay más';
-                btn.disabled = true;
-                btn.style.opacity = '0.6';
-                btn.style.cursor = 'default';
-                // btn.style.display = 'none'; // si preferís ocultarlo
-              }
-
-              btn.addEventListener('click', async (ev) => {
-                ev.preventDefault();
-                ev.stopPropagation();
-                if (btn.disabled) return;
-
-                btn.disabled = true;
-                btn.textContent = 'Cargando...';
-
-                try {
-                  const url = `${baseMas}?page=${page}&pageSize=${pageSize}&q=${encodeURIComponent(q)}`;
-                  const resp = await fetch(url, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                    credentials: 'same-origin'
-                  });
-
-                  // Caso sin contenido explícito
-                  if (resp.status === 204) {
-                    setNoMore();
-                    return;
-                  }
-
-                  const html = await resp.text();
-                  const trimmed = html.trim();
-
-                  // Si no vino nada, también asumimos que no hay más
-                  if (!trimmed) {
-                    setNoMore();
-                    return;
-                  }
-
-                  // 👇 Antes lo tratabas como "error / intentar de nuevo".
-                  // Si para vos esto significa que ya no hay más filas válidas, lo marcamos como "No hay más".
-                  if (trimmed && !trimmed.startsWith('<tr')) {
-                    console.warn('Respuesta sin <tr> (asumimos que no hay más):', trimmed.slice(0, 200));
-                    setNoMore();
-                    return;
-                  }
-
-                  tbody.insertAdjacentHTML('beforeend', trimmed);
-
-                  const headerHasMore = (resp.headers.get('X-HasMore') || '').toLowerCase() === 'true';
-                  const arrivedCount = (trimmed.match(/<tr[\s>]/g) || []).length;
-
-                  if (!headerHasMore || arrivedCount < pageSize) {
-                    setNoMore();
-                    return;
-                  }
-
-                  page += 1;
-                  btn.disabled = false;
-                  btn.textContent = 'Ver más';
-
-                } catch (e) {
-                  console.error(e);
-                  btn.disabled = false;
-                  btn.textContent = 'Intentar de nuevo';
+                function setNoMore() {
+                    btn.textContent = 'No hay más';
+                    btn.disabled = true;
+                    btn.style.opacity = '0.6';
+                    btn.style.cursor = 'default';
                 }
-              });
-            })();             
+
+                btn.addEventListener('click', async (ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    if (btn.disabled) return;
+
+                    btn.disabled = true;
+                    btn.textContent = 'Cargando...';
+
+                    try {
+                        const url = `${baseMas}?page=${page}&pageSize=${pageSize}&q=${encodeURIComponent(q)}`;
+                        const resp = await fetch(url, {
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                            credentials: 'same-origin'
+                        });
+
+                        if (resp.status === 204) {
+                            setNoMore();
+                            return;
+                        }
+
+                        const html = await resp.text();
+                        const trimmed = html.trim();
+
+                        if (!trimmed) {
+                            setNoMore();
+                            return;
+                        }
+
+                        // ✅ Acá asumimos que la acción Mas devuelve SOLO <tr>...
+                        tbody.insertAdjacentHTML('beforeend', trimmed);
+
+                        const headerHasMore = (resp.headers.get('X-HasMore') || '').toLowerCase() === 'true';
+                        const arrivedCount = (trimmed.match(/<tr[\s>]/g) || []).length;
+
+                        if (!headerHasMore || arrivedCount < pageSize) {
+                            setNoMore();
+                            return;
+                        }
+
+                        page += 1;
+                        btn.disabled = false;
+                        btn.textContent = 'Ver más';
+
+                    } catch (e) {
+                        console.error(e);
+                        btn.disabled = false;
+                        btn.textContent = 'Intentar de nuevo';
+                    }
+                });
+            })();
         </script>
     }
 </div>
 
 <style>
+    .actions {
+        display: inline-flex;
+        flex-direction: row !important;
+        gap: 0.5rem;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+        .actions .btn {
+            width: auto !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
     .table.styled-table th,
     .table.styled-table td {
         text-align: left;

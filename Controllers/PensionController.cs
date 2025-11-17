@@ -347,6 +347,86 @@ namespace SantaRamona.Backoffice.Controllers
 
 
 
+        [HttpGet]
+        public async Task<IActionResult> Mas(int page = 1, int pageSize = 20, string? q = null)
+        {
+            var client = _http.CreateClient("Api");
+
+            // ⚠ Usá el mismo nombre de parámetro que en Index: "pagina"
+            string url = $"{RUTA_PENSION}?pagina={page}&pageSize={pageSize}";
+            if (!string.IsNullOrWhiteSpace(q))
+                url += $"&q={Uri.EscapeDataString(q.Trim())}";
+
+            var resp = await client.GetAsync(url);
+
+            if (!resp.IsSuccessStatusCode)
+                return StatusCode((int)resp.StatusCode, "Error al obtener más pensiones.");
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var lista = JsonSerializer.Deserialize<List<Pension>>(json, JsonOps)
+                        ?? new List<Pension>();
+
+            if (!lista.Any())
+                return NoContent(); // 204 → el JS lo interpreta como "No hay más"
+
+            // ========== 🔹 CARGAR DICCIONARIOS IGUAL QUE EN INDEX ==========
+
+            var estadosDict = await CargarEstadosPensionDictAsync(client);
+
+            var provinciasDict = new Dictionary<int, string>();
+            var respProv = await client.GetAsync(RUTA_PROVINCIA);
+            if (respProv.IsSuccessStatusCode)
+            {
+                var provJson = await respProv.Content.ReadAsStringAsync();
+                var provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(provJson, JsonOps)
+                                 ?? Enumerable.Empty<Provincia>();
+                provinciasDict = provincias.ToDictionary(p => p.id_provincia, p => p.nombre);
+            }
+
+            var localidadesDict = new Dictionary<int, string>();
+            var respLoc = await client.GetAsync(RUTA_LOCALIDAD);
+            if (respLoc.IsSuccessStatusCode)
+            {
+                var locJson = await respLoc.Content.ReadAsStringAsync();
+                var localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(locJson, JsonOps)
+                                  ?? Enumerable.Empty<Localidad>();
+                localidadesDict = localidades.ToDictionary(l => l.id_localidad, l => l.nombre);
+            }
+
+            var usuariosDict = new Dictionary<int, string>();
+            var respUsr = await client.GetAsync(RUTA_USUARIO);
+            if (respUsr.IsSuccessStatusCode)
+            {
+                var usrJson = await respUsr.Content.ReadAsStringAsync();
+                var usuarios = JsonSerializer.Deserialize<IEnumerable<Usuario>>(usrJson, JsonOps)
+                               ?? Enumerable.Empty<Usuario>();
+                usuariosDict = usuarios.ToDictionary(
+                    u => u.id_usuario,
+                    u => string.IsNullOrWhiteSpace(u.nombre) ? $"Usuario #{u.id_usuario}" : u.nombre
+                );
+            }
+
+            // Pasar diccionarios al parcial (PensionRows los usa)
+            ViewBag.Estados = estadosDict;
+            ViewBag.Provincias = provinciasDict;
+            ViewBag.Localidades = localidadesDict;
+            ViewBag.Usuarios = usuariosDict;
+
+            // ========== 🔹 HAS MORE PARA EL JS ==========
+
+            bool hasMore = false;
+
+            // Si el API manda X-Total-Count, podés reutilizar la lógica de Index,
+            // pero si no, con esto simple alcanza:
+            if (lista.Count == pageSize)
+                hasMore = true;
+
+            Response.Headers["X-HasMore"] = hasMore.ToString();
+
+            // volvemos SOLO las filas <tr>
+            return PartialView("_PensionRows", lista);
+        }
+
 
 
         // ============================================================
