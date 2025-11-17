@@ -18,63 +18,136 @@ namespace SantaRamona.Backoffice.Controllers
 
         // ===================== INDEX =====================
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            [FromQuery] string? q,
+            int page = 1,
+            int pageSize = 20)
         {
             var client = _http.CreateClient("Api");
 
-            var resp = await client.GetAsync("/api/Pregunta");
+            var resp = await client.GetAsync($"/api/Pregunta?pagina={page}&pageSize={pageSize}");
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
                 ViewBag.ApiError = $"GET /api/Pregunta -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
+                ViewBag.Page = page;
+                ViewBag.PageSize = pageSize;
+                ViewBag.HasMore = false;
                 return View(Enumerable.Empty<Pregunta>());
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var preguntas = JsonSerializer.Deserialize<IEnumerable<Pregunta>>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Pregunta>();
+            var preguntas = JsonSerializer.Deserialize<List<Pregunta>>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<Pregunta>();
 
-            // Diccionario id_tipoFormulario -> descripción (descripcion | tipo)
-            ViewBag.TiposDict = await GetTiposDict();
+            // Diccionario de tipos para mostrar y para filtrar
+            var tiposDict = await GetTiposDict();
+            ViewBag.TiposDict = tiposDict;
+
+            // para rellenar el input de búsqueda
+            ViewBag.Query = q ?? string.Empty;
 
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
             if (TempData["Error"] is string err) ViewBag.Error = err;
 
+            bool apiHasMore = preguntas.Count == pageSize;
+
+            // 🔍 Filtro por texto: pregunta + tipo + estado
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var qNorm = q.Trim().ToLower();
+
+                preguntas = preguntas
+                    .Where(p =>
+                    {
+                        // texto de la pregunta
+                        var texto = p.pregunta ?? "";
+                        bool matchPregunta = texto.Contains(qNorm, StringComparison.OrdinalIgnoreCase);
+
+                        // texto del tipo de formulario
+                        bool matchTipo = false;
+                        if (tiposDict.TryGetValue(p.id_tipoFormulario, out var tipoTxt) && tipoTxt != null)
+                        {
+                            matchTipo = tipoTxt.Contains(qNorm, StringComparison.OrdinalIgnoreCase);
+                        }
+
+                        // estado como texto ("activo" / "inactivo")
+                        var estadoTxt = p.activo ? "activo" : "inactivo";
+                        bool matchEstado = estadoTxt.Contains(qNorm, StringComparison.OrdinalIgnoreCase);
+
+                        return matchPregunta || matchTipo || matchEstado;
+                    })
+                    .ToList();
+            }
+
+            // ⭐ Ordenar por la más nueva (id más grande primero)
+            preguntas = preguntas
+                .OrderByDescending(p => p.id_pregunta)
+                .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.HasMore = apiHasMore;
+
             return View(preguntas);
         }
 
+
+        // ===================== VER MÁS =====================
         [HttpGet]
-        public async Task<IActionResult> Mas(int page = 2, int pageSize = 20)
+        public async Task<IActionResult> Mas(
+            [FromQuery] string? q,
+            int page = 2,
+            int pageSize = 20)
         {
             var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync("/api/Pregunta");
+
+            var resp = await client.GetAsync($"/api/Pregunta?pagina={page}&pageSize={pageSize}");
             if (!resp.IsSuccessStatusCode)
                 return Content("");
 
             var json = await resp.Content.ReadAsStringAsync();
-            var preguntas = JsonSerializer.Deserialize<IEnumerable<Pregunta>>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Pregunta>();
+            var preguntas = JsonSerializer.Deserialize<List<Pregunta>>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<Pregunta>();
 
-            var lista = preguntas
-                .OrderBy(p => p.id_pregunta)
+            var tiposDict = await GetTiposDict();
+            ViewBag.TiposDict = tiposDict;
+
+            bool apiHasMore = preguntas.Count == pageSize;
+
+            //  mismo filtro que en Index
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var qNorm = q.Trim().ToLower();
+
+                preguntas = preguntas
+                    .Where(p =>
+                    {
+                        var texto = p.pregunta ?? "";
+                        bool matchPregunta = texto.Contains(qNorm, StringComparison.OrdinalIgnoreCase);
+
+                        bool matchTipo = false;
+                        if (tiposDict.TryGetValue(p.id_tipoFormulario, out var tipoTxt) && tipoTxt != null)
+                        {
+                            matchTipo = tipoTxt.Contains(qNorm, StringComparison.OrdinalIgnoreCase);
+                        }
+
+                        var estadoTxt = p.activo ? "activo" : "inactivo";
+                        bool matchEstado = estadoTxt.Contains(qNorm, StringComparison.OrdinalIgnoreCase);
+
+                        return matchPregunta || matchTipo || matchEstado;
+                    })
+                    .ToList();
+            }
+
+            // Orden por más nueva
+            preguntas = preguntas
+                .OrderByDescending(p => p.id_pregunta)
                 .ToList();
 
-            var total = lista.Count;
-            if (page < 1) page = 1;
-            if (pageSize < 1) pageSize = 20;
+            Response.Headers["X-HasMore"] = apiHasMore ? "true" : "false";
 
-            var pageItems = lista
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
-            bool hasMore = (page * pageSize) < total;
-            Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
-
-            // Necesitamos los tipos también para la partial
-            ViewBag.TiposDict = await GetTiposDict();
-
-            return PartialView("_PreguntaRows", pageItems);
+            return PartialView("_PreguntaRows", preguntas);
         }
 
 
@@ -260,7 +333,7 @@ namespace SantaRamona.Backoffice.Controllers
             if (!string.IsNullOrWhiteSpace(body) &&
                 body.Contains("An error occurred while saving the entity changes", StringComparison.OrdinalIgnoreCase))
             {
-                TempData["Error"] = "La pregunta posee respuestas asociadas, no se puede eliminar. Desactive la pregunta si desea que no aparezca en el formulario.";
+                TempData["Error"] = "La pregunta posee respuestas asociadas, no se puede eliminar. Modifique la pregunta a desactivado para que no aparezca en el formulario.";
 
                 // 👇 Importante: NO guardamos ApiDetail, así no se muestra el FATAL ni el stack trace
                 // TempData["ApiDetail"] = body;

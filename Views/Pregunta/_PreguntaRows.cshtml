@@ -13,10 +13,8 @@
 @foreach (var p in Model)
 {
     <tr>
-        <td>@p.id_pregunta</td>
         <td>@TipoTxt(p.id_tipoFormulario)</td>
         <td>@p.pregunta</td>
-        <!-- 🟢 Nueva columna ESTADO -->
         <td>
             @if (p.activo)
             {
@@ -41,4 +39,3 @@
         </td>
     </tr>
 }
-

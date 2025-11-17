@@ -3,6 +3,8 @@
     await Html.RenderPartialAsync("_PreguntaTopNav");
     ViewData["Title"] = "Preguntas";
 
+    string q = ViewBag.Query as string ?? "";
+
     var tipos = ViewBag.TiposDict as Dictionary<int, string> ?? new();
     string TipoTxt(int id) => tipos.TryGetValue(id, out var v) ? v : $"#{id}";
 }
@@ -12,7 +14,7 @@
         LISTA DE PREGUNTAS
     </h1>
 
-    @* Mensajes (mismo estilo que puntos de acopio) *@
+    @* Mensajes  *@
     @if (TempData["Ok"] != null)
     {
         <div class="alert mt-3" role="alert"
@@ -39,19 +41,29 @@
         </div>
     }
 
-    <!-- 🔝 Barra superior: Volver + Agregar (igual estilo que Puntos de Acopio) -->
+    <!--  Buscador + Crear  -->
     <div class="d-flex justify-content-between align-items-center mt-3 gap-2 flex-wrap">
-        <a asp-controller="Home" asp-action="Index"
-           class="btn"
-           style="border:1px solid #2FA8A2; color:#2FA8A2; background:#fff; border-radius:10px; padding:.5rem 1.25rem;">
-            ← Volver al menú
-        </a>
+        <form method="get" class="d-flex" style="max-width:520px; width:100%;">
+            <input type="text" name="q" value="@q"
+                   class="form-control"
+                   placeholder="Buscar por tipo o texto de la pregunta..."
+                   style="border:1px solid #2FA8A2; border-radius:10px 0 0 10px; outline:none; box-shadow:none;">
+
+            <input type="hidden" name="page" value="1" />
+            <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+
+            <button class="btn"
+                    style="background:#2FA8A2; color:#fff; border-radius:0 10px 10px 0;">
+                Buscar
+            </button>
+        </form>
 
         <a asp-controller="Pregunta" asp-action="Crear" class="btn"
            style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
             Agregar Nueva Pregunta
         </a>
     </div>
+
 
     @if (Model?.Any() == true)
     {
@@ -137,7 +149,7 @@
             text-align: right;
         }
 
-        /* 👉 Evitar que los botones bajen de línea */
+        /*  Evitar que los botones bajen de línea */
         .table.styled-table td.text-end {
             white-space: nowrap;
         }
@@ -197,6 +209,9 @@
           const pageSize = @ViewBag.PageSize;
           const tbody = document.getElementById('tbody-preguntas');
 
+          // 👇 lleva el valor del buscador a JS
+          const q = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(q));
+
           function setNoMore() {
             btn.textContent = 'No hay más';
             btn.disabled = true;
@@ -210,7 +225,11 @@
             btn.disabled = true;
 
             try {
-              const url = `${baseMas}?page=${page}&pageSize=${pageSize}`;
+              let url = `${baseMas}?page=${page}&pageSize=${pageSize}`;
+              if (q) {
+                url += `&q=${encodeURIComponent(q)}`;
+              }
+
               const resp = await fetch(url, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
                 credentials: 'same-origin'
