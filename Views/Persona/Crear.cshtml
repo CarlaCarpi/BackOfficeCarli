@@ -70,12 +70,14 @@
 
                     <div class="col-md-4">
                         <label asp-for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+
                         <input asp-for="fechaNacimiento"
                                class="form-control"
                                type="date"
-                               max="@DateTime.Today.ToString("yyyy-MM-dd")"
-                               oninvalid="this.setCustomValidity('La fecha de nacimiento no puede ser futura.')"
+                               max="@DateTime.Today.AddYears(-18).ToString("yyyy-MM-dd")"
+                               oninvalid="this.setCustomValidity('Debe ser mayor de 18 años y no puede ser una fecha futura.')"
                                oninput="this.setCustomValidity('')" />
+
                         <span asp-validation-for="fechaNacimiento" class="text-danger"></span>
                     </div>
 
@@ -175,6 +177,40 @@
 </div>
 
 <style>
+    
+    /* Quitar borde azul de TODOS los inputs, selects y textareas */
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        box-shadow: none !important;
+        border-color: #2FA8A2 !important; /* si querés que quede tu color */
+        outline: none !important;
+    }
+
+    /* Evitar borde azul de campos válidos de Bootstrap */
+    .form-control.is-valid,
+    .form-select.is-valid {
+        border-color: #ced4da !important;
+        background-image: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Evitar borde rojo exagerado de inválidos */
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        box-shadow: none !important;
+    }
+
+    /* Para inputs type=date que a veces agregan borde azul propio */
+    input[type="date"] {
+        outline: none !important;
+    }
+
+        input[type="date"]:focus {
+            border-color: #2FA8A2 !important;
+            box-shadow: none !important;
+        }
+
     input[type=number]::-webkit-outer-spin-button,
     input[type=number]::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -199,11 +235,12 @@
             if (!$.validator || !$.validator.messages) return;
 
             $.extend($.validator.messages, {
-                max: "La fecha de nacimiento no puede ser futura.",
-                range: "La fecha de nacimiento no puede ser futura."
+                max: "Debe ser mayor de 18 años y no puede ser una fecha futura.",
+                range: "Debe ser mayor de 18 años y no puede ser una fecha futura."
             });
         })(jQuery);
     </script>
+
 
     <script>
         // 👇 Tu script de provincias / localidades, tal cual lo tenías

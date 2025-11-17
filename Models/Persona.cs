@@ -48,7 +48,10 @@ namespace SantaRamona.Backoffice.Models
         [StringLength(10, ErrorMessage = "El departamento no puede superar 10 caracteres.")]
         public string? departamento { get; set; }
 
+        [Required(ErrorMessage = "Seleccionar una provincia es obligatorio.")]
         public int? id_provincia { get; set; }
+
+        [Required(ErrorMessage = "Seleccionar una localidad es obligatorio.")]
         public int? id_localidad { get; set; }
 
         // === OTROS DATOS ===
@@ -75,13 +78,28 @@ namespace SantaRamona.Backoffice.Models
         // ==========================================
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (fechaNacimiento.HasValue && fechaNacimiento.Value.Date > DateTime.Today)
+            if (fechaNacimiento.HasValue)
             {
-                yield return new ValidationResult(
-                    "La fecha de nacimiento no puede ser futura.",
-                    new[] { nameof(fechaNacimiento) }
-                );
+                // ❌ Fecha futura
+                if (fechaNacimiento.Value.Date > DateTime.Today)
+                {
+                    yield return new ValidationResult(
+                        "La fecha de nacimiento no puede ser futura.",
+                        new[] { nameof(fechaNacimiento) }
+                    );
+                }
+
+                // ❌ Menor de edad (menos de 18 años)
+                var hace18 = DateTime.Today.AddYears(-18);
+                if (fechaNacimiento.Value.Date > hace18)
+                {
+                    yield return new ValidationResult(
+                        "La persona debe ser mayor de 18 años.",
+                        new[] { nameof(fechaNacimiento) }
+                    );
+                }
             }
+
         }
     }
 }

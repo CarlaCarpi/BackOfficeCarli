@@ -33,6 +33,7 @@ namespace SantaRamona.Backoffice.Models
         public string calle { get; set; }
 
         [Required(ErrorMessage = "La altura es obligatoria.")]
+        [Range(1, int.MaxValue, ErrorMessage = "La altura debe ser mayor a 0.")]
         public int altura { get; set; }
 
         [StringLength(10)]

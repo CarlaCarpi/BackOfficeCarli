@@ -105,6 +105,41 @@
 }
 
 <style>
+   
+    /* Quitar borde azul de TODOS los inputs, selects y textareas */
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        box-shadow: none !important;
+        border-color: #2FA8A2 !important; /* si querés que quede tu color */
+        outline: none !important;
+    }
+
+    /* Evitar borde azul de campos válidos de Bootstrap */
+    .form-control.is-valid,
+    .form-select.is-valid {
+        border-color: #ced4da !important;
+        background-image: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Evitar borde rojo exagerado de inválidos */
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        box-shadow: none !important;
+    }
+
+    /* Para inputs type=date que a veces agregan borde azul propio */
+    input[type="date"] {
+        outline: none !important;
+    }
+
+        input[type="date"]:focus {
+            border-color: #2FA8A2 !important;
+            box-shadow: none !important;
+        }
+</style>
+
 input:focus,
 textarea:focus,
 select:focus {

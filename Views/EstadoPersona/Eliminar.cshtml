@@ -3,7 +3,7 @@
     await Html.RenderPartialAsync("_PersonaTopNav");
     ViewData["Title"] = "Eliminar Estado de Persona";
 
-    bool bloqueado = (ViewBag.Bloqueado as bool?) ?? false;   // opcional: cuando no se puede eliminar
+    bool bloqueado = (ViewBag.Bloqueado as bool?) ?? false;   // si no se puede eliminar
     string motivo = ViewBag.Motivo as string ?? string.Empty; // ej: "hay personas usando este estado"
 }
 
@@ -12,82 +12,84 @@
         ELIMINAR ESTADO
     </h1>
 
-    @if (ViewBag.Ok != null)
-    {
-        <div class="alert mt-3" role="alert"
-             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
-            @ViewBag.Ok
-        </div>
-    }
-    @if (ViewBag.ApiError != null)
+    @* Mensajes tipo Estado_Animal *@
+    @if (TempData["Error"] is string err)
     {
         <div class="alert mt-3" role="alert"
              style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
-            @ViewBag.ApiError
-            @if (TempData["ApiDetail"] is string det && !string.IsNullOrWhiteSpace(det))
-            {
-                <div class="small mt-1 text-muted">@det</div>
-            }
+            @err
+        </div>
+    }
+    @if (TempData["Ok"] is string ok)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
+            @ok
+        </div>
+    }
+
+    @* Cartel si está bloqueado (en uso) *@
+    @if (bloqueado)
+    {
+        <div class="alert mt-3" role="alert"
+             style="background:#fff8e6; border:1px solid #f0ad4e; color:#8a6d3b; border-radius:10px;">
+            No se puede eliminar el estado porque @motivo.
         </div>
     }
 
     <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
-        <div class="card-header d-flex justify-content-between align-items-center"
-             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
-            <a asp-action="Index" class="btn"
-               style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver</a>
-
-            <div class="d-flex gap-2">
-                @if (!bloqueado)
-                {
-                    <button type="button" class="btn"
-                            data-bs-toggle="modal" data-bs-target="#confirmEliminar"
-                            style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
-                        Eliminar
-                    </button>
-                }
-                <a asp-action="Index" class="btn"
-                   style="background:#fff; color:#2FA8A2; border-radius:10px; padding:.5rem 1.25rem;">
-                    Cancelar
-                </a>
-            </div>
+        <div class="card-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+            <strong>Datos del Estado</strong>
         </div>
-
         <div class="card-body">
-            @if (bloqueado)
-            {
-                <div class="alert" role="alert"
-                     style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
-                    No se puede eliminar este estado porque @motivo.
-                </div>
-            }
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="Index" class="btn"
+                   style="border:1px solid #2FA8A2; color:#2FA8A2; border-radius:10px;">
+                    ← Volver al listado
+                </a>
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">ID</label>
-                    <input class="form-control" value="@Model.id_estadoPersona" readonly />
+                <div class="d-flex gap-2">
+                    @* Eliminar solo si NO está bloqueado *@
+                    @if (!bloqueado)
+                    {
+                        <button type="button" class="btn"
+                                data-bs-toggle="modal" data-bs-target="#confirmarEliminar"
+                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+                            Eliminar
+                        </button>
+                    }
+                    @* Cancelar siempre visible *@
+                    <a asp-action="Index" class="btn"
+                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+                        Cancelar
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-md-8">
-                    <label class="form-label">Descripción</label>
-                    <input class="form-control" value="@Model.descripcion" readonly />
-                </div>
+            <div class="mb-3">
+                <label class="form-label">Identificación</label>
+                <input class="form-control" value="@Model.id_estadoPersona" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <input class="form-control" value="@Model.descripcion" disabled />
             </div>
         </div>
     </div>
 
+    @* Modal solo si NO está bloqueado *@
     @if (!bloqueado)
     {
-        <!-- Modal de confirmación -->
-        <div class="modal fade" id="confirmEliminar" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="confirmarEliminar" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="border-radius:14px;">
-                    <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                    <div class="modal-header"
+                         style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
                         <h5 class="modal-title">Confirmar eliminación</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este estado?
+                    <div class="modal-body" style="color:#000;">
+                        ¿Realmente desea eliminar este estado?
                     </div>
                     <div class="modal-footer" style="border-top:none;">
                         <form asp-action="Eliminar" method="post" class="d-inline">
@@ -109,4 +111,3 @@
         </div>
     }
 </div>
-
