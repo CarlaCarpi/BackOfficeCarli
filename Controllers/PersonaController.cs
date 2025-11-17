@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
 
 namespace SantaRamona.Backoffice.Controllers
 {
@@ -124,6 +125,7 @@ namespace SantaRamona.Backoffice.Controllers
 
                 return View(Enumerable.Empty<Persona>());
             }
+
 
             // Parseo inicial
             var json = await resp.Content.ReadAsStringAsync();
@@ -1023,6 +1025,9 @@ namespace SantaRamona.Backoffice.Controllers
             // 👉 Ligar la persona al usuario logueado (igual que en Pensión)
             persona.id_usuario = GetCurrentUserId();
 
+            // 👉 MUY IMPORTANTE (SOLUCIONA TU ERROR)
+            ModelState.Remove(nameof(persona.fechaNacimiento));
+
             // Muy importante: quitar id_usuario del ModelState para que no se quede el 0 del binding
             ModelState.Remove(nameof(persona.id_usuario));
 
@@ -1105,6 +1110,9 @@ namespace SantaRamona.Backoffice.Controllers
         [Authorize(Policy = "AdminOrColab")]
         public async Task<IActionResult> Modificar([FromForm] Persona persona)
         {
+            // ✅ Ignoramos fechaIngreso en el ModelState (por si viene vacía o rara)
+            ModelState.Remove(nameof(persona.fechaIngreso));
+
             persona.telefono1 = persona.telefono1?.Trim();
             if (!string.IsNullOrWhiteSpace(persona.telefono2)) persona.telefono2 = persona.telefono2!.Trim();
 

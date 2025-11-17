@@ -61,6 +61,16 @@
             <label class="form-label fw-semibold">DNI</label>
             <div class="form-control" readonly>@IntTxt(Model.dni)</div>
         </div>
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Teléfono 1</label>
+            <div class="form-control" readonly>@Str(Model.telefono1)</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Teléfono 2</label>
+            <div class="form-control" readonly>@Str(Model.telefono2)</div>
+        </div>
+
         <div class="col-md-4">
             <label class="form-label fw-semibold">Fecha de nacimiento</label>
             <div class="form-control" readonly>@DateTxt(Model.fechaNacimiento)</div>

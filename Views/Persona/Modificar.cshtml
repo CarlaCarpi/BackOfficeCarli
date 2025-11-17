@@ -16,15 +16,23 @@
     <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
         <div class="card-header d-flex justify-content-between align-items-center"
              style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
-            <a asp-action="Index" class="btn" style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver al listado</a>
-            <button type="submit" form="form-modificar" class="btn"
-                    style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
-                Guardar cambios
-            </button>
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">← Volver al listado</a>
+            <div class="d-flex gap-2">
+                <button type="submit" form="form-modificar" class="btn"
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Guardar
+                </button>
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
+                    Cancelar
+                </a>
+            </div>
         </div>
 
         <div class="card-body">
-            <form id="form-modificar" asp-action="Modificar" method="post">
+            <form id="form-modificar" asp-action="Modificar" method="post" novalidate>
+
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(m => m.id_persona)
                 @Html.HiddenFor(m => m.fechaEgreso)
@@ -51,7 +59,9 @@
 
                     <div class="col-md-4">
                         <label asp-for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                        <input asp-for="fechaNacimiento" class="form-control" type="date" />
+                        <input asp-for="fechaNacimiento"
+                               class="form-control"
+                               type="date" />
                         <span asp-validation-for="fechaNacimiento" class="text-danger"></span>
                     </div>
 
@@ -118,24 +128,21 @@
                     </div>
 
                     <!-- Estado -->
-                    <form asp-action="CambiarEstado" method="post" class="row g-3 mt-3">
-                        <input type="hidden" name="id_persona" value="@Model.id_persona" />
-
-                        <div class="col-md-6">
-                            <label class="form-label">Estado</label>
-                            @Html.DropDownList(
-                                     "id_estadoPersona",              // nombre del parámetro del action
-                                     (SelectList)ViewBag.Estados,     // viene del controller
-                                     null,
-                                     new { @class = "form-select" }
-                                     )
-                        </div>                        
-                    </form>
+                    <div class="col-md-6 mt-3">
+                        <label class="form-label">Estado</label>
+                        @Html.DropDownList(
+                                 "id_estadoPersona",
+                                 (SelectList)ViewBag.Estados,
+                                 null,
+                                 new { @class = "form-select" }
+                                 )
+                        <span asp-validation-for="id_estadoPersona" class="text-danger"></span>
+                    </div>
 
                     <!-- Fechas -->
                     <div class="col-md-3">
                         <label asp-for="fechaIngreso" class="form-label">Fecha de alta</label>
-                        <input asp-for="fechaIngreso" class="form-control" type="date" />
+                        <input asp-for="fechaIngreso" class="form-control" type="date" readonly />
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
                     </div>
 
@@ -176,7 +183,20 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        (function($){
+            if (!$.validator || !$.validator.messages) return;
 
+            $.extend($.validator.messages, {
+                required: "Este campo es obligatorio.",
+                max: "La fecha de nacimiento no puede ser futura.",
+                min: "La fecha no puede ser futura.",
+                range: "La fecha no puede ser futura."
+            });
+        })(jQuery);
+    </script>
+       
+}
 
     <script>
     (function () {

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SantaRamona.Backoffice.Models
 {
-    public class Persona
+    public class Persona : IValidatableObject
     {
         [Key]
         public int id_persona { get; set; }
@@ -68,5 +69,19 @@ namespace SantaRamona.Backoffice.Models
 
         [StringLength(255, ErrorMessage = "Las observaciones no pueden superar 255 caracteres.")]
         public string? motivoEgreso { get; set; }
+
+        // ==========================================
+        // ✅ VALIDACIÓN PERSONALIZADA DE FECHAS
+        // ==========================================
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (fechaNacimiento.HasValue && fechaNacimiento.Value.Date > DateTime.Today)
+            {
+                yield return new ValidationResult(
+                    "La fecha de nacimiento no puede ser futura.",
+                    new[] { nameof(fechaNacimiento) }
+                );
+            }
+        }
     }
 }

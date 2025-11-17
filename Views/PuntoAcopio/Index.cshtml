@@ -17,19 +17,9 @@
 }
 
 <div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-        <!-- 🔙 Botón volver al menú -->
-        <a asp-controller="Home" asp-action="Index" class="link-back">← Volver al menú</a>
-
-        <h1 class="text-center fw-bold flex-grow-1" style="color:#2FA8A2; letter-spacing:.5px;">
-            LISTA DE PUNTOS DE ACOPIO
-        </h1>
-
-        <a asp-action="Crear" class="btn"
-           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
-            Agregar Nuevo Punto
-        </a>
-    </div>
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        LISTA DE PUNTOS DE ACOPIO
+    </h1>
 
     @if (ViewBag.Ok != null)
     {
@@ -45,6 +35,20 @@
             @ViewBag.ApiError
         </div>
     }
+
+    <!-- 🔝 Barra superior: Volver + Agregar (mismo estilo general que el resto) -->
+    <div class="d-flex justify-content-between align-items-center mt-3 gap-2 flex-wrap">
+        <a asp-controller="Home" asp-action="Index"
+           class="btn"
+           style="border:1px solid #2FA8A2; color:#2FA8A2; background:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            ← Volver al menú
+        </a>
+
+        <a asp-action="Crear" class="btn"
+           style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.5rem 1.25rem;">
+            Agregar Nuevo Punto
+        </a>
+    </div>
 
     <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
         <div class="table-responsive">
@@ -118,58 +122,39 @@
 </div>
 
 <style>
-    /* Ajustar los botones de acciones dentro de la tabla */
-    .table .text-end .btn {
-        display: inline-flex; /* mantiene alineación horizontal */
-        align-items: center; /* centra verticalmente el texto */
-        justify-content: center;
-        min-width: 90px; /* ancho mínimo igualado */
-        padding: .4rem .9rem;
-        margin-right: .25rem; /* separa un poquito */
-        font-size: .9rem;
+    .table.styled-table th,
+    .table.styled-table td {
+        text-align: left;
+        vertical-align: middle;
+        padding: .75rem;
     }
 
-    /* Espaciado uniforme y sin saltos de línea */
-    .table .text-end {
-        white-space: nowrap;
-    }
-
-    /* Color base de acción (verde turquesa) */
-    .table .btn {
-        background-color: #2FA8A2;
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        transition: filter 0.2s;
-    }
-
-        /* Hover */
-        .table .btn:hover {
-            filter: brightness(0.9);
+        .table.styled-table th:last-child,
+        .table.styled-table td:last-child {
+            text-align: right;
         }
 
-        /* Eliminar en color magenta */
-        .table .btn.btn-delete {
-            background-color: #A71A6C;
+        /* 👉 Aquí forzamos que los botones NO bajen de línea */
+        .table.styled-table td.text-end {
+            white-space: nowrap;
         }
 
-    .styled-table {
-        border-collapse: collapse;
-        width: 100%;
-        background-color: #fff;
-        border: 1px solid #2FA8A2;
-        border-radius: 14px;
-        overflow: hidden;
-    }
-
-        .styled-table td, .styled-table th {
-            padding: 0.75rem 1rem;
-            vertical-align: middle;
+        .table.styled-table td .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            padding: .4rem .9rem;
+            margin-right: .25rem;
+            font-size: .9rem;
+            border-radius: 10px;
+            border: none;
+            transition: filter 0.2s;
         }
 
-        .styled-table tr:nth-child(even) {
-            background-color: #f8fdfd;
-        }
+            .table.styled-table td .btn:hover {
+                filter: brightness(0.9);
+            }
 
     .badge {
         display: inline-block;
@@ -191,29 +176,12 @@
         border: 1px solid #ff6b6b;
     }
 
-    .link-back {
-        background: #fff;
-        border: 1px solid #2FA8A2;
-        color: #2FA8A2;
-        padding: .5rem 1rem;
-        border-radius: .5rem;
-        text-decoration: none;
-        transition: background-color .2s, color .2s;
+    @@media (max-width: 768px) {
+        .d-flex.justify-content-between.flex-wrap
+
+    {
+        gap: .5rem;
     }
 
-        .link-back:hover {
-            background: #E6F6F6;
-            color: #155e59;
-        }
-
-    @@media (max-width: 768px) {
-        .d-flex {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .text-center {
-            margin: .5rem 0;
-        }
     }
 </style>

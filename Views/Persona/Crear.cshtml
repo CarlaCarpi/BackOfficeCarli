@@ -41,7 +41,8 @@
         </div>
 
         <div class="card-body">
-            <form id="form-crear" asp-action="Crear" method="post">
+            <form id="form-crear" asp-action="Crear" method="post" novalidate>
+
                 @Html.AntiForgeryToken()
 
                 <div class="row g-3">
@@ -69,7 +70,12 @@
 
                     <div class="col-md-4">
                         <label asp-for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                        <input asp-for="fechaNacimiento" class="form-control" type="date" />
+                        <input asp-for="fechaNacimiento"
+                               class="form-control"
+                               type="date"
+                               max="@DateTime.Today.ToString("yyyy-MM-dd")"
+                               oninvalid="this.setCustomValidity('La fecha de nacimiento no puede ser futura.')"
+                               oninput="this.setCustomValidity('')" />
                         <span asp-validation-for="fechaNacimiento" class="text-danger"></span>
                     </div>
 
@@ -87,7 +93,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label asp-for="telefono2" class="form-label">Teléfono</label>
+                        <label asp-for="telefono2" class="form-label">Teléfono (Opcional)</label>
                         <input asp-for="telefono2" class="form-control" />
                         <span asp-validation-for="telefono2" class="text-danger"></span>
                     </div>
@@ -145,7 +151,7 @@
                     <!-- Fechas -->
                     <div class="col-md-3">
                         <label asp-for="fechaIngreso" class="form-label">Fecha de alta</label>
-                        <input asp-for="fechaIngreso" class="form-control" type="date" />
+                        <input asp-for="fechaIngreso" class="form-control" type="date" readonly />
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
                     </div>
 
@@ -183,10 +189,24 @@
 
 @section Scripts {
     @{
+        // Esto ya trae jQuery + jquery.validate + unobtrusive
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- 🔁 Sobrescribimos los mensajes por defecto de jQuery Validate -->
     <script>
+        (function ($) {
+            if (!$.validator || !$.validator.messages) return;
+
+            $.extend($.validator.messages, {
+                max: "La fecha de nacimiento no puede ser futura.",
+                range: "La fecha de nacimiento no puede ser futura."
+            });
+        })(jQuery);
+    </script>
+
+    <script>
+        // 👇 Tu script de provincias / localidades, tal cual lo tenías
         (function () {
             var $prov = $("#id_provincia");
             var $loc = $("#id_localidad");
@@ -206,7 +226,6 @@
 
                 setLoading();
 
-                // ✅ Usar el proxy MVC que filtra las localidades
                 var url = "@Url.Action("LocalidadesPorProvincia", "Persona")" + "?provinciaId=" + idProvincia;
 
                 $.getJSON(url)
@@ -246,6 +265,5 @@
                 }
             });
         })();
-
     </script>
 }
