@@ -74,12 +74,12 @@
                     <div class="form-control" readonly>@Txt(estados, Model.id_estadoAnimal)</div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label fw-semibold">Tamaño</label>
                     <div class="form-control" readonly>@Txt(tamanos, Model.id_tamano)</div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label fw-semibold">Especie</label>
                     <div class="form-control" readonly>@Txt(especies, Model.id_especie)</div>
                 </div>                
@@ -97,16 +97,16 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Fecha de adopción</label>
+                    <label class="form-label fw-semibold">Fecha de ingreso</label>
                     <div class="form-control" readonly>
-                        @(Model.fechaAdopcion.HasValue ? Model.fechaAdopcion.Value.ToString("dd/MM/yyyy") : "—")
+                        @(Model.fechaIngreso.HasValue ? Model.fechaIngreso.Value.ToString("dd/MM/yyyy") : "—")
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Fecha de ingreso</label>
+                    <label class="form-label fw-semibold">Fecha de adopción</label>
                     <div class="form-control" readonly>
-                        @(Model.fechaIngreso.HasValue ? Model.fechaIngreso.Value.ToString("dd/MM/yyyy") : "—")
+                        @(Model.fechaAdopcion.HasValue ? Model.fechaAdopcion.Value.ToString("dd/MM/yyyy") : "—")
                     </div>
                 </div>
 

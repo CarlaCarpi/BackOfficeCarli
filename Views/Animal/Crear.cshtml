@@ -1,6 +1,7 @@
 ﻿@model SantaRamona.Backoffice.Models.Animal
 @{
     ViewData["Title"] = "Agregar nuevo animal";
+    var hoy = DateTime.Today.ToString("yyyy-MM-dd");
 }
 
 
@@ -128,35 +129,48 @@
                         <span asp-validation-for="seguimiento" class="text-danger"></span>
                     </div>
 
-                    <!-- Persona (opcional) como DESPLEGABLE -->
+                    <!-- Persona (opcional) con combo buscable -->
                     <div class="col-md-6">
                         <label asp-for="id_persona" class="form-label">Persona (opcional)</label>
-                        <select asp-for="id_persona" asp-items="ViewBag.Personas" class="form-select">
-                            <option value="">— Sin asignar —</option>
+
+                        <select asp-for="id_persona"
+                                asp-items="ViewBag.Personas"
+                                class="form-select select-buscable"
+                                id="id_persona">
+                            <option value="">Seleccione o busque una persona...</option>
                         </select>
+
                         <span asp-validation-for="id_persona" class="text-danger"></span>
                     </div>
 
-                    <!-- Pensión (opcional) como DESPLEGABLE -->
+                    <!-- Pensión (opcional) con combo buscable -->
                     <div class="col-md-6">
                         <label asp-for="id_pension" class="form-label">Pensión (opcional)</label>
-                        <select asp-for="id_pension" asp-items="ViewBag.Pensiones" class="form-select">
-                            <option value="">— Sin asignar —</option>
+
+                        <select asp-for="id_pension"
+                                asp-items="ViewBag.Pensiones"
+                                class="form-select select-buscable"
+                                id="id_pension">
+                            <option value="">Seleccione o busque una pensión...</option>
                         </select>
+
                         <span asp-validation-for="id_pension" class="text-danger"></span>
                     </div>
 
                     <!-- Fecha ingreso -->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label asp-for="fechaIngreso" class="form-label fw-semibold">Fecha de ingreso</label>
-                        <input asp-for="fechaIngreso" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <input asp-for="fechaIngreso"
+                               type="date"
+                               class="form-control"
+                               max="@hoy" />
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
                     </div>
 
                     <!-- Fecha adopción -->
                     <div class="col-md-6">
                         <label asp-for="fechaAdopcion" class="form-label">Fecha de Adopción (opcional)</label>
-                        <input asp-for="fechaAdopcion" type="date" class="form-control" />
+                        <input asp-for="fechaAdopcion" type="date" class="form-control" max="@hoy" />
                         <span asp-validation-for="fechaAdopcion" class="text-danger"></span>
                     </div>
 
@@ -179,4 +193,94 @@
     input[type=number] {
         -moz-appearance: textfield;
     }
+
+    * Asegura ancho completo */
+    .select2-container {
+        width: 100% !important;
+    }
+
+    /* Altura y alineación del campo */
+    .select2-selection--single {
+        height: 38px !important;
+        display: flex !important;
+        align-items: center !important;
+        padding-left: 12px !important; /* 👈 Hace que el texto arranque a la izquierda */
+    }
+
+    /* Texto alineado completamente a la izquierda */
+    .select2-selection__rendered {
+        line-height: 38px !important;
+        padding-left: 0 !important; /* 👈 SIN espaciado extra */
+        text-align: left !important; /* 👈 Por las dudas */
+    }
+
+    /* Flechita alineada (select2 default) */
+    .select2-selection__arrow {
+        height: 38px !important;
+        right: 8px !important;
+    }
+
+    /* ❌ Botón de limpiar (X) alineado a la derecha, al lado de la flecha */
+    .select2-selection__clear {
+        position: absolute !important;
+        right: 26px !important; /* 👈 Lo acerca a la flecha */
+        top: 50% !important;
+        transform: translateY(-50%);
+        font-size: 18px !important;
+        opacity: 0.7;
+    }
+
+    /* Asegurar que X y la flecha no se superpongan */
+    .select2-selection--single .select2-selection__arrow {
+        right: 8px !important;
+    }
+
+    /* COLOR DE FONDO AL SELECCIONAR UNA OPCIÓN (más oscuro) */
+    .select2-results__option--highlighted {
+        background-color: #0056b3 !important; /* Azul oscuro */
+        color: white !important;
+    }
+
+    /* No cambia cuando está seleccionada */
+    .select2-results__option[aria-selected="true"] {
+        background-color: #0056b3 !important;
+        color: white !important;
+    }
+
 </style>
+
+@section Scripts {
+    <!-- Si jQuery y Select2 ya están en el _Layout, podés sacar estas 2 líneas -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(function () {
+            // Inicializar PERSONA
+            $('#id_persona').select2({
+                placeholder: 'Seleccione o busque una persona...',
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Inicializar PENSIÓN
+            $('#id_pension').select2({
+                placeholder: 'Seleccione o busque una pensión...',
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Función para poner placeholder en el INPUT de búsqueda interno
+            function wireSearchPlaceholder(selectId, textoPlaceholder) {
+                $(selectId).on('select2:open', function () {
+                    const buscador = $('.select2-container--open .select2-search__field').last();
+                    buscador.attr('placeholder', textoPlaceholder);
+                });
+            }
+
+            wireSearchPlaceholder('#id_persona', 'Buscar persona por nombre o apellido...');
+            wireSearchPlaceholder('#id_pension', 'Buscar pensión por nombre...');
+        });
+    </script>
+}

@@ -247,7 +247,14 @@ namespace SantaRamona.Backoffice.Controllers
         public async Task<IActionResult> Crear()
         {
             await CargarSelects();
-            return View(new Animal());
+
+            var model = new Animal
+            {
+                // acá seteamos la fecha por defecto
+                fechaIngreso = DateTime.Today
+            };
+
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -285,6 +292,21 @@ namespace SantaRamona.Backoffice.Controllers
             if (model.id_persona.HasValue && model.id_persona <= 0) model.id_persona = null;
             if (model.id_pension.HasValue && model.id_pension <= 0) model.id_pension = null;
 
+            // agregamos la validación de fecha futura
+            if (model.fechaIngreso.HasValue && model.fechaIngreso.Value.Date > DateTime.Today)
+                ModelState.AddModelError(nameof(Animal.fechaIngreso), "La fecha de ingreso no puede ser futura.");
+            // ---- FECHA DE ADOPCIÓN ----
+            if (model.fechaAdopcion.HasValue)
+            {
+                if (model.fechaAdopcion.Value.Date > DateTime.Today)
+                    ModelState.AddModelError(nameof(Animal.fechaAdopcion), "La fecha de adopción no puede ser futura.");
+
+                if (model.fechaIngreso.HasValue &&
+                    model.fechaAdopcion.Value.Date < model.fechaIngreso.Value.Date)
+                    ModelState.AddModelError(nameof(Animal.fechaAdopcion), "La fecha de adopción no puede ser anterior a la fecha de ingreso.");
+            }
+
+            // Si hay errores detiene el flujo
             if (!ModelState.IsValid)
             {
                 await CargarSelects(model.id_especie, model.id_tamano, model.id_estadoAnimal);
@@ -408,7 +430,21 @@ namespace SantaRamona.Backoffice.Controllers
             if (model.id_especie <= 0) ModelState.AddModelError(nameof(Animal.id_especie), "La especie es obligatoria.");
             if (model.id_tamano <= 0) ModelState.AddModelError(nameof(Animal.id_tamano), "Seleccione un tamaño válido.");
             if (model.id_estadoAnimal <= 0) ModelState.AddModelError(nameof(Animal.id_estadoAnimal), "Seleccione un estado válido.");
+            // Nueva validación: no permitir fechas futuras
+            if (model.fechaIngreso.HasValue && model.fechaIngreso.Value.Date > DateTime.Today)
+                ModelState.AddModelError(nameof(Animal.fechaIngreso), "La fecha de ingreso no puede ser futura.");
+            // ---- FECHA DE ADOPCIÓN ----
+            if (model.fechaAdopcion.HasValue)
+            {
+                if (model.fechaAdopcion.Value.Date > DateTime.Today)
+                    ModelState.AddModelError(nameof(Animal.fechaAdopcion), "La fecha de adopción no puede ser futura.");
 
+                if (model.fechaIngreso.HasValue &&
+                    model.fechaAdopcion.Value.Date < model.fechaIngreso.Value.Date)
+                    ModelState.AddModelError(nameof(Animal.fechaAdopcion), "La fecha de adopción no puede ser anterior a la fecha de ingreso.");
+            }
+
+            // Si hay errores detiene el flujo
             if (!ModelState.IsValid)
             {
                 await CargarSelects(model.id_especie, model.id_tamano, model.id_estadoAnimal);
