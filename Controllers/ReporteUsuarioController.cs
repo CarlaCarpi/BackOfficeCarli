@@ -20,53 +20,22 @@ namespace SantaRamona.Backoffice.Controllers
             PropertyNameCaseInsensitive = true
         };
 
-        //// ===== Modelo simple de usuario para el combo =====
-        //public class UsuarioSimple
-        //{
-        //    public int id_usuario { get; set; }
-        //    public string usuario { get; set; } = "";   // ajustá si en tu API se llama distinto
-        //}
-
-        //// ===================== OBTENER USUARIOS =====================
-        //private async Task<List<UsuarioSimple>> ObtenerUsuariosAsync()
-        //{
-        //    var client = _http.CreateClient("Api");
-        //    var resp = await client.GetAsync("/api/Usuario");
-        //    if (!resp.IsSuccessStatusCode)
-        //        return new();
-
-        //    var json = await resp.Content.ReadAsStringAsync();
-        //    var lista = JsonSerializer.Deserialize<List<UsuarioSimple>>(json, JOps) ?? new();
-
-        //    return lista
-        //        .OrderBy(u => u.usuario)
-        //        .ToList();
-        //}
+        // ===================== Obtener usuarios =====================
         private async Task<List<Usuario>> ObtenerUsuariosAsync()
         {
             var client = _http.CreateClient("Api");
-
-            // 🔹 Usá el mismo endpoint que uses en tu pantalla de Usuarios
-            // si allí llamás /api/Usuario?pagina=1&pageSize=20, copiá ese:
             var resp = await client.GetAsync("/api/Usuario?pagina=1&pageSize=1000");
 
             if (!resp.IsSuccessStatusCode)
-            {
-                // opcional: mostrar error en la vista
-                ViewBag.ApiErrorUsuarios = $"GET /api/Usuario -> {(int)resp.StatusCode} {resp.ReasonPhrase}";
                 return new();
-            }
 
             var json = await resp.Content.ReadAsStringAsync();
             var lista = JsonSerializer.Deserialize<List<Usuario>>(json, JOps) ?? new();
 
-            // ajustá el campo por el que quieras ordenar (usuario, nombre, email, etc.)
-            return lista
-                .OrderBy(u => u.id_usuario)   // si tu modelo tiene otra propiedad, cámbiala acá
-                .ToList();
+            return lista.OrderBy(u => u.id_usuario).ToList();
         }
 
-        // ===================== ARMAR EVENTOS POR USUARIO =====================
+        // ===================== Construir eventos =====================
         private async Task<List<EventoUsuarioViewModel>> ConstruirEventosAsync(int idUsuario)
         {
             var client = _http.CreateClient("Api");
@@ -79,7 +48,6 @@ namespace SantaRamona.Backoffice.Controllers
                 var json = await rPer.Content.ReadAsStringAsync();
                 var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JOps) ?? Enumerable.Empty<Persona>();
 
-                // CREAR (uso fechaIngreso como fecha de alta)
                 eventos.AddRange(personas
                     .Where(p => p.id_usuario == idUsuario)
                     .Select(p => new EventoUsuarioViewModel
@@ -88,10 +56,9 @@ namespace SantaRamona.Backoffice.Controllers
                         IdRegistro = p.id_persona,
                         NombreRegistro = $"{p.nombre} {p.apellido}",
                         Accion = "CREAR",
-                        Fecha = p.fechaIngreso      // DateTime normal
+                        Fecha = p.fechaIngreso
                     }));
 
-                // MODIFICAR (si usan fechaEgreso como última acción / modificación)
                 eventos.AddRange(personas
                     .Where(p => p.id_usuario == idUsuario && p.fechaEgreso.HasValue)
                     .Select(p => new EventoUsuarioViewModel
@@ -111,7 +78,6 @@ namespace SantaRamona.Backoffice.Controllers
                 var json = await rAni.Content.ReadAsStringAsync();
                 var animales = JsonSerializer.Deserialize<IEnumerable<Animal>>(json, JOps) ?? Enumerable.Empty<Animal>();
 
-                // CREAR
                 eventos.AddRange(animales
                     .Where(a => a.id_usuario == idUsuario && a.fechaIngreso.HasValue)
                     .Select(a => new EventoUsuarioViewModel
@@ -123,7 +89,6 @@ namespace SantaRamona.Backoffice.Controllers
                         Fecha = a.fechaIngreso!.Value
                     }));
 
-                // MODIFICAR
                 eventos.AddRange(animales
                     .Where(a => a.id_usuario == idUsuario && a.fechaModificacion.HasValue)
                     .Select(a => new EventoUsuarioViewModel
@@ -143,7 +108,6 @@ namespace SantaRamona.Backoffice.Controllers
                 var json = await rPen.Content.ReadAsStringAsync();
                 var pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(json, JOps) ?? Enumerable.Empty<Pension>();
 
-                // CREAR (uso fechaIngreso como fecha de alta)
                 eventos.AddRange(pensiones
                     .Where(pe => pe.id_usuario == idUsuario)
                     .Select(pe => new EventoUsuarioViewModel
@@ -155,7 +119,6 @@ namespace SantaRamona.Backoffice.Controllers
                         Fecha = pe.fechaIngreso
                     }));
 
-                // MODIFICAR (uso fechaEgreso como última acción)
                 eventos.AddRange(pensiones
                     .Where(pe => pe.id_usuario == idUsuario && pe.fechaEgreso.HasValue)
                     .Select(pe => new EventoUsuarioViewModel
@@ -168,12 +131,10 @@ namespace SantaRamona.Backoffice.Controllers
                     }));
             }
 
-            return eventos
-                .OrderByDescending(e => e.Fecha)
-                .ToList();
+            return eventos.OrderByDescending(e => e.Fecha).ToList();
         }
 
-        // ===================== INDEX (FILTRO + LISTA) =====================
+        // ===================== INDEX =====================
         [HttpGet]
         public async Task<IActionResult> Index(int? idUsuario)
         {
@@ -189,22 +150,23 @@ namespace SantaRamona.Backoffice.Controllers
 
             var sel = usuarios.FirstOrDefault(u => u.id_usuario == idUsuario.Value);
             ViewBag.IdUsuario = idUsuario.Value;
-
-            // 👇 CAMBIÁ "usuario" por la propiedad real de tu modelo Usuario
-            ViewBag.NombreUsuario = sel != null
-                ? sel.nombre                     // ej: sel.nombreUsuario, sel.email, etc.
-                : $"Usuario #{idUsuario.Value}";
+            ViewBag.NombreUsuario = sel?.nombre ?? $"Usuario #{idUsuario.Value}";
 
             var eventos = await ConstruirEventosAsync(idUsuario.Value);
+
+            // ⭐ Guardar para Excel
+            TempData["AccionesUsuario"] = JsonSerializer.Serialize(eventos);
+            TempData.Keep("AccionesUsuario");
+
             return View(eventos);
         }
-        // ===================== PDF =====================
+
+        // ===================== EXPORTAR PDF =====================
         [HttpGet]
         public async Task<IActionResult> ExportarPdf(int idUsuario)
         {
             var eventos = await ConstruirEventosAsync(idUsuario);
 
-            // Nombre del usuario para el encabezado
             var usuarios = await ObtenerUsuariosAsync();
             var sel = usuarios.FirstOrDefault(u => u.id_usuario == idUsuario);
             var nombreUsuario = sel?.nombre ?? $"Usuario #{idUsuario}";
@@ -218,17 +180,13 @@ namespace SantaRamona.Backoffice.Controllers
                     page.Size(PageSizes.A4);
                     page.Margin(20);
                     page.PageColor(Colors.White);
-                    page.DefaultTextStyle(x => x.FontSize(10));
 
                     page.Header().Column(col =>
                     {
                         col.Item().Text("Reporte de auditoría por usuario")
                             .SemiBold().FontSize(16).FontColor("#2FA8A2");
-
-                        col.Item().Text($"Usuario: {nombreUsuario}")
-                            .FontSize(11);
-
-                        col.Item().Text($"Generado: {DateTime.Now:dd/MM/yyyy}")
+                        col.Item().Text($"Usuario: {nombreUsuario}").FontSize(11);
+                        col.Item().Text($"Generado: {DateTime.Now:dd/MM/yyyy HH:mm}")
                             .FontSize(9).FontColor(Colors.Grey.Darken2);
                     });
 
@@ -236,49 +194,67 @@ namespace SantaRamona.Backoffice.Controllers
                     {
                         table.ColumnsDefinition(cols =>
                         {
-                            cols.RelativeColumn(1.2f); // Acción
-                            cols.RelativeColumn(1.6f); // Entidad
-                            cols.RelativeColumn(1.0f); // Id
-                            cols.RelativeColumn(1.6f); // Fecha
+                            cols.RelativeColumn(1.2f);
+                            cols.RelativeColumn(1.4f);
+                            cols.RelativeColumn(2.0f);
+                            cols.RelativeColumn(1.2f);
                         });
 
-                        static IContainer CellHeader(IContainer c) =>
-                            c.Background("#2FA8A2").Padding(4)
-                             .DefaultTextStyle(x => x.FontColor("#FFFFFF").Bold());
+                        static IContainer Th(IContainer c) =>
+                            c.Background("#2FA8A2").Padding(4).DefaultTextStyle(x => x.FontColor("#fff").Bold());
 
-                        static IContainer Cell(IContainer c) =>
+                        static IContainer Td(IContainer c) =>
                             c.Border(0.5f).BorderColor("#e5e7eb").Padding(3);
 
                         table.Header(h =>
                         {
-                            h.Cell().Element(CellHeader).Text("Acción");
-                            h.Cell().Element(CellHeader).Text("Entidad");
-                            h.Cell().Element(CellHeader).Text("Identificación");
-                            h.Cell().Element(CellHeader).Text("Fecha");
+                            h.Cell().Element(Th).Text("Acción");
+                            h.Cell().Element(Th).Text("Entidad");
+                            h.Cell().Element(Th).Text("Registro");
+                            h.Cell().Element(Th).Text("Fecha");
                         });
 
                         foreach (var e in eventos)
                         {
-                            table.Cell().Element(Cell).Text(e.Accion);
-                            table.Cell().Element(Cell).Text(e.Entidad);
-                            table.Cell().Element(Cell).Text(e.NombreRegistro);
-                            table.Cell().Element(Cell).Text(e.Fecha.ToString("dd/MM/yyyy"));
+                            table.Cell().Element(Td).Text(e.Accion);
+                            table.Cell().Element(Td).Text(e.Entidad);
+                            table.Cell().Element(Td).Text(e.NombreRegistro);
+                            table.Cell().Element(Td).Text(e.Fecha.ToString("dd/MM/yyyy HH:mm"));
                         }
-                    });
-
-                    page.Footer().AlignRight().Text(x =>
-                    {
-                        x.Span("Página ");
-                        x.CurrentPageNumber();
-                        x.Span(" de ");
-                        x.TotalPages();
                     });
                 });
             }).GeneratePdf(stream);
 
-            var bytes = stream.ToArray();
-            var nombreArchivo = $"reporte_acciones_usuario_{idUsuario}_{DateTime.Now:yyyyMMdd}.pdf";
-            return File(bytes, "application/pdf", nombreArchivo);
+            return File(stream.ToArray(), "application/pdf",
+                $"reporte_acciones_usuario_{idUsuario}_{DateTime.Now:yyyyMMdd}.pdf");
+        }
+
+        // ===================== EXPORTAR EXCEL (CSV) =====================
+        [HttpGet]
+        public IActionResult ExportarExcel(int idUsuario, string nombreUsuario)
+        {
+            var accionesJson = TempData["AccionesUsuario"] as string;
+
+            if (accionesJson == null)
+                return Content("No hay datos para exportar.", "text/plain");
+
+            var datos = JsonSerializer.Deserialize<List<EventoUsuarioViewModel>>(accionesJson, JOps)
+                        ?? new();
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("sep=;");
+            sb.AppendLine("Fecha;Acción;Entidad;Registro");
+
+            foreach (var e in datos)
+            {
+                sb.AppendLine($"{e.Fecha:dd/MM/yyyy HH:mm};{e.Accion};{e.Entidad};{e.NombreRegistro}");
+            }
+
+            var bytes = System.Text.Encoding.Unicode.GetBytes(sb.ToString());
+            var nombreArchivo =
+                $"reporte_acciones_{nombreUsuario}_{DateTime.Now:yyyyMMdd_HHmm}.csv";
+
+            return File(bytes, "text/csv; charset=utf-16", nombreArchivo);
         }
     }
 }
