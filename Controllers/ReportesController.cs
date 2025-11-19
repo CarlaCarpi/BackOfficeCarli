@@ -41,7 +41,7 @@ namespace SantaRamona.Controllers
             var totalEnTransito = animales.Count(a => a.id_estadoAnimal == 2);
             var totalEnPension = animales.Count(a => a.id_estadoAnimal == 3);
             var totalAdoptados = animales.Count(a => a.id_estadoAnimal == 4);
-            var totalEnAdopcion = animales.Count(a => a.id_estadoAnimal == 1 || a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3);
+            var totalEnAdopcion = animales.Count(a => a.id_estadoAnimal == 1);
 
             // ----- Formularios -----
             var totalFormularios = formularios.Count;
