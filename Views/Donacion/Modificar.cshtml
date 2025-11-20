@@ -65,9 +65,9 @@
                         <span asp-validation-for="tipo" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" >
                         <label asp-for="descripcion" class="form-label">Descripción</label>
-                        <input asp-for="descripcion" class="form-control" maxlength="40" />
+                        <textarea class="form-control" style="white-space: pre-wrap;" name="descripcion">@Model.descripcion</textarea>
                         <span asp-validation-for="descripcion" class="text-danger"></span>
                     </div>
                 </div>
@@ -93,6 +93,15 @@
             box-shadow: none !important;
             background-color: #fff !important;
         }
+
+    textarea {
+        min-width: 100%;
+        resize: vertical;
+        height: 30px;
+        min-height: 30px;
+        max-height: 100px;
+        font-family: sans-serif;
+    }
 </style>
 
 @section Scripts {

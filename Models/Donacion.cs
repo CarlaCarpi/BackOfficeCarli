@@ -12,7 +12,7 @@ namespace SantaRamona.Backoffice.Models
         public string tipo { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La descripción es obligatoria.")]
-        [StringLength(40, ErrorMessage = "La descripción no puede superar los 40 caracteres.")]
+        [StringLength(500, ErrorMessage = "La descripción no puede superar los 500 caracteres.")]
         [Display(Name = "Descripción")]
         public string descripcion { get; set; } = string.Empty;
     }

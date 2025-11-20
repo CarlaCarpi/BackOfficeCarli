@@ -108,6 +108,17 @@ namespace SantaRamona.Backoffice.Controllers
             if (string.IsNullOrWhiteSpace(descripcion))
                 ModelState.AddModelError("descripcion", "La descripción es obligatoria.");
 
+            if (!string.IsNullOrWhiteSpace(tipo) && !string.IsNullOrWhiteSpace(descripcion))
+            {
+                int max = (tipo == "M" || tipo == "I") ? 40 : 490;
+
+                if (descripcion.Length > max)
+                {
+                    ModelState.AddModelError("descripcion",
+                        $"La descripción no puede superar los {max} caracteres.");
+                }
+            }
+
             if (!ModelState.IsValid)
                 return View(new Donacion { tipo = tipo ?? string.Empty, descripcion = descripcion ?? string.Empty });
 
@@ -166,6 +177,17 @@ namespace SantaRamona.Backoffice.Controllers
 
             if (string.IsNullOrWhiteSpace(descripcion))
                 ModelState.AddModelError("descripcion", "La descripción es obligatoria.");
+
+            if (!string.IsNullOrWhiteSpace(tipo) && !string.IsNullOrWhiteSpace(descripcion))
+            {
+                int max = (tipo == "M" || tipo == "I") ? 40 : 490;
+
+                if (descripcion.Length > max)
+                {
+                    ModelState.AddModelError("descripcion",
+                        $"La descripción no puede superar los {max} caracteres.");
+                }
+            }
 
             if (!ModelState.IsValid)
                 return View(new Donacion { id_donacion = id_donacion, tipo = tipo ?? string.Empty, descripcion = descripcion ?? string.Empty });
