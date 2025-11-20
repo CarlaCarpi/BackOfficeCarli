@@ -2,10 +2,12 @@
 {
     public class EventoUsuarioViewModel
     {
-        public string Entidad { get; set; } = "";   // Persona / Animal / Pensión
-        public int IdRegistro { get; set; }         // id_persona / id_animal / id_pension
+        public int IdUsuario { get; set; }
+        public string UsuarioNombre { get; set; } = "";
+        public string Entidad { get; set; } = "";
+        public int IdRegistro { get; set; }
         public string NombreRegistro { get; set; } = "";
-        public string Accion { get; set; } = "";    // CREAR / MODIFICAR
+        public string Accion { get; set; } = "";
         public DateTime Fecha { get; set; }
     }
 }

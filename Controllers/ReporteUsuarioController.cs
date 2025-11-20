@@ -19,6 +19,25 @@ namespace SantaRamona.Backoffice.Controllers
         {
             PropertyNameCaseInsensitive = true
         };
+        private static List<EventoUsuarioViewModel> FiltrarPorFecha(
+        List<EventoUsuarioViewModel> eventos,
+        DateTime? fechaDesde,
+        DateTime? fechaHasta)
+        {
+            var q = eventos.AsQueryable();
+
+            if (fechaDesde.HasValue)
+                q = q.Where(e => e.Fecha.Date >= fechaDesde.Value.Date);
+
+            if (fechaHasta.HasValue)
+                q = q.Where(e => e.Fecha.Date <= fechaHasta.Value.Date);
+
+            return q
+                .OrderBy(e => e.UsuarioNombre)
+                .ThenByDescending(e => e.Fecha)
+                .ToList();
+        }
+
 
         // ===================== Obtener usuarios =====================
         private async Task<List<Usuario>> ObtenerUsuariosAsync()
@@ -36,22 +55,35 @@ namespace SantaRamona.Backoffice.Controllers
         }
 
         // ===================== Construir eventos =====================
+        // ===================== Construir eventos (UN usuario) =====================
         private async Task<List<EventoUsuarioViewModel>> ConstruirEventosAsync(int idUsuario)
         {
             var client = _http.CreateClient("Api");
             var eventos = new List<EventoUsuarioViewModel>();
+
+            // Traigo usuarios para obtener el nombre
+            var usuarios = await ObtenerUsuariosAsync();
+            var dicUsuarios = usuarios.ToDictionary(u => u.id_usuario, u => u.nombre);
+
+            var nombreUsuario = dicUsuarios.TryGetValue(idUsuario, out var nom)
+                ? nom
+                : $"Usuario #{idUsuario}";
 
             // ========= PERSONAS =========
             var rPer = await client.GetAsync("/api/Persona?pagina=1&pageSize=1000");
             if (rPer.IsSuccessStatusCode)
             {
                 var json = await rPer.Content.ReadAsStringAsync();
-                var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JOps) ?? Enumerable.Empty<Persona>();
+                var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JOps)
+                               ?? Enumerable.Empty<Persona>();
 
+                // CREAR (ingreso)
                 eventos.AddRange(personas
                     .Where(p => p.id_usuario == idUsuario)
                     .Select(p => new EventoUsuarioViewModel
                     {
+                        IdUsuario = idUsuario,
+                        UsuarioNombre = nombreUsuario,
                         Entidad = "Persona",
                         IdRegistro = p.id_persona,
                         NombreRegistro = $"{p.nombre} {p.apellido}",
@@ -59,10 +91,13 @@ namespace SantaRamona.Backoffice.Controllers
                         Fecha = p.fechaIngreso
                     }));
 
+                // MODIFICAR (egreso)
                 eventos.AddRange(personas
                     .Where(p => p.id_usuario == idUsuario && p.fechaEgreso.HasValue)
                     .Select(p => new EventoUsuarioViewModel
                     {
+                        IdUsuario = idUsuario,
+                        UsuarioNombre = nombreUsuario,
                         Entidad = "Persona",
                         IdRegistro = p.id_persona,
                         NombreRegistro = $"{p.nombre} {p.apellido}",
@@ -76,12 +111,16 @@ namespace SantaRamona.Backoffice.Controllers
             if (rAni.IsSuccessStatusCode)
             {
                 var json = await rAni.Content.ReadAsStringAsync();
-                var animales = JsonSerializer.Deserialize<IEnumerable<Animal>>(json, JOps) ?? Enumerable.Empty<Animal>();
+                var animales = JsonSerializer.Deserialize<IEnumerable<Animal>>(json, JOps)
+                               ?? Enumerable.Empty<Animal>();
 
+                // CREAR (ingreso)
                 eventos.AddRange(animales
                     .Where(a => a.id_usuario == idUsuario && a.fechaIngreso.HasValue)
                     .Select(a => new EventoUsuarioViewModel
                     {
+                        IdUsuario = idUsuario,
+                        UsuarioNombre = nombreUsuario,
                         Entidad = "Animal",
                         IdRegistro = a.id_animal,
                         NombreRegistro = a.nombre,
@@ -89,10 +128,13 @@ namespace SantaRamona.Backoffice.Controllers
                         Fecha = a.fechaIngreso!.Value
                     }));
 
+                // MODIFICAR (modificación)
                 eventos.AddRange(animales
                     .Where(a => a.id_usuario == idUsuario && a.fechaModificacion.HasValue)
                     .Select(a => new EventoUsuarioViewModel
                     {
+                        IdUsuario = idUsuario,
+                        UsuarioNombre = nombreUsuario,
                         Entidad = "Animal",
                         IdRegistro = a.id_animal,
                         NombreRegistro = a.nombre,
@@ -106,12 +148,16 @@ namespace SantaRamona.Backoffice.Controllers
             if (rPen.IsSuccessStatusCode)
             {
                 var json = await rPen.Content.ReadAsStringAsync();
-                var pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(json, JOps) ?? Enumerable.Empty<Pension>();
+                var pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(json, JOps)
+                                ?? Enumerable.Empty<Pension>();
 
+                // CREAR (ingreso)
                 eventos.AddRange(pensiones
                     .Where(pe => pe.id_usuario == idUsuario)
                     .Select(pe => new EventoUsuarioViewModel
                     {
+                        IdUsuario = idUsuario,
+                        UsuarioNombre = nombreUsuario,
                         Entidad = "Pensión",
                         IdRegistro = pe.id_pension,
                         NombreRegistro = pe.nombre,
@@ -119,10 +165,13 @@ namespace SantaRamona.Backoffice.Controllers
                         Fecha = pe.fechaIngreso
                     }));
 
+                // MODIFICAR (egreso)
                 eventos.AddRange(pensiones
                     .Where(pe => pe.id_usuario == idUsuario && pe.fechaEgreso.HasValue)
                     .Select(pe => new EventoUsuarioViewModel
                     {
+                        IdUsuario = idUsuario,
+                        UsuarioNombre = nombreUsuario,
                         Entidad = "Pensión",
                         IdRegistro = pe.id_pension,
                         NombreRegistro = pe.nombre,
@@ -131,45 +180,251 @@ namespace SantaRamona.Backoffice.Controllers
                     }));
             }
 
-            return eventos.OrderByDescending(e => e.Fecha).ToList();
+            return eventos
+                .OrderByDescending(e => e.Fecha)
+                .ToList();
         }
+
+        // ===================== Construir eventos (TODOS los usuarios) =====================
+        private async Task<List<EventoUsuarioViewModel>> ConstruirEventosTodosAsync()
+        {
+            var client = _http.CreateClient("Api");
+            var eventos = new List<EventoUsuarioViewModel>();
+
+            // Traigo usuarios para mapear Id -> Nombre (todos tienen id_usuario int)
+            var usuarios = await ObtenerUsuariosAsync();
+            var dicUsuarios = usuarios.ToDictionary(u => u.id_usuario, u => u.nombre);
+
+            // ========= PERSONAS =========
+            var rPer = await client.GetAsync("/api/Persona?pagina=1&pageSize=1000");
+            if (rPer.IsSuccessStatusCode)
+            {
+                var json = await rPer.Content.ReadAsStringAsync();
+                var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JOps)
+                               ?? Enumerable.Empty<Persona>();
+
+                // CREAR (ingreso)
+                eventos.AddRange(personas
+                    .Where(p => p.id_usuario.HasValue && p.id_usuario.Value != 0)
+                    .Select(p =>
+                    {
+                        var idUser = p.id_usuario!.Value;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Persona",
+                            IdRegistro = p.id_persona,
+                            NombreRegistro = $"{p.nombre} {p.apellido}",
+                            Accion = "CREAR",
+                            Fecha = p.fechaIngreso
+                        };
+                    }));
+
+                // MODIFICAR (egreso)
+                eventos.AddRange(personas
+                    .Where(p => p.id_usuario.HasValue && p.id_usuario.Value != 0 && p.fechaEgreso.HasValue)
+                    .Select(p =>
+                    {
+                        var idUser = p.id_usuario!.Value;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Persona",
+                            IdRegistro = p.id_persona,
+                            NombreRegistro = $"{p.nombre} {p.apellido}",
+                            Accion = "MODIFICAR",
+                            Fecha = p.fechaEgreso!.Value
+                        };
+                    }));
+            }
+
+            // ========= ANIMALES =========
+            var rAni = await client.GetAsync("/api/Animal");
+            if (rAni.IsSuccessStatusCode)
+            {
+                var json = await rAni.Content.ReadAsStringAsync();
+                var animales = JsonSerializer.Deserialize<IEnumerable<Animal>>(json, JOps)
+                               ?? Enumerable.Empty<Animal>();
+
+                // CREAR
+                eventos.AddRange(animales
+                    .Where(a => a.id_usuario != 0 && a.fechaIngreso.HasValue)
+                    .Select(a =>
+                    {
+                        var idUser = a.id_usuario;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Animal",
+                            IdRegistro = a.id_animal,
+                            NombreRegistro = a.nombre,
+                            Accion = "CREAR",
+                            Fecha = a.fechaIngreso!.Value
+                        };
+                    }));
+
+                // MODIFICAR
+                eventos.AddRange(animales
+                    .Where(a => a.id_usuario != 0 && a.fechaModificacion.HasValue)
+                    .Select(a =>
+                    {
+                        var idUser = a.id_usuario;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Animal",
+                            IdRegistro = a.id_animal,
+                            NombreRegistro = a.nombre,
+                            Accion = "MODIFICAR",
+                            Fecha = a.fechaModificacion!.Value
+                        };
+                    }));
+            }
+
+            // ========= PENSIONES =========
+            var rPen = await client.GetAsync("/api/Pension");
+            if (rPen.IsSuccessStatusCode)
+            {
+                var json = await rPen.Content.ReadAsStringAsync();
+                var pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(json, JOps)
+                                ?? Enumerable.Empty<Pension>();
+
+                // CREAR
+                eventos.AddRange(pensiones
+                    .Where(pe => pe.id_usuario != 0)
+                    .Select(pe =>
+                    {
+                        var idUser = pe.id_usuario;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Pensión",
+                            IdRegistro = pe.id_pension,
+                            NombreRegistro = pe.nombre,
+                            Accion = "CREAR",
+                            Fecha = pe.fechaIngreso
+                        };
+                    }));
+
+                // MODIFICAR
+                eventos.AddRange(pensiones
+                    .Where(pe => pe.id_usuario != 0 && pe.fechaEgreso.HasValue)
+                    .Select(pe =>
+                    {
+                        var idUser = pe.id_usuario;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Pensión",
+                            IdRegistro = pe.id_pension,
+                            NombreRegistro = pe.nombre,
+                            Accion = "MODIFICAR",
+                            Fecha = pe.fechaEgreso!.Value
+                        };
+                    }));
+            }
+
+            return eventos
+                .OrderBy(e => e.UsuarioNombre)
+                .ThenByDescending(e => e.Fecha)
+                .ToList();
+        }
+
 
         // ===================== INDEX =====================
         [HttpGet]
-        public async Task<IActionResult> Index(int? idUsuario)
+        public async Task<IActionResult> Index(int? idUsuario, DateTime? fechaDesde, DateTime? fechaHasta)
         {
             var usuarios = await ObtenerUsuariosAsync();
             ViewBag.Usuarios = usuarios;
 
+            List<EventoUsuarioViewModel> eventos;
+
             if (!idUsuario.HasValue)
             {
+                // SIN usuario: traigo TODO
                 ViewBag.IdUsuario = null;
-                ViewBag.NombreUsuario = "Seleccione un usuario";
-                return View(new List<EventoUsuarioViewModel>());
+                ViewBag.NombreUsuario = "Todos los usuarios";
+
+                eventos = await ConstruirEventosTodosAsync();
+            }
+            else
+            {
+                // CON usuario seleccionado
+                var sel = usuarios.FirstOrDefault(u => u.id_usuario == idUsuario.Value);
+                ViewBag.IdUsuario = idUsuario.Value;
+                ViewBag.NombreUsuario = sel?.nombre ?? $"Usuario #{idUsuario.Value}";
+
+                eventos = await ConstruirEventosAsync(idUsuario.Value);
             }
 
-            var sel = usuarios.FirstOrDefault(u => u.id_usuario == idUsuario.Value);
-            ViewBag.IdUsuario = idUsuario.Value;
-            ViewBag.NombreUsuario = sel?.nombre ?? $"Usuario #{idUsuario.Value}";
+            // === Filtro por fecha desde / hasta ===
+            eventos = FiltrarPorFecha(eventos, fechaDesde, fechaHasta);
 
-            var eventos = await ConstruirEventosAsync(idUsuario.Value);
+            // Para que los inputs type="date" sigan mostrando lo seleccionado
+            ViewBag.FechaDesde = fechaDesde?.ToString("yyyy-MM-dd");
+            ViewBag.FechaHasta = fechaHasta?.ToString("yyyy-MM-dd");
 
-            // ⭐ Guardar para Excel
+            // Guardar lo YA filtrado para Excel
             TempData["AccionesUsuario"] = JsonSerializer.Serialize(eventos);
             TempData.Keep("AccionesUsuario");
 
             return View(eventos);
         }
 
+
         // ===================== EXPORTAR PDF =====================
         [HttpGet]
-        public async Task<IActionResult> ExportarPdf(int idUsuario)
+        public async Task<IActionResult> ExportarPdf(int? idUsuario, DateTime? fechaDesde, DateTime? fechaHasta)
         {
-            var eventos = await ConstruirEventosAsync(idUsuario);
-
             var usuarios = await ObtenerUsuariosAsync();
-            var sel = usuarios.FirstOrDefault(u => u.id_usuario == idUsuario);
-            var nombreUsuario = sel?.nombre ?? $"Usuario #{idUsuario}";
+            List<EventoUsuarioViewModel> eventos;
+            string tituloUsuario;
+
+            if (idUsuario.HasValue)
+            {
+                eventos = await ConstruirEventosAsync(idUsuario.Value);
+                var sel = usuarios.FirstOrDefault(u => u.id_usuario == idUsuario.Value);
+                tituloUsuario = sel?.nombre ?? $"Usuario #{idUsuario.Value}";
+            }
+            else
+            {
+                eventos = await ConstruirEventosTodosAsync();
+                tituloUsuario = "Todos los usuarios";
+            }
+
+            // Aplico filtro por fecha
+            eventos = FiltrarPorFecha(eventos, fechaDesde, fechaHasta);
 
             using var stream = new MemoryStream();
 
@@ -185,8 +440,14 @@ namespace SantaRamona.Backoffice.Controllers
                     {
                         col.Item().Text("Reporte de auditoría por usuario")
                             .SemiBold().FontSize(16).FontColor("#2FA8A2");
-                        col.Item().Text($"Usuario: {nombreUsuario}").FontSize(11);
-                        col.Item().Text($"Generado: {DateTime.Now:dd/MM/yyyy HH:mm}")
+                        col.Item().Text($"Usuario: {tituloUsuario}").FontSize(11);
+                        if (fechaDesde.HasValue || fechaHasta.HasValue)
+                        {
+                            var rango = $"{(fechaDesde.HasValue ? fechaDesde.Value.ToString("dd/MM/yyyy") : "...")} - {(fechaHasta.HasValue ? fechaHasta.Value.ToString("dd/MM/yyyy") : "...")}";
+                            col.Item().Text($"Rango de fechas: {rango}")
+                                .FontSize(10).FontColor(Colors.Grey.Darken2);
+                        }
+                        col.Item().Text($"Generado: {DateTime.Now:dd/MM/yyyy}")
                             .FontSize(9).FontColor(Colors.Grey.Darken2);
                     });
 
@@ -194,10 +455,11 @@ namespace SantaRamona.Backoffice.Controllers
                     {
                         table.ColumnsDefinition(cols =>
                         {
-                            cols.RelativeColumn(1.2f);
-                            cols.RelativeColumn(1.4f);
-                            cols.RelativeColumn(2.0f);
-                            cols.RelativeColumn(1.2f);
+                            cols.RelativeColumn(1.3f); // Usuario
+                            cols.RelativeColumn(1.0f); // Acción
+                            cols.RelativeColumn(1.2f); // Entidad
+                            cols.RelativeColumn(2.0f); // Registro
+                            cols.RelativeColumn(1.0f); // Fecha
                         });
 
                         static IContainer Th(IContainer c) =>
@@ -208,6 +470,7 @@ namespace SantaRamona.Backoffice.Controllers
 
                         table.Header(h =>
                         {
+                            h.Cell().Element(Th).Text("Usuario");
                             h.Cell().Element(Th).Text("Acción");
                             h.Cell().Element(Th).Text("Entidad");
                             h.Cell().Element(Th).Text("Registro");
@@ -216,45 +479,53 @@ namespace SantaRamona.Backoffice.Controllers
 
                         foreach (var e in eventos)
                         {
+                            table.Cell().Element(Td).Text(e.UsuarioNombre);
                             table.Cell().Element(Td).Text(e.Accion);
                             table.Cell().Element(Td).Text(e.Entidad);
                             table.Cell().Element(Td).Text(e.NombreRegistro);
-                            table.Cell().Element(Td).Text(e.Fecha.ToString("dd/MM/yyyy HH:mm"));
+                            table.Cell().Element(Td).Text(e.Fecha.ToString("dd/MM/yyyy"));
                         }
                     });
                 });
             }).GeneratePdf(stream);
 
-            return File(stream.ToArray(), "application/pdf",
-                $"reporte_acciones_usuario_{idUsuario}_{DateTime.Now:yyyyMMdd}.pdf");
+            var nombreArchivo =
+                $"reporte_acciones_usuario_{(idUsuario?.ToString() ?? "todos")}_{DateTime.Now:yyyyMMdd}.pdf";
+
+            return File(stream.ToArray(), "application/pdf", nombreArchivo);
         }
+
 
         // ===================== EXPORTAR EXCEL (CSV) =====================
         [HttpGet]
-        public IActionResult ExportarExcel(int idUsuario, string nombreUsuario)
-        {
-            var accionesJson = TempData["AccionesUsuario"] as string;
+public IActionResult ExportarExcel(int? idUsuario, string nombreUsuario, DateTime? fechaDesde, DateTime? fechaHasta)
+{
+    var accionesJson = TempData["AccionesUsuario"] as string;
 
-            if (accionesJson == null)
-                return Content("No hay datos para exportar.", "text/plain");
+    if (accionesJson == null)
+        return Content("No hay datos para exportar.", "text/plain");
 
-            var datos = JsonSerializer.Deserialize<List<EventoUsuarioViewModel>>(accionesJson, JOps)
-                        ?? new();
+    var datos = JsonSerializer.Deserialize<List<EventoUsuarioViewModel>>(accionesJson, JOps)
+                ?? new();
 
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine("sep=;");
-            sb.AppendLine("Fecha;Acción;Entidad;Registro");
+    // Aplico de nuevo el filtro por fecha (por si se llama directo)
+    datos = FiltrarPorFecha(datos, fechaDesde, fechaHasta);
 
-            foreach (var e in datos)
-            {
-                sb.AppendLine($"{e.Fecha:dd/MM/yyyy HH:mm};{e.Accion};{e.Entidad};{e.NombreRegistro}");
-            }
+    var sb = new System.Text.StringBuilder();
+    sb.AppendLine("sep=;");
+    sb.AppendLine("Usuario;Fecha;Acción;Entidad;Registro");
 
-            var bytes = System.Text.Encoding.Unicode.GetBytes(sb.ToString());
-            var nombreArchivo =
-                $"reporte_acciones_{nombreUsuario}_{DateTime.Now:yyyyMMdd_HHmm}.csv";
+    foreach (var e in datos)
+    {
+        sb.AppendLine($"{e.UsuarioNombre};{e.Fecha:dd/MM/yyyy};{e.Accion};{e.Entidad};{e.NombreRegistro}");
+    }
 
-            return File(bytes, "text/csv; charset=utf-16", nombreArchivo);
-        }
+    var bytes = System.Text.Encoding.Unicode.GetBytes(sb.ToString());
+    var nombreArchivo =
+        $"reporte_acciones_{(string.IsNullOrWhiteSpace(nombreUsuario) ? "todos" : nombreUsuario)}_{DateTime.Now:yyyyMMdd}.csv";
+
+    return File(bytes, "text/csv; charset=utf-16", nombreArchivo);
+}
+
     }
 }

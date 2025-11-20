@@ -9,63 +9,63 @@
     var idUsuario = ViewBag.IdUsuario as int?;
     var usuarios = ViewBag.Usuarios as IEnumerable<SantaRamona.Backoffice.Models.Usuario>
                    ?? Enumerable.Empty<SantaRamona.Backoffice.Models.Usuario>();
-
-    // Helper para leer query (por si lo necesitás después)
-    Func<string, string> Q = key => Context.Request.Query[key].ToString();
 }
 
 <style>
     .card {
-    border: 1px solid #2FA8A2;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.05);
-    background: #fff;
+        border: 1px solid #2FA8A2;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        background: #fff;
     }
 
     .card-header {
-    background: #2FA8A2;
-    color: #fff;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    padding: .85rem 1rem;
+        background: #2FA8A2;
+        color: #fff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: .85rem 1rem;
     }
 
+    /* mismos estilos que ReporteAnimales */
     .btn-outline,
     .btn-outline:link,
     .btn-outline:visited,
     button.btn-outline {
-    border-radius: 10px;
-    padding: .45rem .9rem;
-    background: #fff;
-    color: #155e59;
-    border: 1px solid #155e59;
-    display: inline-flex;
-    align-items: center;
-    gap: .35rem;
-    text-decoration: none;
-    font-weight: 600;
-    cursor: pointer;
-    line-height: 1.2;
+        border-radius: 10px;
+        padding: .45rem .9rem;
+        background: #fff;
+        color: #155e59;
+        border: 1px solid #155e59;
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        line-height: 1.2;
     }
 
-    .btn-outline:hover,
-    button.btn-outline:hover {
-    background: #E6F6F5;
-    }
+        .btn-outline:hover,
+        button.btn-outline:hover {
+            background: #E6F6F5;
+            color: #155e59;
+            text-decoration: none;
+        }
 
     .table thead th {
-    background: #E6F6F5;
-    color: #155e59;
-    border-bottom: 1px solid #cfeaea;
+        background: #E6F6F5;
+        color: #155e59;
+        border-bottom: 1px solid #cfeaea;
     }
 
     .filter-row .form-label {
-    font-weight: 600;
-    color: #155e59;
+        font-weight: 600;
+        color: #155e59;
     }
 
     .filter-actions {
-    padding-top: .75rem;
+        padding-top: .75rem;
     }
 </style>
 
@@ -76,16 +76,18 @@
         </div>
 
         <div class="card-body">
-            @* ---------- FILTRO USUARIO ---------- *@
-            <form method="get"
-            asp-controller="ReporteAccionesUsuario"
-            asp-action="Index"
-            class="row g-3 mb-3 filter-row">
 
+            @* ---------- FILTROS  ---------- *@
+            <form method="get"
+                  asp-controller="ReporteAccionesUsuario"
+                  asp-action="Index"
+                  class="row g-3 mb-3 filter-row">
+
+                <!-- Usuario -->
                 <div class="col-md-4 col-lg-3">
                     <label class="form-label">Usuario</label>
-                    <select name="idUsuario" class="form-select" required>
-                        <option value="">Seleccione un usuario...</option>
+                    <select name="idUsuario" class="form-select">
+                        <option value="">-- Todos los usuarios --</option>
                         @foreach (var u in usuarios)
                         {
                             <option value="@u.id_usuario" selected="@(idUsuario == u.id_usuario)">
@@ -95,66 +97,83 @@
                     </select>
                 </div>
 
+                <!-- Fecha desde -->
+                <div class="col-md-4 col-lg-3">
+                    <label class="form-label">Fecha desde</label>
+                    <input type="date"
+                           name="fechaDesde"
+                           class="form-control"
+                           value="@ViewBag.FechaDesde" />
+                </div>
+
+                <!-- Fecha hasta -->
+                <div class="col-md-4 col-lg-3">
+                    <label class="form-label">Fecha hasta</label>
+                    <input type="date"
+                           name="fechaHasta"
+                           class="form-control"
+                           value="@ViewBag.FechaHasta" />
+                </div>
+
+                <!-- BOTONES ABAJO DE LOS FILTROS -->
                 <div class="col-12 d-flex gap-2 mt-2 filter-actions">
                     <button type="submit" class="btn-outline">Buscar</button>
+
                     <a asp-action="Index" class="btn-outline">Limpiar</a>
-                    @if (idUsuario != null && Model.Any())
+
+                    @if (Model.Any())
                     {
-                        <a class="btn-outline"
-                        asp-controller="ReporteAccionesUsuario"
-                        asp-action="ExportarExcel"
-                        asp-route-idUsuario="@idUsuario"
-                        asp-route-nombreUsuario="@nombreUsuario">
+                        <a asp-action="ExportarExcel"
+                           asp-route-idUsuario="@ViewBag.IdUsuario"
+                           asp-route-nombreUsuario="@ViewBag.NombreUsuario"
+                           asp-route-fechaDesde="@ViewBag.FechaDesde"
+                           asp-route-fechaHasta="@ViewBag.FechaHasta"
+                           class="btn-outline">
                             Exportar Excel
                         </a>
-                    }
-                    @if (idUsuario != null && Model.Any())
-                    {
-                        <a class="btn-outline"
-                           asp-controller="ReporteAccionesUsuario"
-                           asp-action="ExportarPdf"
-                           asp-route-idUsuario="@idUsuario"
-                           asp-route-nombreUsuario="@nombreUsuario">
+
+                        <a asp-action="ExportarPdf"
+                           asp-route-idUsuario="@ViewBag.IdUsuario"
+                           asp-route-fechaDesde="@ViewBag.FechaDesde"
+                           asp-route-fechaHasta="@ViewBag.FechaHasta"
+                           class="btn-outline">
                             Exportar PDF
                         </a>
                     }
                 </div>
             </form>
 
+
             @* ---------- MENSAJES / RESULTADOS ---------- *@
-            @if (idUsuario == null)
+            @if (!Model.Any())
             {
                 <div class="alert alert-info" style="border-radius:10px;">
-                    Seleccione un usuario y haga clic en <strong>Buscar</strong> para ver sus movimientos.
-                </div>
-            }
-            else if (!Model.Any())
-            {
-                <div class="alert alert-info" style="border-radius:10px;">
-                    Este usuario no registra acciones.
+                    No se encontraron acciones para los filtros seleccionados.
                 </div>
             }
             else
             {
                 <div class="mb-2 text-muted">
-                    Usuario: <strong>@nombreUsuario</strong>
+                    Mostrando acciones de: <strong>@nombreUsuario</strong>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-sm align-middle">
                         <thead>
                             <tr>
+                                <th style="width: 20%;">Usuario</th>
                                 <th style="width: 15%;">Fecha</th>
-                                <th style="width: 20%;">Acción</th>
+                                <th style="width: 15%;">Acción</th>
                                 <th style="width: 20%;">Entidad</th>
-                                <th style="width: 45%;">Registro</th>
+                                <th style="width: 30%;">Registro</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var e in Model.OrderByDescending(x => x.Fecha))
+                            @foreach (var e in Model.OrderBy(x => x.UsuarioNombre).ThenByDescending(x => x.Fecha))
                             {
                                 <tr>
-                                    <td>@e.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@e.UsuarioNombre</td>
+                                    <td>@e.Fecha.ToString("dd/MM/yyyy")</td>
                                     <td>@e.Accion</td>
                                     <td>@e.Entidad</td>
                                     <td>
