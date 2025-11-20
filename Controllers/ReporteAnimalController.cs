@@ -159,7 +159,7 @@ namespace SantaRamona.Backoffice.Controllers
 
                 var cols = new List<string>
         {
-            
+
             Esc(a.nombre),
             SexoTxt(a.sexo),
             a.edadValor.ToString(),
@@ -189,10 +189,10 @@ namespace SantaRamona.Backoffice.Controllers
 
         [HttpGet]
         public async Task<IActionResult> ExportarPdf(
-            int? id_especie, 
-            int? id_tamano, 
+            int? id_especie,
+            int? id_tamano,
             int? id_estadoAnimal,
-            int? id_persona, 
+            int? id_persona,
             int? id_pension,
             DateTime? fechaIngresoDesde, DateTime? fechaIngresoHasta,
             DateTime? fechaAdopcionDesde, DateTime? fechaAdopcionHasta,
@@ -281,7 +281,7 @@ namespace SantaRamona.Backoffice.Controllers
                             cols.RelativeColumn(1.4f);  // Pensión
                             cols.RelativeColumn(1.2f);  // Ingreso
                             cols.RelativeColumn(1.2f);  // Adopción
-                            
+
                             if (incluirHistoria)
                                 cols.RelativeColumn(2.0f); // Historia
 
@@ -302,7 +302,7 @@ namespace SantaRamona.Backoffice.Controllers
                             h.Cell().Element(CellHeader).Text("Persona");
                             h.Cell().Element(CellHeader).Text("Pensión");
                             h.Cell().Element(CellHeader).Text("Ingreso");
-                            h.Cell().Element(CellHeader).Text("Adopción");                            
+                            h.Cell().Element(CellHeader).Text("Adopción");
                             if (incluirHistoria)
                                 h.Cell().Element(CellHeader).Text("Historia");
 

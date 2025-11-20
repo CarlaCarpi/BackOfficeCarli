@@ -110,7 +110,9 @@
                         <label class="form-label">Reemplazar imagen</label>
                         <input type="file" name="imagenFile" class="form-control" accept="image/*" />
                         <small class="text-muted">Formato: JPG, PNG o similar</small>
+                        <span asp-validation-for="imagen" class="text-danger"></span>
                     </div>
+
 
                     <!-- Especie -->
                     <div class="col-md-6">

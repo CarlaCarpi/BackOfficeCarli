@@ -272,7 +272,7 @@ namespace SantaRamona.Backoffice.Controllers
             // 2) Mantengo la idea de fallback a 1 si algo falla, como en Modificar
             ModelState.Remove(nameof(Animal.id_usuario));
             model.id_usuario = idUsuario > 0 ? idUsuario : 1;
-
+            ModelState.Remove(nameof(Animal.imagen));
             ModelState.Remove(nameof(Animal.edadValor));
             ModelState.Remove(nameof(Animal.id_especie));
             ModelState.Remove(nameof(Animal.id_tamano));
@@ -305,6 +305,9 @@ namespace SantaRamona.Backoffice.Controllers
                     model.fechaAdopcion.Value.Date < model.fechaIngreso.Value.Date)
                     ModelState.AddModelError(nameof(Animal.fechaAdopcion), "La fecha de adopción no puede ser anterior a la fecha de ingreso.");
             }
+
+            if (imagenFile == null || imagenFile.Length == 0)
+                ModelState.AddModelError(nameof(Animal.imagen), "La imagen es obligatoria.");
 
             // Si hay errores detiene el flujo
             if (!ModelState.IsValid)
@@ -413,7 +416,7 @@ namespace SantaRamona.Backoffice.Controllers
             // Mantengo la lógica anterior: si algo falla, sigo usando 1 como fallback
             ModelState.Remove(nameof(Animal.id_usuario));
             model.id_usuario = idUsuario > 0 ? idUsuario : 1;
-
+            ModelState.Remove(nameof(Animal.imagen));
             ModelState.Remove(nameof(Animal.edadValor));
             ModelState.Remove(nameof(Animal.id_especie));
             ModelState.Remove(nameof(Animal.id_tamano));
@@ -469,6 +472,20 @@ namespace SantaRamona.Backoffice.Controllers
                 ViewBag.ApiError = "No se pudo deserializar el animal actual.";
                 await CargarSelects(model.id_especie, model.id_tamano, model.id_estadoAnimal);
                 return View(model);
+            }
+
+            //  si NO hay imagen en la BD y tampoco se sube una nueva → error
+            if ((actual.imagen == null || actual.imagen.Length == 0) &&
+                (imagenFile == null || imagenFile.Length == 0))
+            {
+                ModelState.AddModelError(nameof(Animal.imagen), "La imagen es obligatoria.");
+            }
+
+            // para volver a la vista de modificar
+            if (!ModelState.IsValid)
+            {
+                await CargarSelects(model.id_especie, model.id_tamano, model.id_estadoAnimal);
+                return View(model);   // Vuelve a la misma vista Modificar
             }
 
             // 2) Resolver imagen final

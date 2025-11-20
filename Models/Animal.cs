@@ -28,7 +28,8 @@ namespace SantaRamona.Backoffice.Models
         public string edadUnidad { get; set; } = "A";
 
         //NUEVO: imagen (opcional). Si no la enviás, queda null.
-        public byte[]? imagen { get; set; }
+        [Required(ErrorMessage = "La imagen es obligatorio.")]
+        public byte[] imagen { get; set; } 
 
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione una especie válida.")]
         [Required(ErrorMessage = "La especie es obligatorio.")]
