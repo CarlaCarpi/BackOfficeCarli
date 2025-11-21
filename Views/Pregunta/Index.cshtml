@@ -7,6 +7,11 @@
 
     var tipos = ViewBag.TiposDict as Dictionary<int, string> ?? new();
     string TipoTxt(int id) => tipos.TryGetValue(id, out var v) ? v : $"#{id}";
+
+    // 🔢 Datos de paginación que viene del controller
+    int page = (int)(ViewBag.Page ?? 1);
+    int pageSize = (int)(ViewBag.PageSize ?? 20);
+    bool hasMore = (bool)(ViewBag.HasMore ?? false);
 }
 
 <div class="container-fluid mt-4">
@@ -50,7 +55,7 @@
                    style="border:1px solid #2FA8A2; border-radius:10px 0 0 10px; outline:none; box-shadow:none;">
 
             <input type="hidden" name="page" value="1" />
-            <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+            <input type="hidden" name="pageSize" value="@pageSize" />
 
             <button class="btn"
                     style="background:#2FA8A2; color:#fff; border-radius:0 10px 10px 0;">
@@ -63,7 +68,6 @@
             Agregar Nueva Pregunta
         </a>
     </div>
-
 
     @if (Model?.Any() == true)
     {
@@ -119,9 +123,9 @@
                     type="button"
                     class="btn"
                     style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.55rem 1.25rem;"
-                    data-next-page="@((int)(ViewBag.Page ?? 1) + 1)"
-            @(((bool)(ViewBag.HasMore ?? false)) ? "" : "disabled")>
-                @(((bool)(ViewBag.HasMore ?? false)) ? "Ver más" : "No hay más")
+                    data-next-page="@(page + 1)"
+            @(hasMore ? "" : "disabled")>
+                @(hasMore ? "Ver más" : "No hay más")
             </button>
         </div>
     }
@@ -136,7 +140,6 @@
 </div>
 
 <style>
-    /* Mismo estilo de tabla que Puntos de Acopio */
     .table.styled-table th,
     .table.styled-table td {
         text-align: left;
@@ -149,7 +152,6 @@
             text-align: right;
         }
 
-        /*  Evitar que los botones bajen de línea */
         .table.styled-table td.text-end {
             white-space: nowrap;
         }
@@ -206,7 +208,7 @@
 
           const baseMas = '@Url.Action("Mas", "Pregunta")';
           let page = Number(btn.getAttribute('data-next-page')) || 2;
-          const pageSize = @ViewBag.PageSize;
+          const pageSize = @pageSize;
           const tbody = document.getElementById('tbody-preguntas');
 
           // 👇 lleva el valor del buscador a JS
