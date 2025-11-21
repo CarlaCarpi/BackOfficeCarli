@@ -68,11 +68,14 @@ namespace SantaRamona.Backoffice.Controllers
         // ============================================================
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 20)
         {
             var client = _http.CreateClient("Api");
 
-            // ---- 1) Puntos (siempre definir la variable) ----
+            if (page < 1) page = 1;
+            if (pageSize <= 0) pageSize = 20;
+
+            // ---- 1) Puntos ----
             IEnumerable<Punto_Acopio> puntos = Enumerable.Empty<Punto_Acopio>();
 
             var resp = await client.GetAsync(RUTA_PUNTO_ACOPIO);
@@ -86,20 +89,9 @@ namespace SantaRamona.Backoffice.Controllers
                 var json = await resp.Content.ReadAsStringAsync();
                 try
                 {
-                    using var doc = JsonDocument.Parse(json);
-                    if (doc.RootElement.ValueKind == JsonValueKind.Object &&
-                        doc.RootElement.TryGetProperty("items", out var itemsElement))
-                    {
-                        puntos = JsonSerializer.Deserialize<IEnumerable<Punto_Acopio>>(
-                            itemsElement.GetRawText(), JsonOps
-                        ) ?? Enumerable.Empty<Punto_Acopio>();
-                    }
-                    else
-                    {
-                        puntos = JsonSerializer.Deserialize<IEnumerable<Punto_Acopio>>(
-                            json, JsonOps
-                        ) ?? Enumerable.Empty<Punto_Acopio>();
-                    }
+                    // La API ahora devuelve directamente un array []
+                    puntos = JsonSerializer.Deserialize<IEnumerable<Punto_Acopio>>(json, JsonOps)
+                             ?? Enumerable.Empty<Punto_Acopio>();
                 }
                 catch (JsonException je)
                 {
@@ -107,6 +99,23 @@ namespace SantaRamona.Backoffice.Controllers
                     puntos = Enumerable.Empty<Punto_Acopio>();
                 }
             }
+
+            // Ordeno siempre igual
+            var lista = puntos
+                .OrderBy(p => p.id_puntoAcopio)
+                .ToList();
+
+            var total = lista.Count;
+            var pageItems = lista
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var hasMore = (page * pageSize) < total;
+
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.HasMore = hasMore;
 
             // ---- 2) Provincias (id -> nombre) ----
             var respProv = await client.GetAsync(RUTA_PROVINCIA);
@@ -140,9 +149,84 @@ namespace SantaRamona.Backoffice.Controllers
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
             if (TempData["Error"] is string err) ViewBag.Error = err;
 
-            // ---- 5) Recién ahora devolvés la vista ----
-            return View(puntos);
+            // ---- 5) Devolver solo la primera página ----
+            return View(pageItems);
         }
+
+        // Devuelve más filas para el botón "Ver más"
+        [HttpGet]
+        public async Task<IActionResult> Mas(int page = 2, int pageSize = 20)
+        {
+            var client = _http.CreateClient("Api");
+
+            if (page < 1) page = 1;
+            if (pageSize <= 0) pageSize = 20;
+
+            // 1) Traer TODOS los puntos de la API (sin paginación)
+            var resp = await client.GetAsync(RUTA_PUNTO_ACOPIO);
+            if (!resp.IsSuccessStatusCode)
+            {
+                // si algo falla, que el front pueda mostrar "Intentar de nuevo"
+                return StatusCode((int)resp.StatusCode);
+            }
+
+            var json = await resp.Content.ReadAsStringAsync();
+            IEnumerable<Punto_Acopio> puntos;
+            try
+            {
+                puntos = JsonSerializer.Deserialize<IEnumerable<Punto_Acopio>>(json, JsonOps)
+                         ?? Enumerable.Empty<Punto_Acopio>();
+            }
+            catch
+            {
+                puntos = Enumerable.Empty<Punto_Acopio>();
+            }
+
+            // Orden y paginado en memoria
+            var lista = puntos
+                .OrderBy(p => p.id_puntoAcopio)
+                .ToList();
+
+            var total = lista.Count;
+            var pageItems = lista
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            if (!pageItems.Any())
+            {
+                Response.Headers["X-HasMore"] = "false";
+                return StatusCode(204); // No Content
+            }
+
+            var hasMore = (page * pageSize) < total;
+            Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
+
+            // Diccionarios que usa la vista para mostrar nombres
+            var respProv = await client.GetAsync(RUTA_PROVINCIA);
+            if (respProv.IsSuccessStatusCode)
+            {
+                var jsonProv = await respProv.Content.ReadAsStringAsync();
+                var provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(jsonProv, JsonOps)
+                                 ?? Enumerable.Empty<Provincia>();
+                ViewBag.Provincias = provincias.ToDictionary(p => p.id_provincia, p => p.nombre);
+            }
+            else ViewBag.Provincias = new Dictionary<int, string>();
+
+            var respLoc = await client.GetAsync(RUTA_LOCALIDAD);
+            if (respLoc.IsSuccessStatusCode)
+            {
+                var jsonLoc = await respLoc.Content.ReadAsStringAsync();
+                var localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(jsonLoc, JsonOps)
+                                  ?? Enumerable.Empty<Localidad>();
+                ViewBag.Localidades = localidades.ToDictionary(l => l.id_localidad, l => l.nombre);
+            }
+            else ViewBag.Localidades = new Dictionary<int, string>();
+
+            // Devuelvo solo las filas <tr> usando un partial
+            return PartialView("_PuntoAcopioRows", pageItems);
+        }
+
 
         // ============================================================
         // ===================== DETALLE ==============================

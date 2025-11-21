@@ -14,6 +14,11 @@
         var depto = string.IsNullOrWhiteSpace(p.departamento) ? "" : $" Dpto {p.departamento}";
         return $"{p.calle} {p.altura}{depto}";
     }
+
+    // 🔢 datos de paginación para el botón "Ver más" (igual que Animal)
+    int page = (int)(ViewBag.Page ?? 1);
+    int pageSize = (int)(ViewBag.PageSize ?? 20);
+    bool hasMore = (bool)(ViewBag.HasMore ?? false);
 }
 
 <div class="container-fluid mt-4">
@@ -36,7 +41,7 @@
         </div>
     }
 
-    <!-- 🔝 Barra superior: Volver + Agregar (mismo estilo general que el resto) -->
+    <!-- 🔝 Barra superior: Volver + Agregar -->
     <div class="d-flex justify-content-between align-items-center mt-3 gap-2 flex-wrap">
         <a asp-controller="Home" asp-action="Index"
            class="btn"
@@ -64,48 +69,10 @@
                         <th class="text-end" style="border-top-right-radius:10px;">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="puntos-body">
                     @if (Model != null && Model.Any())
                     {
-                        foreach (var p in Model)
-                        {
-                            <tr>
-                                <td>@p.id_puntoAcopio</td>
-                                <td>
-                                    <div style="font-weight:600;">@p.nombre</div>
-                                    @if (!string.IsNullOrWhiteSpace(p.descripcion))
-                                    {
-                                        <div style="color:#666; font-size:.9rem;">@p.descripcion</div>
-                                    }
-                                </td>
-                                <td>@ProvTxt(p.id_provincia)</td>
-                                <td>@LocTxt(p.id_localidad)</td>
-                                <td>@DirTxt(p)</td>
-                                <td>
-                                    @if (p.activo)
-                                    {
-                                        <span class="badge badge-ok">Activo</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge badge-off">Inactivo</span>
-                                    }
-                                </td>
-                                <td class="text-end">
-                                    <a asp-action="Modificar" asp-route-id="@p.id_puntoAcopio"
-                                       class="btn btn-sm"
-                                       style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
-                                        Modificar
-                                    </a>
-
-                                    <a asp-action="Eliminar" asp-route-id="@p.id_puntoAcopio"
-                                       class="btn btn-sm"
-                                       style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
-                                        Eliminar
-                                    </a>
-                                </td>
-                            </tr>
-                        }
+                        @await Html.PartialAsync("_PuntoAcopioRows", Model)
                     }
                     else
                     {
@@ -118,6 +85,17 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- 👇 Botón "Ver más" (misma idea que Animal) -->
+    <div class="d-flex justify-content-center my-3">
+        <button id="btnVerMasPuntos"
+                class="btn"
+                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.55rem 1.25rem;"
+                data-next-page="@(page + 1)"
+        @(hasMore ? null : "disabled")>
+            @(hasMore ? "Ver más" : "No hay más")
+        </button>
     </div>
 </div>
 
@@ -177,11 +155,75 @@
     }
 
     @@media (max-width: 768px) {
-        .d-flex.justify-content-between.flex-wrap
-
-    {
-        gap: .5rem;
-    }
-
+        .d-flex.justify-content-between.flex-wrap {
+            gap: .5rem;
+        }
     }
 </style>
+
+<script>
+    (() => {
+        const btn = document.getElementById('btnVerMasPuntos');
+        if (!btn) return;
+
+        const baseMas = '@Url.Action("Mas", "PuntoAcopio")';
+        let page = Number(btn.getAttribute('data-next-page')) || 2;
+        const pageSize = @pageSize;
+        const tbody = document.getElementById('puntos-body');
+
+        function setNoMore() {
+            btn.textContent = 'No hay más';
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+            btn.style.cursor = 'default';
+        }
+
+        btn.addEventListener('click', async (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            if (btn.disabled) return;
+
+            btn.disabled = true;
+            btn.textContent = 'Cargando...';
+
+            try {
+                const url = `${baseMas}?page=${page}&pageSize=${pageSize}`;
+                const resp = await fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    credentials: 'same-origin'
+                });
+
+                const html = await resp.text();
+                const trimmed = html.trim();
+
+                if (trimmed && !trimmed.startsWith('<tr')) {
+                    console.error('Respuesta inesperada (no <tr>):', trimmed.slice(0, 200));
+                    btn.disabled = false;
+                    btn.textContent = 'Intentar de nuevo';
+                    return;
+                }
+
+                if (trimmed) {
+                    tbody.insertAdjacentHTML('beforeend', trimmed);
+                }
+
+                const headerHasMore = (resp.headers.get('X-HasMore') || '').toLowerCase() === 'true';
+                const arrivedCount = (trimmed.match(/<tr[\s>]/g) || []).length;
+
+                if (!headerHasMore || arrivedCount < pageSize || !trimmed) {
+                    setNoMore();
+                    return;
+                }
+
+                page += 1;
+                btn.disabled = false;
+                btn.textContent = 'Ver más';
+
+            } catch (e) {
+                console.error(e);
+                btn.disabled = false;
+                btn.textContent = 'Intentar de nuevo';
+            }
+        });
+    })();
+</script>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<SantaRamona.Backoffice.Models.Punto_Acopio>
+
+@{
+    var provincias = ViewBag.Provincias as Dictionary<int, string> ?? new();
+    var localidades = ViewBag.Localidades as Dictionary<int, string> ?? new();
+
+    string ProvTxt(int id) => provincias.TryGetValue(id, out var v) ? v : $"#{id}";
+    string LocTxt(int id) => localidades.TryGetValue(id, out var v) ? v : $"#{id}";
+
+    string DirTxt(SantaRamona.Backoffice.Models.Punto_Acopio p)
+    {
+        var depto = string.IsNullOrWhiteSpace(p.departamento) ? "" : $" Dpto {p.departamento}";
+        return $"{p.calle} {p.altura}{depto}";
+    }
+}
+
+@foreach (var p in Model)
+{
+    <tr>
+        <td>@p.id_puntoAcopio</td>
+        <td>
+            <div style="font-weight:600;">@p.nombre</div>
+            @if (!string.IsNullOrWhiteSpace(p.descripcion))
+            {
+                <div style="color:#666; font-size:.9rem;">@p.descripcion</div>
+            }
+        </td>
+        <td>@ProvTxt(p.id_provincia)</td>
+        <td>@LocTxt(p.id_localidad)</td>
+        <td>@DirTxt(p)</td>
+        <td>
+            @if (p.activo)
+            {
+                <span class="badge badge-ok">Activo</span>
+            }
+            else
+            {
+                <span class="badge badge-off">Inactivo</span>
+            }
+        </td>
+        <td class="text-end">
+            <a asp-action="Modificar" asp-route-id="@p.id_puntoAcopio"
+               class="btn btn-sm"
+               style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.35rem .8rem; margin-right:.25rem;">
+                Modificar
+            </a>
+
+            <a asp-action="Eliminar" asp-route-id="@p.id_puntoAcopio"
+               class="btn btn-sm"
+               style="background:#A71A6C; color:#fff; border-radius:10px; padding:.35rem .8rem;">
+                Eliminar
+            </a>
+        </td>
+    </tr>
+}
+
