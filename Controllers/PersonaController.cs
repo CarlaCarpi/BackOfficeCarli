@@ -1119,6 +1119,7 @@ namespace SantaRamona.Backoffice.Controllers
             if (claimIdUsuario != null && int.TryParse(claimIdUsuario.Value, out var idUsu))
                 persona.id_usuario = idUsu;
 
+            persona.fechaEgreso = DateTime.Now;
 
 
             if (!ModelState.IsValid)

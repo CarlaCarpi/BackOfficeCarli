@@ -104,11 +104,10 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
-            // Normalizar y guardar búsqueda
+            // Normalizar búsqueda
             q = (q ?? "").Trim();
-            ViewBag.Query = q ?? string.Empty;
+            ViewBag.Query = q ?? "";
 
-            // Diccionarios que vamos a usar en filtro y en la vista
             var estadosDict = new Dictionary<int, string>();
             var provinciasDict = new Dictionary<int, string>();
             var localidadesDict = new Dictionary<int, string>();
@@ -117,17 +116,19 @@ namespace SantaRamona.Backoffice.Controllers
             IEnumerable<Pension> pensiones = Enumerable.Empty<Pension>();
             bool hasMore = false;
 
-            // === 1) Pido a la API con paginación (y q si viene) ===
+            // === 1) Llamado principal a la API ===
             string url = $"{RUTA_PENSION}?pagina={page}&pageSize={pageSize}";
             if (!string.IsNullOrWhiteSpace(q))
-                url += $"&q={Uri.EscapeDataString(q)}";
+                url += $"&q={Uri.EscapeDataString(q!)}";
 
             var resp = await client.GetAsync(url);
 
+            // ======================================================
+            // ================   FALLBACK (API ERROR)   ============
+            // ======================================================
             if (!resp.IsSuccessStatusCode)
             {
-                // Fallback sin paginación (último recurso)
-                var retryUrl = string.IsNullOrWhiteSpace(q)
+                string retryUrl = string.IsNullOrWhiteSpace(q)
                     ? RUTA_PENSION
                     : $"{RUTA_PENSION}?q={Uri.EscapeDataString(q!)}";
 
@@ -135,8 +136,7 @@ namespace SantaRamona.Backoffice.Controllers
 
                 if (!retry.IsSuccessStatusCode)
                 {
-                    var body = await retry.Content.ReadAsStringAsync();
-                    ViewBag.ApiError = $"Error al obtener pensiones: {body}";
+                    ViewBag.ApiError = $"Error al obtener pensiones: {await retry.Content.ReadAsStringAsync()}";
 
                     ViewBag.Page = 1;
                     ViewBag.PageSize = pageSize;
@@ -150,193 +150,167 @@ namespace SantaRamona.Backoffice.Controllers
                     return View(Enumerable.Empty<Pension>());
                 }
 
+                // 🔹 Traigo todo
                 var all = JsonSerializer.Deserialize<IEnumerable<Pension>>(
                     await retry.Content.ReadAsStringAsync(), JsonOps
                 ) ?? Enumerable.Empty<Pension>();
 
-                // === Diccionarios para filtro y vista ===
+                // 🔥 FILTRAR eliminado
+                all = all.Where(p => p.fechaEliminacion == null);
+
+                // === Diccionarios ===
                 estadosDict = await CargarEstadosPensionDictAsync(client);
 
                 var respProv = await client.GetAsync(RUTA_PROVINCIA);
                 if (respProv.IsSuccessStatusCode)
-                {
-                    var provJson = await respProv.Content.ReadAsStringAsync();
-                    var provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(provJson, JsonOps)
-                                     ?? Enumerable.Empty<Provincia>();
-                    provinciasDict = provincias.ToDictionary(p => p.id_provincia, p => p.nombre);
-                }
+                    provinciasDict = JsonSerializer.Deserialize<IEnumerable<Provincia>>(
+                        await respProv.Content.ReadAsStringAsync(), JsonOps
+                    )?.ToDictionary(p => p.id_provincia, p => p.nombre) ?? new();
 
                 var respLoc = await client.GetAsync(RUTA_LOCALIDAD);
                 if (respLoc.IsSuccessStatusCode)
-                {
-                    var locJson = await respLoc.Content.ReadAsStringAsync();
-                    var localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(locJson, JsonOps)
-                                      ?? Enumerable.Empty<Localidad>();
-                    localidadesDict = localidades.ToDictionary(l => l.id_localidad, l => l.nombre);
-                }
+                    localidadesDict = JsonSerializer.Deserialize<IEnumerable<Localidad>>(
+                        await respLoc.Content.ReadAsStringAsync(), JsonOps
+                    )?.ToDictionary(l => l.id_localidad, l => l.nombre) ?? new();
 
                 var respUsr = await client.GetAsync(RUTA_USUARIO);
                 if (respUsr.IsSuccessStatusCode)
-                {
-                    var usrJson = await respUsr.Content.ReadAsStringAsync();
-                    var usuarios = JsonSerializer.Deserialize<IEnumerable<Usuario>>(usrJson, JsonOps)
-                                   ?? Enumerable.Empty<Usuario>();
-                    usuariosDict = usuarios.ToDictionary(
-                        u => u.id_usuario,
-                        u => string.IsNullOrWhiteSpace(u.nombre) ? $"Usuario #{u.id_usuario}" : u.nombre
-                    );
-                }
+                    usuariosDict = JsonSerializer.Deserialize<IEnumerable<Usuario>>(
+                        await respUsr.Content.ReadAsStringAsync(), JsonOps
+                    )?.ToDictionary(u => u.id_usuario,
+                                    u => string.IsNullOrWhiteSpace(u.nombre) ? $"Usuario #{u.id_usuario}" : u.nombre) ?? new();
 
-                // === Filtro local (Nombre, EstadoPension, Provincia, y de yapa ID) ===
+                // === Filtro local (si q tiene algo) ===
                 if (!string.IsNullOrWhiteSpace(q))
                 {
                     var term = q.Trim();
 
                     all = all.Where(p =>
                     {
-                        // Por ID
-                        bool porId = int.TryParse(term, out var idBuscado) && p.id_pension == idBuscado;
+                        bool porId = int.TryParse(term, out var idB) && p.id_pension == idB;
+                        bool porNom = !string.IsNullOrWhiteSpace(p.nombre) &&
+                                      p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase);
 
-                        // Por nombre
-                        bool porNombre = !string.IsNullOrWhiteSpace(p.nombre) &&
-                                         p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase);
+                        bool porEstado = estadosDict.TryGetValue(p.id_estadoPension, out var eTxt) &&
+                                         eTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
 
-                        // Por estado de la pensión (texto)
-                        string estadoTxt = estadosDict.TryGetValue(p.id_estadoPension, out var eTxt) ? eTxt : "";
-                        bool porEstado = !string.IsNullOrWhiteSpace(estadoTxt) &&
-                                         estadoTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
+                        bool porProv = provinciasDict.TryGetValue(p.id_provincia, out var pTxt) &&
+                                       pTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
 
-                        // Por provincia (texto)
-                        string provTxt = provinciasDict.TryGetValue(p.id_provincia, out var pTxt) ? pTxt : "";
-                        bool porProvincia = !string.IsNullOrWhiteSpace(provTxt) &&
-                                            provTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
-
-                        return porId || porNombre || porEstado || porProvincia;
+                        return porId || porNom || porEstado || porProv;
                     });
                 }
 
+                // Orden y paginado
                 all = all.OrderByDescending(p => p.id_pension);
-                var totalLocal = all.Count();
 
-                pensiones = all
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-
+                int totalLocal = all.Count();
+                pensiones = all.Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 hasMore = page * pageSize < totalLocal;
 
                 ViewBag.Page = page;
                 ViewBag.PageSize = pageSize;
                 ViewBag.HasMore = hasMore;
+
+                ViewBag.Estados = estadosDict;
+                ViewBag.Provincias = provinciasDict;
+                ViewBag.Localidades = localidadesDict;
+                ViewBag.Usuarios = usuariosDict;
+
+                return View(pensiones);
             }
+
+            // ======================================================
+            // ================   API OK (NORMAL)   =================
+            // ======================================================
+            pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(
+                await resp.Content.ReadAsStringAsync(), JsonOps
+            ) ?? Enumerable.Empty<Pension>();
+
+            // 🔥 FILTRAR eliminado
+            pensiones = pensiones.Where(p => p.fechaEliminacion == null);
+
+            // === Diccionarios ===
+            estadosDict = await CargarEstadosPensionDictAsync(client);
+
+            var respProvOK = await client.GetAsync(RUTA_PROVINCIA);
+            if (respProvOK.IsSuccessStatusCode)
+                provinciasDict = JsonSerializer.Deserialize<IEnumerable<Provincia>>(
+                    await respProvOK.Content.ReadAsStringAsync(), JsonOps
+                )?.ToDictionary(p => p.id_provincia, p => p.nombre) ?? new();
+
+            var respLocOK = await client.GetAsync(RUTA_LOCALIDAD);
+            if (respLocOK.IsSuccessStatusCode)
+                localidadesDict = JsonSerializer.Deserialize<IEnumerable<Localidad>>(
+                    await respLocOK.Content.ReadAsStringAsync(), JsonOps
+                )?.ToDictionary(l => l.id_localidad, l => l.nombre) ?? new();
+
+            var respUsrOK = await client.GetAsync(RUTA_USUARIO);
+            if (respUsrOK.IsSuccessStatusCode)
+                usuariosDict = JsonSerializer.Deserialize<IEnumerable<Usuario>>(
+                    await respUsrOK.Content.ReadAsStringAsync(), JsonOps
+                )?.ToDictionary(u => u.id_usuario,
+                                u => string.IsNullOrWhiteSpace(u.nombre) ? $"Usuario #{u.id_usuario}" : u.nombre) ?? new();
+
+            // === Filtro local (solo sobre página recibida) ===
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var term = q.Trim();
+
+                pensiones = pensiones.Where(p =>
+                {
+                    bool porId = int.TryParse(term, out var idB) && p.id_pension == idB;
+                    bool porNom = !string.IsNullOrWhiteSpace(p.nombre) &&
+                                  p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase);
+                    bool porEstado = estadosDict.TryGetValue(p.id_estadoPension, out var eTxt) &&
+                                     eTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
+                    bool porProv = provinciasDict.TryGetValue(p.id_provincia, out var pTxt) &&
+                                   pTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    return porId || porNom || porEstado || porProv;
+                });
+            }
+
+            // === HasMore: detecto más páginas ===
+            int total = 0;
+            if (resp.Headers.TryGetValues("X-Total-Count", out var vals))
+                int.TryParse(vals.FirstOrDefault(), out total);
+
+            if (total > 0)
+                hasMore = (page * pageSize) < total;
             else
             {
-                // API respondió bien (paginación server-side)
-                pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(
-                    await resp.Content.ReadAsStringAsync(), JsonOps
-                ) ?? Enumerable.Empty<Pension>();
-
-                // === Diccionarios para filtro y vista ===
-                estadosDict = await CargarEstadosPensionDictAsync(client);
-
-                var respProv = await client.GetAsync(RUTA_PROVINCIA);
-                if (respProv.IsSuccessStatusCode)
-                {
-                    var provJson = await respProv.Content.ReadAsStringAsync();
-                    var provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(provJson, JsonOps)
-                                     ?? Enumerable.Empty<Provincia>();
-                    provinciasDict = provincias.ToDictionary(p => p.id_provincia, p => p.nombre);
-                }
-
-                var respLoc = await client.GetAsync(RUTA_LOCALIDAD);
-                if (respLoc.IsSuccessStatusCode)
-                {
-                    var locJson = await respLoc.Content.ReadAsStringAsync();
-                    var localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(locJson, JsonOps)
-                                      ?? Enumerable.Empty<Localidad>();
-                    localidadesDict = localidades.ToDictionary(l => l.id_localidad, l => l.nombre);
-                }
-
-                var respUsr = await client.GetAsync(RUTA_USUARIO);
-                if (respUsr.IsSuccessStatusCode)
-                {
-                    var usrJson = await respUsr.Content.ReadAsStringAsync();
-                    var usuarios = JsonSerializer.Deserialize<IEnumerable<Usuario>>(usrJson, JsonOps)
-                                   ?? Enumerable.Empty<Usuario>();
-                    usuariosDict = usuarios.ToDictionary(
-                        u => u.id_usuario,
-                        u => string.IsNullOrWhiteSpace(u.nombre) ? $"Usuario #{u.id_usuario}" : u.nombre
-                    );
-                }
-
-                // === Filtro local sobre la página devuelta por la API ===
+                // Sondeo
+                var probeUrl = $"{RUTA_PENSION}?pagina={page + 1}&pageSize=1";
                 if (!string.IsNullOrWhiteSpace(q))
+                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
+
+                var probe = await client.GetAsync(probeUrl);
+                if (probe.IsSuccessStatusCode)
                 {
-                    var term = q.Trim();
+                    var next = JsonSerializer.Deserialize<IEnumerable<Pension>>(
+                        await probe.Content.ReadAsStringAsync(), JsonOps
+                    ) ?? Enumerable.Empty<Pension>();
 
-                    pensiones = pensiones.Where(p =>
-                    {
-                        // Por ID
-                        bool porId = int.TryParse(term, out var idBuscado) && p.id_pension == idBuscado;
+                    // 🔥 También FILTRAR eliminadas
+                    next = next.Where(p => p.fechaEliminacion == null);
 
-                        // Por nombre
-                        bool porNombre = !string.IsNullOrWhiteSpace(p.nombre) &&
-                                         p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase);
-
-                        // Por estado de la pensión (texto)
-                        string estadoTxt = estadosDict.TryGetValue(p.id_estadoPension, out var eTxt) ? eTxt : "";
-                        bool porEstado = !string.IsNullOrWhiteSpace(estadoTxt) &&
-                                         estadoTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
-
-                        // Por provincia (texto)
-                        string provTxt = provinciasDict.TryGetValue(p.id_provincia, out var pTxt) ? pTxt : "";
-                        bool porProvincia = !string.IsNullOrWhiteSpace(provTxt) &&
-                                            provTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
-
-                        return porId || porNombre || porEstado || porProvincia;
-                    });
+                    hasMore = next.Any();
                 }
-
-                // === HasMore como antes (por header o sondeo) ===
-                int total = 0;
-                bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
-                if (hasHeader)
-                    int.TryParse(vals!.FirstOrDefault(), out total);
-
-                if (total > 0)
-                {
-                    hasMore = (page * pageSize) < total;
-                }
-                else
-                {
-                    var probeUrl = $"{RUTA_PENSION}?pagina={page + 1}&pageSize=1";
-                    if (!string.IsNullOrWhiteSpace(q))
-                        probeUrl += $"&q={Uri.EscapeDataString(q.Trim())}";
-
-                    var probe = await client.GetAsync(probeUrl);
-                    if (probe.IsSuccessStatusCode)
-                    {
-                        var pj = await probe.Content.ReadAsStringAsync();
-                        var next = JsonSerializer.Deserialize<IEnumerable<Pension>>(pj, JsonOps)
-                                   ?? Enumerable.Empty<Pension>();
-                        hasMore = next.Any();
-                    }
-                    else hasMore = false;
-                }
-
-                ViewBag.Page = page;
-                ViewBag.PageSize = pageSize;
-                ViewBag.HasMore = hasMore;
             }
 
-            // Mensajes (si los usás)
+            // === Mensajes ===
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
             if (TempData["Error"] is string err) ViewBag.Error = err;
 
-            // Orden final por ID
+            // Orden final
             pensiones = pensiones.OrderByDescending(p => p.id_pension);
 
-            // Pasar diccionarios a la vista
+            // === Pasar Diccionarios ===
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.HasMore = hasMore;
+
             ViewBag.Estados = estadosDict;
             ViewBag.Provincias = provinciasDict;
             ViewBag.Localidades = localidadesDict;
@@ -344,6 +318,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             return View(pensiones);
         }
+
 
 
 
@@ -623,12 +598,13 @@ namespace SantaRamona.Backoffice.Controllers
         // ============================================================
         // ===================== ELIMINAR =============================
         // ============================================================
+
         [HttpGet]
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Eliminar(int id)
         {
             var client = _http.CreateClient("Api");
-            var resp = await client.GetAsync($"/api/Pension/{id}");
+            var resp = await client.GetAsync($"{RUTA_PENSION}/{id}"); // /api/Pension/{id}
 
             if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -639,61 +615,68 @@ namespace SantaRamona.Backoffice.Controllers
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
-                TempData["Error"] = $"GET /api/Pension/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
+                TempData["Error"] = $"GET {RUTA_PENSION}/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}.";
+                TempData["ApiDetail"] = body;
                 return RedirectToAction(nameof(Index));
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var model = JsonSerializer.Deserialize<Pension>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            var model = JsonSerializer.Deserialize<Pension>(json, JsonOps);
 
             if (model == null)
             {
-                TempData["Error"] = "No se pudo cargar la pensión.";
+                TempData["Error"] = "No se pudo leer la pensión desde la API.";
                 return RedirectToAction(nameof(Index));
             }
 
-            // 🔹 Cargar diccionarios para mostrar nombres en la vista
+            // 👉 Usuario actual que va a ELIMINAR
+            var idUsuarioActual = GetCurrentUserId();
+            if (idUsuarioActual != 0)
+                model.id_usuario = idUsuarioActual;
+
+            // 👉 Fecha de eliminación (también la mandamos al form oculta)
+            model.fechaEliminacion = DateTime.Now;
+
+            // 👉 Diccionarios para mostrar Provincia, Localidad, Estado, Usuario
             await CargarDiccionariosPension();
-
-            // Si querés agregar lógica de bloqueo después:
-            // ViewBag.Bloqueado = false;
-            // ViewBag.Motivo = "";
-
-            // Mensajes opcionales tipo Ok/Error si usás TempData
-            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
-            if (TempData["Error"] is string err) ViewBag.Error = err;
 
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrador")]
-        [ActionName("Eliminar")]
-        public async Task<IActionResult> EliminarConfirmado(int id)
+        public async Task<IActionResult> Eliminar(Pension model)
         {
             var client = _http.CreateClient("Api");
-            var respDel = await client.DeleteAsync($"/api/Pension/{id}");
 
-            if (!respDel.IsSuccessStatusCode)
+            // Refuerzo del lado servidor
+            if (!model.fechaEliminacion.HasValue)
+                model.fechaEliminacion = DateTime.Now;
+
+            if (model.id_usuario == 0)
+                model.id_usuario = GetCurrentUserId();
+
+            var json = JsonSerializer.Serialize(model, JsonOps);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // 👉 Llama al endpoint de la API: [HttpPut("Eliminar/{id:int}")]
+            var resp = await client.PutAsync($"{RUTA_PENSION}/Eliminar/{model.id_pension}", content);
+
+            if (!resp.IsSuccessStatusCode)
             {
-                var body = await respDel.Content.ReadAsStringAsync();
-
-                TempData["Error"] = "No se pudo eliminar la pensión.";
-                if (!string.IsNullOrWhiteSpace(body))
-                    TempData["ApiDetail"] = body;
-
-                // Volvemos a la pantalla de eliminar mostrando el error
-                return RedirectToAction(nameof(Eliminar), new { id });
+                var body = await resp.Content.ReadAsStringAsync();
+                TempData["Error"] = $"Error al eliminar la pensión: {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
+                TempData["ApiDetail"] = body;
+                return RedirectToAction(nameof(Index));
             }
 
             TempData["Ok"] = "Pensión eliminada correctamente.";
             return RedirectToAction(nameof(Index));
         }
+
+
+
 
 
         private async Task CargarDiccionariosPension()
@@ -771,11 +754,12 @@ namespace SantaRamona.Backoffice.Controllers
             }
         }
 
+       
 
-        // ============================================================
-        // ====== AJAX: Localidades por Provincia (filtrado MVC) ======
-        // ============================================================
-        [HttpGet]
+                // ============================================================
+                // ====== AJAX: Localidades por Provincia (filtrado MVC) ======
+                // ============================================================
+                [HttpGet]
         public async Task<IActionResult> LocalidadesPorProvincia(int provinciaId)
         {
             var client = _http.CreateClient("Api");

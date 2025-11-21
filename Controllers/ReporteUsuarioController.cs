@@ -54,8 +54,7 @@ namespace SantaRamona.Backoffice.Controllers
             return lista.OrderBy(u => u.id_usuario).ToList();
         }
 
-        // ===================== Construir eventos =====================
-        // ===================== Construir eventos (UN usuario) =====================
+        // ===================== Construir eventos =====================        
         private async Task<List<EventoUsuarioViewModel>> ConstruirEventosAsync(int idUsuario)
         {
             var client = _http.CreateClient("Api");
@@ -104,6 +103,7 @@ namespace SantaRamona.Backoffice.Controllers
                         Accion = "MODIFICAR",
                         Fecha = p.fechaEgreso!.Value
                     }));
+
             }
 
             // ========= ANIMALES =========
@@ -178,7 +178,42 @@ namespace SantaRamona.Backoffice.Controllers
                         Accion = "MODIFICAR",
                         Fecha = pe.fechaEgreso!.Value
                     }));
+
+                // ELIMINAR (fechaEliminacion)
+                eventos.AddRange(pensiones
+                    .Where(pe => pe.fechaEliminacion.HasValue)
+                    .Select(pe =>
+                    {
+                        // Usuario por defecto = el que creó
+                        var idUser = pe.id_usuario;
+                        var usuarioNombre = nombreUsuario;
+
+                        // 🔥 Si hay auditoría manual (registrada desde EliminarConfirmado)
+                        if (TempData.Peek("UltimaEliminacion") is string jsonEvt)
+                        {
+                            var evtMan = JsonSerializer.Deserialize<EventoUsuarioViewModel>(jsonEvt, JOps);
+
+                            if (evtMan != null && evtMan.IdRegistro == pe.id_pension)
+                            {
+                                idUser = evtMan.IdUsuario;           // ← Usuario que eliminó
+                                usuarioNombre = evtMan.UsuarioNombre;
+                            }
+                        }
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Pensión",
+                            IdRegistro = pe.id_pension,
+                            NombreRegistro = pe.nombre,
+                            Accion = "ELIMINAR",
+                            Fecha = pe.fechaEliminacion!.Value
+                        };
+                    }));
+
             }
+
 
             return eventos
                 .OrderByDescending(e => e.Fecha)
@@ -314,7 +349,7 @@ namespace SantaRamona.Backoffice.Controllers
                     .Where(pe => pe.id_usuario != 0)
                     .Select(pe =>
                     {
-                        var idUser = pe.id_usuario;
+                        var idUser = pe.id_usuario;   // int
                         var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
                             ? nom
                             : $"Usuario #{idUser}";
@@ -331,7 +366,7 @@ namespace SantaRamona.Backoffice.Controllers
                         };
                     }));
 
-                // MODIFICAR
+                // MODIFICAR (egreso)
                 eventos.AddRange(pensiones
                     .Where(pe => pe.id_usuario != 0 && pe.fechaEgreso.HasValue)
                     .Select(pe =>
@@ -352,7 +387,40 @@ namespace SantaRamona.Backoffice.Controllers
                             Fecha = pe.fechaEgreso!.Value
                         };
                     }));
+
+                // ELIMINAR
+                eventos.AddRange(pensiones
+                    .Where(pe => pe.id_usuario != 0 && pe.fechaEliminacion.HasValue)
+                    .Select(pe =>
+                    {
+                        var idUser = pe.id_usuario;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Pensión",
+                            IdRegistro = pe.id_pension,
+                            NombreRegistro = pe.nombre,
+                            Accion = "ELIMINAR",
+                            Fecha = pe.fechaEliminacion!.Value
+                        };
+                        // ¿Hay auditoría manual? (se creó en EliminarConfirmado)
+                        if (TempData.Peek("UltimaEliminacion") is string jsonEvt)
+                        {
+                            var evtMan = JsonSerializer.Deserialize<EventoUsuarioViewModel>(jsonEvt, JOps);
+                            if (evtMan != null && evtMan.IdRegistro == pe.id_pension)
+                            {
+                                idUser = evtMan.IdUsuario;
+                            }
+                        }
+                    }));
             }
+
+
 
             return eventos
                 .OrderBy(e => e.UsuarioNombre)
@@ -395,9 +463,9 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.FechaDesde = fechaDesde?.ToString("yyyy-MM-dd");
             ViewBag.FechaHasta = fechaHasta?.ToString("yyyy-MM-dd");
 
-            // Guardar lo YA filtrado para Excel
-            TempData["AccionesUsuario"] = JsonSerializer.Serialize(eventos);
-            TempData.Keep("AccionesUsuario");
+            //// Guardar lo YA filtrado para Excel
+            //TempData["AccionesUsuario"] = JsonSerializer.Serialize(eventos);
+            //TempData.Keep("AccionesUsuario");
 
             return View(eventos);
         }
@@ -498,34 +566,36 @@ namespace SantaRamona.Backoffice.Controllers
 
         // ===================== EXPORTAR EXCEL (CSV) =====================
         [HttpGet]
-public IActionResult ExportarExcel(int? idUsuario, string nombreUsuario, DateTime? fechaDesde, DateTime? fechaHasta)
-{
-    var accionesJson = TempData["AccionesUsuario"] as string;
+        public async Task<IActionResult> ExportarExcel(int? idUsuario, DateTime? fechaDesde, DateTime? fechaHasta)
+        {
+            // 1. Traer eventos frescos (igual que PDF)
+            List<EventoUsuarioViewModel> eventos;
+            var usuarios = await ObtenerUsuariosAsync();
 
-    if (accionesJson == null)
-        return Content("No hay datos para exportar.", "text/plain");
+            if (idUsuario.HasValue)
+                eventos = await ConstruirEventosAsync(idUsuario.Value);
+            else
+                eventos = await ConstruirEventosTodosAsync();
 
-    var datos = JsonSerializer.Deserialize<List<EventoUsuarioViewModel>>(accionesJson, JOps)
-                ?? new();
+            // 2. Aplicar filtro
+            eventos = FiltrarPorFecha(eventos, fechaDesde, fechaHasta);
 
-    // Aplico de nuevo el filtro por fecha (por si se llama directo)
-    datos = FiltrarPorFecha(datos, fechaDesde, fechaHasta);
+            // 3. Armar CSV
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("sep=;");
+            sb.AppendLine("Usuario;Fecha;Acción;Entidad;Registro");
 
-    var sb = new System.Text.StringBuilder();
-    sb.AppendLine("sep=;");
-    sb.AppendLine("Usuario;Fecha;Acción;Entidad;Registro");
+            foreach (var e in eventos)
+            {
+                sb.AppendLine($"{e.UsuarioNombre};{e.Fecha:dd/MM/yyyy};{e.Accion};{e.Entidad};{e.NombreRegistro}");
+            }
 
-    foreach (var e in datos)
-    {
-        sb.AppendLine($"{e.UsuarioNombre};{e.Fecha:dd/MM/yyyy};{e.Accion};{e.Entidad};{e.NombreRegistro}");
-    }
+            var bytes = System.Text.Encoding.Unicode.GetBytes(sb.ToString());
+            var nombreArchivo =
+                $"reporte_acciones_{(idUsuario?.ToString() ?? "todos")}_{DateTime.Now:yyyyMMdd}.csv";
 
-    var bytes = System.Text.Encoding.Unicode.GetBytes(sb.ToString());
-    var nombreArchivo =
-        $"reporte_acciones_{(string.IsNullOrWhiteSpace(nombreUsuario) ? "todos" : nombreUsuario)}_{DateTime.Now:yyyyMMdd}.csv";
-
-    return File(bytes, "text/csv; charset=utf-16", nombreArchivo);
-}
+            return File(bytes, "text/csv; charset=utf-16", nombreArchivo);
+        }
 
     }
 }

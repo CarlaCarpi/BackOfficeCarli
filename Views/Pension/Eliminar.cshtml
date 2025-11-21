@@ -140,12 +140,23 @@
 
                     <form asp-action="Eliminar" method="post">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" value="@Model.id_pension" />
+
+                        @* ID de la pensión *@
+                        @Html.HiddenFor(m => m.id_pension)
+
+                        @* Usuario que elimina *@
+                        @Html.HiddenFor(m => m.id_usuario)
+
+                        @* Fecha de eliminación *@
+                        @Html.HiddenFor(m => m.fechaEliminacion)
+
                         <button type="submit" class="btn"
                                 style="background:#2FA8A2; color:#fff; border-radius:10px;">
                             Sí, eliminar
                         </button>
                     </form>
+
+
 
                     <button type="button" class="btn"
                             data-bs-dismiss="modal"
