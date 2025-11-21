@@ -1,4 +1,5 @@
-﻿@model List<SantaRamona.Backoffice.Models.Pregunta>
+﻿
+@model SantaRamona.Backoffice.Models.FormVM
 @{
     ViewData["Title"] = "Formulario de Adopción";
     Layout = "~/Views/Shared/Layout1.cshtml";
@@ -35,27 +36,48 @@
 
     <div class="vol-container">
        
-        <form asp-action="FormularioAdopcion" asp-controller="FormPersona" method="post">
+        <form asp-action="FormularioAdopcion" asp-controller="FormPersona" method="post" novalidate>
             @Html.AntiForgeryToken()
 
             <input type="hidden" name="idPersona" value="@ViewBag.IdPersona" />
 
-            @foreach (var pregunta in Model)
+            @foreach (var pregunta in Model.Preguntas)
             {
                 <div style="margin-bottom:40px;">
-                    <label for="pregunta_@pregunta.id_pregunta">@pregunta.pregunta</label>@* <br /> *@
+
+                    <label class="form-label fw-bold">
+                        @pregunta.pregunta
+                    </label>
 
                     <textarea type="text"
                               id="pregunta_@pregunta.id_pregunta"
-                              name="respuestas[@pregunta.id_pregunta]"
+                              name="Respuestas[@pregunta.id_pregunta]"
                               required
-                              style="width:100%;padding:5px;"></textarea><br />
+                              maxlength="500"
+                              data-val="true"
+                              data-val-required="Este campo es obligatorio."
+                              data-val-regex="Solo se permiten letras, números y espacios."
+                              data-val-regex-pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+$"
+                              class="form-control valida-textarea"></textarea>
 
-                    @* <input type="text"
-                           id="pregunta_@pregunta.id_pregunta"
-                           name="respuestas[@pregunta.id_pregunta]"
-                           required
-                           style="width:100%;padding:5px;" /> *@
+                    <!-- CAMBIO 2: SPAN DE ERROR -->
+                    <span id="error_@pregunta.id_pregunta"
+                          style="color:red; display:none;"></span>
+                    
+                    
+                    @*
+                    <label for="pregunta_@pregunta.id_pregunta">@pregunta.pregunta</label>@* <br /> *@
+
+                    @* <textarea class="valida-textarea form-control"
+                              id="pregunta_@pregunta.id_pregunta"
+                              name="Respuestas[@pregunta.id_pregunta]"
+                              maxlength="500"
+                              required></textarea>
+
+                    <span id="error_@pregunta.id_pregunta"
+                          class="error-text"
+                          style="color:red; display:none;"></span>*@
+                    
                 </div>
             }
 
@@ -90,5 +112,81 @@
                 }, 5000);
             });
         });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+$/;
+            
+
+            const textareas = document.querySelectorAll(".valida-textarea");
+
+            textareas.forEach(textarea => {
+
+                const idPregunta = textarea.id.replace("pregunta_", "");
+                const errorSpan = document.getElementById("error_" + idPregunta);
+
+                textarea.addEventListener("input", function () {
+
+                    const value = textarea.value.trim();
+
+                    // obligatorio
+                    if (value === "") {
+                        errorSpan.textContent = "Este campo es obligatorio.";
+                        errorSpan.style.display = "inline";
+                        return;
+                    }
+
+                    // regex
+                    if (!regex.test(value)) {
+                        errorSpan.textContent = "Solo se permiten letras, números y espacios.";
+                        errorSpan.style.display = "inline";
+                    } else {
+                        errorSpan.textContent = "";
+                        errorSpan.style.display = "none";
+                    }
+
+                });
+            });
+
+            // Validación al enviar el formulario
+            const form = document.querySelector("form");
+
+            form.addEventListener("submit", function (e) {
+
+                let hayErrores = false;
+
+                textareas.forEach(textarea => {
+
+                    const idPregunta = textarea.id.replace("pregunta_", "");
+                    const errorSpan = document.getElementById("error_" + idPregunta);
+
+                    const value = textarea.value.trim();
+
+                    if (value === "") {
+                        errorSpan.textContent = "Este campo es obligatorio.";
+                        errorSpan.style.display = "inline";
+                        hayErrores = true;
+                    }
+                    else if (!regex.test(value)) {
+                        errorSpan.textContent = "Solo se permiten letras, números y espacios.";
+                        errorSpan.style.display = "inline";
+                        hayErrores = true;
+                    }
+
+                });
+
+                if (hayErrores) {
+                    e.preventDefault();
+                    alert("Por favor revisá los campos marcados en rojo.");
+                }
+
+            });
+
+        });
+
+               
+        
     </script>
 }
