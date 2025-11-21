@@ -102,13 +102,9 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Query = q;
 
             // ============================
-            // 1) PEDIDO A LA API (con q)
+            // 1) PEDIDO A LA API (SIN paginación)
             // ============================
-            var url = $"{RUTA_PERSONA}?pagina={page}&pageSize={pageSize}";
-            if (!string.IsNullOrWhiteSpace(q))
-                url += $"&q={Uri.EscapeDataString(q)}";
-
-            var resp = await client.GetAsync(url);
+            var resp = await client.GetAsync(RUTA_PERSONA);
 
             if (!resp.IsSuccessStatusCode)
             {
@@ -126,8 +122,7 @@ namespace SantaRamona.Backoffice.Controllers
                 return View(Enumerable.Empty<Persona>());
             }
 
-
-            // Parseo inicial
+            // Parseo inicial: TODAS las personas
             var json = await resp.Content.ReadAsStringAsync();
             var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JsonOps)
                            ?? Enumerable.Empty<Persona>();
@@ -139,8 +134,60 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Estados = estadosDict;
 
             // =============================
-            // 3) FILTRO LOCAL SI HAY q
-            //    (por Nombre, Apellido y EstadoPersona)
+            // 3) TIPOS DE FORMULARIO POR PERSONA
+            // =============================
+            Dictionary<int, List<string>> formTiposByPersona = new();
+
+            try
+            {
+                var tiposDict = new Dictionary<int, string>();
+                var tHttp = await client.GetAsync("/api/TipoFormulario");
+                if (tHttp.IsSuccessStatusCode)
+                {
+                    using var doc = JsonDocument.Parse(await tHttp.Content.ReadAsStringAsync());
+                    foreach (var el in doc.RootElement.EnumerateArray())
+                    {
+                        if (el.TryGetProperty("id_tipoFormulario", out var idProp) &&
+                            idProp.ValueKind == JsonValueKind.Number)
+                        {
+                            var idTipo = idProp.GetInt32();
+                            var nombre = el.TryGetProperty("tipo", out var pTipo) ? pTipo.GetString()
+                                      : el.TryGetProperty("nombre", out var pNom) ? pNom.GetString()
+                                      : $"Tipo {idTipo}";
+                            tiposDict[idTipo] = string.IsNullOrWhiteSpace(nombre) ? $"Tipo {idTipo}" : nombre!;
+                        }
+                    }
+                }
+
+                var fHttp = await client.GetAsync("/api/Formulario");
+                if (fHttp.IsSuccessStatusCode)
+                {
+                    var fJson = await fHttp.Content.ReadAsStringAsync();
+                    var formularios = JsonSerializer.Deserialize<IEnumerable<FormularioMin>>(fJson, JsonOps)
+                                      ?? Enumerable.Empty<FormularioMin>();
+
+                    foreach (var g in formularios.Where(f => f.id_persona > 0).GroupBy(f => f.id_persona))
+                    {
+                        var lst = g.Select(f => tiposDict.TryGetValue(f.id_tipoFormulario, out var nom) ? nom : $"Tipo {f.id_tipoFormulario}")
+                                   .Distinct(StringComparer.OrdinalIgnoreCase)
+                                   .OrderBy(s => s)
+                                   .ToList();
+
+                        formTiposByPersona[g.Key] = lst;
+                    }
+                }
+            }
+            catch
+            {
+                // Si algo falla, dejamos diccionario vacío
+                formTiposByPersona = new Dictionary<int, List<string>>();
+            }
+
+            ViewBag.FormTiposByPersona = formTiposByPersona;
+
+            // =============================
+            // 4) FILTRO LOCAL SI HAY q
+            //    (Nombre, Apellido, EstadoPersona y Tipo de formulario)
             // =============================
             if (!string.IsNullOrWhiteSpace(q))
             {
@@ -168,12 +215,20 @@ namespace SantaRamona.Backoffice.Controllers
                     bool porEstado = !string.IsNullOrWhiteSpace(estadoTxt) &&
                                      estadoTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
 
-                    return porNombre || porApellido || porEstado;
+                    // 👉 NUEVO: Tipo de formulario (columna "Formulario")
+                    bool porTipoFormulario = false;
+                    if (formTiposByPersona.TryGetValue(p.id_persona, out var listaTipos) && listaTipos != null && listaTipos.Any())
+                    {
+                        porTipoFormulario = listaTipos.Any(t =>
+                            t.Contains(term, StringComparison.OrdinalIgnoreCase));
+                    }
+
+                    return porNombre || porApellido || porEstado || porTipoFormulario;
                 });
             }
 
             // =============================
-            // 4) CARGAR DICCIONARIOS RESTO
+            // 5) CARGAR DICCIONARIOS RESTO
             // =============================
 
             // Provincias
@@ -198,7 +253,72 @@ namespace SantaRamona.Backoffice.Controllers
             }
             else ViewBag.Localidad = new Dictionary<int, string>();
 
-            // Tipos de formulario por persona
+            // =============================
+            // 6) MENSAJES TEMP
+            // =============================
+            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
+            if (TempData["Error"] is string err) ViewBag.Error = err;
+
+            // =============================
+            // 7) PAGINACIÓN EN MEMORIA
+            // =============================
+            if (page < 1) page = 1;
+            if (pageSize <= 0) pageSize = 20;
+
+            var lista = personas
+                .OrderByDescending(p => p.id_persona)
+                .ToList();
+
+            var total = lista.Count;
+            var pagePersonas = lista
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var hasMore = (page * pageSize) < total;
+
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.HasMore = hasMore;
+
+            // =============================
+            // 8) DEVOLVER SOLO LA PÁGINA
+            // =============================
+            return View(pagePersonas);
+        }
+
+        // ============================================================
+        // ===================== MAS (VER MÁS) ========================
+        // ============================================================
+
+        [HttpGet]
+        public async Task<IActionResult> Mas(int page = 2, int pageSize = 20, string? q = null)
+        {
+            var client = _http.CreateClient("Api");
+
+            // Normalizar búsqueda
+            q = (q ?? "").Trim();
+
+            // 1) Traer TODAS las personas (igual que en Index)
+            var resp = await client.GetAsync(RUTA_PERSONA);
+            if (!resp.IsSuccessStatusCode)
+            {
+                // Si falla, devolvemos el código para que el front pueda manejarlo
+                var body = await resp.Content.ReadAsStringAsync();
+                return StatusCode((int)resp.StatusCode, body);
+            }
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JsonOps)
+                           ?? Enumerable.Empty<Persona>();
+
+            // 2) Cargar ESTADOS (lo usamos en el filtro y en la vista)
+            var estadosDict = await CargarEstadosDictAsync(client);
+            ViewBag.Estados = estadosDict;
+
+            // 3) TIPOS DE FORMULARIO POR PERSONA (para la columna "Formulario" y el filtro por q)
+            Dictionary<int, List<string>> formTiposByPersona = new();
+
             try
             {
                 var tiposDict = new Dictionary<int, string>();
@@ -206,21 +326,23 @@ namespace SantaRamona.Backoffice.Controllers
                 if (tHttp.IsSuccessStatusCode)
                 {
                     using var doc = JsonDocument.Parse(await tHttp.Content.ReadAsStringAsync());
-                    foreach (var el in doc.RootElement.EnumerateArray())
+                    if (doc.RootElement.ValueKind == JsonValueKind.Array)
                     {
-                        if (el.TryGetProperty("id_tipoFormulario", out var idProp) &&
-                            idProp.ValueKind == JsonValueKind.Number)
+                        foreach (var el in doc.RootElement.EnumerateArray())
                         {
-                            var idTipo = idProp.GetInt32();
-                            var nombre = el.TryGetProperty("tipo", out var pTipo) ? pTipo.GetString()
-                                      : el.TryGetProperty("nombre", out var pNom) ? pNom.GetString()
-                                      : $"Tipo {idTipo}";
-                            tiposDict[idTipo] = string.IsNullOrWhiteSpace(nombre) ? $"Tipo {idTipo}" : nombre!;
+                            if (el.TryGetProperty("id_tipoFormulario", out var idProp) &&
+                                idProp.ValueKind == JsonValueKind.Number)
+                            {
+                                var idTipo = idProp.GetInt32();
+                                var nombre = el.TryGetProperty("tipo", out var pTipo) ? (pTipo.GetString() ?? "")
+                                          : el.TryGetProperty("nombre", out var pNom) ? (pNom.GetString() ?? "")
+                                          : $"Tipo {idTipo}";
+                                tiposDict[idTipo] = string.IsNullOrWhiteSpace(nombre) ? $"Tipo {idTipo}" : nombre!;
+                            }
                         }
                     }
                 }
 
-                var formTiposByPersona = new Dictionary<int, List<string>>();
                 var fHttp = await client.GetAsync("/api/Formulario");
                 if (fHttp.IsSuccessStatusCode)
                 {
@@ -238,148 +360,55 @@ namespace SantaRamona.Backoffice.Controllers
                         formTiposByPersona[g.Key] = lst;
                     }
                 }
-
-                ViewBag.FormTiposByPersona = formTiposByPersona;
             }
             catch
             {
-                ViewBag.FormTiposByPersona = new Dictionary<int, List<string>>();
+                formTiposByPersona = new Dictionary<int, List<string>>();
             }
 
-            // =============================
-            // 5) MENSAJES TEMP
-            // =============================
-            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
-            if (TempData["Error"] is string err) ViewBag.Error = err;
+            ViewBag.FormTiposByPersona = formTiposByPersona;
 
-            // =============================
-            // 6) CALCULAR HASMORE
-            // =============================
-            int total = 0;
-            bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
-            if (hasHeader)
-                int.TryParse(vals!.FirstOrDefault(), out total);
-
-            bool hasMore;
-            if (total > 0)
-            {
-                hasMore = (page * pageSize) < total;
-            }
-            else
-            {
-                // si la API no manda total → sondeo
-                var probeUrl = $"{RUTA_PERSONA}?pagina={page + 1}&pageSize=1";
-                if (!string.IsNullOrWhiteSpace(q))
-                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
-
-                var probe = await client.GetAsync(probeUrl);
-                if (probe.IsSuccessStatusCode)
-                {
-                    var pj = await probe.Content.ReadAsStringAsync();
-                    var next = JsonSerializer.Deserialize<IEnumerable<Persona>>(pj, JsonOps)
-                               ?? Enumerable.Empty<Persona>();
-                    hasMore = next.Any();
-                }
-                else
-                    hasMore = false;
-            }
-
-            ViewBag.Page = page;
-            ViewBag.PageSize = pageSize;
-            ViewBag.HasMore = hasMore;
-
-            // =============================
-            // 7) ORDEN FINAL
-            // =============================
-            personas = personas.OrderByDescending(p => p.id_persona);
-
-            // =============================
-            // 8) DEVOLVER LISTA
-            // =============================
-            return View(personas);
-        }
-
-
-        // Devuelve más filas para el botón "Ver más"
-        [HttpGet]
-        public async Task<IActionResult> Mas(int page = 2, int pageSize = 20, string? q = null)
-        {
-            var client = _http.CreateClient("Api");
-
-            q = (q ?? "").Trim();
-
-            // === 1) Pedir la página siguiente a la API (con q si viene) ===
-            var url = $"{RUTA_PERSONA}?pagina={page}&pageSize={pageSize}";
-            if (!string.IsNullOrWhiteSpace(q))
-                url += $"&q={Uri.EscapeDataString(q)}";
-
-            var resp = await client.GetAsync(url);
-            if (!resp.IsSuccessStatusCode)
-            {
-                // si algo falla, que el front pueda mostrar "Intentar de nuevo"
-                return StatusCode((int)resp.StatusCode);
-            }
-
-            var json = await resp.Content.ReadAsStringAsync();
-            var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json, JsonOps)
-                           ?? Enumerable.Empty<Persona>();
-
-            // 🔍 Filtro local por si la API todavía no implementa q
+            // 4) FILTRO LOCAL si hay q (mismo criterio que en Index)
             if (!string.IsNullOrWhiteSpace(q))
             {
-                var term = q;
-                if (int.TryParse(term, out int idBuscado))
+                var term = q.Trim();
+
+                personas = personas.Where(p =>
                 {
-                    personas = personas.Where(p => p.id_persona == idBuscado);
-                }
-                else
-                {
-                    personas = personas.Where(p =>
-                        !string.IsNullOrWhiteSpace(p.nombre) &&
-                        p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase));
-                }
+                    // Nombre
+                    bool porNombre = !string.IsNullOrWhiteSpace(p.nombre) &&
+                                     p.nombre.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    // Apellido
+                    bool porApellido = !string.IsNullOrWhiteSpace(p.apellido) &&
+                                       p.apellido.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    // Estado (descripcion)
+                    string estadoTxt = "";
+                    if (p.id_estadoPersona is int idEst &&
+                        estadosDict.TryGetValue(idEst, out var descEstado) &&
+                        !string.IsNullOrWhiteSpace(descEstado))
+                    {
+                        estadoTxt = descEstado;
+                    }
+
+                    bool porEstado = !string.IsNullOrWhiteSpace(estadoTxt) &&
+                                     estadoTxt.Contains(term, StringComparison.OrdinalIgnoreCase);
+
+                    // Tipo de formulario
+                    bool porTipoFormulario = false;
+                    if (formTiposByPersona.TryGetValue(p.id_persona, out var listaTipos) &&
+                        listaTipos != null && listaTipos.Any())
+                    {
+                        porTipoFormulario = listaTipos.Any(t =>
+                            t.Contains(term, StringComparison.OrdinalIgnoreCase));
+                    }
+
+                    return porNombre || porApellido || porEstado || porTipoFormulario;
+                });
             }
 
-            // si realmente ya no hay más personas, devolvemos 204
-            if (!personas.Any())
-            {
-                Response.Headers["X-HasMore"] = "false";
-                return StatusCode(204); // No Content
-            }
-
-            // === 2) Calcular HasMore (por header o sondeo) ===
-            int total = 0;
-            bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
-            bool hasMore;
-
-            if (hasHeader && int.TryParse(vals!.FirstOrDefault(), out total) && total > 0)
-            {
-                hasMore = (page * pageSize) < total;
-            }
-            else
-            {
-                var probeUrl = $"{RUTA_PERSONA}?pagina={page + 1}&pageSize=1";
-                if (!string.IsNullOrWhiteSpace(q))
-                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
-
-                var probe = await client.GetAsync(probeUrl);
-                if (probe.IsSuccessStatusCode)
-                {
-                    var pj = await probe.Content.ReadAsStringAsync();
-                    var next = JsonSerializer.Deserialize<IEnumerable<Persona>>(pj, JsonOps)
-                               ?? Enumerable.Empty<Persona>();
-                    hasMore = next.Any();
-                }
-                else
-                    hasMore = false;
-            }
-
-            Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
-
-            // === 3) Diccionarios que usa la vista para Provincia / Localidad / Estado / Formularios ===
-
-            ViewBag.Estados = await CargarEstadosDictAsync(client);
-
+            // 5) Provincias y Localidades (la vista parcial también los usa)
             var respProv = await client.GetAsync(RUTA_PROVINCIA);
             if (respProv.IsSuccessStatusCode)
             {
@@ -400,66 +429,33 @@ namespace SantaRamona.Backoffice.Controllers
             }
             else ViewBag.Localidad = new Dictionary<int, string>();
 
-            // Tipos de formulario por persona (para la columna "Formulario")
-            try
+            // 6) PAGINACIÓN EN MEMORIA (igual que Index, pero solo devolvemos esta página)
+            if (page < 1) page = 1;
+            if (pageSize <= 0) pageSize = 20;
+
+            var lista = personas
+                .OrderByDescending(p => p.id_persona)
+                .ToList();
+
+            var total = lista.Count;
+
+            var pagePersonas = lista
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var hasMore = (page * pageSize) < total;
+            Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
+
+            // Si no hay más filas, devolvemos 204 para que el front oculte el botón
+            if (!pagePersonas.Any())
             {
-                var tiposDict = new Dictionary<int, string>();
-                var tHttp = await client.GetAsync("/api/TipoFormulario");
-                if (tHttp.IsSuccessStatusCode)
-                {
-                    using var doc = JsonDocument.Parse(await tHttp.Content.ReadAsStringAsync());
-                    if (doc.RootElement.ValueKind == JsonValueKind.Array)
-                    {
-                        foreach (var el in doc.RootElement.EnumerateArray())
-                        {
-                            if (el.TryGetProperty("id_tipoFormulario", out var idProp) &&
-                                idProp.ValueKind == JsonValueKind.Number)
-                            {
-                                var idTipo = idProp.GetInt32();
-                                var nombre = el.TryGetProperty("tipo", out var pTipo) ? (pTipo.GetString() ?? "")
-                                          : el.TryGetProperty("nombre", out var pNom) ? (pNom.GetString() ?? "")
-                                          : $"Tipo {idTipo}";
-                                if (idTipo > 0)
-                                    tiposDict[idTipo] = string.IsNullOrWhiteSpace(nombre) ? $"Tipo {idTipo}" : nombre;
-                            }
-                        }
-                    }
-                }
-
-                var formTiposByPersona = new Dictionary<int, List<string>>();
-                var fHttp = await client.GetAsync("/api/Formulario");
-                if (fHttp.IsSuccessStatusCode)
-                {
-                    var fJson = await fHttp.Content.ReadAsStringAsync();
-                    var formularios = JsonSerializer.Deserialize<IEnumerable<FormularioMin>>(fJson, JsonOps)
-                                      ?? Enumerable.Empty<FormularioMin>();
-
-                    foreach (var g in formularios.Where(fm => fm.id_persona > 0).GroupBy(fm => fm.id_persona))
-                    {
-                        var lst = g.Select(fm => tiposDict.TryGetValue(fm.id_tipoFormulario, out var nom) ? nom : $"Tipo {fm.id_tipoFormulario}")
-                                   .Where(s => !string.IsNullOrWhiteSpace(s))
-                                   .Distinct(StringComparer.OrdinalIgnoreCase)
-                                   .OrderBy(s => s)
-                                   .ToList();
-                        formTiposByPersona[g.Key] = lst;
-                    }
-                }
-
-                ViewBag.FormTiposByPersona = formTiposByPersona;
-            }
-            catch
-            {
-                ViewBag.FormTiposByPersona = new Dictionary<int, List<string>>();
+                return StatusCode(204);
             }
 
-            // Orden para mantener consistencia
-            personas = personas.OrderByDescending(p => p.id_persona);
-
-            // === 4) Devolver SOLO filas <tr> usando un partial ===
-            return PartialView("_PersonaRows", personas);
+            // 7) Devolver SOLO las filas <tr> usando el partial _PersonaRows
+            return PartialView("_PersonaRows", pagePersonas);
         }
-
-
 
         // ===================== DETALLE ==============================
 

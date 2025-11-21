@@ -29,12 +29,10 @@ namespace SantaRamona.Backoffice.Controllers
             q = (q ?? "").Trim();
             ViewBag.Query = q;
 
-            // === 1) Animales (API con paginación server-side) ===
-            var url = $"{RUTA_ANIMAL}?pagina={page}&pageSize={pageSize}";
-            if (!string.IsNullOrWhiteSpace(q))
-                url += $"&q={Uri.EscapeDataString(q)}";   // si la API implementa algo básico
-
+            // === 1) Traer TODOS los animales (API SIN paginación) ===
+            var url = RUTA_ANIMAL; // "/api/Animal"
             var resp = await client.GetAsync(url);
+
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
@@ -105,43 +103,28 @@ namespace SantaRamona.Backoffice.Controllers
                 });
             }
 
-            // === 4) HasMore por header o por sondeo ===
-            int total = 0;
-            bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
-            if (hasHeader) int.TryParse(vals!.FirstOrDefault(), out total);
+            // === 4) Ordenar y paginar EN MEMORIA ===
+            if (page < 1) page = 1;
+            if (pageSize <= 0) pageSize = 20;
 
-            bool hasMore;
-            if (total > 0)
-            {
-                hasMore = (page * pageSize) < total;
-            }
-            else
-            {
-                var probeUrl = $"{RUTA_ANIMAL}?pagina={page + 1}&pageSize=1";
-                if (!string.IsNullOrWhiteSpace(q))
-                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
+            var lista = animals.OrderByDescending(a => a.id_animal).ToList();
+            var total = lista.Count;
 
-                var probe = await client.GetAsync(probeUrl);
-                if (probe.IsSuccessStatusCode)
-                {
-                    var pj = await probe.Content.ReadAsStringAsync();
-                    var next = JsonSerializer.Deserialize<IEnumerable<Animal>>(pj,
-                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
-                    hasMore = next.Any();
-                }
-                else hasMore = false;
-            }
+            var pageAnimals = lista
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var hasMore = (page * pageSize) < total;
 
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.HasMore = hasMore;
             ViewBag.Query = q ?? "";
 
-            // Opcional: ordenar
-            animals = animals.OrderByDescending(a => a.id_animal);
-
-            return View(animals);
+            return View(pageAnimals);
         }
+
 
 
         // === Acción AJAX para "Ver más" ===
@@ -153,11 +136,8 @@ namespace SantaRamona.Backoffice.Controllers
 
             q = (q ?? "").Trim();
 
-            var url = $"{RUTA_ANIMAL}?pagina={page}&pageSize={pageSize}";
-            if (!string.IsNullOrWhiteSpace(q))
-                url += $"&q={Uri.EscapeDataString(q)}";
-
-            var resp = await client.GetAsync(url);
+            // Traemos TODOS los animales (sin paginación en API)
+            var resp = await client.GetAsync(RUTA_ANIMAL);
 
             // Si falla la API → devolvemos 204 y HasMore=false para que el front corte prolijo
             if (!resp.IsSuccessStatusCode)
@@ -170,7 +150,7 @@ namespace SantaRamona.Backoffice.Controllers
             var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
 
-            // 🔍 Filtro local por q
+            // 🔍 Filtro local por q (simple, como ya tenías)
             if (!string.IsNullOrWhiteSpace(q))
             {
                 var term = q;
@@ -187,8 +167,20 @@ namespace SantaRamona.Backoffice.Controllers
                 }
             }
 
-            // Si después del filtro no queda nada → no hay más
-            if (!animals.Any())
+            // Ordenar y paginar EN MEMORIA
+            if (page < 1) page = 1;
+            if (pageSize <= 0) pageSize = 20;
+
+            var lista = animals.OrderByDescending(a => a.id_animal).ToList();
+            var total = lista.Count;
+
+            var pageAnimals = lista
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            // Si después del filtro y la paginación no queda nada → no hay más
+            if (!pageAnimals.Any())
             {
                 Response.Headers["X-HasMore"] = "false";
                 return StatusCode(204); // No Content
@@ -198,46 +190,35 @@ namespace SantaRamona.Backoffice.Controllers
             var tEsp = client.GetAsync("/api/Especie");
             var tTam = client.GetAsync("/api/Tamano");
             var tEst = client.GetAsync("/api/estadoAnimal");
-            await Task.WhenAll(tEsp, tTam, tEst);
+            var tPer = client.GetAsync("/api/Persona");
+            var tPens = client.GetAsync("/api/Pension");
+
+            await Task.WhenAll(tEsp, tTam, tEst, tPer, tPens);
 
             ViewBag.Especies = await ToDict<Especie>(tEsp.Result, x => x.id_especie, x => x.especie);
             ViewBag.Tamanos = await ToDict<Tamano>(tTam.Result, x => x.id_tamano, x => x.tamano);
             ViewBag.Estados = await ToDict<Estado_Animal>(tEst.Result, x => x.id_estadoAnimal, x => x.estado);
 
-            // === HasMore igual que en Index ===
-            int total = 0;
-            bool hasHeader = resp.Headers.TryGetValues("X-Total-Count", out var vals);
-            bool hasMore;
+            ViewBag.Personas = await ToDict<Persona>(
+                tPer.Result,
+                x => x.id_persona,
+                x => $"{x.apellido}, {x.nombre}"
+            );
 
-            if (hasHeader && int.TryParse(vals!.FirstOrDefault(), out total) && total > 0)
-            {
-                hasMore = (page * pageSize) < total;
-            }
-            else
-            {
-                var probeUrl = $"{RUTA_ANIMAL}?pagina={page + 1}&pageSize=1";
-                if (!string.IsNullOrWhiteSpace(q))
-                    probeUrl += $"&q={Uri.EscapeDataString(q)}";
+            ViewBag.Pensiones = await ToDict<Pension>(
+                tPens.Result,
+                x => x.id_pension,
+                x => x.nombre
+            );
 
-                var probe = await client.GetAsync(probeUrl);
-                if (probe.IsSuccessStatusCode)
-                {
-                    var pj = await probe.Content.ReadAsStringAsync();
-                    var next = JsonSerializer.Deserialize<IEnumerable<Animal>>(pj,
-                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
-                    hasMore = next.Any();
-                }
-                else hasMore = false;
-            }
-
+            // === HasMore en base al total ===
+            var hasMore = (page * pageSize) < total;
             Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
 
-            // Orden por prolijidad
-            animals = animals.OrderByDescending(a => a.id_animal);
-
             // Partial con las filas o cards (lo que uses en el Index)
-            return PartialView("_AnimalRows", animals);
+            return PartialView("_AnimalRows", pageAnimals);
         }
+
 
 
         // ===================== CREAR =====================
