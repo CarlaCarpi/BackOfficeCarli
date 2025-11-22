@@ -1192,7 +1192,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             try
             {
-                // 1️⃣ Obtener todos los formularios existentes
+                // 1️⃣ Obtener todos los formularios existentes (LO MISMO QUE YA TENÍAS)
                 var fResp = await client.GetAsync("/api/Formulario");
                 if (fResp.IsSuccessStatusCode)
                 {
@@ -1231,8 +1231,25 @@ namespace SantaRamona.Backoffice.Controllers
                     }
                 }
 
-                // 2️⃣ Eliminar persona
-                var respDel = await client.DeleteAsync($"/api/Persona/{id}");
+                // 2️⃣ Eliminar persona (AHORA vía soft delete con DTO)
+                var idUsuarioActual = GetCurrentUserId(); // mismo helper que usaste en Pensión
+                if (idUsuarioActual <= 0)
+                {
+                    TempData["Error"] = "No se pudo determinar el usuario actual para registrar la eliminación.";
+                    return RedirectToAction(nameof(Eliminar), new { id });
+                }
+
+                var dto = new EliminarPersonaDto
+                {
+                    fechaEliminacion = null,        // que la API use DateTime.Now
+                    id_usuario = idUsuarioActual
+                };
+
+                var json = JsonSerializer.Serialize(dto, JsonOps);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // 👉 Llamamos al endpoint correcto de la API
+                var respDel = await client.PutAsync($"{RUTA_PERSONA}/Eliminar/{id}", content);
 
                 if (!respDel.IsSuccessStatusCode)
                 {
@@ -1242,7 +1259,7 @@ namespace SantaRamona.Backoffice.Controllers
                     if (!string.IsNullOrWhiteSpace(body))
                         TempData["ApiDetail"] = body;
 
-                    // 👉 Volvemos a la pantalla Eliminar para mostrar el error
+                    // Volvemos a la pantalla Eliminar para mostrar el error
                     return RedirectToAction(nameof(Eliminar), new { id });
                 }
 
@@ -1256,6 +1273,7 @@ namespace SantaRamona.Backoffice.Controllers
                 return RedirectToAction(nameof(Eliminar), new { id });
             }
         }
+
 
         private async Task CargarDiccionariosPersonaAsync(HttpClient client)
         {
@@ -1563,6 +1581,11 @@ namespace SantaRamona.Backoffice.Controllers
         {
             public int id_respuesta { get; set; }
             public int id_formulario { get; set; }
+        }
+        public class EliminarPersonaDto
+        {
+            public DateTime? fechaEliminacion { get; set; }
+            public int id_usuario { get; set; }
         }
     }
 }

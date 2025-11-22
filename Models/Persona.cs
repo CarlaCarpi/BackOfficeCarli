@@ -74,6 +74,9 @@ namespace SantaRamona.Backoffice.Models
         [StringLength(255, ErrorMessage = "Las observaciones no pueden superar 255 caracteres.")]
         public string? motivoEgreso { get; set; }
 
+        [DataType(DataType.DateTime)]
+        public DateTime? fechaEliminacion { get; set; }
+
         // ==========================================
         // ✅ VALIDACIÓN PERSONALIZADA DE FECHAS
         // ==========================================

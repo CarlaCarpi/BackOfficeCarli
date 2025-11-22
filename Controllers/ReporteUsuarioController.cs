@@ -69,7 +69,7 @@ namespace SantaRamona.Backoffice.Controllers
                 : $"Usuario #{idUsuario}";
 
             // ========= PERSONAS =========
-            var rPer = await client.GetAsync("/api/Persona?pagina=1&pageSize=1000");
+            var rPer = await client.GetAsync("/api/Persona/ConEliminadas");
             if (rPer.IsSuccessStatusCode)
             {
                 var json = await rPer.Content.ReadAsStringAsync();
@@ -103,11 +103,27 @@ namespace SantaRamona.Backoffice.Controllers
                         Accion = "MODIFICAR",
                         Fecha = p.fechaEgreso!.Value
                     }));
+                
+                // ELIMINAR 
+                eventos.AddRange(personas
+                    .Where(p => p.id_usuario == idUsuario && p.fechaEliminacion.HasValue)
+                    .Select(p => new EventoUsuarioViewModel
+                    {
+                        IdUsuario = idUsuario,
+                        UsuarioNombre = nombreUsuario,
+                        Entidad = "Persona",
+                        IdRegistro = p.id_persona,
+                        NombreRegistro = $"{p.nombre} {p.apellido}",
+                        Accion = "ELIMINAR",
+                        // usamos fechaEliminacion, y si por algo viniera null, caemos a otra fecha
+                        Fecha = p.fechaEliminacion ?? p.fechaEgreso ?? p.fechaIngreso
+                    }));
+
 
             }
 
             // ========= ANIMALES =========
-            var rAni = await client.GetAsync("/api/Animal");
+            var rAni = await client.GetAsync("/api/Animal/ConEliminadas");
             if (rAni.IsSuccessStatusCode)
             {
                 var json = await rAni.Content.ReadAsStringAsync();
@@ -140,6 +156,39 @@ namespace SantaRamona.Backoffice.Controllers
                         NombreRegistro = a.nombre,
                         Accion = "MODIFICAR",
                         Fecha = a.fechaModificacion!.Value
+                    }));
+
+                // ELIMINAR (fechaEliminacion)
+                eventos.AddRange(animales
+                    .Where(pe => pe.fechaEliminacion.HasValue)
+                    .Select(pe =>
+                    {
+                        // Usuario por defecto = el que creó
+                        var idUser = pe.id_usuario;
+                        var usuarioNombre = nombreUsuario;
+
+                        // 🔥 Si hay auditoría manual (registrada desde EliminarConfirmado)
+                        if (TempData.Peek("UltimaEliminacion") is string jsonEvt)
+                        {
+                            var evtMan = JsonSerializer.Deserialize<EventoUsuarioViewModel>(jsonEvt, JOps);
+
+                            if (evtMan != null && evtMan.IdRegistro == pe.id_pension)
+                            {
+                                idUser = evtMan.IdUsuario;           // ← Usuario que eliminó
+                                usuarioNombre = evtMan.UsuarioNombre;
+                            }
+                        }
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Animal",
+                            IdRegistro = pe.id_animal,
+                            NombreRegistro = pe.nombre,
+                            Accion = "ELIMINAR",
+                            Fecha = pe.fechaEliminacion!.Value
+                        };
                     }));
             }
 
@@ -231,7 +280,7 @@ namespace SantaRamona.Backoffice.Controllers
             var dicUsuarios = usuarios.ToDictionary(u => u.id_usuario, u => u.nombre);
 
             // ========= PERSONAS =========
-            var rPer = await client.GetAsync("/api/Persona?pagina=1&pageSize=1000");
+            var rPer = await client.GetAsync("/api/Persona/ConEliminadas");
             if (rPer.IsSuccessStatusCode)
             {
                 var json = await rPer.Content.ReadAsStringAsync();
@@ -281,10 +330,34 @@ namespace SantaRamona.Backoffice.Controllers
                             Fecha = p.fechaEgreso!.Value
                         };
                     }));
+                
+                // ELIMINAR
+                eventos.AddRange(personas
+                    .Where(p => p.id_usuario.HasValue && p.id_usuario.Value != 0 && p.fechaEliminacion.HasValue)
+                    .Select(p =>
+                    {
+                        var idUser = p.id_usuario!.Value;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Persona",
+                            IdRegistro = p.id_persona,
+                            NombreRegistro = $"{p.nombre} {p.apellido}",
+                            Accion = "ELIMINAR",
+                            // null-safe y coherente con las fechas
+                            Fecha = p.fechaEliminacion ?? p.fechaEgreso ?? p.fechaIngreso
+                        };
+                    }));
+
             }
 
             // ========= ANIMALES =========
-            var rAni = await client.GetAsync("/api/Animal");
+            var rAni = await client.GetAsync("/api/Animal/ConEliminadas");
             if (rAni.IsSuccessStatusCode)
             {
                 var json = await rAni.Content.ReadAsStringAsync();
@@ -334,7 +407,30 @@ namespace SantaRamona.Backoffice.Controllers
                             Fecha = a.fechaModificacion!.Value
                         };
                     }));
+
+                // ELIMINAR
+                eventos.AddRange(animales
+                    .Where(a => a.id_usuario != 0 && a.fechaEliminacion.HasValue)
+                    .Select(a =>
+                    {
+                        var idUser = a.id_usuario;
+                        var usuarioNombre = dicUsuarios.TryGetValue(idUser, out var nom)
+                            ? nom
+                            : $"Usuario #{idUser}";
+
+                        return new EventoUsuarioViewModel
+                        {
+                            IdUsuario = idUser,
+                            UsuarioNombre = usuarioNombre,
+                            Entidad = "Animal",
+                            IdRegistro = a.id_animal,
+                            NombreRegistro = a.nombre,
+                            Accion = "ELIMINAR",
+                            Fecha = a.fechaEliminacion ?? a.fechaModificacion ?? a.fechaIngreso ?? DateTime.Now
+                        };
+                    }));
             }
+
 
             // ========= PENSIONES =========
             var rPen = await client.GetAsync("/api/Pension");

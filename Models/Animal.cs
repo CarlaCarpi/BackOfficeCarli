@@ -69,5 +69,8 @@ namespace SantaRamona.Backoffice.Models
         //lo setea SQL por default
         public DateTime? fechaModificacion { get; set; }
 
+        [DataType(DataType.DateTime)]
+        public DateTime? fechaEliminacion { get; set; }
+
     }
 }

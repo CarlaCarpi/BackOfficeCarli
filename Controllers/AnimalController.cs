@@ -580,8 +580,7 @@ namespace SantaRamona.Backoffice.Controllers
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> EliminarConfirmado(int id)
         {
-            // Mismo patrón que el “EsAdministradorAsync” de usuarios,
-            // pero para animales: si tiene vínculos, no se elimina.
+            // 1) Validar si el animal está en uso (persona/pensión)
             if (await AnimalEnUsoAsync(id))
             {
                 TempData["Error"] = "No se puede eliminar el animal porque está en uso.";
@@ -590,29 +589,59 @@ namespace SantaRamona.Backoffice.Controllers
 
             var client = _http.CreateClient("Api");
 
-            var respDel = await client.DeleteAsync($"/api/Animal/{id}");
-            if (!respDel.IsSuccessStatusCode)
-            {
-                var body = await respDel.Content.ReadAsStringAsync();
+            // 2) Obtener el usuario actual desde las claims
+            var idUsuarioClaim = User.FindFirst("IdUsuario")
+                                ?? User.FindFirst(ClaimTypes.NameIdentifier);
 
-                // Mantengo el mismo manejo de códigos que en Usuario (conflict/badrequest/422)
-                if (respDel.StatusCode == System.Net.HttpStatusCode.Conflict ||
-                    respDel.StatusCode == System.Net.HttpStatusCode.BadRequest ||
-                    (int)respDel.StatusCode == 422)
+            int idUsuario = 0;
+            if (idUsuarioClaim != null && int.TryParse(idUsuarioClaim.Value, out var parsed))
+                idUsuario = parsed;
+
+            if (idUsuario <= 0)
+            {
+                TempData["Error"] = "No se pudo determinar el usuario actual para registrar la eliminación.";
+                return RedirectToAction(nameof(Eliminar), new { id });
+            }
+
+            // 3) Armamos el DTO para la API (soft delete)
+            var dto = new EliminarAnimalDto
+            {
+                fechaEliminacion = null,      // la API usará DateTime.Now
+                id_usuario = idUsuario
+            };
+
+            var json = JsonSerializer.Serialize(dto, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // 4) Llamamos al endpoint de soft delete
+            var resp = await client.PutAsync($"/api/Animal/Eliminar/{id}", content);
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                var body = await resp.Content.ReadAsStringAsync();
+
+                // Si hay conflicto o error de validación, mostramos mensaje lindo
+                if (resp.StatusCode == System.Net.HttpStatusCode.Conflict ||
+                    resp.StatusCode == System.Net.HttpStatusCode.BadRequest ||
+                    (int)resp.StatusCode == 422)
                 {
                     TempData["Error"] = "No se puede eliminar el animal porque está en uso.";
-                    if (!string.IsNullOrWhiteSpace(body)) TempData["ApiDetail"] = body;
+                    if (!string.IsNullOrWhiteSpace(body))
+                        TempData["ApiDetail"] = body;
+
                     return RedirectToAction(nameof(Eliminar), new { id });
                 }
 
-                TempData["ErrorAnimal"] = $"DELETE /api/Animal/{id} -> {(int)respDel.StatusCode} {respDel.ReasonPhrase}. Respuesta: {body}";
+                TempData["ErrorAnimal"] = $"PUT /api/Animal/Eliminar/{id} -> {(int)resp.StatusCode} {resp.ReasonPhrase}. Respuesta: {body}";
                 return RedirectToAction(nameof(Eliminar), new { id });
             }
 
             TempData["OkAnimal"] = "Animal eliminado correctamente.";
             return RedirectToAction(nameof(Index));
         }
-
         // ===== Helper local (mismo espíritu que EsAdministradorAsync, sin clases nuevas)
         private async Task<bool> AnimalEnUsoAsync(int id)
         {
@@ -728,6 +757,11 @@ namespace SantaRamona.Backoffice.Controllers
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<T>();
 
             return list.GroupBy(keySel).ToDictionary(g => g.Key, g => valSel(g.First()));
+        }
+        public class EliminarAnimalDto
+        {
+            public DateTime? fechaEliminacion { get; set; }
+            public int id_usuario { get; set; }
         }
     }
 }
