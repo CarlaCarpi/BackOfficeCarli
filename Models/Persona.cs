@@ -12,10 +12,12 @@ namespace SantaRamona.Backoffice.Models
         // === DATOS PERSONALES ===
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         [StringLength(50, ErrorMessage = "El nombre no puede superar 50 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ\s]+$", ErrorMessage = "El nombre solo puede contener letras y espacios.")]
         public string nombre { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El apellido es obligatorio.")]
         [StringLength(50, ErrorMessage = "El apellido no puede superar 50 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ\s]+$", ErrorMessage = "El apellido solo puede contener letras y espacios.")]
         public string apellido { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El DNI es obligatorio.")]
@@ -27,23 +29,26 @@ namespace SantaRamona.Backoffice.Models
         public DateTime? fechaNacimiento { get; set; }
 
         [Required(ErrorMessage = "El email es obligatorio.")]
-        [EmailAddress(ErrorMessage = "Ingrese un email válido.")]
         [StringLength(150, ErrorMessage = "El email no puede superar 150 caracteres.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$",ErrorMessage = "Ingrese un email válido (debe tener un dominio con extensión, ej: .com).")]
         public string email { get; set; } = string.Empty;
 
         // === TELÉFONOS ===
         [Required(ErrorMessage = "El teléfono principal es obligatorio.")]
         [StringLength(30, ErrorMessage = "El teléfono no puede superar 30 caracteres.")]
+        [MinLength(8, ErrorMessage = "El teléfono debe tener al menos 8 caracteres.")]
         public string telefono1 { get; set; } = string.Empty;
 
         [StringLength(30, ErrorMessage = "El teléfono no puede superar 30 caracteres.")]
+        [MinLength(8, ErrorMessage = "El teléfono debe tener al menos 8 caracteres.")]
         public string? telefono2 { get; set; }
 
         // === DIRECCIÓN ===
         [StringLength(100, ErrorMessage = "La calle no puede superar 100 caracteres.")]
         public string? calle { get; set; }
 
-        [Range(0, 9999999999, ErrorMessage = "Ingrese una altura válida.")]
+        [Required(ErrorMessage = "La altura es obligatoria.")]
+        [Range(1, int.MaxValue, ErrorMessage = "La altura debe ser mayor a 0.")]
         public int? altura { get; set; }
 
         [StringLength(10, ErrorMessage = "El departamento no puede superar 10 caracteres.")]

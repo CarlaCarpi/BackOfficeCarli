@@ -12,19 +12,22 @@ namespace SantaRamona.Backoffice.Models
         // === DATOS PERSONALES ===
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         [StringLength(50, ErrorMessage = "El nombre no puede superar 50 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ\s]+$", ErrorMessage = "El nombre solo puede contener letras y espacios.")]
         public string? nombre { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "El email es obligatorio.")]
-        [EmailAddress(ErrorMessage = "Ingrese un email válido.")]
+        [Required(ErrorMessage = "El email es obligatorio.")]        
         [StringLength(150, ErrorMessage = "El email no puede superar 150 caracteres.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Ingrese un email válido (debe tener un dominio con extensión, ej: .com).")]
         public string? email { get; set; } = string.Empty; // NOT NULL en SQL
 
         // === TELÉFONOS ===
         [Required(ErrorMessage = "El teléfono principal es obligatorio.")]
         [StringLength(30, ErrorMessage = "El teléfono no puede superar 30 caracteres.")]
+        [MinLength(8, ErrorMessage = "El teléfono debe tener al menos 8 caracteres.")]
         public string telefono1 { get; set; } = string.Empty; // NOT NULL en SQL
 
-        [StringLength(30)]
+        [StringLength(30, ErrorMessage = "El teléfono no puede superar 30 caracteres.")]
+        [MinLength(8, ErrorMessage = "El teléfono debe tener al menos 8 caracteres.")]
         public string? telefono2 { get; set; }
 
         // === DIRECCIÓN ===
