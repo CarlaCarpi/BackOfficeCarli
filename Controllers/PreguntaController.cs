@@ -25,7 +25,8 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
-            var resp = await client.GetAsync($"/api/Pregunta?pagina={page}&pageSize={pageSize}");
+            // 👉 Ahora la API NO pagina: traemos TODO y paginamos acá
+            var resp = await client.GetAsync("/api/Pregunta");
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
@@ -50,9 +51,7 @@ namespace SantaRamona.Backoffice.Controllers
             if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
             if (TempData["Error"] is string err) ViewBag.Error = err;
 
-            bool apiHasMore = preguntas.Count == pageSize;
-
-            // 🔍 Filtro por texto: pregunta + tipo + estado
+            // 🔍 Filtro por texto: pregunta + tipo + estado (en memoria)
             if (!string.IsNullOrWhiteSpace(q))
             {
                 var qNorm = q.Trim().ToLower();
@@ -85,13 +84,24 @@ namespace SantaRamona.Backoffice.Controllers
                 .OrderByDescending(p => p.id_pregunta)
                 .ToList();
 
+            // 🔢 Paginación en memoria
+            if (page < 1) page = 1;
+            if (pageSize <= 0) pageSize = 20;
+
+            var total = preguntas.Count;
+            var pagePreguntas = preguntas
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var hasMore = (page * pageSize) < total;
+
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
-            ViewBag.HasMore = apiHasMore;
+            ViewBag.HasMore = hasMore;
 
-            return View(preguntas);
+            return View(pagePreguntas);
         }
-
 
         // ===================== VER MÁS =====================
         [HttpGet]
@@ -102,7 +112,8 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
-            var resp = await client.GetAsync($"/api/Pregunta?pagina={page}&pageSize={pageSize}");
+            // 👉 Igual que Index: traemos TODO y paginamos acá
+            var resp = await client.GetAsync("/api/Pregunta");
             if (!resp.IsSuccessStatusCode)
                 return Content("");
 
@@ -113,9 +124,7 @@ namespace SantaRamona.Backoffice.Controllers
             var tiposDict = await GetTiposDict();
             ViewBag.TiposDict = tiposDict;
 
-            bool apiHasMore = preguntas.Count == pageSize;
-
-            //  mismo filtro que en Index
+            // 🔍 mismo filtro que en Index
             if (!string.IsNullOrWhiteSpace(q))
             {
                 var qNorm = q.Trim().ToLower();
@@ -145,11 +154,23 @@ namespace SantaRamona.Backoffice.Controllers
                 .OrderByDescending(p => p.id_pregunta)
                 .ToList();
 
-            Response.Headers["X-HasMore"] = apiHasMore ? "true" : "false";
+            // 🔢 Paginación en memoria para esta "page"
+            if (page < 1) page = 1;
+            if (pageSize <= 0) pageSize = 20;
 
-            return PartialView("_PreguntaRows", preguntas);
+            var total = preguntas.Count;
+            var pagePreguntas = preguntas
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var hasMore = (page * pageSize) < total;
+
+            // Header para el JS del "Ver más"
+            Response.Headers["X-HasMore"] = hasMore ? "true" : "false";
+
+            return PartialView("_PreguntaRows", pagePreguntas);
         }
-
 
         // ===================== CREAR =====================
         [HttpGet]
