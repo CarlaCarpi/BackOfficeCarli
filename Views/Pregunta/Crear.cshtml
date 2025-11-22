@@ -58,10 +58,13 @@
                         <label asp-for="id_tipoFormulario" class="form-label">Tipo de formulario</label>
                         <select asp-for="id_tipoFormulario"
                                 class="form-select"
-                                asp-items="@(new SelectList((IEnumerable<SelectListItem>)ViewBag.Tipos, "Value","Text"))">
+                                asp-items="@(new SelectList((IEnumerable<SelectListItem>)ViewBag.Tipos, "Value", "Text"))">
+                            <option value="0">-- Seleccione un tipo --</option>
                         </select>
+
                         <span asp-validation-for="id_tipoFormulario" class="text-danger"></span>
                     </div>
+
 
                     <!-- Orden -->
                     <div class="col-md-6">

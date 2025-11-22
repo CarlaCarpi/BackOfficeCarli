@@ -16,9 +16,29 @@
     string IntTxt(int? n) => n.HasValue ? n.Value.ToString() : "—";
     string DateTxt(DateTime? d) => d.HasValue ? d.Value.ToString("dd/MM/yyyy") : "—";
     string Txt(Dictionary<int, string> dict, int? id)
-        => id.HasValue && dict.TryGetValue(id.Value, out var v) ? v : (id.HasValue ? $"#{id}" : "—");    
+        => id.HasValue && dict.TryGetValue(id.Value, out var v) ? v : (id.HasValue ? $"#{id}" : "—");
     string TxtOrId(Dictionary<int, string> dict, int? id)
-    => id.HasValue ? (dict.TryGetValue(id.Value, out var v) ? v : $"#{id}") : "—";
+        => id.HasValue ? (dict.TryGetValue(id.Value, out var v) ? v : $"#{id}") : "—";
+
+    // 👇 Helpers para usuario
+    string UsuarioNombre(int? id)
+        => id.HasValue && id.Value > 0
+           ? (usuarios.TryGetValue(id.Value, out var nom) ? nom : $"Usuario #{id.Value}")
+           : "—";
+
+    string etiquetaUsuario;
+    if (Model.fechaEliminacion.HasValue)
+    {
+        etiquetaUsuario = "Usuario que eliminó";
+    }
+    else if (Model.fechaEgreso.HasValue)   // o fechaModificacion si tu modelo se llama distinto
+    {
+        etiquetaUsuario = "Usuario que modificó";
+    }
+    else
+    {
+        etiquetaUsuario = "Usuario que creó";
+    }
 }
 
 <div class="container-fluid">
