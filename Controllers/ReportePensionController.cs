@@ -44,6 +44,9 @@ namespace SantaRamona.Backoffice.Controllers
             var pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(
                 await rPen.Content.ReadAsStringAsync(), JOps) ?? Enumerable.Empty<Pension>();
 
+            // NO mostrar pensiones eliminadas
+            pensiones = pensiones.Where(p => p.fechaEliminacion == null);
+
             var q = pensiones.AsQueryable();
 
             if (id_provincia.HasValue && id_provincia > 0) q = q.Where(p => p.id_provincia == id_provincia);
@@ -81,6 +84,9 @@ namespace SantaRamona.Backoffice.Controllers
 
             var pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(
                 await rPen.Content.ReadAsStringAsync(), JOps) ?? Enumerable.Empty<Pension>();
+
+            // NO mostrar pensiones eliminadas
+            pensiones = pensiones.Where(p => p.fechaEliminacion == null);
 
             var provincias = await ToDict<Provincia, int>(client, "/api/Provincia", x => x.id_provincia, x => x.nombre);
             var localidades = await ToDict<Localidad, int>(client, "/api/Localidad", x => x.id_localidad, x => x.nombre);
@@ -158,6 +164,9 @@ namespace SantaRamona.Backoffice.Controllers
 
             var pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(
                 await rPen.Content.ReadAsStringAsync(), JOps) ?? Enumerable.Empty<Pension>();
+
+            // NO mostrar pensiones eliminadas
+            pensiones = pensiones.Where(p => p.fechaEliminacion == null);
 
             var provincias = await ToDict<Provincia, int>(client, "/api/Provincia", x => x.id_provincia, x => x.nombre);
             var localidades = await ToDict<Localidad, int>(client, "/api/Localidad", x => x.id_localidad, x => x.nombre);

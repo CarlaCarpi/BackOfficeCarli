@@ -31,6 +31,12 @@ namespace SantaRamona.Controllers
             var personas = await DeserializeOrEmpty<Persona>(tPersonas.Result);
             var pensiones = await DeserializeOrEmpty<Pension>(tPensiones.Result);
 
+            // NO mostrar eliminados (soft delete)
+            animales = animales.Where(a => a.fechaEliminacion == null).ToList();
+            personas = personas.Where(p => p.fechaEliminacion == null).ToList();
+            pensiones = pensiones.Where(pe => pe.fechaEliminacion == null).ToList();
+
+
             // ----- Totales de animales -----
             var totalAnimales = animales.Count;
             var totalPerros = animales.Count(a => a.id_especie == 1);
@@ -89,6 +95,7 @@ namespace SantaRamona.Controllers
         {
             public int id_especie { get; set; }
             public int id_estadoAnimal { get; set; }
+            public DateTime? fechaEliminacion { get; set; }   //  NUEVO
         }
 
         private sealed class Formulario
@@ -96,7 +103,15 @@ namespace SantaRamona.Controllers
             public int id_tipoFormulario { get; set; }
         }
 
-        private sealed class Persona { public int id_persona { get; set; } }
-        private sealed class Pension { public int id_pension { get; set; } }
+        private sealed class Persona
+        {
+            public int id_persona { get; set; }
+            public DateTime? fechaEliminacion { get; set; }   //  NUEVO
+        }
+        private sealed class Pension 
+        {
+            public int id_pension { get; set; }
+            public DateTime? fechaEliminacion { get; set; }   //  NUEVO
+        }
     }
 }

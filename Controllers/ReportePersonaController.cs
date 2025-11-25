@@ -45,6 +45,9 @@ namespace SantaRamona.Backoffice.Controllers
             var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(
                 await rPer.Content.ReadAsStringAsync(), JOps) ?? Enumerable.Empty<Persona>();
 
+            // NO mostrar personas eliminadas (soft delete)
+            personas = personas.Where(p => p.fechaEliminacion == null);
+
             // Formularios (para filtrar por tipo y mostrar chip/CSV/PDF)
             var rForm = await client.GetAsync("/api/Formulario");
             var formularios = rForm.IsSuccessStatusCode
@@ -117,6 +120,9 @@ namespace SantaRamona.Backoffice.Controllers
 
             var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(
                 await rPer.Content.ReadAsStringAsync(), JOps) ?? Enumerable.Empty<Persona>();
+
+            //NO mostrar personas eliminadas (soft delete)
+            personas = personas.Where(p => p.fechaEliminacion == null);
 
             // Catálogos
             var provincias = await ToDict<Provincia, int>(client, "/api/Provincia", x => x.id_provincia, x => x.nombre);
@@ -223,6 +229,9 @@ namespace SantaRamona.Backoffice.Controllers
 
             var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(
                 await rPer.Content.ReadAsStringAsync(), JOps) ?? Enumerable.Empty<Persona>();
+
+            // NO mostrar personas eliminadas (soft delete)
+            personas = personas.Where(p => p.fechaEliminacion == null);
 
             var provincias = await ToDict<Provincia, int>(client, "/api/Provincia", x => x.id_provincia, x => x.nombre);
             var localidades = await ToDict<Localidad, int>(client, "/api/Localidad", x => x.id_localidad, x => x.nombre);

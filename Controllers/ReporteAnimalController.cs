@@ -46,6 +46,9 @@ namespace SantaRamona.Backoffice.Controllers
             var todos = JsonSerializer.Deserialize<IEnumerable<Animal>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
                         ?? Enumerable.Empty<Animal>();
 
+            //  NO mostrar animales eliminados en el reporte
+            todos = todos.Where(a => a.fechaEliminacion == null);
+
             // Filtros en memoria (sin tocar API)
             var q = todos.AsQueryable();
 
@@ -89,6 +92,10 @@ namespace SantaRamona.Backoffice.Controllers
             var json = await resp.Content.ReadAsStringAsync();
             var todos = JsonSerializer.Deserialize<IEnumerable<Animal>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
+
+            // NO mostrar animales eliminados en el reporte
+            todos = todos.Where(a => a.fechaEliminacion == null);
+
 
             // 2) Filtros
             var q = todos.AsQueryable();
@@ -210,6 +217,10 @@ namespace SantaRamona.Backoffice.Controllers
             var json = await resp.Content.ReadAsStringAsync();
             var todos = JsonSerializer.Deserialize<IEnumerable<Animal>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
+
+            // NO mostrar animales eliminados en el reporte
+            todos = todos.Where(a => a.fechaEliminacion == null);
+
 
             // filtros
             var q = todos.AsQueryable();
