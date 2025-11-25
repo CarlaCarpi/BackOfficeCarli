@@ -8,7 +8,7 @@ namespace SantaRamona.Backoffice.Models
         public int id_pregunta { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar un tipo de formulario.")]
-        [Display(Name = "Tipo de formulario")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un tipo de formulario.")]
         public int id_tipoFormulario { get; set; }
 
         [Required(ErrorMessage = "La pregunta es obligatoria.")]
