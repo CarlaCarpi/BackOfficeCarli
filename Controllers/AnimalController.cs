@@ -274,7 +274,7 @@ namespace SantaRamona.Backoffice.Controllers
                 ModelState.AddModelError(nameof(Animal.nombre), "El nombre es obligatorio.");
             if (model.edadValor <= 0)
                 ModelState.AddModelError(nameof(Animal.edadValor), "La edad es obligatoria.");
-            if (model.id_especie <= 0) ModelState.AddModelError(nameof(Animal.id_especie), "La especie es obligatorio.");
+            if (model.id_especie <= 0) ModelState.AddModelError(nameof(Animal.id_especie), "La especie es obligatoria.");
             if (model.id_tamano <= 0) ModelState.AddModelError(nameof(Animal.id_tamano), "Seleccione un tamaño válido.");
             if (model.id_estadoAnimal <= 0) ModelState.AddModelError(nameof(Animal.id_estadoAnimal), "Seleccione un estado válido.");
 
