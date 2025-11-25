@@ -33,7 +33,9 @@
                         style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
                     Guardar
                 </button>
-                <a asp-action="Index" class="btn"
+                <a asp-controller="Pension"
+                   asp-action="Index"
+                   class="btn"
                    style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
                     Cancelar
                 </a>
@@ -119,7 +121,7 @@
                         <span asp-validation-for="redesSociales" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Estado de Pensión</label>
                         <select asp-for="id_estadoPension" asp-items="ViewBag.Estados" class="form-select"></select>
                         <span asp-validation-for="id_estadoPension" class="text-danger"></span>
@@ -134,7 +136,7 @@
                     *@
 
                     <!-- Fechas y monto -->
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label asp-for="fechaIngreso" class="form-label">Fecha de alta</label>
                         <input asp-for="fechaIngreso" class="form-control" type="date" readonly />
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
@@ -154,6 +156,7 @@
                         </div>
                         <span asp-validation-for="montoDia" class="text-danger"></span>
                     </div>
+                
                 </div>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger mt-2"></div>
