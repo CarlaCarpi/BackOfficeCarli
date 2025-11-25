@@ -557,22 +557,12 @@ namespace SantaRamona.Backoffice.Controllers
         [Authorize(Policy = "AdminOrColab")]
         public async Task<IActionResult> Modificar([FromForm] Pension model)
         {
-            // 👉 Este campo lo vamos a setear nosotros, no el form
-            ModelState.Remove(nameof(model.id_usuario));
-
-            // 👉 Tomar el usuario logueado (igual que en Persona / Animal)
-            var claimIdUsuario = User.FindFirst("IdUsuario")
-                                  ?? User.FindFirst(ClaimTypes.NameIdentifier);
-
-            if (claimIdUsuario != null && int.TryParse(claimIdUsuario.Value, out var idUsu))
-                model.id_usuario = idUsu;
-
             // Normalizar teléfonos
             model.telefono1 = model.telefono1?.Trim() ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(model.telefono2))
                 model.telefono2 = model.telefono2!.Trim();
 
-            // Siempre que se modifica, actualizar fechaEgreso a ahora
+            // 👉 Siempre que se modifica, actualizar fechaEgreso a ahora
             model.fechaEgreso = DateTime.Now;
 
             if (!ModelState.IsValid)
@@ -604,7 +594,6 @@ namespace SantaRamona.Backoffice.Controllers
             TempData["Ok"] = "Pensión actualizada correctamente.";
             return RedirectToAction(nameof(Index));
         }
-
 
         // ============================================================
         // ===================== ELIMINAR =============================
