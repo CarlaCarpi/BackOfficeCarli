@@ -78,7 +78,14 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Provincia = await CargarProvinciasSelectAsync(client);
             ViewBag.Localidad = await CargarLocalidadesSelectAsync(client, null);
 
-            return View("~/Views/Formularios/FormVoluntariado.cshtml", preguntas);
+            
+            var vm = new FormVM
+            {
+                Preguntas = preguntas,
+                Respuestas = new Dictionary<int, string>()
+            };
+
+            return View("~/Views/Formularios/FormVoluntariado.cshtml",vm );
         }
 
         // ===================== POST: enviar respuestas voluntariado =====================
@@ -264,7 +271,7 @@ namespace SantaRamona.Backoffice.Controllers
             }
 
             TempData["idPersonaCreada"] = personaCreada.id_persona;
-            TempData["Ok"] = "Persona creada correctamente.";
+            TempData["Ok"] = "Sus datos han sido enviados correctamente.";
             return RedirectToAction("FormularioVoluntariado", "FormPersonaVoluntariado", new { idPersona = personaCreada.id_persona });
         }
 

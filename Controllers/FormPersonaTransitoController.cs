@@ -83,7 +83,15 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Provincia = await CargarProvinciasSelectAsync(client);
             ViewBag.Localidad = await CargarLocalidadesSelectAsync(client, null);
 
-            return View("~/Views/Formularios/FormTransito.cshtml", preguntas);
+
+            var vm = new FormVM
+            {
+                Preguntas = preguntas,
+                Respuestas = new Dictionary<int, string>()
+            };
+
+
+            return View("~/Views/Formularios/FormTransito.cshtml", vm);
         }
 
         // ===================== POST: enviar respuestas =====================
@@ -270,7 +278,7 @@ namespace SantaRamona.Backoffice.Controllers
             }
 
             TempData["idPersonaCreada"] = personaCreada.id_persona;
-            TempData["Ok"] = "Persona creada correctamente.";
+            TempData["Ok"] = "Sus datos han sido enviados correctamente.";
             return RedirectToAction("FormularioTransito", "FormPersonaTransito", new { idPersona = personaCreada.id_persona });
         }
 

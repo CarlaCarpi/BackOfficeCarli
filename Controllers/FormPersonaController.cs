@@ -267,7 +267,7 @@ namespace SantaRamona.Backoffice.Controllers
             }
 
             TempData["idPersonaCreada"] = personaCreada.id_persona;
-            TempData["Ok"] = "Persona creada correctamente.";
+            TempData["Ok"] = "Sus datos han sido enviados correctamente.";
             return RedirectToAction("FormularioAdopcion", "FormPersona", new { idPersona = personaCreada.id_persona });
         }
 

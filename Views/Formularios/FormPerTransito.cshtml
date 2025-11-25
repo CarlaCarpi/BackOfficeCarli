@@ -46,7 +46,7 @@
 
 			<div class="form-row">
 				<div class="form-group">
-					<label asp-for="dni" class="form-label">DNI</label>
+					<label asp-for="dni" class="form-label">DNI:</label>
 					<input asp-for="dni" class="form-control" type="text" inputmode="numeric"
 						   value="@(Model.dni == 0 ? "" : Model.dni.ToString())"
 						   pattern="\d*" autocomplete="off" oninput="this.value=this.value.replace(/\D/g,'')" />
@@ -68,14 +68,14 @@
 
 
 			<div class="form-group">
-				<label asp-for="telefono1" class="form-label">Teléfono</label>
+				<label asp-for="telefono1" class="form-label">Teléfono:</label>
 				<input asp-for="telefono1" class="form-control" />
 				<span asp-validation-for="telefono1" class="text-danger"></span>
 			</div>
 
 			<div class="form-group">
-				<label asp-for="telefono2" class="form-label">Teléfono</label>
-				<input asp-for="telefono2" class="form-control" />
+				<label asp-for="telefono2" class="form-label">Teléfono:</label>
+                <input asp-for="telefono2" class="form-control" placeholder="(Opcional)" />
 				<span asp-validation-for="telefono2" class="text-danger"></span>
 			</div>
 
@@ -83,7 +83,7 @@
 			<div class="form-row">
 				<div class="form-group">
 					<label asp-for="calle">Calle:</label>
-					<textarea asp-for="calle" class="form-control" id="calle"></textarea>
+					<textarea asp-for="calle" class="form-control" id="calle" placeholder="(Opcional)"></textarea>
 
 					@* <input asp-for="calle" class="form-control" id="calle" /> *@
 					<span asp-validation-for="calle" class="text-danger"></span>
@@ -91,7 +91,7 @@
 
 				<div class="form-group">
 					<label asp-for="altura">Altura:</label>
-					<input asp-for="altura" class="form-control" id="altura" type="number" />
+					<input asp-for="altura" class="form-control" id="altura" type="number" placeholder="(Opcional)" />
 					<span asp-validation-for="altura" class="text-danger"></span>
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 			<div class="form-row">
 				<div class="form-group">
 					<label asp-for="departamento">Departamento:</label>
-					<input asp-for="departamento" class="form-control" id="departamento" />
+					<input asp-for="departamento" class="form-control" id="departamento" placeholder="(Opcional)" />
 					<span asp-validation-for="departamento" class="text-danger"></span>
 				</div>
 
@@ -127,7 +127,7 @@
 
 			<div class="form-group">
 				<label asp-for="redesSociales">Redes Sociales:</label>
-				<textarea asp-for="redesSociales" class="form-control" id="redesSociales" placeholder="usuario"> </textarea>
+				<textarea asp-for="redesSociales" class="form-control" id="redesSociales" placeholder="Usuario (Opcional)"> </textarea>
 
 				@* <input asp-for="redesSociales" class="form-control" id="redesSociales" placeholder="usuario" /> *@
 				<span asp-validation-for="redesSociales" class="text-danger"></span>

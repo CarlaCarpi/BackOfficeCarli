@@ -1,4 +1,13 @@
-﻿/* === CONTENEDOR DE TARJETAS === */
+﻿.section-inner.about {
+    list-style: none !important;
+}
+
+    .section-inner.about * {
+        list-style: none !important;
+    }
+
+
+/* === CONTENEDOR DE TARJETAS === */
 .pets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -302,38 +311,6 @@ p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /* 📱 Botones más chicos para todos los tamaños de celular */
     /*@media (max-width: 740px) {
         .btn.primary {
@@ -399,7 +376,7 @@ p {
 
 
        /* AGREGO RESPONSIVE DE TARJETAS*/
-    /* 📱 En celulares: mostrar 1 tarjeta por fila */
+    /* 📱 En celulares: mostrar 1 tarjeta por fila 
     @media (max-width: 450px) {
         .pets-grid {
             grid-template-columns: 1fr !important;
@@ -411,7 +388,7 @@ p {
             max-width: 100%;
             aspect-ratio: 1 / 1.25;
         }
-    }
+    }*/
 
    
 

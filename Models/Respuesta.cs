@@ -15,7 +15,7 @@ namespace SantaRamona.Backoffice.Models
     @"^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+$",
     ErrorMessage = "No se permiten caracteres especiales."
 )]
-        [Required(ErrorMessage = "La respuesta es obligatoria.")]
+        //[Required(ErrorMessage = "La respuesta es obligatoria.")]
         [Display(Name = "Texto de la respuesta")]
         public string respuesta { get; set; } = string.Empty;
 
