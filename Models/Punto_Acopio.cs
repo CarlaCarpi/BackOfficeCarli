@@ -17,7 +17,7 @@ namespace SantaRamona.Backoffice.Models
         [Column("nombre")]
         public string nombre { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La calle es obligatorio.")]
+        [Required(ErrorMessage = "La calle es obligatoria.")]
         [StringLength(100, ErrorMessage = "La calle no puede superar 100 caracteres.")]
         [Column("calle")]
         public string calle { get; set; } = string.Empty;
