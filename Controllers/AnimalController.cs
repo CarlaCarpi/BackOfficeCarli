@@ -19,6 +19,8 @@ namespace SantaRamona.Backoffice.Controllers
         // ====== Rutas API ======
         private const string RUTA_ANIMAL = "/api/Animal";
 
+
+
         // ===================== INDEX =====================
         [HttpGet]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 20, string? q = null)
@@ -55,6 +57,9 @@ namespace SantaRamona.Backoffice.Controllers
             var json = await resp.Content.ReadAsStringAsync();
             var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
+
+            // 🔥 NO mostrar animales eliminados (soft delete)
+            animals = animals.Where(a => a.fechaEliminacion == null);
 
             // === 2) Catálogos para la vista (texto de especie/tamaño/estado) ===
             var tEsp = client.GetAsync("/api/Especie");
@@ -149,6 +154,9 @@ namespace SantaRamona.Backoffice.Controllers
             var json = await resp.Content.ReadAsStringAsync();
             var animals = JsonSerializer.Deserialize<IEnumerable<Animal>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
+
+            // 🔥 NO mostrar animales eliminados (soft delete)
+            animals = animals.Where(a => a.fechaEliminacion == null);
 
             // 🔍 Filtro local por q (simple, como ya tenías)
             if (!string.IsNullOrWhiteSpace(q))
@@ -559,22 +567,34 @@ namespace SantaRamona.Backoffice.Controllers
             var json = await resp.Content.ReadAsStringAsync();
             var model = JsonSerializer.Deserialize<Animal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            // Para mostrar nombres en lugar de IDs (como ya hacés en otros lados)
+            if (model is null)
+            {
+                TempData["Error"] = "No se pudo deserializar el animal.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Para mostrar textos en la vista (especie, tamaño, estado, persona, pensión, usuario)
             await CargarDiccionariosBasicos();
 
             // Bloqueo visual si el animal está “en uso” (persona/pensión)
-            if (model != null && ((model.id_persona.HasValue && model.id_persona.Value > 0) ||
-                                  (model.id_pension.HasValue && model.id_pension.Value > 0)))
+            if ((model.id_persona.HasValue && model.id_persona.Value > 0) ||
+                (model.id_pension.HasValue && model.id_pension.Value > 0))
             {
                 ViewBag.Bloqueado = true;
                 ViewBag.Motivo = "tiene Persona o Pensión asociada";
             }
+            else
+            {
+                ViewBag.Bloqueado = false;
+                ViewBag.Motivo = "";
+            }
 
-            if (TempData["Ok"] is string ok) ViewBag.Ok = ok;
-            if (TempData["Error"] is string err) ViewBag.Error = err;
+            if (TempData["OkAnimal"] is string ok) ViewBag.Ok = ok;
+            if (TempData["ErrorAnimal"] is string err) ViewBag.Error = err;
 
             return View(model);
         }
+
 
         [HttpPost, ValidateAntiForgeryToken, ActionName("Eliminar")]
         [Authorize(Roles = "Administrador")]
@@ -583,30 +603,25 @@ namespace SantaRamona.Backoffice.Controllers
             // 1) Validar si el animal está en uso (persona/pensión)
             if (await AnimalEnUsoAsync(id))
             {
-                TempData["Error"] = "No se puede eliminar el animal porque está en uso.";
+                TempData["Error"] = "No se puede eliminar el animal porque está en uso (tiene Persona o Pensión asociada).";
                 return RedirectToAction(nameof(Eliminar), new { id });
             }
 
             var client = _http.CreateClient("Api");
 
             // 2) Obtener el usuario actual desde las claims
-            var idUsuarioClaim = User.FindFirst("IdUsuario")
-                                ?? User.FindFirst(ClaimTypes.NameIdentifier);
-
-            int idUsuario = 0;
-            if (idUsuarioClaim != null && int.TryParse(idUsuarioClaim.Value, out var parsed))
-                idUsuario = parsed;
-
+            var idUsuario = GetCurrentUserId();
             if (idUsuario <= 0)
             {
                 TempData["Error"] = "No se pudo determinar el usuario actual para registrar la eliminación.";
                 return RedirectToAction(nameof(Eliminar), new { id });
             }
 
-            // 3) Armamos el DTO para la API (soft delete)
+            // 3) Armar el DTO que espera la API
             var dto = new EliminarAnimalDto
             {
-                fechaEliminacion = null,      // la API usará DateTime.Now
+                // si lo dejamos en null, la API le pone DateTime.Now
+                fechaEliminacion = null,
                 id_usuario = idUsuario
             };
 
@@ -616,19 +631,19 @@ namespace SantaRamona.Backoffice.Controllers
             });
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            // 4) Llamamos al endpoint de soft delete
+            // 4) Llamar a la API: PUT /api/Animal/Eliminar/{id}
             var resp = await client.PutAsync($"/api/Animal/Eliminar/{id}", content);
 
             if (!resp.IsSuccessStatusCode)
             {
                 var body = await resp.Content.ReadAsStringAsync();
 
-                // Si hay conflicto o error de validación, mostramos mensaje lindo
+                // Errores típicos de validación / conflicto
                 if (resp.StatusCode == System.Net.HttpStatusCode.Conflict ||
                     resp.StatusCode == System.Net.HttpStatusCode.BadRequest ||
                     (int)resp.StatusCode == 422)
                 {
-                    TempData["Error"] = "No se puede eliminar el animal porque está en uso.";
+                    TempData["Error"] = "No se pudo eliminar el animal. La API devolvió un error de validación.";
                     if (!string.IsNullOrWhiteSpace(body))
                         TempData["ApiDetail"] = body;
 
@@ -642,6 +657,7 @@ namespace SantaRamona.Backoffice.Controllers
             TempData["OkAnimal"] = "Animal eliminado correctamente.";
             return RedirectToAction(nameof(Index));
         }
+
         // ===== Helper local (mismo espíritu que EsAdministradorAsync, sin clases nuevas)
         private async Task<bool> AnimalEnUsoAsync(int id)
         {
@@ -656,6 +672,7 @@ namespace SantaRamona.Backoffice.Controllers
                    ((model.id_persona.HasValue && model.id_persona.Value > 0) ||
                     (model.id_pension.HasValue && model.id_pension.Value > 0));
         }
+
 
 
         // ===================== HELPERS =====================
@@ -734,6 +751,8 @@ namespace SantaRamona.Backoffice.Controllers
             var list = JsonSerializer.Deserialize<IEnumerable<T>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<T>();
 
+            
+
             items.AddRange(list.Select(x => new SelectListItem
             {
                 Value = keySel(x).ToString(),
@@ -757,6 +776,17 @@ namespace SantaRamona.Backoffice.Controllers
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<T>();
 
             return list.GroupBy(keySel).ToDictionary(g => g.Key, g => valSel(g.First()));
+        }
+        private int GetCurrentUserId()
+        {
+            string? raw =
+                User.FindFirstValue("id_usuario") ??
+                User.FindFirstValue("IdUsuario") ??
+                User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+                User.FindFirstValue("sub") ??
+                "0";
+
+            return int.TryParse(raw, out var id) ? id : 0;
         }
         public class EliminarAnimalDto
         {
