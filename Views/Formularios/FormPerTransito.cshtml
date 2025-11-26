@@ -62,7 +62,7 @@
 
 			<div class="form-group">
 				<label asp-for="email">Correo Electrónico:</label>
-				<input asp-for="email" class="form-control" id="email" type="email" placeholder="nombre@dominio.com" />
+				<input asp-for="email" class="form-control" id="email" placeholder="nombre@dominio.com" />
 				<span asp-validation-for="email" class="text-danger"></span>
 			</div>
 
@@ -218,6 +218,14 @@
 				if (edadReal < 18) {
 					alert("Debes ser mayor de 18 años para continuar.");
 					this.value = ""; // limpia el campo
+				}
+
+
+					// 🔹 Validación mayor de 100
+				if (edadReal > 100) {
+					alert("La edad no puede ser mayor a 100 años.");
+					this.value = "";
+
 				}
 			});
 		});

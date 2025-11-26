@@ -31,14 +31,17 @@ namespace SantaRamona.Backoffice.Models
         [Required(ErrorMessage = "El email es obligatorio.")]
         [StringLength(150, ErrorMessage = "El email no puede superar 150 caracteres.")]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$",ErrorMessage = "Ingrese un email válido (debe tener un dominio con extensión, ej: .com).")]
+
         public string email { get; set; } = string.Empty;
 
         // === TELÉFONOS ===
+        [RegularExpression(@"^[0-9+\-() ]+$",ErrorMessage = "Ingrese un teléfono válido.")]
         [Required(ErrorMessage = "El teléfono principal es obligatorio.")]
         [StringLength(30, ErrorMessage = "El teléfono no puede superar 30 caracteres.")]
         [MinLength(8, ErrorMessage = "El teléfono debe tener al menos 8 caracteres.")]
         public string telefono1 { get; set; } = string.Empty;
 
+        [RegularExpression(@"^[0-9+\-() ]+$", ErrorMessage = "Ingrese un teléfono válido.")]
         [StringLength(30, ErrorMessage = "El teléfono no puede superar 30 caracteres.")]
         [MinLength(8, ErrorMessage = "El teléfono debe tener al menos 8 caracteres.")]
         public string? telefono2 { get; set; }
@@ -48,6 +51,7 @@ namespace SantaRamona.Backoffice.Models
         public string? calle { get; set; }
 
         //[Required(ErrorMessage = "La altura es obligatoria.")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Ingrese una altura válido.")]
         [Range(1, int.MaxValue, ErrorMessage = "La altura debe ser mayor a 0.")]
         public int? altura { get; set; }
 

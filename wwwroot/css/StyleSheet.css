@@ -399,7 +399,7 @@ section {
 }
 
 .section-title {
-    font-size: 32px;
+    font-size: 25px;
     font-family: Nunito;
     font-weight: 800;
     display: flex;
@@ -417,7 +417,7 @@ section {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: minmax(250px, 1fr);
-    gap: 18px;
+    gap: 22px;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
@@ -546,7 +546,7 @@ section {
                     .scroller {
                         /* grid-auto-columns: minmax(220px, 1fr);*/
                         grid-template-columns: repeat(3, 1fr);
-                        gap: 10px;
+                        gap: 8px;
                         justify-items: center;
                         display: grid;
                     }
@@ -563,9 +563,7 @@ section {
                         scroll-snap-align: start;
                     }
 
-                    #adoptar .section-title h2 {
-                        font-size: 2.5rem;
-                    }
+                   
                 }
 
                 /* Desde 630px hacia abajo → 2 columnas */
@@ -577,7 +575,7 @@ section {
                         overflow-x: visible;
                         padding-bottom: 0;
                         justify-items: center;
-                        gap: 7px;
+                        gap: 3px;
                     }
 
 /*                    .pet-card {
@@ -593,9 +591,7 @@ section {
                         scroll-snap-align: start;
                     }
 
-                    #adoptar .section-title h2 {
-                        font-size: 2.5rem;
-                    }
+                   
                 }
 
                 /* Ajuste progresivo hasta 340px */
@@ -612,9 +608,7 @@ section {
                         scroll-snap-align: start;
                     }
 
-                    #adoptar .section-title h2 {
-                        font-size: 2.4rem;
-                    }
+                   
                 }
 
                 @media (max-width: 340px) {
@@ -630,9 +624,7 @@ section {
                         scroll-snap-align: start;
                     }
 
-                    #adoptar .section-title h2 {
-                        font-size: 2.5rem;
-                    }
+                  
                 }
 
 /* Textos Informativos */
@@ -1000,7 +992,7 @@ footer {
         display: grid;
         grid-auto-flow: column;
         grid-auto-columns: minmax(250px, 1fr);
-        gap: 22px;
+       
         overflow-x: hidden; /* ✅ evita el scroll manual y oculta la barra */
         scroll-behavior: smooth;
         scroll-snap-type: x mandatory;
