@@ -18,8 +18,9 @@ namespace SantaRamona.Backoffice.Models
 
         // BDD: NOT NULL, VARCHAR(150), UNIQUE
         [Required(ErrorMessage = "El email es obligatorio.")]
-        [EmailAddress(ErrorMessage = "El email no tiene un formato válido.")]
-        [MaxLength(150)]
+        [StringLength(150, ErrorMessage = "El email no puede superar 150 caracteres.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Ingrese un email válido (debe tener un dominio con extensión, ej: @gmail.com).")]
+  
         public string email { get; set; } = string.Empty;
 
         // BDD: NOT NULL, VARCHAR(50)
@@ -35,23 +36,29 @@ namespace SantaRamona.Backoffice.Models
         public string apellido { get; set; } = string.Empty;
 
         // BDD: NULL, VARCHAR(100)
-        [MaxLength(100)]
+        //[MaxLength(100)]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [StringLength(100, ErrorMessage = "La calle no puede superar 100 caracteres.")]
         public string? direccion { get; set; }
 
         // BDD: NULL, INT
         // Si se carga, que sea positiva. Al ser nullable, no se exige en validación.
-        [Range(1, 999999, ErrorMessage = "Ingrese una altura válida.")]
+        //[Range(1, 999999, ErrorMessage = "Ingrese una altura válida.")]
+        [Range(1, int.MaxValue, ErrorMessage = "La altura debe ser mayor a 0.")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? altura { get; set; }
 
         // BDD: NULL, VARCHAR(20)
-        [MaxLength(20)]
+        //[MaxLength(20)]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [StringLength(10, ErrorMessage = "El departamento no puede superar 10 caracteres.")]
+
         public string? departamento { get; set; }
 
         // BDD: NOT NULL, INT
         [Required(ErrorMessage = "El teléfono es obligatorio.")]
+        [StringLength(30, ErrorMessage = "El teléfono no puede superar 30 caracteres.")]
+        [MinLength(8, ErrorMessage = "El teléfono debe tener al menos 8 caracteres.")]
         public int telefono { get; set; }
 
         // BDD: NOT NULL, DATETIME (tiene DEFAULT GETDATE())
