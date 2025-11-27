@@ -120,8 +120,17 @@ namespace SantaRamona.Backoffice.Controllers
         {
             if (string.IsNullOrWhiteSpace(especie))
             {
+                // 1) Limpio cualquier error previo asociado a "especie"
+                ModelState.Remove(nameof(Especie.especie));
+
+                // 2) Agrego SOLO tu mensaje en español
                 ModelState.AddModelError(nameof(Especie.especie), "La especie es obligatoria.");
-                return View(new Especie { id_especie = id_especie, especie = especie ?? string.Empty });
+
+                return View(new Especie
+                {
+                    id_especie = id_especie,
+                    especie = especie ?? string.Empty
+                });
             }
 
             var model = new Especie { id_especie = id_especie, especie = especie.Trim() };

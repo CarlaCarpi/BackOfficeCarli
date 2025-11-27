@@ -442,10 +442,29 @@ namespace SantaRamona.Backoffice.Controllers
             var respUsr = await client.GetAsync(RUTA_USUARIO);
             if (respUsr.IsSuccessStatusCode)
             {
-                var usuarios = JsonSerializer.Deserialize<IEnumerable<Usuario>>(await respUsr.Content.ReadAsStringAsync(), JsonOps) ?? Enumerable.Empty<Usuario>();
-                ViewBag.Usuarios = usuarios.ToDictionary(u => u.id_usuario, u => string.IsNullOrWhiteSpace(u.nombre) ? $"Usuario #{u.id_usuario}" : u.nombre);
+                var usuarios = JsonSerializer.Deserialize<IEnumerable<Usuario>>(
+                    await respUsr.Content.ReadAsStringAsync(), JsonOps
+                ) ?? Enumerable.Empty<Usuario>();
+
+                ViewBag.Usuarios = usuarios
+                    .GroupBy(u => u.id_usuario)
+                    .ToDictionary(
+                        g => g.Key,
+                        g =>
+                        {
+                            var u = g.First();
+                            var nombre = (u.nombre ?? "").Trim();
+                            var apellido = (u.apellido ?? "").Trim();
+                            var full = (nombre + " " + apellido).Trim();
+                            return string.IsNullOrWhiteSpace(full)
+                                ? $"Usuario #{u.id_usuario}"
+                                : full;
+                        });
             }
-            else ViewBag.Usuarios = new Dictionary<int, string>();
+            else
+            {
+                ViewBag.Usuarios = new Dictionary<int, string>();
+            }
 
             return PartialView(model);
         }
