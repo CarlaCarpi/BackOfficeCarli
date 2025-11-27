@@ -52,7 +52,7 @@
 
 				<div class="form-group">
 					<label asp-for="fechaNacimiento">Fecha de Nacimiento:</label>
-					<input asp-for="fechaNacimiento" class="form-control" id="fechaNacimiento" type="date" required=obligatorio />
+					<input asp-for="fechaNacimiento" class="form-control" id="fechaNacimiento" type="date" required />
 					<span asp-validation-for="fechaNacimiento" class="text-danger"></span>
 				</div>
 			</div>
@@ -191,7 +191,7 @@
 		});
 	</script>
 
-	@{
+@* 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
 
@@ -216,12 +216,61 @@
 				}
 
 				// 🔹 Validación mayor de 100
-				if (edadReal > 100) {
-					alert("La edad no puede ser mayor a 100 años.");
-				 	this.value = "";
+				// if (edadReal > 100) {
+				// 	alert("La edad no puede ser mayor a 100 años.");
+				//  	this.value = "";
+				// }
+			});
+		});
+	</script> *@
+
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const fechaInput = document.getElementById("fechaNacimiento");
+
+			fechaInput.addEventListener("change", function () {
+				const value = this.value;
+				const errorSpan = document.querySelector("span[data-valmsg-for='fechaNacimiento']");
+
+				 
+
+				if (!value) return;
+
+				const fechaNacimiento = new Date(value);
+				const hoy = new Date();
+
+				// Calcular edad
+				let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+				const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+
+				if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+					edad--;
 				}
+
+				// VALIDACIONES
+
+				// ⛔ Menor de 18
+				if (edad < 18) {
+					errorSpan.innerText = "Debe tener al menos 18 años.";
+					//fechaInput.value = "";    borra el valor
+					 return;
+				}
+
+				// ⛔ Mayor de 100
+				if (edad > 100) {
+					errorSpan.innerText = "La edad no puede superar los 100 años.";
+					//fechaInput.value = "";    borra el valor
+					 return;
+				}
+				
+				
 			});
 		});
 	</script>
+
 }
 
