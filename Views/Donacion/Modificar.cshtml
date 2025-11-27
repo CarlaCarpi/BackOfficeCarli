@@ -65,9 +65,13 @@
                         <span asp-validation-for="tipo" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6" >
-                        <label asp-for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" style="white-space: pre-wrap;" name="descripcion">@Model.descripcion</textarea>
+                    <div class="col-md-6">
+                        <label asp-for="descripcion" class="form-label"></label>
+
+                        <textarea asp-for="descripcion"
+                                  class="form-control"
+                                  style="white-space: pre-wrap;"></textarea>
+
                         <span asp-validation-for="descripcion" class="text-danger"></span>
                     </div>
                 </div>

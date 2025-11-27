@@ -42,18 +42,17 @@
 
         <div class="card-body">
             <form id="form-crear" asp-action="Crear" method="post" novalidate>
-
                 @Html.AntiForgeryToken()
 
                 <div class="row g-3">
-                    <!-- Identificación -->
-                    <div class="col-md-6">
+                    <!-- Nombre / Apellido / DNI (mismo ancho que en Eliminar) -->
+                    <div class="col-md-4">
                         <label asp-for="nombre" class="form-label">Nombre</label>
                         <input asp-for="nombre" class="form-control" />
                         <span asp-validation-for="nombre" class="text-danger"></span>
                     </div>
-                    
-                    <div class="col-md-6">
+
+                    <div class="col-md-4">
                         <label asp-for="apellido" class="form-label">Apellido</label>
                         <input asp-for="apellido" class="form-control" />
                         <span asp-validation-for="apellido" class="text-danger"></span>
@@ -68,16 +67,15 @@
                         <span asp-validation-for="dni" class="text-danger"></span>
                     </div>
 
+                    <!-- DNI / Fecha Nac / Email en eliminar son 4-4-4, acá igual -->
                     <div class="col-md-4">
                         <label asp-for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-
                         <input asp-for="fechaNacimiento"
                                class="form-control"
                                type="date"
                                max="@DateTime.Today.AddYears(-18).ToString("yyyy-MM-dd")"
                                oninvalid="this.setCustomValidity('Debe ser mayor de 18 años y no puede ser una fecha futura.')"
                                oninput="this.setCustomValidity('')" />
-
                         <span asp-validation-for="fechaNacimiento" class="text-danger"></span>
                     </div>
 
@@ -87,20 +85,20 @@
                         <span asp-validation-for="email" class="text-danger"></span>
                     </div>
 
-                    <!-- Teléfonos -->
                     <div class="col-md-4">
                         <label asp-for="telefono1" class="form-label">Teléfono</label>
                         <input asp-for="telefono1" class="form-control" />
                         <span asp-validation-for="telefono1" class="text-danger"></span>
                     </div>
 
+                    <!-- Teléfonos -->
                     <div class="col-md-4">
                         <label asp-for="telefono2" class="form-label">Teléfono (Opcional)</label>
                         <input asp-for="telefono2" class="form-control" />
                         <span asp-validation-for="telefono2" class="text-danger"></span>
                     </div>
 
-                    <!-- Dirección -->
+                    <!-- Dirección: Calle (4), Altura (2), Depto (2) como en Eliminar -->
                     <div class="col-md-4">
                         <label asp-for="calle" class="form-label">Calle</label>
                         <input asp-for="calle" class="form-control" />
@@ -119,8 +117,8 @@
                         <span asp-validation-for="departamento" class="text-danger"></span>
                     </div>
 
-                    <!-- Provincia / Localidad -->
-                    <div class="col-md-6">
+                    <!-- Provincia / Localidad (4 y 4 como en Eliminar) -->
+                    <div class="col-md-4">
                         <label class="form-label">Provincia</label>
                         <select asp-for="id_provincia" asp-items="ViewBag.Provincia" class="form-select" id="id_provincia">
                             <option value="">Seleccione provincia...</option>
@@ -128,7 +126,7 @@
                         <span asp-validation-for="id_provincia" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Localidad</label>
                         <select asp-for="id_localidad" class="form-select" id="id_localidad">
                             <option value="">Seleccione una provincia primero</option>
@@ -136,33 +134,28 @@
                         <span asp-validation-for="id_localidad" class="text-danger"></span>
                     </div>
 
-                    <!-- Redes -->
+                    <!-- Redes (col-12 igual) -->
                     <div class="col-12">
                         <label asp-for="redesSociales" class="form-label">Redes sociales</label>
                         <input asp-for="redesSociales" class="form-control" placeholder="https://instagram.com/usuario (opcional)" />
                         <span asp-validation-for="redesSociales" class="text-danger"></span>
                     </div>
 
-                    <!-- Estado -->
-                    <div class="col-md-6">
+                    <!-- Estado (4 como en Eliminar) -->
+                    <div class="col-md-4">
                         <label class="form-label">Estado</label>
                         <select asp-for="id_estadoPersona" asp-items="ViewBag.Estados" class="form-select"></select>
                         <span asp-validation-for="id_estadoPersona" class="text-danger"></span>
                     </div>
 
-                    <!-- Fechas -->
-                    <div class="col-md-3">
+                    <!-- Fecha de alta (4 como en Eliminar) -->
+                    <div class="col-md-4">
                         <label asp-for="fechaIngreso" class="form-label">Fecha de alta</label>
                         <input asp-for="fechaIngreso" class="form-control" type="date" readonly />
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>
                     </div>
 
-                    @* <div class="col-md-3">
-                        <label asp-for="fechaEgreso" class="form-label">Fecha de última modificación</label>
-                        <input asp-for="fechaEgreso" class="form-control" type="date" />
-                        <span asp-validation-for="fechaEgreso" class="text-danger"></span>
-                    </div> *@
-
+                    <!-- Observaciones (col-12 igual) -->
                     <div class="col-12">
                         <label asp-for="motivoEgreso" class="form-label">Observaciones</label>
                         <textarea asp-for="motivoEgreso" rows="3" class="form-control" placeholder="(opcional)"></textarea>
@@ -177,7 +170,6 @@
 </div>
 
 <style>
-    
     /* Quitar borde azul de TODOS los inputs, selects y textareas */
     .form-control:focus,
     .form-select:focus,
@@ -225,7 +217,6 @@
 
 @section Scripts {
     @{
-        // Esto ya trae jQuery + jquery.validate + unobtrusive
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
@@ -241,9 +232,8 @@
         })(jQuery);
     </script>
 
-
     <script>
-        // 👇 Tu script de provincias / localidades, tal cual lo tenías
+        // 👇 Script de provincias / localidades igual que antes
         (function () {
             var $prov = $("#id_provincia");
             var $loc = $("#id_localidad");

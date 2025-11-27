@@ -11,7 +11,7 @@ namespace SantaRamona.Backoffice.Models
         [Display(Name = "Tipo de donación")]
         public string tipo { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La descripción es obligatoria.")]
+        [Required(ErrorMessage = "La descripción es obligatoria.",AllowEmptyStrings = false)]
         [StringLength(500, ErrorMessage = "La descripción no puede superar los 500 caracteres.")]
         [Display(Name = "Descripción")]
         public string descripcion { get; set; } = string.Empty;

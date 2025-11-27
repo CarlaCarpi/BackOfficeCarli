@@ -1,80 +1,84 @@
 ﻿@model SantaRamona.Backoffice.Models.Estado_Persona
 @{
     await Html.RenderPartialAsync("_PersonaTopNav");
-    ViewData["Title"] = "Crear Estado de Persona";
+    ViewData["Title"] = "Agregar nuevo estado";
 }
 
 <div class="container mt-4">
-    <h1 class="text-center fw-bold" style="color:#2FA8A2;">
-        CREAR ESTADO
+    <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
+        AGREGAR NUEVO ESTADO
     </h1>
 
+    @* Avisos arriba, igual que en Especie *@
     @if (ViewBag.Ok != null)
     {
-        <div class="alert mt-3" role="alert"
+        <div class="alert mt-3"
+             role="alert"
              style="background:#E6F6F5; border:1px solid #2FA8A2; color:#155e59; border-radius:10px;">
             @ViewBag.Ok
         </div>
     }
     @if (ViewBag.ApiError != null)
     {
-        <div class="alert mt-3" role="alert"
+        <div class="alert mt-3"
+             role="alert"
              style="background:#fff3f3; border:1px solid #d9534f; color:#a94442; border-radius:10px;">
             @ViewBag.ApiError
         </div>
     }
 
-    <div class="card mt-3" style="border:1px solid #2FA8A2; border-radius:14px; overflow:hidden;">
+    <div class="card shadow-sm mt-3" style="border:1px solid #2FA8A2; border-radius:14px;">
         <div class="card-header d-flex justify-content-between align-items-center"
-             style="background:#E6F6F5; border-bottom:1px solid #2FA8A2; border-radius:0;">
-            <a asp-action="Index"
-               class="btn"
-               style="background:#2FA8A2; color:#fff; border-radius:10px;">
-                ← Volver
+             style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+
+            <a asp-action="Index" class="btn"
+               style="border:1px solid #fff; color:#fff; border-radius:10px;">
+                ← Volver al listado
             </a>
+
             <div class="d-flex gap-2">
-                <button type="submit" form="form-crear" class="btn"
-                        style="background:#2FA8A2; color:#fff; border-radius:10px;">
+                <button type="submit" form="form-create-estado-persona" class="btn"
+                        style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
                     Guardar
                 </button>
-                <a asp-action="Index"
-                   class="btn"
-                   style="background:#A71A6C; color:#fff; border-radius:10px;">
+
+                <a asp-action="Index" class="btn"
+                   style="background:#fff; color:#2FA8A2; border:1px solid #fff; border-radius:10px; padding:.5rem 1.25rem;">
                     Cancelar
                 </a>
             </div>
         </div>
 
         <div class="card-body">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <form id="form-crear" asp-action="Crear" method="post">
-                <div class="row g-3">
-                    <div class="col-md-8 col-lg-6">
-                        <label asp-for="descripcion" class="form-label">Descripción</label>
-                        <input asp-for="descripcion" class="form-control" />
-                        <span asp-validation-for="descripcion" class="text-danger"></span>
-                    </div>
+            <form id="form-create-estado-persona" asp-action="Crear" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="descripcion" class="form-label fw-semibold">Descripción</label>
+                    <input asp-for="descripcion" class="form-control"
+                           style="border:1px solid #2FA8A2; border-radius:10px; height:44px;" />
+                    <span asp-validation-for="descripcion" class="text-danger"></span>
                 </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-2"></div>
+
             </form>
         </div>
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
 <style>
-    /* Quitar borde azul de TODOS los inputs, selects y textareas */
+
+    /* Mismos estilos que en Crear Especie / Animal */
     .form-control:focus,
     .form-select:focus,
     textarea:focus {
         box-shadow: none !important;
-        border-color: #2FA8A2 !important; /* si querés que quede tu color */
+        border-color: #2FA8A2 !important;
         outline: none !important;
     }
 
-    /* Evitar borde azul de campos válidos de Bootstrap */
     .form-control.is-valid,
     .form-select.is-valid {
         border-color: #ced4da !important;
@@ -82,13 +86,11 @@
         box-shadow: none !important;
     }
 
-    /* Evitar borde rojo exagerado de inválidos */
     .form-control.is-invalid,
     .form-select.is-invalid {
         box-shadow: none !important;
     }
 
-    /* Para inputs type=date que a veces agregan borde azul propio */
     input[type="date"] {
         outline: none !important;
     }
@@ -97,4 +99,9 @@
             border-color: #2FA8A2 !important;
             box-shadow: none !important;
         }
+
 </style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
