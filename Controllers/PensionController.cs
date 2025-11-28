@@ -659,6 +659,13 @@ namespace SantaRamona.Backoffice.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // 🔹 Marcar si la pensión está en uso por animales
+            bool enUso = await PensionEnUsoAsync(id);
+            ViewBag.Bloqueado = enUso;
+            ViewBag.Motivo = enUso
+                ? "está asociada a uno o más animales. Podés buscar el animal desde el reporte de animales."
+                : "";
+
             // 👉 Usuario actual que va a ELIMINAR
             var idUsuarioActual = GetCurrentUserId();
             if (idUsuarioActual != 0)
@@ -680,6 +687,14 @@ namespace SantaRamona.Backoffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
+            // 1️⃣ NO permitir eliminar si tiene animales asociados
+            if (await PensionEnUsoAsync(model.id_pension))
+            {
+                TempData["Error"] = "No se puede eliminar la pensión porque está asociada a uno o más animales. Buscar el animal desde reporte de animales.";
+                return RedirectToAction(nameof(Eliminar), new { id = model.id_pension });
+            }
+
+
             // Refuerzo del lado servidor
             if (!model.fechaEliminacion.HasValue)
                 model.fechaEliminacion = DateTime.Now;
@@ -692,6 +707,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             // 👉 Llama al endpoint de la API: [HttpPut("Eliminar/{id:int}")]
             var resp = await client.PutAsync($"{RUTA_PENSION}/Eliminar/{model.id_pension}", content);
+
 
             if (!resp.IsSuccessStatusCode)
             {
@@ -808,5 +824,25 @@ namespace SantaRamona.Backoffice.Controllers
 
             return Json(filtradas);
         }
+
+        // Helper: verifica si la pensión está en uso por algún Animal
+        private async Task<bool> PensionEnUsoAsync(int idPension)
+        {
+            var client = _http.CreateClient("Api");
+            var resp = await client.GetAsync("/api/Animal");
+
+            if (!resp.IsSuccessStatusCode)
+                return false;   // si falla la API, no bloqueamos
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var animals = JsonSerializer.Deserialize<List<Animal>>(json, JsonOps) ?? new();
+
+            // Pensión en uso = al menos un animal con esa pensión y no eliminado
+            return animals.Any(a =>
+                a.id_pension == idPension &&
+                a.fechaEliminacion == null
+            );
+        }
+
     }
 }

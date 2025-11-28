@@ -1181,6 +1181,11 @@ namespace SantaRamona.Backoffice.Controllers
             // 🔹 Cargar diccionarios de provincias, localidades y estado persona
             await CargarDiccionariosPersonaAsync(client);
 
+            // 🔹 NUEVO: marcar si está en uso por animales
+            bool enUso = await PersonaEnUsoAsync(id);
+            ViewBag.Bloqueado = enUso;
+            ViewBag.Motivo = enUso ? "\"Está asociada a uno o más animales. Buscar el animal desde reporte de animales\"" : "";
+
             return View(model);
         }
 
@@ -1188,10 +1193,25 @@ namespace SantaRamona.Backoffice.Controllers
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> EliminarConfirmado(int id)
         {
+
+            // ✅ Traer mensajes de TempData para que la vista los pueda mostrar
+            if (TempData["Ok"] is string ok)
+                ViewBag.Ok = ok;
+
+            if (TempData["Error"] is string err)
+                ViewBag.Error = err;
+
             var client = _http.CreateClient("Api");
 
             try
             {
+                // 1️⃣ NUEVO: validar si la persona está en uso
+                if (await PersonaEnUsoAsync(id))
+                {
+                    TempData["Error"] = "Está asociada a uno o más animales. Buscar el animal desde reporte de animales";
+                    return RedirectToAction(nameof(Eliminar), new { id });
+                }
+                
                 // 1️⃣ Obtener todos los formularios existentes (LO MISMO QUE YA TENÍAS)
                 var fResp = await client.GetAsync("/api/Formulario");
                 if (fResp.IsSuccessStatusCode)
@@ -1586,6 +1606,25 @@ namespace SantaRamona.Backoffice.Controllers
         {
             public DateTime? fechaEliminacion { get; set; }
             public int id_usuario { get; set; }
+        }
+
+        // Helper: verifica si la persona está en uso por algún Animal
+        private async Task<bool> PersonaEnUsoAsync(int idPersona)
+        {
+            var client = _http.CreateClient("Api");
+            var resp = await client.GetAsync("/api/Animal");
+
+            if (!resp.IsSuccessStatusCode)
+                return false;   // si falla la API, no bloqueamos por las dudas
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var animals = JsonSerializer.Deserialize<List<Animal>>(json, JsonOps) ?? new();
+
+            // Persona en uso = al menos un animal con id_persona y no eliminado
+            return animals.Any(a =>
+                a.id_persona == idPersona &&
+                a.fechaEliminacion == null
+            );
         }
     }
 }
