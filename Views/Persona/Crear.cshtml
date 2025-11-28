@@ -118,7 +118,7 @@
                     </div>
 
                     <!-- Provincia / Localidad (4 y 4 como en Eliminar) -->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label">Provincia</label>
                         <select asp-for="id_provincia" asp-items="ViewBag.Provincia" class="form-select" id="id_provincia">
                             <option value="">Seleccione provincia...</option>
@@ -126,7 +126,7 @@
                         <span asp-validation-for="id_provincia" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label">Localidad</label>
                         <select asp-for="id_localidad" class="form-select" id="id_localidad">
                             <option value="">Seleccione una provincia primero</option>
@@ -142,14 +142,14 @@
                     </div>
 
                     <!-- Estado (4 como en Eliminar) -->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label">Estado</label>
                         <select asp-for="id_estadoPersona" asp-items="ViewBag.Estados" class="form-select"></select>
                         <span asp-validation-for="id_estadoPersona" class="text-danger"></span>
                     </div>
 
                     <!-- Fecha de alta (4 como en Eliminar) -->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label asp-for="fechaIngreso" class="form-label">Fecha de alta</label>
                         <input asp-for="fechaIngreso" class="form-control" type="date" readonly />
                         <span asp-validation-for="fechaIngreso" class="text-danger"></span>

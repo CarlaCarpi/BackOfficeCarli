@@ -60,6 +60,7 @@
                 </div>
 
                 <!-- Nombre / Descripción -->
+
                 <div class="col-md-5">
                     <label class="form-label">Nombre</label>
                     <input class="form-control" value="@Model.nombre" readonly />
@@ -71,23 +72,23 @@
                 </div>
 
                 <!-- Dirección -->
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label class="form-label">Calle</label>
                     <input class="form-control" value="@Model.calle" readonly />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label class="form-label">Altura</label>
                     <input class="form-control" value="@Model.altura" readonly />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label class="form-label">Dpto</label>
                     <input class="form-control" value="@Model.departamento" readonly />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <label class="form-label">Provincia</label>
                     <input class="form-control" value="@Txt(provincias, Model.id_provincia)" readonly />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <label class="form-label">Localidad</label>
                     <input class="form-control" value="@Txt(localidades, Model.id_localidad)" readonly />
                 </div>

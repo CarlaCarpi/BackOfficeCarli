@@ -110,13 +110,13 @@
                 </div>
 
                 <!-- Tamaño -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Tamaño</label>
                     <input class="form-control" value="@Txt(tamanos, Model.id_tamano)" readonly />
                 </div>
 
                 <!-- Especie -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Especie</label>
                     <input class="form-control" value="@Txt(especies, Model.id_especie)" readonly />
                 </div>
@@ -161,7 +161,7 @@
                 </div>
 
                 <!-- Fecha adopción -->
-                <div class="col-md-6">
+                <div class="col-12">
                     <label class="form-label">Fecha de Adopción</label>
                     <input class="form-control"
                            value="@(Model.fechaAdopcion.HasValue ? Model.fechaAdopcion.Value.ToString("dd/MM/yyyy") : "")"
