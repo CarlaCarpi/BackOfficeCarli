@@ -3,6 +3,18 @@
     ViewData["Title"] = "Modificar pensión";
 }
 
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
 <div class="container mt-4">
     <h1 class="text-center fw-bold" style="color:#2FA8A2; letter-spacing:.5px;">
         MODIFICAR PENSIÓN
@@ -164,6 +176,48 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Quitar borde azul de TODOS los inputs, selects y textareas */
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        box-shadow: none !important;
+        border-color: #2FA8A2 !important; /* si querés que quede tu color */
+        outline: none !important;
+    }
+
+    /* Evitar borde azul de campos válidos de Bootstrap */
+    .form-control.is-valid,
+    .form-select.is-valid {
+        border-color: #ced4da !important;
+        background-image: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Evitar borde rojo exagerado de inválidos */
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        box-shadow: none !important;
+    }
+
+    /* Para inputs type=date que a veces agregan borde azul propio */
+    input[type="date"] {
+        outline: none !important;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+</style>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -256,6 +310,8 @@
                 yaMarcado = true;
             });
         })();
+
+
     </script>
 }
 

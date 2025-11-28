@@ -57,8 +57,7 @@ namespace SantaRamona.Backoffice.Models
 
         // BDD: NOT NULL, INT
         [Required(ErrorMessage = "El teléfono es obligatorio.")]
-        [StringLength(30, ErrorMessage = "El teléfono no puede superar 30 caracteres.")]
-        [MinLength(8, ErrorMessage = "El teléfono debe tener al menos 8 caracteres.")]
+        [Range(10000000, int.MaxValue, ErrorMessage = "El teléfono debe tener al menos 8 dígitos.")]
         public int telefono { get; set; }
 
         // BDD: NOT NULL, DATETIME (tiene DEFAULT GETDATE())

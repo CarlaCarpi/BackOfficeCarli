@@ -318,7 +318,7 @@ namespace SantaRamona.Backoffice.Controllers
                 return View(punto);
             }
 
-            TempData["Ok"] = "📍 Punto de acopio creado correctamente.";
+            TempData["Ok"] = "Punto de acopio creado correctamente.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -379,7 +379,7 @@ namespace SantaRamona.Backoffice.Controllers
                 return View(punto);
             }
 
-            TempData["Ok"] = "📍 Punto de acopio actualizado correctamente.";
+            TempData["Ok"] = "Punto de acopio actualizado correctamente.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -448,7 +448,7 @@ namespace SantaRamona.Backoffice.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Ok"] = "🗑️ Punto de acopio eliminado correctamente.";
+            TempData["Ok"] = "Punto de acopio eliminado correctamente.";
             return RedirectToAction(nameof(Index));
         }
 

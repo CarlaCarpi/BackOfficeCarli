@@ -33,7 +33,17 @@
     // <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css">
 }
 
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
 
 <div class="container mt-4">
     <h1 class="text-center fw-bold" style="color:#2FA8A2;">MODIFICAR USUARIO</h1>
@@ -184,10 +194,15 @@
                     <!-- Fecha Alta (capar futuro) -->
                     <div class="col-12 col-md-6">
                         <label asp-for="fechaAlta" class="form-label">Fecha Alta</label>
-                        <input asp-for="fechaAlta" class="form-control sr-datetime"
-                               type="datetime-local"
-                               value="@fechaDefault"
-                               max="@fechaMax" />
+
+                        <!-- Lo que ve el usuario (solo lectura) -->
+                        <input class="form-control"
+                               value="@Model.fechaAlta.ToString("dd/MM/yyyy HH:mm")"
+                               readonly />
+
+                        <!-- Lo que se envía al backend -->
+                        <input type="hidden" asp-for="fechaAlta" />
+
                         <span asp-validation-for="fechaAlta" class="text-danger"></span>
                     </div>
 
@@ -244,6 +259,48 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Quitar borde azul de TODOS los inputs, selects y textareas */
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        box-shadow: none !important;
+        border-color: #2FA8A2 !important; /* si querés que quede tu color */
+        outline: none !important;
+    }
+
+    /* Evitar borde azul de campos válidos de Bootstrap */
+    .form-control.is-valid,
+    .form-select.is-valid {
+        border-color: #ced4da !important;
+        background-image: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Evitar borde rojo exagerado de inválidos */
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        box-shadow: none !important;
+    }
+
+    /* Para inputs type=date que a veces agregan borde azul propio */
+    input[type="date"] {
+        outline: none !important;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+</style>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
@@ -403,38 +460,4 @@
         margin-top: .25rem;
     }
 
-    // .flatpickr-calendar {
-    //     border-radius: 14px;
-    //     box-shadow: 0 8px 24px rgba(0,0,0,.12);
-    // }
-
-    // .flatpickr-day:hover, .flatpickr-day:focus {
-    //     background: #FCE1E5;
-    // }
-
-    // .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-    //     background: #111;
-    //     color: #fff;
-    // }
-
-    // .flatpickr-confirm, .flatpickr-cancel {
-    //     border-radius: 10px !important;
-    //     padding: .45rem .9rem !important;
-    // }
-
-    // .flatpickr-confirm {
-    //     background: #A71A6C !important;
-    //     color: #fff !important;
-    //     border: none !important;
-    // }
-
-    // .flatpickr-cancel {
-    //     background: #fff !important;
-    //     color: #A71A6C !important;
-    //     border: 1px solid #A71A6C !important;
-    // }
-
-    // .text-warning {
-    //     color: #A71A6C !important;
-    // }
 </style>
