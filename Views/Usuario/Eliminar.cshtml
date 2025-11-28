@@ -135,33 +135,31 @@
 
     @if (!bloqueado)
     {
+        <!-- Modal de confirmación -->
         <div class="modal fade" id="confirmEliminar" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="border-radius:14px;">
-                    <div class="modal-header" style="background:#A71A6C; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
+                    <div class="modal-header" style="background:#2FA8A2; color:#fff; border-top-left-radius:14px; border-top-right-radius:14px;">
                         <h5 class="modal-title">Confirmar eliminación</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
-
                     <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este usuario?
+                        ¿Realmente desea eliminar este usuario?
                     </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn"
-                                data-bs-dismiss="modal"
-                                style="border:1px solid #A71A6C; color:#A71A6C; border-radius:10px;">
-                            No
-                        </button>
-
+                    <div class="modal-footer" style="border-top:none;">
                         <form asp-action="Eliminar" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.id_usuario" />
                             <button type="submit" class="btn"
-                                    style="background:#A71A6C; color:#fff; border-radius:10px;">
+                                    style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
                                 Sí, eliminar
                             </button>
                         </form>
+
+                        <button type="button" class="btn" data-bs-dismiss="modal"
+                                style="background:#2FA8A2; color:#fff; border-radius:10px; padding:.4rem 1rem;">
+                            No
+                        </button>
                     </div>
                 </div>
             </div>
