@@ -35,8 +35,8 @@ namespace SantaRamona.Backoffice.Models
         [StringLength(150, ErrorMessage = "La calle no puede superar 150 caracteres.")]
         public string calle { get; set; }
 
-        [Required(ErrorMessage = "La altura es obligatoria.")]
-        [Range(1, int.MaxValue, ErrorMessage = "La altura debe ser mayor a 0.")]
+        [RegularExpression(@"^\d{1,10}$", ErrorMessage = "La altura debe tener entre 1 y 10 dígitos.")]
+        [Range(1, 9999999999, ErrorMessage = "La altura debe ser mayor a 0.")]
         public int altura { get; set; }
 
         [StringLength(10)]
