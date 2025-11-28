@@ -53,6 +53,7 @@ namespace SantaRamona.Backoffice.Models
         //[Required(ErrorMessage = "La altura es obligatoria.")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "Ingrese una altura válido.")]
         [Range(1, int.MaxValue, ErrorMessage = "La altura debe ser mayor a 0.")]
+        [StringLength(10, ErrorMessage = "La altura no puede superar 10 caracteres.")]
         public int? altura { get; set; }
 
         [StringLength(10, ErrorMessage = "El departamento no puede superar 10 caracteres.")]
