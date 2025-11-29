@@ -54,9 +54,24 @@
 					<span asp-validation-for="dni" class="text-danger"></span>
 				</div>
 
-				<div class="form-group">
+				@* <div class="form-group">
 					<label asp-for="fechaNacimiento">Fecha de Nacimiento:</label>
 					<input asp-for="fechaNacimiento" class="form-control" id="fechaNacimiento" type="date" required />
+					<span asp-validation-for="fechaNacimiento" class="text-danger"></span>
+				</div> *@
+
+				<div class="form-group">
+					<label asp-for="fechaNacimiento" class="form-label">Fecha de nacimiento:</label>
+
+					<input asp-for="fechaNacimiento"
+						   class="form-control"
+						   type="date"
+						   required
+						   max="@DateTime.Today.AddYears(-18).ToString("yyyy-MM-dd")"
+						   oninvalid="this.setCustomValidity('Debe ser mayor de 18 años y no puede ser una fecha futura.')"
+						   oninput="this.setCustomValidity('')"
+						   onblur="this.setCustomValidity('')" />
+
 					<span asp-validation-for="fechaNacimiento" class="text-danger"></span>
 				</div>
 			</div>
@@ -201,6 +216,17 @@
 	}
 
 	<script>
+		(function ($) {
+			if (!$.validator || !$.validator.messages) return;
+
+			$.extend($.validator.messages, {
+				max: "Debe ser mayor de 18 años y no puede ser una fecha futura.",
+				range: "Debe ser mayor de 18 años y no puede ser una fecha futura."
+			});
+		})(jQuery);
+	</script>
+
+	@* <script>
 		document.addEventListener("DOMContentLoaded", function () {
 			const fechaInput = document.getElementById("fechaNacimiento");
 
@@ -242,6 +268,6 @@
 
 			});
 		});
-	</script>
+	</script> *@
 }
 
