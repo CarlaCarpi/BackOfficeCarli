@@ -242,6 +242,20 @@ namespace SantaRamona.Backoffice.Controllers
             if (persona.id_estadoPersona == null || persona.id_estadoPersona == 0)
                 persona.id_estadoPersona = 1;
 
+            //  VALIDAR EDAD 
+            if (persona.fechaNacimiento != null)
+            {
+                var hoy = DateTime.Today;
+                int edad = hoy.Year - persona.fechaNacimiento.Value.Year;
+                if (persona.fechaNacimiento.Value > hoy.AddYears(-edad))
+                    edad--;
+
+                if (edad < 18 || edad > 100)
+                {
+                    ModelState.AddModelError("fechaNacimiento", "Debe tener entre 18 y 100 años.");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 var clientErr = _http.CreateClient("Api");

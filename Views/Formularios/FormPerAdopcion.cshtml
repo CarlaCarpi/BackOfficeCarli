@@ -63,6 +63,7 @@
 						   class="form-control"
 						   type="date"
 						   required
+						   min="@DateTime.Today.AddYears(-100).ToString("yyyy-MM-dd")"
 						   max="@DateTime.Today.AddYears(-18).ToString("yyyy-MM-dd")"
 						   oninvalid="this.setCustomValidity('Debe ser mayor de 18 años y no puede ser una fecha futura.')"
 						   oninput="this.setCustomValidity('')" @* /> *@
@@ -250,6 +251,7 @@
 
 			$.extend($.validator.messages, {
 				max: "Debe ser mayor de 18 años y no puede ser una fecha futura.",
+				min: "La edad no debe superar los 100 años.",
 				range: "Debe ser mayor de 18 años y no puede ser una fecha futura."
 			});
 		})(jQuery);
