@@ -694,8 +694,10 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Estados = await ToSelectList<Estado_Animal>(tEst.Result, x => x.id_estadoAnimal, x => x.estado, estSel);
 
             // Estos dos NO necesitan "selected" porque el Tag Helper selecciona por el valor del modelo
-            ViewBag.Personas = await ToSelectList<Persona>(tPer.Result, x => x.id_persona, x => $"{x.apellido}, {x.nombre}");
-            ViewBag.Pensiones = await ToSelectList<Pension>(tPens.Result, x => x.id_pension, x => x.nombre);
+            // Estos dos NO necesitan "selected" porque el Tag Helper selecciona por el valor del modelo
+            ViewBag.Personas = await ToSelectListPersonaSinEliminadas(tPer.Result);
+            ViewBag.Pensiones = await ToSelectListPensionSinEliminadas(tPens.Result);
+
         }
 
         private async Task CargarDiccionariosBasicos()
@@ -762,6 +764,61 @@ namespace SantaRamona.Backoffice.Controllers
 
             return items;
         }
+
+        // 👉 PERSONAS: solo personas sin fechaEliminacion
+        private static async Task<List<SelectListItem>> ToSelectListPersonaSinEliminadas(HttpResponseMessage resp)
+        {
+            var items = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Seleccione...", Value = "" }
+    };
+
+            if (resp is null || !resp.IsSuccessStatusCode)
+                return items;
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var personas = JsonSerializer.Deserialize<IEnumerable<Persona>>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Persona>();
+
+            // 🔥 NO mostrar personas eliminadas (soft delete)
+            personas = personas.Where(p => p.fechaEliminacion == null);
+
+            items.AddRange(personas.Select(p => new SelectListItem
+            {
+                Value = p.id_persona.ToString(),
+                Text = $"{p.apellido}, {p.nombre}"
+            }));
+
+            return items;
+        }
+
+        // 👉 PENSIONES: solo pensiones sin fechaEliminacion
+        private static async Task<List<SelectListItem>> ToSelectListPensionSinEliminadas(HttpResponseMessage resp)
+        {
+            var items = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Seleccione...", Value = "" }
+    };
+
+            if (resp is null || !resp.IsSuccessStatusCode)
+                return items;
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var pensiones = JsonSerializer.Deserialize<IEnumerable<Pension>>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Pension>();
+
+            // 🔥 NO mostrar pensiones eliminadas (soft delete)
+            pensiones = pensiones.Where(p => p.fechaEliminacion == null);
+
+            items.AddRange(pensiones.Select(p => new SelectListItem
+            {
+                Value = p.id_pension.ToString(),
+                Text = p.nombre
+            }));
+
+            return items;
+        }
+
 
         private static async Task<Dictionary<int, string>> ToDict<T>(
             HttpResponseMessage resp,
