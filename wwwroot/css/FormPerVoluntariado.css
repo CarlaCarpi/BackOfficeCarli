@@ -7,14 +7,6 @@ h1 {
     font-weight: 800;
 }
 
-/*body {
-    font-family: Arial, sans-serif;
-    background: #f8f9fa;
-    display: flex;
-    justify-content: center;
-    padding: 0px;
-}*/
-
 .form-container {
     background: #fff;
     border-radius: 10px;
@@ -81,6 +73,7 @@ input, select, textarea {
 .btn-primary {
     color: #AB216E;
     border-color: #AB216E;
+    background-color: white;
 }
 
 .btn-form button {
@@ -102,11 +95,11 @@ input, select, textarea {
     display: grid;
     border-radius: 15px;
     background-color: white;
-    /*justify-content: revert-layer;*/
+   
     box-shadow: 6px 6px 6px #5c6b6a2e;
     width: 100%;
     height: auto;
-    margin: 20px auto; /* 💡 esto centra el div horizontalmente */
+    margin: 20px auto;
     padding: 20px;
     max-width:1450px;
 }
@@ -130,12 +123,7 @@ input, select, textarea {
     }
 }
 
-
-
-
-
-
-/* 🌟 Alertas */
+/* Alertas */
 .alert-box {
     position: relative;
     margin: 20px auto;
@@ -210,5 +198,4 @@ textarea {
     min-height: 30px;
     max-height: 100px;
     font-family: sans-serif;
-    /*form-sizing: content; (para q se adapte automaticamente al contenido pero todavia no esta disponible*/
 }

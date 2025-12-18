@@ -6,13 +6,12 @@
     <link rel="stylesheet" href="~/css/donar.css" asp-append-version="true" />
 }
 
-@* @model IEnumerable<SantaRamona.Backoffice.Models.Donacion> 
-@model IEnumerable<SantaRamona.Backoffice.Models.DonarViewModel> *@
+
     @model SantaRamona.Backoffice.Models.DonarViewModel
 
 
 @{
-    // ViewData["Title"] = "Donaciones";
+    
     string TipoTxt(string t) => t == "M" ? "Medicamentos" : t == "I" ? "Insumos" : t == "B" ? "Banco" : t == "P" ? "No Bancario" : t;
 }
 
@@ -26,28 +25,6 @@
         <div class="box-donar" aria-labelledby="dinero-title">
             <h2 id="dinero-title">Donar Dinero</h2>
           
-            @* <details>
-            <summary>Mercado Pago</summary>
-            <ul>
-            <li><a href="https://linktr.ee/SantaRamona" target="_blank" rel="noopener" class="link">Link Mercado Pago</a></li>
-            <li>Titular: Sierra María Jose</li>
-            <li>Alias: <strong>santa.ramona.mp</strong></li>
-            <li>Email: <a href="mailto:santaramonaprotectora@gmail.com" class="link">santaramonaprotectora@gmail.com</a></li>
-            </ul>
-            </details> *@
-
-           @*  <details>
-            <summary>Banco</summary>
-            <ul>
-            <li>Cuenta: 000001110201685844</li>
-            <li>Titular: Sierra María José</li>
-            <li>CBU: 0290000110000016858443</li>
-            <li>CUIT/CUIL: 20-28496562-1</li>
-            <li>Alias: <strong>SANTA.RAMONA</strong></li>
-            </ul>
-            </details> *@
-
-            
 
             <!--  Datos del Back -->
             <details>
@@ -70,10 +47,7 @@
                     {
                         <li><em>Por el momento no hay información disponible.</em></li>
                     }
-                   @*  @foreach (var d in Model.Donaciones.Where(x => x.tipo == "P"))
-                    {
-                        <li>@d.descripcion</li>
-                    } *@
+                  
                     
                 </ul>
             </details>  
@@ -97,10 +71,7 @@
                     {
                         <li><em>Por el momento no hay información disponible.</em></li>
                     }
-                    @* @foreach (var d in Model.Donaciones.Where(x => x.tipo == "B"))
-                    {
-                        <li>@d.descripcion</li>
-                    } *@
+                   
                 </ul>
 
             </details>
@@ -130,10 +101,7 @@
                     {
                         <li><em>Por el momento no hay información disponible.</em></li>
                     }
-                    @* @foreach (var d in Model.Donaciones.Where(x => x.tipo == "I"))
-                    {
-                        <li>@d.descripcion</li>
-                    } *@
+                   
                 </ul>
             </details>
 
@@ -156,10 +124,7 @@
                     {
                         <li><em>Por el momento no hay información disponible.</em></li>
                     }
-                   @*  @foreach (var d in Model.Donaciones.Where(x => x.tipo == "M"))
-                    {
-                        <li>@d.descripcion</li>
-                    } *@
+                  
                 </ul>
             </details>
 
@@ -198,30 +163,6 @@
                         <li><em>Por el momento no hay puntos de acopio disponibles.</em></li>
                     }
 
-
-
-                   @*  @foreach (var p in Model.PuntosAcopio)
-                    {
-                        <li>
-                            <strong>@p.nombre</strong>: @p.calle @p.altura
-
-                            @if (!string.IsNullOrEmpty(p.departamento))
-                            {
-                                <span>Depto: @p.departamento</span>
-                            }
-
-                            <br />
-                            Provincia: @Model.Provincias.GetValueOrDefault(p.id_provincia, "Desconocida"),
-                            Localidad: @Model.Localidades.GetValueOrDefault(p.id_localidad, "Desconocida")
-
-                            @if (!string.IsNullOrEmpty(p.descripcion))
-                            {
-                                <br />
-                                <span> Descripción: @p.descripcion</span>
-                            }
-                        </li>
-                    } *@
-                 
 
                     <!-- nota / contacto alternativo -->
                     <li style="margin-top:8px;">

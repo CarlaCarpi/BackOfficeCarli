@@ -67,7 +67,7 @@ namespace SantaRamona.BackOffice.Controllers
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
 
             // Filtrar solo animales en adopción
-            //var animalesEnAdopcion = animals.Where(a => a.id_estadoAnimal == 2).ToList();
+           
             var animalesEnAdopcion = animales.Where(a => a.id_estadoAnimal == 1 || a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
 
 
@@ -96,15 +96,15 @@ namespace SantaRamona.BackOffice.Controllers
         // Formulario de voluntariado o contacto
         public IActionResult FormPerVoluntariado()
         {
-            // Podés tener esta vista en /Views/Formularios/FormPerVoluntariado.cshtml
+            
             return View("~/Views/Formularios/FormPerVoluntariado.cshtml");
         }
 
-        //NO HAY Q LLAMAR A ESTE METODO SINO AL DEL FORMPERSONACONTROLLER.CS
+       
         // Formulario de adopción 
         public IActionResult FormPerAdopcion()
         {
-            // Podés tener esta vista en /Views/Formularios/FormPersonaAdopcion.cshtml
+            
             return View("~/Views/Formularios/FormPerAdopcion.cshtml");
         }
 
@@ -112,14 +112,14 @@ namespace SantaRamona.BackOffice.Controllers
         // Formulario de transito
         public IActionResult FormPerTransito()
         {
-            // Podés tener esta vista en /Views/Formularios/FormPerTransito.cshtml
+           
             return View("~/Views/Formularios/FormPerTransito.cshtml");
         }
 
         public IActionResult FormVoluntariado()
         {
             return View("~/Views/Formularios/FormVoluntariado.cshtml");
-            //este forms no tiene nada
+            
         }
 
         // Página de voluntariado
@@ -130,108 +130,13 @@ namespace SantaRamona.BackOffice.Controllers
         }
 
 
-
-        // =============================================================
-        // ===================== Página para donar =====================
-        // =============================================================
-        //public async Task<IActionResult> Donar()
-        //{
-        //    var client = _http.CreateClient("Api");
-        //    var resp = await client.GetAsync("/api/donacion");
-
-        //    if (!resp.IsSuccessStatusCode)
-        //    {
-        //        ViewBag.ApiError = $"Error API: {(int)resp.StatusCode} - {resp.ReasonPhrase}";
-        //        //return View(new List<Donacion>());
-        //        return View(new DonarViewModel());
-        //    }
-
-        //    var json = await resp.Content.ReadAsStringAsync();
-        //    var donaciones = JsonSerializer.Deserialize<List<Donacion>>(json,
-        //        //new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        //         new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<Donacion>();
-
-        //    //return View("Donar", donaciones ?? new List<Donacion>());
-
-
-        //    // Crear el ViewModel y pasarlo a la vista
-        //    var vm = new DonarViewModel
-        //    {
-        //        Donaciones = donaciones
-        //    };
-
-        //    return View("Donar", vm);  // Pasar el ViewModel a la vista
-        //}
-
-
-
-        //[HttpGet]
-
-        //public async Task<IActionResult> PuntoAcopio()
-        //{
-        //    var client = _http.CreateClient("Api");
-
-        //    // 1️⃣ Traer Puntos de Acopio
-        //    IEnumerable<Punto_Acopio> puntos = Enumerable.Empty<Punto_Acopio>();
-        //    var resp = await client.GetAsync(RUTA_PUNTO_ACOPIO);
-        //    if (resp.IsSuccessStatusCode)
-        //    {
-        //        var json = await resp.Content.ReadAsStringAsync();
-        //        puntos = JsonSerializer.Deserialize<IEnumerable<Punto_Acopio>>(json, JsonOps) ?? Enumerable.Empty<Punto_Acopio>();
-
-        //        // Filtramos solo los puntos activos
-        //        puntos = puntos.Where(p => p.activo ).ToList(); // Asumimos que '1' es el estado activo
-
-        //    }
-
-        //    // 2️⃣ Traer Provincias
-        //    Dictionary<int, string> provincias = new();
-        //    var respProv = await client.GetAsync(RUTA_PROVINCIA);
-        //    if (respProv.IsSuccessStatusCode)
-        //    {
-        //        var jsonProv = await respProv.Content.ReadAsStringAsync();
-        //        provincias = JsonSerializer.Deserialize<IEnumerable<Provincia>>(jsonProv, JsonOps)
-        //                     ?.ToDictionary(p => p.id_provincia, p => p.nombre) ?? new();
-        //    }
-
-        //    // 3️⃣ Traer Localidades
-        //    Dictionary<int, string> localidades = new();
-        //    var respLoc = await client.GetAsync(RUTA_LOCALIDAD);
-        //    if (respLoc.IsSuccessStatusCode)
-        //    {
-        //        var jsonLoc = await respLoc.Content.ReadAsStringAsync();
-        //        localidades = JsonSerializer.Deserialize<IEnumerable<Localidad>>(jsonLoc, JsonOps)
-        //                      ?.ToDictionary(l => l.id_localidad, l => l.nombre) ?? new();
-        //    }
-
-        //    // 4️⃣ Traer Donaciones
-        //    var respDon = await client.GetAsync("/api/donacion");
-        //    var donaciones = Enumerable.Empty<Donacion>();
-        //    if (respDon.IsSuccessStatusCode)
-        //    {
-        //        var jsonDon = await respDon.Content.ReadAsStringAsync();
-        //        donaciones = JsonSerializer.Deserialize<IEnumerable<Donacion>>(jsonDon, JsonOps) ?? Enumerable.Empty<Donacion>();
-        //    }
-
-        //    // 5️⃣ Crear ViewModel y pasarlo a la vista
-        //    var vm = new DonarViewModel
-        //    {
-        //        Donaciones = donaciones,
-        //        PuntosAcopio = puntos,
-        //        Provincias = provincias,
-        //        Localidades = localidades
-        //    };
-
-        //    return View(vm);
-        //}
-
         [HttpGet]
 
         public async Task<IActionResult> Donar()
         {
             var client = _http.CreateClient("Api");
 
-            // 1️⃣ Traer Donaciones
+           
             var respDon = await client.GetAsync("/api/donacion");
             var donaciones = Enumerable.Empty<Donacion>();
 
@@ -243,33 +148,9 @@ namespace SantaRamona.BackOffice.Controllers
                 donaciones = JsonSerializer.Deserialize<IEnumerable<Donacion>>(jsonDon, JsonOps) ?? Enumerable.Empty<Donacion>();
             }
 
-            // 2️⃣ Traer Puntos de Acopio
+          
             IEnumerable<Punto_Acopio> puntos = Enumerable.Empty<Punto_Acopio>();
-            //var respPuntos = await client.GetAsync(RUTA_PUNTO_ACOPIO);
-            //if (respPuntos.IsSuccessStatusCode)
-            //{
-            //    //var jsonPuntos = await respPuntos.Content.ReadAsStringAsync();
-            //    //puntos = JsonSerializer.Deserialize<IEnumerable<Punto_Acopio>>(jsonPuntos, JsonOps) ?? Enumerable.Empty<Punto_Acopio>();
-
-            //    var jsonPuntos = await respPuntos.Content.ReadAsStringAsync();
-
-            //    var JsonOps = new JsonSerializerOptions
-            //    {
-            //        PropertyNameCaseInsensitive = true
-            //    };
-
-            //    var jsonNode = JsonNode.Parse(jsonPuntos);
-            //    var puntosArray = jsonNode?["puntos"]?.ToJsonString();
-
-            //    puntos = JsonSerializer.Deserialize<IEnumerable<Punto_Acopio>>(puntosArray ?? "[]", JsonOps)
-            //             ?? Enumerable.Empty<Punto_Acopio>();
-
-
-
-
-            //    // Filtramos solo los puntos activos
-            //    puntos = puntos.Where(p => p.activo).ToList();
-            //} 
+            
             var respPuntos = await client.GetAsync(RUTA_PUNTO_ACOPIO);
             if (respPuntos.IsSuccessStatusCode)
             {
@@ -300,7 +181,7 @@ namespace SantaRamona.BackOffice.Controllers
                         }
                         else
                         {
-                            // fallback: intenta deserializar el objeto completo por si ya es array envuelto
+                            
                             puntosTmp = JsonSerializer.Deserialize<IEnumerable<Punto_Acopio>>(jsonPuntos, JsonOps)
                                        ?? Enumerable.Empty<Punto_Acopio>();
                         }
@@ -311,10 +192,10 @@ namespace SantaRamona.BackOffice.Controllers
                     puntosTmp = Enumerable.Empty<Punto_Acopio>();
                 }
 
-                // 👇 solo activos
+                
                 puntos = puntosTmp.Where(p => p.activo).ToList();
             }
-            // 3️⃣ Traer Provincias
+           
             Dictionary<int, string> provincias = new();
             var respProvincias = await client.GetAsync(RUTA_PROVINCIA);
             if (respProvincias.IsSuccessStatusCode)
@@ -324,7 +205,7 @@ namespace SantaRamona.BackOffice.Controllers
                              ?.ToDictionary(p => p.id_provincia, p => p.nombre) ?? new();
             }
 
-            // 4️⃣ Traer Localidades
+           
             Dictionary<int, string> localidades = new();
             var respLocalidades = await client.GetAsync(RUTA_LOCALIDAD);
             if (respLocalidades.IsSuccessStatusCode)
@@ -334,7 +215,7 @@ namespace SantaRamona.BackOffice.Controllers
                               ?.ToDictionary(l => l.id_localidad, l => l.nombre) ?? new();
             }
 
-            // 5️⃣ Crear ViewModel
+          
             var vm = new DonarViewModel
             {
                 Donaciones = donaciones,
@@ -343,7 +224,7 @@ namespace SantaRamona.BackOffice.Controllers
                 Localidades = localidades
             };
 
-            // 6️⃣ Retornar la Vista con el ViewModel
+           
             return View(vm);
         }
         // ============================================================
@@ -391,7 +272,6 @@ namespace SantaRamona.BackOffice.Controllers
         {
             var client = _http.CreateClient("Api");
 
-            // 🔹 Trae TODAS las localidades y filtra por provincia aquí mismo.
             var resp = await client.GetAsync(RUTA_LOCALIDAD);
             if (!resp.IsSuccessStatusCode)
                 return StatusCode((int)resp.StatusCode, await resp.Content.ReadAsStringAsync());
@@ -406,14 +286,6 @@ namespace SantaRamona.BackOffice.Controllers
 
             return Json(filtradas);
         }
-
-
-
-
-
-
-
-
 
 
         // Listado general de animales en adopción
@@ -437,7 +309,7 @@ namespace SantaRamona.BackOffice.Controllers
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? Enumerable.Empty<Animal>();
 
             // Filtrar solo animales en adopción
-            //var animalesEnAdopcion = animals.Where(a => a.id_estadoAnimal == 2).ToList();
+           
             var animalesEnAdopcion = animales.Where(a => a.id_estadoAnimal == 1 || a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
 
 

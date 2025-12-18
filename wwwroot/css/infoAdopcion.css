@@ -5,13 +5,13 @@
     margin-bottom: 20px;
     font-weight: 800;
 }
-/* 🔹 Contenedor principal ocupa casi toda la pantalla */
+
 .pet-detail-container {
     display: flex;
-    flex-wrap: wrap; /* permite que se acomode en pantallas pequeñas */
+    flex-wrap: wrap; 
     width: 95%;
     max-width: 1200px;
-    min-height: auto; /*52vh;  ocupa el 80% de la altura de la ventana */
+    min-height: auto; 
     margin: 40px auto;
     background-color: #fff;
     border-radius: 20px;
@@ -20,15 +20,13 @@
     align-items: stretch;
 }
 
-/* 🔹 Imagen ocupa la mitad izquierda y se adapta al alto */
+
 .pet-detail-image {
     flex: 1;
-    min-width: 300px; /* asegura que no se deforme en pantallas chicas */
+    min-width: 300px; 
     max-height: 60vh;
     overflow: hidden;
     display: block;
-
-
     object-fit: contain;
 }
 
@@ -38,14 +36,12 @@
         max-height: 100%;
         width: auto;
         height: auto;
-        object-fit: cover; /*object-fit:contain;*/
-        object-position: center; /* centra la imagen al recortar */
+        object-fit: cover; 
+        object-position: center; 
         display: block;
         border-radius: 20px
     }
 
-
-/* 🔹 Info a la derecha con tipografía más grande */
 .pet-detail-info {
     flex: 1;
     padding: 10px;
@@ -67,7 +63,7 @@
         color: #2DB8B5;
     }
 
-/* 🔹 Botones */
+/* Botones */
 .buttons {
     margin-top: 10px;
     display: flex;
@@ -95,23 +91,20 @@
     }
 
 
-/* 🔹 Responsivo hasta 1000px (tablets y pantallas medianas) */
-@media (max-width: 800px) {    /*ANTES 1000PX*/
+/* Responsivo hasta 1000px (tablets y pantallas medianas) */
+@media (max-width: 800px) {   
     .pet-detail-container {
         flex-direction: column;
         align-items: center;
-        min-width: auto; /* permite que se reduzca */
+        min-width: auto; 
         width: 95%;
         height: auto;
-       /* padding: 20px;*/
         
     }
 
     .pet-detail-image {
         width: 100%;
         height: 100%;
-       /* padding: 20px;
-        max-height: 350px;*/
         max-height: 100%;
     }
         .pet-detail-image img {
@@ -119,8 +112,6 @@
             max-height: 100%;
             width: auto;
             height: auto;
-            /* padding: 20px;
-        max-height: 350px;*/
         }
 
     .pet-detail-info {
@@ -144,7 +135,7 @@
     }
 }
 
-/* 🔹 Responsivo hasta 600px (celulares medianos) */
+/* Responsivo hasta 600px (celulares medianos) */
 @media (max-width: 600px) {
     .pet-detail-container {
         width: 95%;
@@ -176,17 +167,12 @@
     }
 }
 
-/* 🔹 Responsivo hasta 340px (celulares muy chicos) */
+/* Responsivo hasta 340px (celulares muy chicos) */
 @media (max-width: 360px) {
-   /* h1 {
-        font-size: 1.4rem;
-        margin-top: 10px;
-    }*/
+  
 
     .pet-detail-container {
-        width: 95%; /*ANTES 100%
-        border-radius: 0;
-        box-shadow: none;*/
+        width: 95%; 
         margin: 20px auto;
     }
 
@@ -198,11 +184,6 @@
             font-size: 14px;
             line-height: 1.4;
         }
-
-    /*.buttons {
-        flex-direction: column;
-        gap: 10px;
-    }*/
 
     .btn.primary {
         font-size: 10px;
@@ -217,9 +198,7 @@
 @media (max-width: 350px) {
 
     .pet-detail-container {
-        width: 94%; /*ANTES 100%
-        border-radius: 0;
-        box-shadow: none;*/
+        width: 94%;
         margin: 10px auto;
     }
 

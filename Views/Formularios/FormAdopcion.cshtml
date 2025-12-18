@@ -59,23 +59,11 @@
                               data-val-regex-pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+$"
                               class="form-control valida-textarea"></textarea>
 
-                    <!-- CAMBIO 2: SPAN DE ERROR -->
+                    
                     <span id="error_@pregunta.id_pregunta"
                           style="color:red; display:none;"></span>
                     
-                    
-                    @*
-                    <label for="pregunta_@pregunta.id_pregunta">@pregunta.pregunta</label>@* <br /> *@
-
-                    @* <textarea class="valida-textarea form-control"
-                              id="pregunta_@pregunta.id_pregunta"
-                              name="Respuestas[@pregunta.id_pregunta]"
-                              maxlength="500"
-                              required></textarea>
-
-                    <span id="error_@pregunta.id_pregunta"
-                          class="error-text"
-                          style="color:red; display:none;"></span>*@
+                   
                     
                 </div>
             }
@@ -88,14 +76,14 @@
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 🔹 Función para cerrar con animación
+            //  Función para cerrar con animación
             const closeAlert = (alert) => {
                 alert.style.transition = "opacity 0.3s ease";
                 alert.style.opacity = "0";
                 setTimeout(() => alert.remove(), 300);
             };
 
-            // 🔹 Cerrar manualmente con la X
+            //  Cerrar manualmente con la X
             document.addEventListener("click", (e) => {
                 if (e.target.classList.contains("close-btn")) {
                     const alert = e.target.closest(".alert-box");
@@ -103,7 +91,7 @@
                 }
             });
 
-            // 🔹 Cerrar automáticamente después de 5 segundos
+            //  Cerrar automáticamente después de 5 segundos
             const alerts = document.querySelectorAll(".alert-box");
             alerts.forEach(alert => {
                 setTimeout(() => {

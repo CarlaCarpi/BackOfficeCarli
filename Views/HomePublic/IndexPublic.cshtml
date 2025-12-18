@@ -5,7 +5,7 @@
 @model IEnumerable<SantaRamona.Backoffice.Models.Animal>
 
 @{
-    // ViewData["Title"] = "Inicio";
+    
     Layout = "~/Views/Shared/Layout1.cshtml";
 
 }
@@ -28,27 +28,10 @@
 
     <!-- Hero -->
     <div class="hero" id="inicio" role="banner" aria-label="Santa Ramona">
-        @* <img src="~/images/foto-header.jpg" alt="Perro de fondo" asp-append-version="true"/>*@
+        
         <img src="~/images/foto_header_2.2.png" alt="Perro de fondo" asp-append-version="true" />
     </div>
-    @* <section >
-
-        <div class="content">
-            <h1 class="kicker">Adopción Responsable</h1>
-            <p class="sub" style="text-align: justify;">
-                Adoptar una mascota es un acto de amor, pero también una gran responsabilidad. No se trata solo de darle un hogar, sino de ofrecerle una vida digna, saludable y feliz. Antes de adoptar, es importante reflexionar: ¿tengo tiempo, espacio y recursos para cuidar de un animal durante toda su vida?
-                Una adopción responsable implica compromiso, paciencia y respeto. Las mascotas no son juguetes ni regalos: son seres vivos que sienten, necesitan compañía, atención médica, alimentación adecuada y mucho cariño.
-                Cuando adoptas, no solo cambiás la vida de un animal, también contribuís a reducir el abandono y fomentás una sociedad más solidaria y consciente.
-            </p>
-            <a class="btn ghost" asp-controller="HomePublic" asp-action="Adopcion">IR A ADOPCIONES</a>
-        </div>
-    </section> *@
-
-
-
-
-
-
+    
 
     <!-- Quiénes somos -->
     <section id="nosotros" aria-labelledby="about-title">
@@ -85,7 +68,7 @@
         <div class="section-inner">
             <div class="section-title">
                 <h2>En adopción</h2>
-                @*  <span aria-hidden="true">🐾</span> *@
+               
             </div>
 
             @{
@@ -194,7 +177,7 @@
                         </p>
                     </div>
                     <div>
-                        <img src="~/images/Ramona (1).jpg" alt="Ramona" asp-append-version="true" />
+                        <img src="~/images/Ramona_2.jpg" alt="Ramona" asp-append-version="true" />
                     </div>
                 </div>
             </div>
@@ -203,15 +186,13 @@
 
 
 
-@*     <!--botón para subir-->
-    <a class="btn top" href="#top">↑</a> *@
 
     @section ExtraContent {
         <!-- CTA Final -->
         <section class="cta" aria-labelledby="cta-title">
             <div class="section-inner" style="text-align:center">
                 <h2 id="cta-title">¿Querés ser parte de Santa Ramona?</h2>
-                <p>Sumate como voluntario/a@* , hogar de tránsito, traslados o hacer una donación *@.</p>
+                <p>Sumate como voluntario/a.</p>
 
                 <a class="btn primary" asp-controller="FormPersonaVoluntariado" asp-action="PersonaVoluntario">QUIERO SUMARME</a>
             </div>
@@ -305,14 +286,14 @@
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 🔹 Función para cerrar con animación
+            // Función para cerrar con animación
             const closeAlert = (alert) => {
                 alert.style.transition = "opacity 0.3s ease";
                 alert.style.opacity = "0";
                 setTimeout(() => alert.remove(), 300);
             };
 
-            // 🔹 Cerrar manualmente con la X
+            // Cerrar manualmente con la X
             document.addEventListener("click", (e) => {
                 if (e.target.classList.contains("close-btn")) {
                     const alert = e.target.closest(".alert-box");
@@ -320,7 +301,7 @@
                 }
             });
 
-            // 🔹 Cerrar automáticamente después de 5 segundos
+            // Cerrar automáticamente después de 5 segundos
             const alerts = document.querySelectorAll(".alert-box");
             alerts.forEach(alert => {
                 setTimeout(() => {
@@ -343,8 +324,8 @@
             const nameEl = body.querySelector('.pet-name');
 
             if (nameEl.textContent.trim().length > 20) {
-                nameEl.classList.add('small-text'); // achica la letra
-                body.classList.add('compact');      // achica el padding
+                nameEl.classList.add('small-text'); 
+                body.classList.add('compact');      
             }
         });
     </script>

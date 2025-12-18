@@ -22,9 +22,7 @@
 
 html, body {
     height: 100%;
-
-    /* AGREGUE */
-    margin: 0; /* Quitamos márgenes por defecto del body */
+    margin: 0; 
 }
 
 body {
@@ -33,13 +31,8 @@ body {
     color: var(--text);
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
     line-height: 1.55;
-    /* AGREGUE */
-    display: flex; /* Convertimos el body en un contenedor flex */
-    flex-direction: column; /* Organizamos los hijos (header, main, footer) en columna */
-    /* Esto permite que el footer se "empuje" hacia abajo usando flex:1 en el main */
-
-
-
+    display: flex;
+    flex-direction: column; 
     overflow-x: hidden;
     
 }
@@ -47,7 +40,7 @@ body {
 
 main{
     flex: 1;
-    /*padding: 20px;*/
+
 }
 
 h1, h2, h3 {
@@ -81,10 +74,8 @@ a {
 
 /* Header */
 .site-header {
-    /*position: sticky;*/
     top: 0;
     z-index: 50;
-    /*backdrop-filter: saturate(1.2) blur(6px)*/
     background-color: white; 
 }
 
@@ -108,7 +99,6 @@ a {
 }
 
     .brand img {
-       /* width: 95px;*/
         height: 100px;
         border-radius: 2%;
         object-fit: cover
@@ -193,7 +183,7 @@ nav {
         z-index: 999;
     }
 
-        /* 🔹 Cuando se muestra */
+        /* Cuando se muestra */
         .btn.top.show {
             opacity: 1;
             pointer-events: auto;
@@ -201,7 +191,7 @@ nav {
             animation: bounce 1s infinite alternate ease-in-out;
         }
 
-/* ✨ Animación tipo rebote */
+/* Animación tipo rebote */
 @keyframes bounce {
     from {
         transform: translateY(0);
@@ -223,61 +213,13 @@ html {
     scroll-behavior: smooth; /* scroll suave al hacer clic */
 }
 
-/* Hero */
-
-/*.hero {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    min-height:60vh;*/ /* asegura que .hero tenga altura */
-    /* Forzar que el hero ocupe todo el ancho del viewport */
-    /*width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-}
-
-
-
-    .hero .media {
-        position: absolute;
-        inset: 0;
-        z-index: -2
-    }*/
-
-    /* Imagen */
-    /*.hero img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;*/ /* <- hace que cubra todo el contenedor sin deformarse */
-        /*object-position: center;*/ /* <- centra la parte visible */
-        /*filter: grayscale(0.1);
-    }*/
-
-   /* .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(12,106,115,.88) 0%, rgba(12,106,115,.82) 50%, rgba(12,106,115,.88) 100%);
-        z-index: -1
-    }*/
-
-    /*.hero .content {
-        max-width: var(--container);
-        margin: auto;
-        padding: 64px 20px 84px;
-        color: white
-    }*/
-
 /* HERO */
 .hero {
     position: relative;
     overflow: hidden;
     isolation: isolate;
     width: 100vw;
-    max-height: 60vh; /* 🔹 evita que crezca demasiado en pantallas grandes */
+    max-height: 60vh; 
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
     display: flex;
@@ -291,18 +233,11 @@ html {
     .hero img {
         width: 100%;
         max-height: 60vh;
-        /*aspect-ratio: 1440 / 656;  👈 Mantiene proporción original */
-        object-fit: contain; /* 🔹 muestra la imagen completa */
+        object-fit: contain;
         object-position: center;
         background-color: #FEE2E5;
        
-        /*background-color:#AB216E ;  color de relleno si sobran márgenes */
-        /*background-color:  #FFF;*/
     }
-
-
-
-
 
                     /* ===== Responsive ===== */
 
@@ -317,7 +252,7 @@ html {
                         }
 
                         .pet-card {
-                            width: 100%; /* Para que ocupe todo el ancho de la columna */
+                            width: 100%; 
                             max-width: none;
                         }
                     }
@@ -336,46 +271,7 @@ html {
                             padding: 8px;
                         }
                     }
-            /* Pantallas medianas (tablets, <=900px) */
-            /*@media (max-width: 900px) {
-                .hero .media .section{
-                    min-height: 30vh;
-                    padding: 40px 14px;
-                }
-
-                    .hero .content {
-                        padding: 14px;
-                    }
-            }*/
-
-            /* Pantallas chicas (teléfonos, <=600px) */
-            /*@media (max-width: 600px) {
-                .hero .media .section {
-                    min-height: 30vh;
-                    padding: 40px 14px;
-                }
-
-                    .hero .content {
-                        font-size: 0.95rem;
-                    }
-            }*/
-
-            /* Tamaños muy pequeños (<=340px) */
-            /*@media (max-width: 340px) {
-                .hero .media .section {
-                    min-height: 25vh;*/ /* un poco más alta para texto legible */
-                    /*padding: 30px 10px;
-                }
-
-                    .hero .content {
-                        font-size: 0.9rem;*/ /* ajusta el texto */
-                    /*}
-
-                    .hero img {
-                        object-position: center;*/ /* centra mejor la imagen */
-                    /*}
-            }*/
-
+           
 
 .kicker {
     font-weight: 800;
@@ -421,8 +317,8 @@ section {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity; /* menos agresivo que mandatory */
-    scroll-padding-left: 12px; /* espacio para que la primera tarjeta no quede pegada/oculta */
+    scroll-snap-type: x proximity; 
+    scroll-padding-left: 12px; 
     padding: 12px 8px;
     align-items: start;
 }
@@ -434,9 +330,8 @@ section {
     box-shadow: var(--shadow);
     overflow: hidden
 }
-/* Tarjeta */
 
-/* Pet cards: igual para adopción y tránsito */
+/* Tarjeta */
 .pet-card {
     display: grid;
     grid-template-rows: 300px auto auto;
@@ -450,12 +345,12 @@ section {
     .pet-card img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* recorta la imagen para que quede pareja */
+        object-fit: cover; 
         display: block;
     }
 
 .pet-image {
-    flex: 1; /* ocupa el espacio disponible */
+    flex: 1;
     overflow: hidden;
 }
 
@@ -463,9 +358,9 @@ section {
     padding: 14px 16px 18px;
     text-align: center;
 }
-    /* 🔹 Versión reducida si el nombre tiene más de 20 caracteres */
+    /* Versión reducida si el nombre tiene más de 20 caracteres */
     .pet-body.compact {
-        padding: 8px 8px 8px; /* ajustá como quieras */
+        padding: 8px 8px 8px; 
     }
 
 .pet-name {
@@ -476,7 +371,7 @@ section {
 }
 
     .pet-name.small-text {
-        font-size: 17px; /* 🔹 Nuevo tamaño si supera los 20 caracteres */
+        font-size: 17px; 
     }
 
 .pet-meta {
@@ -485,17 +380,16 @@ section {
     opacity: .9;
 }
 
-/* tarjetas como elementos no flexibles (evita que "se encojan") */
+
 .card, .pet-card, .card.pet-card {
-    min-inline-size: 240px; /* tamaño mínimo en horizontal */
+    min-inline-size: 240px; 
     max-inline-size: 240px;
     inline-size: auto;
-    /*width: auto;*/
-    flex: none; /* si hay algún contenedor flex */
+    flex: none; 
     scroll-snap-align: start;
 }
 
-/* Adoption colorway */
+
 .adopcion .card {
     background: linear-gradient(180deg, var(--aqua) 0%, #BFEDEB 100%)
 }
@@ -504,12 +398,12 @@ section {
     background: transparent
 }
 
-/* Transit colorway */
+
 .transito .card {
     background: linear-gradient(180deg, #F7D0E4 0%, #FFD8EA 100%)
 }
 
-/* Scroller arrows */
+
 .arrow {
     position: absolute;
     top: 40%;
@@ -544,26 +438,20 @@ section {
                 /* Ajuste hasta 900px */
                 @media (max-width: 1110px) {
                     .scroller {
-                        /* grid-auto-columns: minmax(220px, 1fr);*/
                         grid-template-columns: repeat(3, 1fr);
                         gap: 8px;
                         justify-items: center;
                         display: grid;
                     }
-                    /*.pet-card {
-                        width: 100%;
-                        
-                    }*/
+                   
                     .card, .pet-card, .card.pet-card {
-                        min-inline-size: 230px; /* tamaño mínimo en horizontal */
+                        min-inline-size: 230px; 
                         max-inline-size: 230px;
                         inline-size: auto;
-                        /*width: auto;*/
-                        flex: none; /* si hay algún contenedor flex */
+                        flex: none; 
                         scroll-snap-align: start;
                     }
 
-                   
                 }
 
                 /* Desde 630px hacia abajo → 2 columnas */
@@ -578,16 +466,11 @@ section {
                         gap: 3px;
                     }
 
-/*                    .pet-card {
-                        width: 100%;
-                        max-width: 240px;
-                    }*/
                     .card, .pet-card, .card.pet-card {
-                        min-inline-size: 220px; /* tamaño mínimo en horizontal */
+                        min-inline-size: 220px;
                         max-inline-size: 220px;
-                        inline-size: auto;
-                        /*width: auto;*/
-                        flex: none; /* si hay algún contenedor flex */
+                        inline-size: auto; 
+                        flex: none; 
                         scroll-snap-align: start;
                     }
 
@@ -596,31 +479,23 @@ section {
 
                 /* Ajuste progresivo hasta 340px */
                 @media (max-width: 480px) {
-/*                    .pet-card {
-                        max-width: 230px;
-                    }*/
                     .card, .pet-card, .card.pet-card {
-                        min-inline-size: 210px; /* tamaño mínimo en horizontal */
+                        min-inline-size: 210px; 
                         max-inline-size: 210px;
                         inline-size: auto;
-                        /*width: auto;*/
-                        flex: none; /* si hay algún contenedor flex */
+                        flex: none; 
                         scroll-snap-align: start;
                     }
 
-                   
                 }
 
                 @media (max-width: 340px) {
-/*                    .pet-card {
-                        max-width: 230px;
-                    }*/
+
                     .card, .pet-card, .card.pet-card {
-                        min-inline-size: 200px; /* tamaño mínimo en horizontal */
+                        min-inline-size: 200px;
                         max-inline-size: 200px;
                         inline-size: auto;
-                        /*width: auto;*/
-                        flex: none; /* si hay algún contenedor flex */
+                        flex: none; 
                         scroll-snap-align: start;
                     }
 
@@ -629,7 +504,7 @@ section {
 
 /* Textos Informativos */
 .news {
-   /* background: var(--petal);*/
+  
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow);
     padding: 24px
@@ -650,11 +525,11 @@ section {
 }
 
     .news-grid1 > div:first-child {
-        order: 2; /* el texto pasa a la derecha */
+        order: 2; 
     }
 
     .news-grid1 > div:last-child {
-        order: 1; /* la imagen pasa a la izquierda */
+        order: 1; 
     }
 
 .news h3 {
@@ -746,11 +621,11 @@ section {
         text-align: center;
     }
         .news-grid1 > div:first-child {
-            order: 1; /* el texto pasa a la derecha */
+            order: 1; 
         }
 
         .news-grid1 > div:last-child {
-            order: 2; /* la imagen pasa a la izquierda */
+            order: 2; 
         }
 }
 
@@ -885,7 +760,7 @@ footer {
 }
 
 
-    /* 1. Ocultar el botón de hamburguesa por defecto (solo visible en móvil) */
+   
     .menu-toggle {
         display: none;
         background: none;
@@ -895,7 +770,7 @@ footer {
         z-index: 100; 
     }
 
-        /* 2. Estilizar el icono de la hamburguesa */
+       
         .menu-toggle .icon-bar {
             display: block;
             width: 25px;
@@ -905,31 +780,31 @@ footer {
             transition: all 0.3s ease-in-out;
         }
 
-        /* 3. Estilos del menú cuando está abierto (para la animación) */
+      
         .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(2) {
-            opacity: 0; /* Oculta la barra del medio */
+            opacity: 0; 
         }
 
         .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(1) {
-            transform: translateY(8px) rotate(45deg); /* Gira y mueve para formar una X */
+            transform: translateY(8px) rotate(45deg);
         }
 
         .menu-toggle[aria-expanded="true"] .icon-bar:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg); /* Gira y mueve para formar una X */
+            transform: translateY(-8px) rotate(-45deg); 
         }
 
-    /* 4. MEDIA QUERY: Se activa cuando el ancho es de 800px o menos */
+   
     @media screen and (min-width: 340px) and (max-width: 855px) {
 
         .menu-toggle {
-            display: block; /* Muestra el botón de hamburguesa */
-            margin-left: auto; /* Para que se alinee a la derecha */
+            display: block;
+            margin-left: auto; 
         }
 
         nav {
             display: none;
             position: absolute;
-            top: 80px; /* Ajusta según la altura de tu header.inner */
+            top: 80px; 
             left: 0;
             width: 100%;
             background-color: white;
@@ -938,7 +813,7 @@ footer {
             z-index: 40;
         }
 
-            /* Estilo del menú cuando se abre con JavaScript */
+          
             nav.is-open {
                 display: block;
             }
@@ -963,10 +838,9 @@ footer {
                 color: #0b3840;
             }
 
-        /* Ocultar el botón de Donar en el header normal (si existiera) 
-       y mostrar el botón de Donar dentro del menú desplegable */
+       
         .nav-donate-mobile {
-            display: list-item; /* Asegura que el botón DONAR se vea en el menú */
+            display: list-item; 
             margin-top: 15px;
             
         }
@@ -977,23 +851,16 @@ footer {
                 border-radius: 100px;
             }
     }
-
-
-
-
-
-
-
-    /* Oculta la barra de desplazamiento horizontal del carrusel ADOPCION */
+  
     .scroller {
-        overflow: hidden; /* oculta completamente la barra */
+        overflow: hidden; 
 
         scrollbar-width: none !important;
         display: grid;
         grid-auto-flow: column;
         grid-auto-columns: minmax(250px, 1fr);
        
-        overflow-x: hidden; /* ✅ evita el scroll manual y oculta la barra */
+        overflow-x: hidden;
         scroll-behavior: smooth;
         scroll-snap-type: x mandatory;
         padding: 12px 4px 4px;
@@ -1011,7 +878,7 @@ footer {
        
     }
 
-    /* estado visual de las flechas */
+    
 
     .arrow {
         transition: opacity 0.3s ease;
@@ -1025,7 +892,7 @@ footer {
 
 
 
-/* 🌟 Alertas */
+/* Alertas */
 .alert-box {
     position: relative;
     margin: 20px auto;
@@ -1094,33 +961,33 @@ footer {
     margin: 5px;
     border-radius: 50%;
     font-size: 20px;
-    color: white; /* color de icono */
-    background-color:  #2DB8B5; /* color de fondo principal */
+    color: white;
+    background-color:  #2DB8B5; 
     text-decoration: none;
     transition: all 0.3s ease;
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
-    /* 🔹 Efecto hover */
+    /* Efecto hover */
     .d-inline-flex a:hover {
-        background-color: #57D6D4; /* tono más claro */
+        background-color: #57D6D4; 
         transform: translateY(-3px);
         box-shadow: 0 6px 10px rgba(0,0,0,0.25);
     }
 
-    /* 🔹 Instagram personalizado */
+    /* Instagram */
     .d-inline-flex a .fa-instagram {
         background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
-    /* 🔹 Facebook */
+    /* Facebook */
     .d-inline-flex a .fa-facebook-f {
         color: #fff;
     }
 
-/* 🔹 Ajuste responsive si está en el footer */
+/* Ajuste responsive si está en el footer */
 @media (max-width: 768px) {
     .col-lg-6.text-right {
         text-align: center !important;

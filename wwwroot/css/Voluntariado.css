@@ -1,5 +1,4 @@
-﻿/*--------------------*/
-h1 {
+﻿h1 {
     text-align: center;
     color: #C23A79;
     font-size: 2rem;
@@ -11,15 +10,12 @@ p {
     text-align: center;
 }
 
-
-
-/*Prueba Voluntariado*/
 .voluntariados-container {
     display: flex;
     flex-direction: column;
-    gap: 40px; /* separación entre bloques */
+    gap: 40px;
     max-width: 1000px;
-    margin: 0 auto; /*centrar en la página */
+    margin: 0 auto; 
     padding: 20px;
     background-color: var(--bg);
 }
@@ -35,13 +31,13 @@ p {
     margin-bottom: 0;
 }
 
-    /* cuando la clase es "left": imagen izquierda */
+   
     .voluntariado-item.par {
         flex-direction: row;
         margin-left: 10px;
     }
 
-    /* cuando la clase es "right": imagen derecha */
+   
     .voluntariado-item.impar {
         flex-direction: row-reverse;
         margin-left: auto;
@@ -58,7 +54,7 @@ p {
 }
 
 .texto-voluntariado {
-    flex: 1; /* ocupa todo el espacio sobrante */
+    flex: 1; 
     font-size: larger;
     line-height: 1.6;
     color: black;
@@ -73,8 +69,8 @@ p {
     box-shadow: 6px 6px 6px #5c6b6a2e;
     width: 800px;
     height: auto;
-    margin: 20px auto; /* esto centra el div horizontalmente */
-    text-align: left; /* para que el texto dentro no quede centrado */
+    margin: 20px auto; 
+    text-align: left; 
 }
 
 .req-vol {

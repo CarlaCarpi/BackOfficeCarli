@@ -10,8 +10,7 @@ using System.Collections.Generic;
 
 namespace SantaRamona.Backoffice.Controllers
 {
-    // Este controlador es para el formulario de adopción
-    // También gestiona la carga dinámica de provincias y localidades
+    
     [Route("[controller]/[action]/{id?}")]
     public class FormPersonaController : Controller
     {
@@ -63,7 +62,7 @@ namespace SantaRamona.Backoffice.Controllers
             var json = await resp.Content.ReadAsStringAsync();
             var preguntas = JsonSerializer.Deserialize<List<Pregunta>>(json, JsonOps) ?? new List<Pregunta>();
 
-            // Filtrar solo preguntas del formulario de adopción (tipoFormulario = 1)
+            // Filtrar solo preguntas del formulario de adopción 
             preguntas = preguntas
                 .Where(p => p.id_tipoFormulario == 1 & p.activo)
                 .OrderBy(p => p.orden)
@@ -73,7 +72,7 @@ namespace SantaRamona.Backoffice.Controllers
             ViewBag.Provincia = await CargarProvinciasSelectAsync(client);
             ViewBag.Localidad = await CargarLocalidadesSelectAsync(client, null);
 
-            //return View("~/Views/Formularios/FormAdopcion.cshtml", preguntas);
+           
             var vm = new FormVM
             {
                 Preguntas = preguntas,
@@ -92,7 +91,7 @@ namespace SantaRamona.Backoffice.Controllers
 
             try
             {
-                // 1) Validaciones básicas
+               
                 if (idPersona <= 0)
                 {
                     Console.WriteLine("⚠️ idPersona inválido o no enviado.");
@@ -109,7 +108,7 @@ namespace SantaRamona.Backoffice.Controllers
 
                 Console.WriteLine($"✅ Recibidas {respuestas.Count} respuestas para persona {idPersona}.");
 
-                // 2) Crear FORMULARIO (id_tipoFormulario = 1 => Adopción)
+                // Crear FORMULARIO 
                 var nuevoFormularioPayload = new
                 {
                     id_persona = idPersona,
@@ -119,7 +118,7 @@ namespace SantaRamona.Backoffice.Controllers
                 var jsonFormulario = JsonSerializer.Serialize(nuevoFormularioPayload);
                 var contentFormulario = new StringContent(jsonFormulario, Encoding.UTF8, "application/json");
 
-                // Intentamos crear formulario en: POST /api/Formulario
+               
                 var respForm = await client.PostAsync("https://webapisantaramona.somee.com/api/Formulario", contentFormulario);
                 if (!respForm.IsSuccessStatusCode)
                 {
@@ -129,7 +128,7 @@ namespace SantaRamona.Backoffice.Controllers
                     return RedirectToAction("FormularioAdopcion", new { idPersona });
                 }
 
-                // Leer id_formulario desde la respuesta (se espera que la API retorne el objeto creado)
+               
                 var formBody = await respForm.Content.ReadAsStringAsync();
                 var formularioCreado = JsonSerializer.Deserialize<Formulario>(formBody, JsonOps);
                 if (formularioCreado == null || formularioCreado.id_formulario <= 0)
@@ -142,7 +141,7 @@ namespace SantaRamona.Backoffice.Controllers
                 int idFormulario = formularioCreado.id_formulario;
                 Console.WriteLine($"✅ Formulario creado: id_formulario = {idFormulario}");
 
-                // 3) Preparar payload para lote (si tu API acepta)
+               
                 var lotePayload = new
                 {
                     respuestas = respuestas.Select(r => new { id_pregunta = r.Key, respuesta = r.Value }).ToList()
@@ -151,7 +150,7 @@ namespace SantaRamona.Backoffice.Controllers
                 var jsonLote = JsonSerializer.Serialize(lotePayload);
                 var contentLote = new StringContent(jsonLote, Encoding.UTF8, "application/json");
 
-                // 4) Intentar POST a /api/Respuesta/lote/{idFormulario}
+               
                 var rutaLote = $"https://webapisantaramona.somee.com/api/Respuesta/lote/{idFormulario}";
                 var respLote = await client.PostAsync(rutaLote, contentLote);
 
@@ -162,7 +161,7 @@ namespace SantaRamona.Backoffice.Controllers
                     return RedirectToAction("IndexPublic", "HomePublic");
                 }
 
-                // Si no funcionó el endpoint lote, hacemos posts individuales (fallback)
+               
                 var txtLote = await respLote.Content.ReadAsStringAsync();
                 Console.WriteLine($"⚠️ Intento lote falló: {(int)respLote.StatusCode} {txtLote}. Intentando guardar individualmente...");
 
@@ -183,7 +182,7 @@ namespace SantaRamona.Backoffice.Controllers
                     {
                         var body = await rResp.Content.ReadAsStringAsync();
                         Console.WriteLine($"❌ Error guardando respuesta pregunta {kv.Key}: {(int)rResp.StatusCode} {body}");
-                        // Decidir: seguir intentando o abortar. Aquí seguimos para intentar guardar todas.
+                       
                     }
                     else
                     {

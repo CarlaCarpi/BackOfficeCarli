@@ -10,8 +10,7 @@ using System.Collections.Generic;
 
 namespace SantaRamona.Backoffice.Controllers
 {
-    // Este controlador es para el formulario de voluntariado
-    // También gestiona la carga dinámica de provincias y localidades
+    
     [Route("[controller]/[action]/{id?}")]
     public class FormPersonaVoluntariadoController : Controller
     {
@@ -22,13 +21,7 @@ namespace SantaRamona.Backoffice.Controllers
             PropertyNameCaseInsensitive = true
         };
 
-        // ====== Rutas API ======
-        //private const string RUTA_PERSONA = "https://webapisantaramona.somee.com/api/Persona";
-        //private const string RUTA_ESTADO_PERSONA = "https://webapisantaramona.somee.com/api/EstadoPersona";
-        //private const string RUTA_PROVINCIA = "https://webapisantaramona.somee.com/api/Provincia";
-        //private const string RUTA_LOCALIDAD = "https://webapisantaramona.somee.com/api/Localidad";
-        //private const string RUTA_PREGUNTA = "https://webapisantaramona.somee.com/api/Pregunta";
-        //private const string RUTA_RESPUESTA = "https://webapisantaramona.somee.com/api/Respuesta/lote";
+       
 
 
         private const string RUTA_PERSONA = "/api/Persona";
@@ -68,7 +61,7 @@ namespace SantaRamona.Backoffice.Controllers
             var json = await resp.Content.ReadAsStringAsync();
             var preguntas = JsonSerializer.Deserialize<List<Pregunta>>(json, JsonOps) ?? new List<Pregunta>();
 
-            // Filtrar solo preguntas del formulario de voluntariado (tipoFormulario = 3)
+           
             preguntas = preguntas
                 .Where(p => p.id_tipoFormulario == 3 & p.activo) 
                 .OrderBy(p => p.orden)
@@ -123,7 +116,7 @@ namespace SantaRamona.Backoffice.Controllers
                 var jsonFormulario = JsonSerializer.Serialize(nuevoFormularioPayload);
                 var contentFormulario = new StringContent(jsonFormulario, Encoding.UTF8, "application/json");
 
-                // Intentamos crear formulario en: POST /api/Formulario
+               
                 var respForm = await client.PostAsync("https://webapisantaramona.somee.com/api/Formulario", contentFormulario);
                 if (!respForm.IsSuccessStatusCode)
                 {
@@ -133,7 +126,7 @@ namespace SantaRamona.Backoffice.Controllers
                     return RedirectToAction("FormularioVoluntariado", new { idPersona });
                 }
 
-                // Leer id_formulario desde la respuesta (se espera que la API retorne el objeto creado)
+               
                 var formBody = await respForm.Content.ReadAsStringAsync();
                 var formularioCreado = JsonSerializer.Deserialize<Formulario>(formBody, JsonOps);
                 if (formularioCreado == null || formularioCreado.id_formulario <= 0)
@@ -146,7 +139,7 @@ namespace SantaRamona.Backoffice.Controllers
                 int idFormulario = formularioCreado.id_formulario;
                 Console.WriteLine($"✅ Formulario creado: id_formulario = {idFormulario}");
 
-                // 3) Preparar payload para lote (si tu API acepta)
+               
                 var lotePayload = new
                 {
                     respuestas = respuestas.Select(r => new { id_pregunta = r.Key, respuesta = r.Value }).ToList()
@@ -155,7 +148,7 @@ namespace SantaRamona.Backoffice.Controllers
                 var jsonLote = JsonSerializer.Serialize(lotePayload);
                 var contentLote = new StringContent(jsonLote, Encoding.UTF8, "application/json");
 
-                // 4) Intentar POST a /api/Respuesta/lote/{idFormulario}
+              
                 var rutaLote = $"https://webapisantaramona.somee.com/api/Respuesta/lote/{idFormulario}";
                 var respLote = await client.PostAsync(rutaLote, contentLote);
 
@@ -166,7 +159,7 @@ namespace SantaRamona.Backoffice.Controllers
                     return RedirectToAction("IndexPublic", "HomePublic");
                 }
 
-                // Si no funcionó el endpoint lote, hacemos posts individuales (fallback)
+               
                 var txtLote = await respLote.Content.ReadAsStringAsync();
                 Console.WriteLine($"⚠️ Intento lote falló: {(int)respLote.StatusCode} {txtLote}. Intentando guardar individualmente...");
 
@@ -188,7 +181,7 @@ namespace SantaRamona.Backoffice.Controllers
                     {
                         var body = await rResp.Content.ReadAsStringAsync();
                         Console.WriteLine($"❌ Error guardando respuesta pregunta {kv.Key}: {(int)rResp.StatusCode} {body}");
-                        // Decidir: seguir intentando o abortar. Aquí seguimos para intentar guardar todas.
+                        
                     }
                     else
                     {

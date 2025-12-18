@@ -38,8 +38,7 @@
 <div class="pets-grid" id="petsGrid"></div>
 
 @{
-    // Filtramos solo los animales con estado = 2
-    //var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 2).ToList();
+   
     var animalesEnAdopcion = Model?.Where(a => a.id_estadoAnimal == 1 || a.id_estadoAnimal == 2 || a.id_estadoAnimal == 3).ToList();
 
 }
@@ -87,18 +86,6 @@ else
 
 @if (ViewBag.TotalPages > 1)
 {
-//         <div class="pagination-container">
-//             <div class="pagination" style="margin-top: 20px; text-align: center;">
-//                 <button id="prevPageBtn">◄ Página anterior</button>
-//                 <span id="pageInfo" style="margin: 0 10px;">
-//                     Página @ViewBag.CurrentPage de @ViewBag.TotalPages
-//                 </span>
-//                 <button id="nextPageBtn">Siguiente página ►</button>
-//             </div>
-//         </div>
-// }
-
-
     <div class="pagination-container">
         <div class="pagination" style="margin-top: 20px; text-align: center;">
             @if (ViewBag.CurrentPage > 1)
@@ -128,7 +115,7 @@ else
 }
 <div class="button-container">
     <a asp-controller="FormPersona" asp-action="PersonaAdoptar" class="btn primary adop">QUIERO ADOPTAR</a>
-    <!-- IMPORTANTE LA RUTA DEL CONTROLADOR CON SU METODO CORRECTO SINO NO FUNCIONA-->
+    
     <a asp-controller="FormPersonaTransito" asp-action="PersonaTransito" class="btn primary">QUIERO TRANSITAR</a>
 </div>
 
@@ -145,8 +132,8 @@ else
         const nameEl = body.querySelector('.pet-name');
 
         if (nameEl.textContent.trim().length > 20) {
-            nameEl.classList.add('small-text'); // achica la letra
-            body.classList.add('compact');      // achica el padding
+            nameEl.classList.add('small-text'); 
+            body.classList.add('compact');      
         }
     });
 </script>
